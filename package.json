@@ -1,0 +1,20 @@
+{
+  "name": "fisherfolk-record-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "lerna run start",
+    "build": "lerna run build",
+    "test": "lerna run test"
+  },
+  "author": "Hook Ninjas",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^7.4.0",
+    "lerna": "^6.0.1"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
