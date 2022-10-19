@@ -1,0 +1,31 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon script.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.11.0",
+    "jest-mock-extended": "^3.0.1",
+    "nodemon": "^2.0.20",
+    "prisma": "^4.5.0",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.5.0",
+    "apollo-server": "^3.10.3",
+    "graphql": "^16.6.0",
+    "graphql-scalars": "^1.19.0",
+    "nexus": "^1.3.0",
+    "nexus-prisma": "^0.35.0",
+    "nexus-validate": "^1.4.0",
+    "yup": "^0.32.11"
+  }
+}
