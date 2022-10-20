@@ -6,12 +6,14 @@
   "scripts": {
     "start": "lerna run start",
     "build": "lerna run build",
-    "test": "lerna run test"
+    "test": "lerna run test",
+    "prepare": "husky install"
   },
   "author": "Hook Ninjas",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^7.4.0",
+    "husky": "^8.0.1",
     "lerna": "^6.0.1"
   },
   "workspaces": [
