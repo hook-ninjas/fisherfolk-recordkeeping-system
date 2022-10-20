@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import "./Home.css";
+import React, { useState, useEffect } from 'react';
+import './Home.css';
 
 const Home = () => {
-  const [data, setData] = useState("");
+  const [data, setData] = useState('');
 
   useEffect(() => {
-    fetch("http://localhost:5000/")
+    fetch('http://localhost:5000/')
       .then((res) => {
         if (res.ok) {
           console.log(res);
