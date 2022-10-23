@@ -7,6 +7,7 @@
     "start": "lerna run start",
     "build": "lerna run build",
     "test": "lerna run test",
+    "dev": "concurrently --kill-others \"npm --prefix ./packages/express-server/ run dev\" \"npm --prefix ./packages/web-react/ run start\"",
     "prepare": "husky install"
   },
   "author": "Hook Ninjas",
