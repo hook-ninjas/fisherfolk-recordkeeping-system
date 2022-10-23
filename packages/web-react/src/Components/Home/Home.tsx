@@ -30,7 +30,7 @@ function Home() {
       style={{ minHeight: '100vh' }}
     >
       <Grid item xs={3}>
-        <Typography sx={{ fontWeight: 'bold' }}>{data}</Typography>;
+        <Typography sx={{ fontWeight: 'bold' }}>{data}</Typography>
       </Grid>
     </Grid>
   );

@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import './index.css';
-import NavBar from './Pages/NavBar/NavBar';
-import Home from './Pages/Home/Home';
-import PageNotFound from './Pages/PageNotFound/PageNotFound';
+import './Styles/index.css';
+import NavBar from './Components/NavBar/NavBar';
+import Home from './Components/Home/Home';
+import PageNotFound from './Components/PageNotFound/PageNotFound';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
@@ -20,7 +20,6 @@ root.render(
         </Route>
       </Routes>
     </BrowserRouter>
-    ,
   </React.StrictMode>
 );
 

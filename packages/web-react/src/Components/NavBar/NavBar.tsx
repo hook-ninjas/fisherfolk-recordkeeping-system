@@ -25,7 +25,7 @@ function NavBar() {
   return (
     <div>
       <nav>
-        <AppBar position="static" color="primary" id="appBar">
+        <AppBar position="static" color="primary">
           <Toolbar>{buttons}</Toolbar>
         </AppBar>
       </nav>
