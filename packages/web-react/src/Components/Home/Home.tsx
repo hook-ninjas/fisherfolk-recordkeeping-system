@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Typography } from '@mui/material';
-import './Home.css';
 
 function Home() {
   const [data, setData] = useState('');
