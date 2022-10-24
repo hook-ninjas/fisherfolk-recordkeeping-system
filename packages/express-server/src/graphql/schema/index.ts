@@ -2,13 +2,13 @@ import { makeSchema, asNexusMethod } from 'nexus';
 import { DateTimeResolver } from 'graphql-scalars';
 import { validatePlugin } from 'nexus-validate';
 // import Input from './input';
-// import Query from './query';
+import Query from './query';
 // import Mutation from './mutation';
-// import Models from './models';
+import Models from './model';
 
 const DateTime = asNexusMethod(DateTimeResolver, 'date');
 const schema = makeSchema({
-  types: [],
+  types: [...Models, ...Query],
   outputs: {
     schema: `${__dirname}/../../schema.graphql`,
     typegen: `${__dirname}/../generated/nexus.ts`,
