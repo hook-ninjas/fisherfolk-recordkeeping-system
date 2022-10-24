@@ -5,7 +5,7 @@ function Home() {
   const [data, setData] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:5000/')
+    fetch('http://localhost:4000/')
       .then((res) => {
         if (res.ok) {
           console.log(res);

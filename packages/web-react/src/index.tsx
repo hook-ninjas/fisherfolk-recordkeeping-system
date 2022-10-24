@@ -6,6 +6,17 @@ import NavBar from './Components/NavBar/NavBar';
 import Home from './Components/Home/Home';
 import PageNotFound from './Components/PageNotFound/PageNotFound';
 import reportWebVitals from './reportWebVitals';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  gql,
+} from '@apollo/client';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:4000/graphql',
+  cache: new InMemoryCache(),
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -13,13 +24,15 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<NavBar />}>
-          <Route index element={<Home />} />
-          <Route path="home" element={<Home />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Route>
-      </Routes>
+      <ApolloProvider client={client}>
+        <Routes>
+          <Route path="/" element={<NavBar />}>
+            <Route index element={<Home />} />
+            <Route path="home" element={<Home />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Route>
+        </Routes>
+      </ApolloProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
