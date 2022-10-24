@@ -1,5 +1,10 @@
 /* eslint-disable no-fallthrough */
 import 'dotenv/config';
+import { ApolloServer } from 'apollo-server-express';
+import {
+  ApolloServerPluginDrainHttpServer,
+  ApolloServerPluginLandingPageLocalDefault,
+} from 'apollo-server-core';
 import http from 'http';
 import express, {
   Express,
@@ -9,6 +14,10 @@ import express, {
   NextFunction,
 } from 'express';
 import cors from 'cors';
+import { context } from './graphql/context';
+import { schema } from './graphql/schema';
+import { Context } from './types/types';
+import { NexusGraphQLSchema } from 'nexus/dist/core';
 
 const app: Express = express();
 
@@ -32,8 +41,7 @@ const normalizePort = (val: string | number) => {
   return false;
 };
 
-const port = normalizePort(process.env.PORT || 5000);
-const server = http.createServer(app);
+const port = normalizePort(process.env.PORT || 4000);
 
 const onError = (error: any) => {
   if (error.syscall !== 'listen') {
@@ -50,24 +58,47 @@ const onError = (error: any) => {
   }
 };
 
-const onListening = () => {
-  const addr = server.address();
-  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`;
-  console.log(`Listening on ${bind}`);
+const startServer = async (
+  context: Context,
+  schema: NexusGraphQLSchema,
+  port: number | false,
+  app: Express
+) => {
+  const httpServer = http.createServer(app);
+  const server = new ApolloServer({
+    schema,
+    context,
+    csrfPrevention: true,
+    cache: 'bounded',
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      ApolloServerPluginLandingPageLocalDefault({ embed: true }),
+    ],
+  });
+  const onListening = () => {
+    const addr = httpServer.address();
+    const bind =
+      typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`;
+    console.log(`Listening on ${bind}`);
+  };
+
+  await server.start();
+  server.applyMiddleware({ app });
+
+  httpServer
+    .listen(port, () => {
+      console.log(
+        `Fisherfolk Record App listening at http://localhost:${port}${server.graphqlPath}`
+      );
+    })
+    .on('error', onError)
+    .on('listening', onListening);
 };
 
-server.listen(port, () => {
-  console.log(`Fisherfolk Record App listening at http://localhost:${port}`);
-});
+startServer(context, schema, port, app);
 
-server.on('error', onError);
-server.on('listening', onListening);
+app.use(cors()).use(json());
 
-app.use(cors());
-app.use(json());
-
-app.get('/', (req: Request, res: Response, next: NextFunction) =>
-  res.send('HELLO HOOK NINJAS!!!')
-);
+app.get('/', (req: Request, res: Response) => res.send('HELLO HOOK NINJAS!!!'));
 
 export default app;
