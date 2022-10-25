@@ -1,0 +1,165 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
+  @@map("users")
+}
+
+model Fisherfolk {
+  id                    Int                   @id @default(autoincrement())
+  registrationNum       Int
+  registrationDate      DateTime              @default(now())
+  registrationType      RegistrationType
+  lastName              String
+  firstName             String
+  middleName            String
+  salutation            Salutation
+  barangay              String
+  cityMunicipality      String
+  province              String
+  contactNum            String
+  residentYear          Int
+  dateOfBirth           DateTime
+  placeOfBirth          String
+  religion              String
+  gender                Gender
+  civilStatus           CivilStatus
+  numOfChildren         Int?
+  nationality           Nationality
+  educationalBackground EducationalBackground
+  personToNotify        String
+  ptnRelationship       String
+  ptnAddress            String
+  ptnContactNum         String
+  mainSrcOfIncome       SourceOfIncome
+  otherSrcOfIncome      SourceOfIncome?
+  mainSrcGear           String
+  otherSrcGear          String?
+  mainSrcMethod         String
+  otherSrcMethod        String?
+  orgName               String?
+  orgYearMember         Int?
+  orgPosition           String?
+  image                 String
+  signature             String
+  status                FisherfolkStatus
+  gear                  Gear?
+  boat                  Boat?
+  fishpond              Fishpond?
+  registrationPermit    RegistrationPermit?
+  @@map("fisherfolks")
+}
+
+model Gear {
+  id           Int        @id @default(autoincrement())
+  fisherfolkId Int        @unique @map("fisherfolk_id")
+  type         String
+  fisherfolk   Fisherfolk @relation(fields: [fisherfolkId], references: [id])
+  @@map("gears")
+}
+
+model Boat {
+  id              Int        @id @default(autoincrement())
+  fisherfolkId    Int        @unique @map("fisherfolk_id")
+  engineType      EngineType
+  length          Float?
+  width           Float?
+  depth           Float?
+  grossTonage     Float
+  horsePower      Float?
+  numOfMenOnBoard Int
+  fisherfolk      Fisherfolk @relation(fields: [fisherfolkId], references: [id])
+  @@map("boats")
+}
+
+model Fishpond {
+  id           Int        @id @default(autoincrement())
+  fisherfolkId Int        @unique @map("fisherfolk_id")
+  length       Float?
+  width        Float?
+  depth        Float?
+  location     String
+  kindOfProd   String
+  fisherfolk   Fisherfolk @relation(fields: [fisherfolkId], references: [id])
+  @@map("fishponds")
+}
+
+model RegistrationPermit {
+  num          Int
+  fisherfolkId Int          @unique @map("fisherfolk_id")
+  status       PermitStatus
+  issuedDate   DateTime
+  validityDate DateTime
+  fisherfolk   Fisherfolk   @relation(fields: [fisherfolkId], references: [id])
+  @@map("registration_permits")
+}
+
+enum RegistrationType {
+  RENEWAL
+  NEW_REGISTRATION
+}
+
+enum Salutation {
+  MR
+  MS
+  MRS
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum CivilStatus {
+  SINGLE
+  MARRIED
+  LEGALLY_SEPARATED
+  WIDOWED
+}
+
+enum Nationality {
+  FILIPINO
+}
+
+enum EducationalBackground {
+  ELEMENTARY
+  HIGH_SCHOOL
+  VOCATIONAL
+  COLLEGE
+  POST_GRADUATE
+}
+
+enum SourceOfIncome {
+  CAPTURE_FISHING
+  AQUACULTURE
+  FISH_VENDING
+  FISH_PROCESSING
+}
+
+enum FisherfolkStatus {
+  ACTIVE
+  INACTIVE
+  DECEASED
+}
+
+enum EngineType {
+  MOTORIZED
+  NON_MOTORIZED
+}
+
+enum PermitStatus {
+  PENDING
+  ON_RELEASE
+}
