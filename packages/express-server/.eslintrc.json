@@ -10,6 +10,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
+  "ignorePatterns": ["**/*.json", "/src/graphql/generated/*.ts"],
   "plugins": ["@typescript-eslint"],
   "rules": {
     "indent": ["error", 2, { "SwitchCase": 1 }],
