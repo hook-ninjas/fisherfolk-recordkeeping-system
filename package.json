@@ -8,7 +8,9 @@
     "build": "lerna run build",
     "test": "lerna run test",
     "dev": "concurrently --kill-others \"npm --prefix ./packages/express-server/ run dev\" \"npm --prefix ./packages/web-react/ run start\"",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint:web-react": "npm --prefix ./packages/web-react/ run lint",
+    "lint:express-server": "npm --prefix ./packages/express-server/ run lint"
   },
   "author": "Hook Ninjas",
   "license": "ISC",
