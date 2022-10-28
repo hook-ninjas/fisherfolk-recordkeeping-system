@@ -20,6 +20,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Merge Conflict finder
+        uses: olivernybroe/action-conflict-finder@v4.0
       - name: Install Dependencies
         run: npm install
       - name: Run ESLint on express-server package
