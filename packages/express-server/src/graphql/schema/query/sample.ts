@@ -15,7 +15,6 @@ const books = [
 
 const SampleQuery = queryField('book', {
   type: 'Book',
-  resolve: (_parent) => () => books,
 });
 
 export default { SampleQuery };

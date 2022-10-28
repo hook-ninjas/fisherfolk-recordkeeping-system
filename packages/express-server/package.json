@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --passWithNoTests",
     "build": "npx tsc",
-    "start": "node dist/src/index.js",
+    "start": "node dist/index.js",
     "dev": "nodemon ./src/index.ts",
     "clean": "rm -rf dist",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
