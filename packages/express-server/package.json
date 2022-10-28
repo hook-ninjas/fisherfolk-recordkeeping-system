@@ -12,7 +12,7 @@
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
     "generate:prisma": "prisma generate",
     "generate:nexus": "ts-node --transpile-only src/graphql/schema/index.ts",
-    "lint": "npx eslint src"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "author": "",
   "license": "ISC",
