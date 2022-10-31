@@ -95,10 +95,10 @@ export default function CustomizedDialogs(props: ConfirmationDiaglogProps) {
         <Typography gutterBottom>{message}</Typography>
       </DialogContent>
       <Grid container mt={1}>
-        <Button variant="contained" sx={lefButtonSx} onClick={handleClose}>
+        <Button variant="contained" aria-label={leftBtnMsg} sx={lefButtonSx} onClick={handleClose}>
           {leftBtnMsg}
         </Button>
-        <Button variant="contained" sx={rightButtonSx} onClick={handleClose}>
+        <Button variant="contained" aria-label={rightBtnMsg} sx={rightButtonSx} onClick={handleClose}>
           {rightBtnMsg}
         </Button>
       </Grid>
