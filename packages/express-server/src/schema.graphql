@@ -2,11 +2,108 @@
 ### Do not make changes to this file directly
 
 
-type Book {
-  author: String
-  title: String
+enum CivilStatus {
+  LEGALLY_SEPARATED
+  MARRIED
+  SINGLE
+  WIDOWED
+}
+
+input CreateUserInput {
+  password: String!
+  username: String!
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+enum EducationalBackground {
+  COLLEGE
+  ELEMENTARY
+  HIGH_SCHOOL
+  POST_GRADUATE
+  VOCATIONAL
+}
+
+type Fisherfolk {
+  barangay: String
+  cityMunicipality: String
+  civilStatus: CivilStatus
+  contactNum: String
+  dateOfBirth: DateTime
+  educationalBackground: EducationalBackground
+  firstName: String
+  fisherfolkStatus: FisherfolkStatus
+  fullName: String
+  gender: Gender
+  id: Int!
+  image: String
+  lastName: String
+  mainSrcGear: String
+  mainSrcMethod: String
+  mainSrcOfIncome: String
+  middleName: String
+  nationality: Nationality
+  numOfChildren: Int
+  orgName: String
+  orgPosition: String
+  orgYearMember: Int
+  otherSrcGear: String
+  otherSrcMethod: String
+  otherSrcOfIncome: String
+  personToNotify: String
+  placeOfBirth: String
+  province: String
+  ptnAddress: String
+  ptnContactNum: String
+  ptnRelationship: String
+  registrationDate: DateTime
+  registrationNum: Int
+  registrationType: RegistrationType
+  religion: String
+  residentYear: Int
+  salutation: Salutation
+  signature: String
+}
+
+enum FisherfolkStatus {
+  ACTIVE
+  DECEASED
+  INACTIVE
+}
+
+enum Gender {
+  FEMALE
+  MALE
+}
+
+type Mutation {
+  createUser(data: CreateUserInput!): User
+}
+
+enum Nationality {
+  FILIPINO
 }
 
 type Query {
-  book: Book
+  fisherfolks: [Fisherfolk!]!
+}
+
+enum RegistrationType {
+  NEW_REGISTRATION
+  RENEWAL
+}
+
+enum Salutation {
+  MR
+  MRS
+  MS
+}
+
+type User {
+  id: Int!
+  password: String!
+  username: String!
 }
