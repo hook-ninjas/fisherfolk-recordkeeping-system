@@ -1,5 +1,5 @@
-import SampleQuery from './sample';
+import FisherfolkQuery from './Fisherfolk/Fisherfolk.query';
 
-const Query = [SampleQuery];
+const Query = [FisherfolkQuery];
 
 export default Query;
