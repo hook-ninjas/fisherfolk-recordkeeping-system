@@ -1,25 +1,30 @@
 import React, { useState } from 'react';
-import { Box, Container, CssBaseline, Grid, Paper } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  CssBaseline,
+  Grid,
+  Paper,
+} from '@mui/material';
 import Sidebar from '../../Components/SideBar/SideBar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import AddMemberForm from '../../Components/Forms/AddMemberForm';
 
 const theme = createTheme();
 
 function FisherfolkRecord() {
   const [openDrawer, setOpenDrawer] = useState(true);
+  const [addMemberBtn, setAddMemberBtn] = useState(false);
 
-  const toggleDrawer = () => {
-    setOpenDrawer(!openDrawer);
-  };
+  const handleAddMemberOpen = () => setAddMemberBtn(true);
+  const handleAddMemberClose = () => setAddMemberBtn(false);
+  const toggleDrawer = () => setOpenDrawer(!openDrawer);
+
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
     <ThemeProvider theme={theme}>
@@ -52,7 +57,22 @@ function FisherfolkRecord() {
                     boxShadow: 2,
                   }}
                 >
-                  Welcome to Fisherfolk Record Page!
+                  <Box m={1} display="flex" justifyContent="flex-end">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      sx={{ height: 30 }}
+                      onClick={handleAddMemberOpen}
+                    >
+                      Add Member
+                    </Button>
+                    {addMemberBtn && (
+                      <AddMemberForm
+                        handleClose={handleAddMemberClose}
+                        open={addMemberBtn}
+                      />
+                    )}
+                  </Box>
                 </Paper>
               </Grid>
             </Grid>
