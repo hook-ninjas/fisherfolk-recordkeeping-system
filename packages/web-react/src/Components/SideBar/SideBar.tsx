@@ -119,8 +119,8 @@ function Sidebar(props: SidebarProps) {
         handleClose={handleClose}
         title="Logout"
         message="Are you sure you want to logout?"
-        leftBtnMsg='Cancel'
-        rightBtnMsg='Logout'
+        leftBtnMsg="Cancel"
+        rightBtnMsg="Logout"
       />
     </Drawer>
   );

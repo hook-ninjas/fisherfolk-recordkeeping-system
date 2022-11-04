@@ -1,4 +1,4 @@
- {
+{
   "name": "fisherfolk-record-app",
   "version": "1.0.0",
   "description": "",
@@ -11,6 +11,10 @@
     "prepare": "husky install",
     "lint:web-react": "npm --prefix ./packages/web-react/ run lint",
     "lint:express-server": "npm --prefix ./packages/express-server/ run lint",
+    "lint": "concurrently --kill-others \"npm:lint:express-server\" \"npm:lint:web-react\"",
+    "format:web-react": "npm --prefix ./packages/web-react/ run format",
+    "format:express-server": "npm --prefix ./packages/express-server/ run format",
+    "format": "concurrently --kill-others \"npm:format:express-server\" \"npm:format:web-react\"",
     "test:web-react": "cd packages/web-react && npm run test",
     "test:express-server": "cd packages/express-server && npm run test",
     "test:e2e": "cd packages/web-react && npm run cy:run"

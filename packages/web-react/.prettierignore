@@ -1,2 +1,8 @@
 build
 coverage
+*.html
+*.css
+*.git
+*.json
+*.yml
+*.graphql
