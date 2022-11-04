@@ -9,6 +9,7 @@
     "test": "lerna run test",
     "dev": "concurrently --kill-others \"npm --prefix ./packages/express-server/ run dev\" \"npm --prefix ./packages/web-react/ run dev\"",
     "prepare": "husky install",
+    "generate:prisma": "npm --prefix ./packages/express-server/ run prisma:generate",
     "lint:web-react": "npm --prefix ./packages/web-react/ run lint",
     "lint:express-server": "npm --prefix ./packages/express-server/ run lint",
     "lint": "concurrently --kill-others \"npm:lint:express-server\" \"npm:lint:web-react\"",
