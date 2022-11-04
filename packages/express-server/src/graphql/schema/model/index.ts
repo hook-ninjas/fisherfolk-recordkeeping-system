@@ -1,5 +1,6 @@
-import Book from './sample';
+import User from './User';
+import Fisherfolk from './Fisherfolk';
 
-const Models = [Book];
+const Models = [User, Fisherfolk];
 
 export default Models;
