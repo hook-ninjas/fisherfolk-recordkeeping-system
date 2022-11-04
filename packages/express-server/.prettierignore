@@ -1,2 +1,7 @@
 dist
 coverage
+*.prisma
+*.git
+*.json
+*.yml
+*.graphql

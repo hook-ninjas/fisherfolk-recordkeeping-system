@@ -50,7 +50,7 @@ export interface ConfirmationDiaglogProps {
   title: string;
   message: string;
   leftBtnMsg: string;
-  rightBtnMsg: string
+  rightBtnMsg: string;
   open: boolean;
   handleClose: () => void;
 }
@@ -95,10 +95,20 @@ export default function CustomizedDialogs(props: ConfirmationDiaglogProps) {
         <Typography gutterBottom>{message}</Typography>
       </DialogContent>
       <Grid container mt={1}>
-        <Button variant="contained" aria-label={leftBtnMsg} sx={lefButtonSx} onClick={handleClose}>
+        <Button
+          variant="contained"
+          aria-label={leftBtnMsg}
+          sx={lefButtonSx}
+          onClick={handleClose}
+        >
           {leftBtnMsg}
         </Button>
-        <Button variant="contained" aria-label={rightBtnMsg} sx={rightButtonSx} onClick={handleClose}>
+        <Button
+          variant="contained"
+          aria-label={rightBtnMsg}
+          sx={rightButtonSx}
+          onClick={handleClose}
+        >
           {rightBtnMsg}
         </Button>
       </Grid>

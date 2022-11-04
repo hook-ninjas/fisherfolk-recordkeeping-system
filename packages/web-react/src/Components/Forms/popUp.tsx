@@ -10,7 +10,7 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-import { Box, createTheme, Modal, ThemeProvider } from '@mui/material'
+import { Box, createTheme, Modal, ThemeProvider } from '@mui/material';
 
 const style = {
   position: 'absolute',
@@ -21,7 +21,7 @@ const style = {
   bgcolor: 'background.paper',
   borderRadius: 5,
   p: 3,
-}
+};
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(6),
@@ -63,22 +63,23 @@ const theme = createTheme({
       },
     },
   },
-})
+});
 interface FormProps {
-  children: any
-  open: boolean
+  children: any;
+  open: boolean;
 }
 export default function CustomForm({ children, open }: FormProps) {
   return (
     <BootstrapDialog
       onClose={close}
       aria-labelledby="customized-dialog-title"
-      open={open}>
+      open={open}
+    >
       <ThemeProvider theme={theme}>
         <Modal open={open}>
           <Box sx={style}>{children}</Box>
         </Modal>
       </ThemeProvider>
     </BootstrapDialog>
-  )
+  );
 }

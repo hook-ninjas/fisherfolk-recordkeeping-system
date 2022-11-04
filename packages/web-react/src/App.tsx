@@ -20,11 +20,21 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="fisherfolk-record" element={<FisherfolkRecord />} />
           <Route path="*" element={<PageNotFound />} />
-          <Route path="forms" element={<FormInput handleClickOpen={function (): void {
-            throw new Error('Function not implemented.');
-          } } handleClose={function (): void {
-            throw new Error('Function not implemented.');
-          } } open={false}/>}/>//will still fix 
+          <Route
+            path="forms"
+            element={
+              <FormInput
+                handleClickOpen={function (): void {
+                  throw new Error('Function not implemented.');
+                }}
+                handleClose={function (): void {
+                  throw new Error('Function not implemented.');
+                }}
+                open={false}
+              />
+            }
+          />{' '}
+          {/* will still fix */}
         </Routes>
       </ApolloProvider>
     </BrowserRouter>
