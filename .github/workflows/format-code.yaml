@@ -29,7 +29,7 @@ jobs:
         run: npm run format:express-server
 
       - name: Format web-react package
-        run: npm run format:express-server
+        run: npm run format:web-react
 
       - name: Run ESLint on express-server package
         run: npm run lint:express-server
