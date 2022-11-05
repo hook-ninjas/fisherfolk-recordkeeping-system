@@ -7,9 +7,9 @@ import {
   Grid,
   Paper,
 } from '@mui/material';
-import Sidebar from '../../Components/SideBar/SideBar';
+import Sidebar from '../SideBar/SideBar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import AddMemberForm from '../../Components/Forms/AddMemberForm';
+import AddMemberForm from '../Forms/AddMemberForm';
 
 const theme = createTheme();
 
@@ -19,24 +19,14 @@ function FisherfolkRecord() {
 
   const handleAddMemberOpen = () => setAddMemberBtn(true);
   const handleAddMemberClose = () => setAddMemberBtn(false);
-  const toggleDrawer = () => setOpenDrawer(!openDrawer);
 
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex', boxShadow: 3 }}>
         <CssBaseline />
-        <Sidebar
-          openDrawer={openDrawer}
-          toggleDrawer={toggleDrawer}
-          open={open}
-          handleClickOpen={handleClickOpen}
-          handleClose={handleClose}
-        />
+        <Sidebar />
         <Box
           component="main"
           sx={{

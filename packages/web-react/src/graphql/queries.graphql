@@ -1,1 +1,9 @@
 # Write Graphql Queries here #
+query SampleFisherfolkQuery {
+  fisherfolks {
+    id
+    fullName
+    barangay
+    registrationDate
+  }
+}

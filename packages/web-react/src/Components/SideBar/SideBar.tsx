@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
@@ -22,7 +22,7 @@ import OfficeLogo from '../../Assets/city-agri-logo.jpg';
 
 const SidebarItemList = (
   <>
-    <Link to="/" className="nav-link">
+    <Link to="/dashboard" className="nav-link">
       <ListItemButton>
         <ListItemIcon>
           <GridViewOutlinedIcon />
@@ -63,17 +63,21 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-interface SidebarProps {
-  openDrawer: boolean;
-  toggleDrawer: () => void;
-  open: boolean;
-  handleClickOpen: () => void;
-  handleClose: () => void;
-}
+function Sidebar() {
+  const [openDrawer, setOpenDrawer] = useState(true);
 
-function Sidebar(props: SidebarProps) {
-  const { openDrawer, toggleDrawer, open, handleClickOpen, handleClose } =
-    props;
+  const toggleDrawer = () => {
+    setOpenDrawer(!openDrawer);
+  };
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Drawer variant="permanent" open={openDrawer}>
