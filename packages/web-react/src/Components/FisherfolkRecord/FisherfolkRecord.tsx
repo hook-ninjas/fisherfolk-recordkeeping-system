@@ -14,13 +14,10 @@ import AddMemberForm from '../Forms/AddMemberForm';
 const theme = createTheme();
 
 function FisherfolkRecord() {
-  const [openDrawer, setOpenDrawer] = useState(true);
   const [addMemberBtn, setAddMemberBtn] = useState(false);
 
   const handleAddMemberOpen = () => setAddMemberBtn(true);
   const handleAddMemberClose = () => setAddMemberBtn(false);
-
-  const [open, setOpen] = useState(false);
 
   return (
     <ThemeProvider theme={theme}>
