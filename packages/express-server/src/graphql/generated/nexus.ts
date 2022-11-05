@@ -44,6 +44,7 @@ export interface NexusGenEnums {
   Nationality: "FILIPINO"
   RegistrationType: "NEW_REGISTRATION" | "RENEWAL"
   Salutation: "MR" | "MRS" | "MS"
+  SourceOfIncome: "AQUACULTURE" | "CAPTURE_FISHING" | "FISH_PROCESSING" | "FISH_VENDING"
 }
 
 export interface NexusGenScalars {
@@ -71,7 +72,7 @@ export interface NexusGenObjects {
     lastName?: string | null; // String
     mainSrcGear?: string | null; // String
     mainSrcMethod?: string | null; // String
-    mainSrcOfIncome?: string | null; // String
+    mainSrcOfIncome?: NexusGenEnums['SourceOfIncome'] | null; // SourceOfIncome
     middleName?: string | null; // String
     nationality?: NexusGenEnums['Nationality'] | null; // Nationality
     numOfChildren?: number | null; // Int
@@ -80,7 +81,7 @@ export interface NexusGenObjects {
     orgYearMember?: number | null; // Int
     otherSrcGear?: string | null; // String
     otherSrcMethod?: string | null; // String
-    otherSrcOfIncome?: string | null; // String
+    otherSrcOfIncome?: NexusGenEnums['SourceOfIncome'] | null; // SourceOfIncome
     personToNotify?: string | null; // String
     placeOfBirth?: string | null; // String
     province?: string | null; // String
@@ -131,7 +132,7 @@ export interface NexusGenFieldTypes {
     lastName: string | null; // String
     mainSrcGear: string | null; // String
     mainSrcMethod: string | null; // String
-    mainSrcOfIncome: string | null; // String
+    mainSrcOfIncome: NexusGenEnums['SourceOfIncome'] | null; // SourceOfIncome
     middleName: string | null; // String
     nationality: NexusGenEnums['Nationality'] | null; // Nationality
     numOfChildren: number | null; // Int
@@ -140,7 +141,7 @@ export interface NexusGenFieldTypes {
     orgYearMember: number | null; // Int
     otherSrcGear: string | null; // String
     otherSrcMethod: string | null; // String
-    otherSrcOfIncome: string | null; // String
+    otherSrcOfIncome: NexusGenEnums['SourceOfIncome'] | null; // SourceOfIncome
     personToNotify: string | null; // String
     placeOfBirth: string | null; // String
     province: string | null; // String
@@ -185,7 +186,7 @@ export interface NexusGenFieldTypeNames {
     lastName: 'String'
     mainSrcGear: 'String'
     mainSrcMethod: 'String'
-    mainSrcOfIncome: 'String'
+    mainSrcOfIncome: 'SourceOfIncome'
     middleName: 'String'
     nationality: 'Nationality'
     numOfChildren: 'Int'
@@ -194,7 +195,7 @@ export interface NexusGenFieldTypeNames {
     orgYearMember: 'Int'
     otherSrcGear: 'String'
     otherSrcMethod: 'String'
-    otherSrcOfIncome: 'String'
+    otherSrcOfIncome: 'SourceOfIncome'
     personToNotify: 'String'
     placeOfBirth: 'String'
     province: 'String'

@@ -4,7 +4,6 @@ import './Styles/main.css';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import FisherfolkRecord from './Pages/FisherfolkRecord/FisherfolkRecord';
 import PageNotFound from './Components/PageNotFound/PageNotFound';
-import FormInput from './Components/Forms/PersonalInfo';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 const client = new ApolloClient({
@@ -20,21 +19,6 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="fisherfolk-record" element={<FisherfolkRecord />} />
           <Route path="*" element={<PageNotFound />} />
-          <Route
-            path="forms"
-            element={
-              <FormInput
-                handleClickOpen={function (): void {
-                  throw new Error('Function not implemented.');
-                }}
-                handleClose={function (): void {
-                  throw new Error('Function not implemented.');
-                }}
-                open={false}
-              />
-            }
-          />{' '}
-          {/* will still fix */}
         </Routes>
       </ApolloProvider>
     </BrowserRouter>

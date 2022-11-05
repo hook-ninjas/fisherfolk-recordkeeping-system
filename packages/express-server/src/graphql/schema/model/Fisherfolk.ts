@@ -7,6 +7,7 @@ import {
   Nationality,
   RegistrationType,
   Salutation,
+  SourceOfIncome,
 } from '../enums/';
 
 const Fisherfolk = objectType({
@@ -37,8 +38,8 @@ const Fisherfolk = objectType({
     t.string('ptnRelationship');
     t.string('ptnAddress');
     t.string('ptnContactNum');
-    t.string('mainSrcOfIncome');
-    t.nullable.string('otherSrcOfIncome');
+    t.field('mainSrcOfIncome',  {type: SourceOfIncome});
+    t.nullable.field('otherSrcOfIncome',  {type: SourceOfIncome});
     t.string('mainSrcGear');
     t.nullable.string('otherSrcGear');
     t.string('mainSrcMethod');

@@ -43,7 +43,7 @@ type Fisherfolk {
   lastName: String
   mainSrcGear: String
   mainSrcMethod: String
-  mainSrcOfIncome: String
+  mainSrcOfIncome: SourceOfIncome
   middleName: String
   nationality: Nationality
   numOfChildren: Int
@@ -52,7 +52,7 @@ type Fisherfolk {
   orgYearMember: Int
   otherSrcGear: String
   otherSrcMethod: String
-  otherSrcOfIncome: String
+  otherSrcOfIncome: SourceOfIncome
   personToNotify: String
   placeOfBirth: String
   province: String
@@ -100,6 +100,13 @@ enum Salutation {
   MR
   MRS
   MS
+}
+
+enum SourceOfIncome {
+  AQUACULTURE
+  CAPTURE_FISHING
+  FISH_PROCESSING
+  FISH_VENDING
 }
 
 type User {
