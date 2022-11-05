@@ -4,19 +4,11 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import Sidebar from '../Components/SideBar/SideBar';
+import CustomizedDialogs from '../Components/ConfirmationDialog/ConfirmationDialog';
 
 describe('Logout', () => {
   it('should display logout button', async () => {
-    render(
-      <Sidebar
-        openDrawer={true}
-        open={false}
-        toggleDrawer={() => false}
-        handleClickOpen={() => false}
-        handleClose={() => false}
-      />,
-      { wrapper: BrowserRouter }
-    );
+    render(<Sidebar />, { wrapper: BrowserRouter });
 
     const logoutBtn = screen.getByRole('button', {
       name: /logout/i,
@@ -25,16 +17,7 @@ describe('Logout', () => {
   });
 
   it('should display confirmation dialog when button is clicked', async () => {
-    render(
-      <Sidebar
-        openDrawer={true}
-        open={true}
-        toggleDrawer={() => false}
-        handleClickOpen={() => false}
-        handleClose={() => false}
-      />,
-      { wrapper: BrowserRouter }
-    );
+    render(<Sidebar />, { wrapper: BrowserRouter });
     const logoutBtn = screen.getByRole('button', {
       name: /Logout/i,
     });
@@ -48,12 +31,13 @@ describe('Logout', () => {
 
   it('should close confirmation dialog when close button is clicked', async () => {
     const { container } = render(
-      <Sidebar
-        openDrawer={true}
+      <CustomizedDialogs
         open={true}
-        toggleDrawer={() => false}
-        handleClickOpen={() => true}
         handleClose={() => false}
+        title="Logout"
+        message="Are you sure you want to logout?"
+        leftBtnMsg="Cancel"
+        rightBtnMsg="Logout"
       />,
       { wrapper: BrowserRouter }
     );
@@ -68,12 +52,13 @@ describe('Logout', () => {
 
   it('should close confirmation dialog when cancel button is clicked', async () => {
     const { container } = render(
-      <Sidebar
-        openDrawer={true}
+      <CustomizedDialogs
         open={true}
-        toggleDrawer={() => false}
-        handleClickOpen={() => true}
         handleClose={() => false}
+        title="Logout"
+        message="Are you sure you want to logout?"
+        leftBtnMsg="Cancel"
+        rightBtnMsg="Logout"
       />,
       { wrapper: BrowserRouter }
     );
