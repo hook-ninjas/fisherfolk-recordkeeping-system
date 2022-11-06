@@ -1,37 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Container, CssBaseline, Grid, Paper } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Sidebar from '../../Components/SideBar/SideBar';
+import Sidebar from '../SideBar/SideBar';
 
 const theme = createTheme();
 
 function Dashboard() {
-  const [openDrawer, setOpenDrawer] = useState(true);
-
-  const toggleDrawer = () => {
-    setOpenDrawer(!openDrawer);
-  };
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex', boxShadow: 3 }}>
         <CssBaseline />
-        <Sidebar
-          openDrawer={openDrawer}
-          toggleDrawer={toggleDrawer}
-          open={open}
-          handleClickOpen={handleClickOpen}
-          handleClose={handleClose}
-        />
+        <Sidebar />
         <Box
           component="main"
           sx={{
