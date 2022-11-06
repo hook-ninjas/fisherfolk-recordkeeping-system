@@ -17,9 +17,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <BrowserRouter>
       <ApolloProvider client={client}>
         <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="dashboard" index element={<Dashboard />} />
-          <Route path="fisherfolk-record" element={<FisherfolkRecord />} />
+          <Route path="/" element={<App />}>
+            <Route path="dashboard" index element={<Dashboard />} />
+            <Route path="fisherfolk-record" element={<FisherfolkRecord />} />
+          </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </ApolloProvider>
