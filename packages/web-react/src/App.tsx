@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Container, CssBaseline } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Sidebar from './Components/SideBar/SideBar';
+import { Outlet } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -20,7 +21,9 @@ function App() {
             overflow: 'auto',
           }}
         >
-          <Container maxWidth="lg" sx={{ mt: 3, mb: 3 }}></Container>
+          <Container maxWidth="lg" sx={{ mt: 3, mb: 3 }}>
+            <Outlet />
+          </Container>
         </Box>
       </Box>
     </ThemeProvider>

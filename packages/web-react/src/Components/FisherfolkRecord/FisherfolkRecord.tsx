@@ -1,17 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  CssBaseline,
-  Grid,
-  Paper,
-} from '@mui/material';
-import Sidebar from '../SideBar/SideBar';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import AddMemberForm from '../Forms/AddMemberForm';
+import { Box, Button, Grid, Paper } from '@mui/material';
 
-const theme = createTheme();
+import AddMemberForm from '../Forms/AddMemberForm';
 
 function FisherfolkRecord() {
   const [addMemberBtn, setAddMemberBtn] = useState(false);
@@ -20,53 +10,35 @@ function FisherfolkRecord() {
   const handleAddMemberClose = () => setAddMemberBtn(false);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box sx={{ display: 'flex', boxShadow: 3 }}>
-        <CssBaseline />
-        <Sidebar />
-        <Box
-          component="main"
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Paper
           sx={{
-            backgroundColor: '#F6F8FB',
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
+            p: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            boxShadow: 2,
           }}
         >
-          <Container maxWidth="lg" sx={{ mt: 3, mb: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Paper
-                  sx={{
-                    p: 0,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    boxShadow: 2,
-                  }}
-                >
-                  <Box m={1} display="flex" justifyContent="flex-end">
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      sx={{ height: 30 }}
-                      onClick={handleAddMemberOpen}
-                    >
-                      Add Member
-                    </Button>
-                    {addMemberBtn && (
-                      <AddMemberForm
-                        handleClose={handleAddMemberClose}
-                        open={addMemberBtn}
-                      />
-                    )}
-                  </Box>
-                </Paper>
-              </Grid>
-            </Grid>
-          </Container>
-        </Box>
-      </Box>
-    </ThemeProvider>
+          <Box m={1} display="flex" justifyContent="flex-end">
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ height: 30 }}
+              onClick={handleAddMemberOpen}
+            >
+              Add Member
+            </Button>
+            {addMemberBtn && (
+              <AddMemberForm
+                handleClose={handleAddMemberClose}
+                open={addMemberBtn}
+              />
+            )}
+          </Box>
+        </Paper>
+      </Grid>
+    </Grid>
   );
 }
 
