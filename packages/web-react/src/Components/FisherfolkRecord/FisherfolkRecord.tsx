@@ -1,17 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  CssBaseline,
-  Grid,
-  Paper,
-} from '@mui/material';
-import Sidebar from '../SideBar/SideBar';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import AddMemberForm from '../Forms/AddMemberForm';
+import { Box, Button, Grid, Paper } from '@mui/material';
 
-const theme = createTheme();
+import AddMemberForm from '../Forms/AddMemberForm';
 
 function FisherfolkRecord() {
   const [addMemberBtn, setAddMemberBtn] = useState(false);
