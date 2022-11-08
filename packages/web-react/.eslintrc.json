@@ -27,7 +27,7 @@
     "sourceType": "module"
   },
   "plugins": ["react", "@typescript-eslint", "jest"],
-  "ignorePatterns": ["**/*.json", "/src/graphql/generated/*.ts"],
+  "ignorePatterns": ["**/*.json", "/src/graphql/*.ts"],
   "rules": {
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "quotes": ["error", "single"],
