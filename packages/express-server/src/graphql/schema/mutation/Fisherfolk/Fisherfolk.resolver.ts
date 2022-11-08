@@ -1,5 +1,5 @@
 import { Context } from '../../../context';
-import { NexusInputObjectTypeDef } from 'nexus/dist/core';
+
 import {
   CivilStatus,
   EducationalBackground,
