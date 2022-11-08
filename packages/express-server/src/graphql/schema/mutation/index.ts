@@ -1,5 +1,4 @@
 import UserMutation from './User';
+import FisherfolkMutation from './Fisherfolk';
 
-export default [
-  UserMutation,
-];
+export default [UserMutation, FisherfolkMutation];

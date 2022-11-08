@@ -19,6 +19,7 @@ import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   CivilStatus,
+  CreateFisherfolkDocument,
   EducationalBackground,
   Gender,
   Nationality,
@@ -27,6 +28,7 @@ import {
   SourceOfIncome,
 } from '../../graphql/generated';
 import data from './iloilo-city-brgys.json';
+
 export interface FormContainerTitleProps {
   children?: React.ReactNode;
   onClose: () => void;
@@ -96,8 +98,8 @@ const addMemberSchema = object().shape({
   firstName: string().required('Enter first name.'),
   middleName: string().required('Enter middle name.'),
   contactNumber: string()
-      .required('Enter contact number.')
-      .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
+    .required('Enter contact number.')
+    .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
   barangay: string().required('Select an option for barangay'),
   cityMunicipality: string().required('Enter city/municipality.'),
   province: string().required('Enter province.'),
@@ -149,7 +151,6 @@ export default function AddMemberForm({
     resolver: yupResolver(addMemberSchema),
   });
 
-
   const onSubmit = handleSubmit((data) => {
     const createInput: CreateInputProps = {
       data: {
@@ -159,14 +160,12 @@ export default function AddMemberForm({
       }
     };
   });
-
   const handleSubmitForm = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.preventDefault();
     onSubmit();
   };
-
   return (
     <>
       <FormContainer
@@ -583,7 +582,8 @@ export default function AddMemberForm({
             </Grid>
           </Grid>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
-            <Button type="submit" variant="contained" fullWidth onClick={(e) => { handleSubmitForm(e) }}>;
+
+            <Button type="submit" variant="contained" fullWidth onClick={(e) => { handleSubmitForm(e); }}>
               {' '}
               Save
             </Button>
