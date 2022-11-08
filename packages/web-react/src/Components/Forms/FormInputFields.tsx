@@ -1,5 +1,10 @@
 import React from 'react';
-import { UseFormRegister, Control, FieldValues, Controller } from 'react-hook-form';
+import {
+  UseFormRegister,
+  Control,
+  FieldValues,
+  Controller,
+} from 'react-hook-form';
 import {
   FormControl,
   Select,
@@ -7,16 +12,20 @@ import {
   FormHelperText,
   MenuItem,
   TextField,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
 } from '@mui/material';
+import { MuiFileInput } from 'mui-file-input';
 
 interface FormInputTextProps {
-  name: string
-  label: string
-  placeholder: string
-  control: Control<FieldValues, any>
-  register: UseFormRegister<FieldValues>
-  errors: FieldValues
-} 
+  name: string;
+  label: string;
+  placeholder: string;
+  control: Control<FieldValues, any>;
+  register: UseFormRegister<FieldValues>;
+  errors: FieldValues;
+}
 
 export const FormInputText = ({
   name,
@@ -38,21 +47,23 @@ export const FormInputText = ({
         helperText={errors[name]?.message}
         error={!!errors[name]}
         placeholder={placeholder}
-        InputProps={{ style: { fontSize: 14, margin: 10 }}}
+        InputProps={{ style: { fontSize: 14, margin: 10 } }}
       />
     )}
   />
 );
 
 interface FormInputSelectProps {
-    name: string
-    label: string
-    onSavedValue: string
-    data: string[]
-    control: Control<FieldValues, any>
-    register: UseFormRegister<FieldValues>
-    errors: FieldValues
-} 
+  name: string;
+  label: string;
+  onSavedValue: string;
+  data: string[];
+  control: Control<FieldValues, any>;
+  register: UseFormRegister<FieldValues>;
+  errors: FieldValues;
+}
+
+const replaceUnderscore = (item: string) => item.replace('_', ' ');
 
 export const FormInputSelect = ({
   name,
@@ -78,11 +89,11 @@ export const FormInputSelect = ({
             value={value || onSavedValue}
             onChange={onChange}
             name={name}
-            sx={{width: 233, height: 52}}
+            sx={{ width: 233, height: 52 }}
           >
             {data?.map((item) => (
               <MenuItem value={item} key={item} {...register(name)}>
-                {item}
+                {replaceUnderscore(item)}
               </MenuItem>
             ))}
           </Select>
@@ -94,3 +105,85 @@ export const FormInputSelect = ({
     />
   </FormControl>
 );
+
+interface FormInputImageProps {
+  name: string;
+  label: string;
+  control: Control<FieldValues, any>;
+  errors: FieldValues;
+}
+
+export const FormInputImage = ({
+  name,
+  label,
+  control,
+  errors,
+}: FormInputImageProps) => {
+  return (
+    <FormControl aria-label={label} sx={{ marginLeft: 2.3 }}>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <MuiFileInput
+            {...field}
+            helperText={errors[name]?.message}
+            error={!!errors[name]}
+            sx={{ marginBottom: 2, width: 233 }}
+          />
+        )}
+      />
+    </FormControl>
+  );
+};
+
+export interface RadioOptions {
+  label: string;
+  value: string;
+}
+
+interface FormInputRadioProps {
+  name: string;
+  label: string;
+  control: Control<FieldValues, any>;
+  radioOptions: RadioOptions[];
+  register: UseFormRegister<FieldValues>;
+  errors: FieldValues;
+}
+
+export const FormInputRadio = ({
+  name,
+  label,
+  control,
+  radioOptions,
+  register,
+  errors,
+}: FormInputRadioProps) => {
+  return (
+    <FormControl error={!!errors[name]} aria-label={label} role="radiogroup">
+      <Controller
+        control={control}
+        name={name}
+        defaultValue=""
+        render={({ field: { value, onChange } }) => (
+          <>
+            <RadioGroup row onChange={onChange} value={value}>
+              {radioOptions.map((item) => (
+                // eslint-disable-next-line react/jsx-key
+                <FormControlLabel
+                  value={item.value}
+                  label={replaceUnderscore(item.label)}
+                  control={<Radio />}
+                  {...register(name)}
+                />
+              ))}
+            </RadioGroup>
+            <FormHelperText sx={{ color: '#d32f2f' }}>
+              {errors[name]?.message}
+            </FormHelperText>
+          </>
+        )}
+      />
+    </FormControl>
+  );
+};
