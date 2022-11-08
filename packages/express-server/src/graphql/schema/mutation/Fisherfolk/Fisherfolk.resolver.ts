@@ -16,6 +16,7 @@ interface CreateFisherfolkData {
   lastName: string;
   firstName: string;
   middleName: string;
+  age: number;
   salutation: Salutation;
   barangay: string;
   cityMunicipality: string;

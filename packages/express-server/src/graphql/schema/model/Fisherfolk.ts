@@ -20,6 +20,7 @@ const Fisherfolk = objectType({
     t.string('lastName');
     t.string('firstName');
     t.string('middleName');
+    t.int('age');
     t.field('salutation', { type: Salutation });
     t.string('barangay');
     t.string('cityMunicipality');
