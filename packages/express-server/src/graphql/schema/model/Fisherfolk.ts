@@ -20,6 +20,7 @@ const Fisherfolk = objectType({
     t.string('lastName');
     t.string('firstName');
     t.string('middleName');
+    t.int('age');
     t.field('salutation', { type: Salutation });
     t.string('barangay');
     t.string('cityMunicipality');
@@ -32,14 +33,14 @@ const Fisherfolk = objectType({
     t.field('gender', { type: Gender });
     t.field('civilStatus', { type: CivilStatus });
     t.nullable.int('numOfChildren');
-    t.field('nationality', { type: Nationality});
+    t.field('nationality', { type: Nationality });
     t.field('educationalBackground', { type: EducationalBackground });
     t.string('personToNotify');
     t.string('ptnRelationship');
     t.string('ptnAddress');
     t.string('ptnContactNum');
-    t.field('mainSrcOfIncome',  {type: SourceOfIncome});
-    t.nullable.field('otherSrcOfIncome',  {type: SourceOfIncome});
+    t.field('mainSrcOfIncome', { type: SourceOfIncome });
+    t.nullable.field('otherSrcOfIncome', { type: SourceOfIncome });
     t.string('mainSrcGear');
     t.nullable.string('otherSrcGear');
     t.string('mainSrcMethod');
@@ -58,4 +59,4 @@ const Fisherfolk = objectType({
   },
 });
 
-export default { Fisherfolk };
+export default Fisherfolk;

@@ -25,6 +25,7 @@ model Fisherfolk {
   lastName              String
   firstName             String
   middleName            String
+  age                   Int
   salutation            Salutation
   barangay              String
   cityMunicipality      String

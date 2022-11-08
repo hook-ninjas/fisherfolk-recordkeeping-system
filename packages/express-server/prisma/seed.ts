@@ -29,7 +29,7 @@ const createFisherFolk = (
   srcofIncome: SourceOfIncome,
   status: FisherfolkStatus
 ) => {
-  const { random, date, name, address, phone } = faker;
+  const { date, name, address, phone } = faker;
 
   const sex = gender == 'FEMALE' ? 'female' : 'male';
 
@@ -40,6 +40,7 @@ const createFisherFolk = (
     lastName: name.lastName(sex),
     firstName: name.firstName(sex),
     middleName: name.middleName(sex),
+    age: getRandomInt(60, 18),
     salutation: prefix,
     barangay: 'brgy ' + address.street(),
     cityMunicipality: address.county(),

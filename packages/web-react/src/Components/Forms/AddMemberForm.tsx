@@ -19,6 +19,7 @@ import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   CivilStatus,
+  CreateFisherfolkDocument,
   EducationalBackground,
   Gender,
   Nationality,
@@ -26,6 +27,7 @@ import {
   Salutation,
   SourceOfIncome,
 } from '../../graphql/generated';
+import { useMutation } from '@apollo/client';
 
 export interface FormContainerTitleProps {
   children?: React.ReactNode;
@@ -109,6 +111,11 @@ export default function AddMemberForm({
   } = useForm({
     resolver: yupResolver(addMemberSchema),
   });
+
+  // Fisherfolk Mutation
+  const [createFisherfolk, { data, loading, error }] = useMutation(
+    CreateFisherfolkDocument
+  );
 
   return (
     <>

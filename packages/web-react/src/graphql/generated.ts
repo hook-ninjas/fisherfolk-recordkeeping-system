@@ -128,6 +128,7 @@ export type DirectiveResolverFn<
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   CivilStatus: CivilStatus;
+  CreateFisherfolkInput: CreateFisherfolkInput;
   CreateUserInput: CreateUserInput;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   EducationalBackground: EducationalBackground;
@@ -148,6 +149,7 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
+  CreateFisherfolkInput: CreateFisherfolkInput;
   CreateUserInput: CreateUserInput;
   DateTime: Scalars['DateTime'];
   Fisherfolk: Fisherfolk;
@@ -167,6 +169,7 @@ export type FisherfolkResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Fisherfolk'] = ResolversParentTypes['Fisherfolk']
 > = {
+  age?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   barangay?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   cityMunicipality?: Resolver<
     Maybe<ResolversTypes['String']>,
@@ -328,6 +331,12 @@ export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
+  createFisherfolk?: Resolver<
+    Maybe<ResolversTypes['Fisherfolk']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateFisherfolkArgs, 'data'>
+  >;
   createUser?: Resolver<
     Maybe<ResolversTypes['User']>,
     ParentType,
@@ -382,6 +391,42 @@ export enum CivilStatus {
   Widowed = 'WIDOWED',
 }
 
+export type CreateFisherfolkInput = {
+  age: Scalars['Int'];
+  barangay: Scalars['String'];
+  cityMunicipality: Scalars['String'];
+  civilStatus: CivilStatus;
+  contactNum: Scalars['String'];
+  dateOfBirth: Scalars['DateTime'];
+  educationalBackground: EducationalBackground;
+  firstName: Scalars['String'];
+  gender: Gender;
+  lastName: Scalars['String'];
+  mainSrcGear: Scalars['String'];
+  mainSrcMethod: Scalars['String'];
+  mainSrcOfIncome: SourceOfIncome;
+  middleName: Scalars['String'];
+  nationality: Nationality;
+  numOfChildren?: InputMaybe<Scalars['Int']>;
+  orgName?: InputMaybe<Scalars['String']>;
+  orgPosition?: InputMaybe<Scalars['String']>;
+  orgYearMember?: InputMaybe<Scalars['Int']>;
+  otherSrcGear?: InputMaybe<Scalars['String']>;
+  otherSrcMethod?: InputMaybe<Scalars['String']>;
+  otherSrcOfIncome?: InputMaybe<SourceOfIncome>;
+  personToNotify: Scalars['String'];
+  placeOfBirth: Scalars['String'];
+  province: Scalars['String'];
+  ptnAddress: Scalars['String'];
+  ptnContactNum: Scalars['String'];
+  ptnRelationship: Scalars['String'];
+  registrationNum: Scalars['Int'];
+  registrationType: RegistrationType;
+  religion: Scalars['String'];
+  residentYear: Scalars['Int'];
+  salutation: Salutation;
+};
+
 export type CreateUserInput = {
   password: Scalars['String'];
   username: Scalars['String'];
@@ -397,6 +442,7 @@ export enum EducationalBackground {
 
 export type Fisherfolk = {
   __typename?: 'Fisherfolk';
+  age?: Maybe<Scalars['Int']>;
   barangay?: Maybe<Scalars['String']>;
   cityMunicipality?: Maybe<Scalars['String']>;
   civilStatus?: Maybe<CivilStatus>;
@@ -450,7 +496,12 @@ export enum Gender {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createFisherfolk?: Maybe<Fisherfolk>;
   createUser?: Maybe<User>;
+};
+
+export type MutationCreateFisherfolkArgs = {
+  data: CreateFisherfolkInput;
 };
 
 export type MutationCreateUserArgs = {
@@ -491,6 +542,15 @@ export type User = {
   username: Scalars['String'];
 };
 
+export type CreateFisherfolkMutationVariables = Exact<{
+  data: CreateFisherfolkInput;
+}>;
+
+export type CreateFisherfolkMutation = {
+  __typename?: 'Mutation';
+  createFisherfolk?: { __typename?: 'Fisherfolk'; id: number } | null;
+};
+
 export type SampleFisherfolkQueryQueryVariables = Exact<{
   [key: string]: never;
 }>;
@@ -506,6 +566,57 @@ export type SampleFisherfolkQueryQuery = {
   }>;
 };
 
+export const CreateFisherfolkDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateFisherfolk' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'data' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateFisherfolkInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createFisherfolk' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'data' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'data' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateFisherfolkMutation,
+  CreateFisherfolkMutationVariables
+>;
 export const SampleFisherfolkQueryDocument = {
   kind: 'Document',
   definitions: [

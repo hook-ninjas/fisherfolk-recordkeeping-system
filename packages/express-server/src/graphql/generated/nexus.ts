@@ -30,6 +30,41 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  CreateFisherfolkInput: { // input type
+    age: number; // Int!
+    barangay: string; // String!
+    cityMunicipality: string; // String!
+    civilStatus: NexusGenEnums['CivilStatus']; // CivilStatus!
+    contactNum: string; // String!
+    dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
+    educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
+    firstName: string; // String!
+    gender: NexusGenEnums['Gender']; // Gender!
+    lastName: string; // String!
+    mainSrcGear: string; // String!
+    mainSrcMethod: string; // String!
+    mainSrcOfIncome: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
+    middleName: string; // String!
+    nationality: NexusGenEnums['Nationality']; // Nationality!
+    numOfChildren?: number | null; // Int
+    orgName?: string | null; // String
+    orgPosition?: string | null; // String
+    orgYearMember?: number | null; // Int
+    otherSrcGear?: string | null; // String
+    otherSrcMethod?: string | null; // String
+    otherSrcOfIncome?: NexusGenEnums['SourceOfIncome'] | null; // SourceOfIncome
+    personToNotify: string; // String!
+    placeOfBirth: string; // String!
+    province: string; // String!
+    ptnAddress: string; // String!
+    ptnContactNum: string; // String!
+    ptnRelationship: string; // String!
+    registrationNum: number; // Int!
+    registrationType: NexusGenEnums['RegistrationType']; // RegistrationType!
+    religion: string; // String!
+    residentYear: number; // Int!
+    salutation: NexusGenEnums['Salutation']; // Salutation!
+  }
   CreateUserInput: { // input type
     password: string; // String!
     username: string; // String!
@@ -58,6 +93,7 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Fisherfolk: { // root type
+    age?: number | null; // Int
     barangay?: string | null; // String
     cityMunicipality?: string | null; // String
     civilStatus?: NexusGenEnums['CivilStatus'] | null; // CivilStatus
@@ -117,6 +153,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnu
 
 export interface NexusGenFieldTypes {
   Fisherfolk: { // field return type
+    age: number | null; // Int
     barangay: string | null; // String
     cityMunicipality: string | null; // String
     civilStatus: NexusGenEnums['CivilStatus'] | null; // CivilStatus
@@ -157,6 +194,7 @@ export interface NexusGenFieldTypes {
     signature: string | null; // String
   }
   Mutation: { // field return type
+    createFisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
     createUser: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
@@ -171,6 +209,7 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Fisherfolk: { // field return type name
+    age: 'Int'
     barangay: 'String'
     cityMunicipality: 'String'
     civilStatus: 'CivilStatus'
@@ -211,6 +250,7 @@ export interface NexusGenFieldTypeNames {
     signature: 'String'
   }
   Mutation: { // field return type name
+    createFisherfolk: 'Fisherfolk'
     createUser: 'User'
   }
   Query: { // field return type name
@@ -225,6 +265,9 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    createFisherfolk: { // args
+      data: NexusGenInputs['CreateFisherfolkInput']; // CreateFisherfolkInput!
+    }
     createUser: { // args
       data: NexusGenInputs['CreateUserInput']; // CreateUserInput!
     }

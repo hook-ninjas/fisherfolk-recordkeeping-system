@@ -46,6 +46,7 @@ CREATE TABLE "fisherfolks" (
     "lastName" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
     "middleName" TEXT NOT NULL,
+    "age" INTEGER NOT NULL,
     "salutation" "Salutation" NOT NULL,
     "barangay" TEXT NOT NULL,
     "cityMunicipality" TEXT NOT NULL,
