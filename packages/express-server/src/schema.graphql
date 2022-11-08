@@ -19,9 +19,10 @@ input CreateFisherfolkInput {
   educationalBackground: EducationalBackground!
   firstName: String!
   gender: Gender!
+  image: String!
   lastName: String!
-  mainSrcGear: String!
-  mainSrcMethod: String!
+  mainSrcGear: String
+  mainSrcMethod: String
   mainSrcOfIncome: SourceOfIncome!
   middleName: String!
   nationality: Nationality!
@@ -38,11 +39,11 @@ input CreateFisherfolkInput {
   ptnAddress: String!
   ptnContactNum: String!
   ptnRelationship: String!
-  registrationNum: Int!
   registrationType: RegistrationType!
   religion: String!
   residentYear: Int!
   salutation: Salutation!
+  signature: String!
 }
 
 input CreateUserInput {
