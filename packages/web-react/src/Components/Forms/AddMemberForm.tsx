@@ -104,7 +104,7 @@ const addMemberSchema = object().shape({
   cityMunicipality: string().required('Enter city/municipality.'),
   province: string().required('Enter province.'),
   residentYear: string().matches(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/, 'Please enter year.'),
-  age: string().matches(/^[1-9]\d(.\d+)?$|\s/, 'Age must be a number.').required('Enter age.'),
+  age: string().matches(/^[0-9]\d(.\d+)?$|\s/, 'Age must be a number.').required('Enter age.'),
   dateOfBirth: string().nullable().required('Select date of birth.'),
   placeOfBirth: string().required('Enter place of birth.'),
   civilStatus: string().required('Select an option for civil status.'),
@@ -124,7 +124,7 @@ const addMemberSchema = object().shape({
   otherGearsUsed: string(),
   otherMethodUsed: string(),
   orgName: string(),
-  orgMemberSince: string().matches(/^[1-9]\d(.\d+)?$|\s/, 'Please enter year.'),
+  orgMemberSince: string().matches(/^[0-9]\d(.\d+)?$|\s/, 'Please enter year.'),
   orgPosition: string(),
 
 });
@@ -291,7 +291,7 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="orgMemberSince"
+                name="residentYear"
                 control={control}
                 label="Resident of the Municipality since"
                 placeholder=""
@@ -440,7 +440,7 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="relationship"
+                name="ptnRelationship"
                 control={control}
                 label="Relationship"
                 placeholder=""
@@ -452,7 +452,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 1 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="numberOfPersonNotif"
+                name="ptnContactNum"
                 control={control}
                 label="Contact Number"
                 placeholder=""
@@ -550,7 +550,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="nameOfOrganization"
+                name="orgName"
                 control={control}
                 label="Name"
                 placeholder=""
@@ -560,7 +560,7 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="memberSince"
+                name="orgMemberSince"
                 control={control}
                 label="Member Since"
                 placeholder=""
@@ -572,7 +572,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 1 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="position"
+                name="orgPosition"
                 control={control}
                 label="Position/Official Designation"
                 placeholder=""
