@@ -41,9 +41,9 @@ const Fisherfolk = objectType({
     t.string('ptnContactNum');
     t.field('mainSrcOfIncome', { type: SourceOfIncome });
     t.nullable.field('otherSrcOfIncome', { type: SourceOfIncome });
-    t.string('mainSrcGear');
+    t.nullable.string('mainSrcGear');
     t.nullable.string('otherSrcGear');
-    t.string('mainSrcMethod');
+    t.nullable.string('mainSrcMethod');
     t.nullable.string('otherSrcMethod');
     t.nullable.string('orgName');
     t.nullable.int('orgYearMember');
