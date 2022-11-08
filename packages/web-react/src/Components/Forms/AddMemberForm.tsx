@@ -91,7 +91,7 @@ const sourcesOfIncome = replaceUnderscore([
   SourceOfIncome.FishVending,
   SourceOfIncome.FishProcessing,
 ]);
-const barangays = data.barangays.sort()
+const barangays = data.barangays.sort();
 
 const addMemberSchema = object().shape({
   lastName: string().required('Enter last name.'),
@@ -291,7 +291,7 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="ResidentofMunicipality"
+                name="orgMemberSince"
                 control={control}
                 label="Resident of the Municipality since"
                 placeholder=""
