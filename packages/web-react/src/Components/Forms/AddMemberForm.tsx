@@ -27,7 +27,7 @@ import {
   Salutation,
   SourceOfIncome,
 } from '../../graphql/generated';
-import { useMutation } from '@apollo/client';
+import data from './iloilo-city-brgys.json';
 
 export interface FormContainerTitleProps {
   children?: React.ReactNode;
@@ -91,13 +91,52 @@ const sourcesOfIncome = replaceUnderscore([
   SourceOfIncome.FishVending,
   SourceOfIncome.FishProcessing,
 ]);
+const barangays = data.barangays.sort();
 
 const addMemberSchema = object().shape({
-  lastName: string().required('Last name is required.'),
-  firstName: string().required('First name is required.'),
-  middleName: string().required('Middle name is required.'),
-  // to add more properties
+  lastName: string().required('Enter last name.'),
+  firstName: string().required('Enter first name.'),
+  middleName: string().required('Enter middle name.'),
+  contactNumber: string()
+    .required('Enter contact number.')
+    .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
+  barangay: string().required('Select an option for barangay'),
+  cityMunicipality: string().required('Enter city/municipality.'),
+  province: string().required('Enter province.'),
+  residentYear: string().matches(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/, 'Please enter year.'),
+  age: string().matches(/^[0-9]\d(.\d+)?$|\s/, 'Age must be a number.').required('Enter age.'),
+  dateOfBirth: string().nullable().required('Select date of birth.'),
+  placeOfBirth: string().required('Enter place of birth.'),
+  civilStatus: string().required('Select an option for civil status.'),
+  educationalBackground: string().required('Select an option for educational background.'),
+  religion: string(),
+  numberOfChildren: string().matches(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/, 'Must be a number.'),
+  personToNotify: string().required('Enter person to notify.'),
+  ptnRelationship: string().required('Enter relationship with person to notify.'),
+  ptnContactNum: string()
+    .required('Enter contact number of person to notify.')
+    .matches(/^(09|\+639)\d{9}$/, 'Enter a valid contact number.'),
+  address: string().required('Enter address of person to notify.'),
+  mainSourceofIncome: string().required('Select an option for main source of income.'),
+  mainGearUsed: string(),
+  mainMethodUsed: string(),
+  otherSourceofIncome: string(),
+  otherGearsUsed: string(),
+  otherMethodUsed: string(),
+  orgName: string(),
+  orgMemberSince: string().matches(/^[0-9]\d(.\d+)?$|\s/, 'Please enter year.'),
+  orgPosition: string(),
+
 });
+interface CreateInputProps {
+  data: {
+    lastnameValidation: string;
+    fistNameValidation: string;
+    middleNameValidation: string;
+  }
+}
+
+
 
 export default function AddMemberForm({
   open,
@@ -106,17 +145,27 @@ export default function AddMemberForm({
   const {
     register,
     control,
-    // handleSubmit,
+    handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(addMemberSchema),
   });
 
-  // Fisherfolk Mutation
-  const [createFisherfolk, { data, loading, error }] = useMutation(
-    CreateFisherfolkDocument
-  );
-
+  const onSubmit = handleSubmit((data) => {
+    const createInput: CreateInputProps = {
+      data: {
+        lastnameValidation: data.lastName,
+        fistNameValidation: data.fistNameValidation,
+        middleNameValidation: data.middleNameValidation,
+      }
+    };
+  });
+  const handleSubmitForm = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    e.preventDefault();
+    onSubmit();
+  };
   return (
     <>
       <FormContainer
@@ -164,7 +213,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 1, mr: 1 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="last-name"
+                name="lastName"
                 control={control}
                 label="Last Name"
                 placeholder=""
@@ -174,7 +223,7 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="first-name"
+                name="firstName"
                 control={control}
                 label="First Name"
                 placeholder=""
@@ -186,7 +235,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 1 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="middle-name"
+                name="middleName"
                 control={control}
                 label="Middle Name"
                 placeholder=""
@@ -196,7 +245,8 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="contact-number"
+
+                name="contactNumber"
                 control={control}
                 label="Contact Number"
                 placeholder=""
@@ -205,20 +255,21 @@ export default function AddMemberForm({
               />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1 }}>
+          <Grid container spacing={-2} sx={{ ml: 2, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
-                name="street-brgy"
+              <FormInputSelect
+                name="barangay"
+                label="Select Barangay"
+                data={barangays}
+                onSavedValue=""
                 control={control}
-                label="Street/Barangay"
-                placeholder=""
                 register={register}
                 errors={errors}
               />
             </Grid>
-            <Grid item sm={6}>
+            <Grid item sm={6} sx={{ mt: -1, ml: -1 }}>
               <FormInputText
-                name="city-municipality"
+                name="cityMunicipality"
                 control={control}
                 label="City Municipality"
                 placeholder=""
@@ -240,7 +291,7 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="resident-year"
+                name="residentYear"
                 control={control}
                 label="Resident of the Municipality since"
                 placeholder=""
@@ -262,7 +313,7 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="date-of-birth"
+                name="dateOfBirth"
                 control={control}
                 label="Date of Birth"
                 placeholder=""
@@ -274,7 +325,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 1 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="place-of-birth"
+                name="placeOfBirth"
                 control={control}
                 label="Place of Birth"
                 placeholder=""
@@ -319,7 +370,7 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputSelect
-                name="civil-status"
+                name="civilStatus"
                 label="Select Civil Status"
                 data={civiStatuses}
                 onSavedValue=""
@@ -332,7 +383,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 1 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="num-of-children"
+                name="numberOfChildren"
                 control={control}
                 label="Number of Children"
                 placeholder=""
@@ -366,7 +417,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 2, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputSelect
-                name="educ-background"
+                name="educationalBackground"
                 label="Select Educational Background"
                 data={educationalBackgrounds}
                 onSavedValue=""
@@ -379,7 +430,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="person-to-notify"
+                name="personToNotify"
                 control={control}
                 label="Person to Notify"
                 placeholder=""
@@ -389,7 +440,7 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="ptn-relationship"
+                name="ptnRelationship"
                 control={control}
                 label="Relationship"
                 placeholder=""
@@ -401,7 +452,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 1 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="ptn-contact-num"
+                name="ptnContactNum"
                 control={control}
                 label="Contact Number"
                 placeholder=""
@@ -411,7 +462,7 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="ptn-address"
+                name="address"
                 control={control}
                 label="Address"
                 placeholder=""
@@ -426,7 +477,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 2, mt: 2 }}>
             <Grid item sm={6}>
               <FormInputSelect
-                name="main-src-income"
+                name="mainSourceofIncome"
                 label="Selct Main Source of Income"
                 data={sourcesOfIncome}
                 onSavedValue=""
@@ -439,7 +490,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="main-inc-src-gear"
+                name="specifyGearUsed"
                 control={control}
                 label="Specify gear used"
                 placeholder=""
@@ -449,7 +500,7 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="main-inc-src-method"
+                name="specifyMethodUsed"
                 control={control}
                 label="Specify method used"
                 placeholder=""
@@ -461,7 +512,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 2, mt: 2 }}>
             <Grid item sm={6}>
               <FormInputSelect
-                name="other-src-income"
+                name="otherSourceofIncome"
                 label="Select Other Source of Income"
                 data={sourcesOfIncome}
                 onSavedValue=""
@@ -474,7 +525,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="other-inc-src-gear"
+                name="otherGearsUsed"
                 control={control}
                 label="Specify gear used"
                 placeholder=""
@@ -484,7 +535,7 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="other-inc-src-method"
+                name="otherMethodUsed"
                 control={control}
                 label="Specify method used"
                 placeholder=""
@@ -499,7 +550,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="org-name"
+                name="orgName"
                 control={control}
                 label="Name"
                 placeholder=""
@@ -509,7 +560,7 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="org-member-since"
+                name="orgMemberSince"
                 control={control}
                 label="Member Since"
                 placeholder=""
@@ -521,7 +572,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 1 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="org-position"
+                name="orgPosition"
                 control={control}
                 label="Position/Official Designation"
                 placeholder=""
@@ -531,7 +582,8 @@ export default function AddMemberForm({
             </Grid>
           </Grid>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
-            <Button variant="contained" fullWidth>
+
+            <Button type="submit" variant="contained" fullWidth onClick={(e) => { handleSubmitForm(e); }}>
               {' '}
               Save
             </Button>
