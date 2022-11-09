@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -23,6 +23,7 @@ import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   CivilStatus,
+  CreateFisherfolkDocument,
   EducationalBackground,
   Gender,
   MutationCreateFisherfolkArgs,
@@ -32,6 +33,8 @@ import {
   SourceOfIncome,
 } from '../../graphql/generated';
 import data from './iloilo-city-brgys.json';
+import { useMutation } from '@apollo/client';
+import Swal from 'sweetalert2';
 
 export interface FormContainerTitleProps {
   children?: React.ReactNode;
@@ -195,7 +198,7 @@ const addMemberSchema = object().shape({
   ),
   mainGearUsed: string(),
   mainMethodUsed: string(),
-  otherSourceOfIncome: string(),
+  otherSourceOfIncome: string().nullable(),
   otherGearsUsed: string(),
   otherMethodUsed: string(),
   orgName: string(),
@@ -207,6 +210,22 @@ const addMemberSchema = object().shape({
   image: string().required('Attach some image.'),
   signature: string().required('Attach some signature.'),
 });
+
+const showSuccessAlert = () =>
+  Swal.fire({
+    icon: 'success',
+    title: 'Data has been saved',
+    showConfirmButton: false,
+    timer: 4000,
+  });
+
+const showFailAlert = () =>
+  Swal.fire({
+    icon: 'error',
+    title: 'Data has not been saved',
+    showConfirmButton: false,
+    timer: 4000,
+  });
 
 export default function AddMemberForm({
   open,
@@ -221,7 +240,38 @@ export default function AddMemberForm({
     resolver: yupResolver(addMemberSchema),
   });
 
+  const [complete, setComplete] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const handleSubmitting = () => setIsSubmitting(true);
+  const handleComplete = () => setComplete(true);
+
+  const buttonSx = {
+    ...(complete && {
+      bgcolor: '#336CFB',
+      '&:hover': {
+        bgcolor: '#336CFB',
+      },
+    }),
+    display: 'block',
+    marginTop: 3,
+    marginLeft: 'auto',
+  };
+
+  const [createFisherfolk] = useMutation(CreateFisherfolkDocument, {
+    onCompleted: () => {
+      handleClose();
+      handleComplete();
+      showSuccessAlert();
+    },
+    onError: () => {
+      handleClose();
+      handleComplete();
+      showFailAlert();
+    },
+  });
+
   const onSubmit = handleSubmit((data) => {
+    handleSubmitting();
     const createFisherfolkInput: MutationCreateFisherfolkArgs = {
       data: {
         age: parseInt(data.age),
@@ -248,7 +298,7 @@ export default function AddMemberForm({
         ptnRelationship: data.ptnRelationship,
         registrationType: data.registrationType,
         religion: data.religion,
-        residentYear: data.residentYear,
+        residentYear: parseInt(data.residentYear),
         salutation: data.salutation,
         signature: data.signature,
         numOfChildren:
@@ -262,6 +312,14 @@ export default function AddMemberForm({
         otherSrcOfIncome: data.otherSourceOfIncome ?? null,
       },
     };
+
+    console.log(createFisherfolkInput.data);
+
+    createFisherfolk({
+      variables: {
+        data: createFisherfolkInput.data,
+      },
+    });
   });
 
   const handleSubmitForm = (
@@ -727,9 +785,12 @@ export default function AddMemberForm({
               variant="contained"
               fullWidth
               onClick={handleSubmitForm}
+              disabled={isSubmitting}
+              sx={buttonSx}
             >
               Save
             </Button>
+            {isSubmitting}
           </Box>
         </DialogContent>
       </FormContainer>
