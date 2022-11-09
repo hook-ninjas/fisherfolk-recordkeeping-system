@@ -16,7 +16,6 @@ import {
   RadioGroup,
   Radio,
 } from '@mui/material';
-import { MuiFileInput } from 'mui-file-input';
 
 interface FormInputTextProps {
   name: string;
@@ -105,13 +104,6 @@ export const FormInputSelect = ({
     />
   </FormControl>
 );
-
-interface FormInputImageProps {
-  name: string;
-  label: string;
-  control: Control<FieldValues, any>;
-  errors: FieldValues;
-}
 
 export interface RadioOptions {
   label: string;
