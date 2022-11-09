@@ -208,9 +208,10 @@ export type CreateFisherfolkInput = {
   educationalBackground: EducationalBackground;
   firstName: Scalars['String'];
   gender: Gender;
+  image: Scalars['String'];
   lastName: Scalars['String'];
-  mainSrcGear: Scalars['String'];
-  mainSrcMethod: Scalars['String'];
+  mainSrcGear?: InputMaybe<Scalars['String']>;
+  mainSrcMethod?: InputMaybe<Scalars['String']>;
   mainSrcOfIncome: SourceOfIncome;
   middleName: Scalars['String'];
   nationality: Nationality;
@@ -227,11 +228,11 @@ export type CreateFisherfolkInput = {
   ptnAddress: Scalars['String'];
   ptnContactNum: Scalars['String'];
   ptnRelationship: Scalars['String'];
-  registrationNum: Scalars['Int'];
   registrationType: RegistrationType;
   religion: Scalars['String'];
   residentYear: Scalars['Int'];
   salutation: Salutation;
+  signature: Scalars['String'];
 };
 
 export type CreateUserInput = {

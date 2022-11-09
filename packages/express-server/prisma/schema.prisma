@@ -19,7 +19,7 @@ model User {
 
 model Fisherfolk {
   id                    Int                   @id @default(autoincrement())
-  registrationNum       Int
+  registrationNum       Int                   @default(autoincrement())
   registrationDate      DateTime              @default(now())
   registrationType      RegistrationType
   lastName              String
@@ -46,9 +46,9 @@ model Fisherfolk {
   ptnContactNum         String
   mainSrcOfIncome       SourceOfIncome
   otherSrcOfIncome      SourceOfIncome?
-  mainSrcGear           String
+  mainSrcGear           String?
   otherSrcGear          String?
-  mainSrcMethod         String
+  mainSrcMethod         String?
   otherSrcMethod        String?
   orgName               String?
   orgYearMember         Int?

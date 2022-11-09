@@ -40,9 +40,10 @@ export interface NexusGenInputs {
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
     firstName: string; // String!
     gender: NexusGenEnums['Gender']; // Gender!
+    image: string; // String!
     lastName: string; // String!
-    mainSrcGear: string; // String!
-    mainSrcMethod: string; // String!
+    mainSrcGear?: string | null; // String
+    mainSrcMethod?: string | null; // String
     mainSrcOfIncome: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
     middleName: string; // String!
     nationality: NexusGenEnums['Nationality']; // Nationality!
@@ -59,11 +60,11 @@ export interface NexusGenInputs {
     ptnAddress: string; // String!
     ptnContactNum: string; // String!
     ptnRelationship: string; // String!
-    registrationNum: number; // Int!
     registrationType: NexusGenEnums['RegistrationType']; // RegistrationType!
     religion: string; // String!
     residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
+    signature: string; // String!
   }
   CreateUserInput: { // input type
     password: string; // String!

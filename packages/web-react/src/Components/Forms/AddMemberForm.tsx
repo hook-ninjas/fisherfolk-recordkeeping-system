@@ -1,19 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
-  Checkbox,
   Dialog,
   DialogContent,
   DialogTitle,
-  FormControlLabel,
   Grid,
   IconButton,
   Typography,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
-import { FormInputSelect, FormInputText } from './FormInputFields';
+import {
+  RadioOptions,
+  FormInputRadio,
+  FormInputSelect,
+  FormInputText,
+} from './FormInputFields';
 import { useForm } from 'react-hook-form';
 import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -22,12 +25,15 @@ import {
   CreateFisherfolkDocument,
   EducationalBackground,
   Gender,
+  MutationCreateFisherfolkArgs,
   Nationality,
   RegistrationType,
   Salutation,
   SourceOfIncome,
 } from '../../graphql/generated';
 import data from './iloilo-city-brgys.json';
+import { useMutation } from '@apollo/client';
+import Swal from 'sweetalert2';
 
 export interface FormContainerTitleProps {
   children?: React.ReactNode;
@@ -69,74 +75,154 @@ interface AddMemberFormProps {
   handleClose: () => void;
 }
 
-const replaceUnderscore = (list: string[]) =>
-  list.map((x) => x.replace('_', ' '));
-
-const civiStatuses = replaceUnderscore([
+const civiStatuses = [
   CivilStatus.Single,
   CivilStatus.Married,
   CivilStatus.LegallySeparated,
   CivilStatus.Widowed,
-]);
-const educationalBackgrounds = replaceUnderscore([
+];
+
+const educationalBackgrounds = [
   EducationalBackground.Elementary,
   EducationalBackground.HighSchool,
   EducationalBackground.College,
   EducationalBackground.PostGraduate,
   EducationalBackground.Vocational,
-]);
-const sourcesOfIncome = replaceUnderscore([
+];
+
+const sourcesOfIncome = [
   SourceOfIncome.CaptureFishing,
   SourceOfIncome.Aquaculture,
   SourceOfIncome.FishVending,
   SourceOfIncome.FishProcessing,
-]);
+];
+
 const barangays = data.barangays.sort();
 
+const genders: RadioOptions[] = [
+  {
+    label: Gender.Male,
+    value: Gender.Male,
+  },
+  {
+    label: Gender.Female,
+    value: Gender.Female,
+  },
+];
+
+const registrationTypes: RadioOptions[] = [
+  {
+    label: RegistrationType.NewRegistration,
+    value: RegistrationType.NewRegistration,
+  },
+  {
+    label: RegistrationType.Renewal,
+    value: RegistrationType.Renewal,
+  },
+];
+
+const salutations: RadioOptions[] = [
+  {
+    label: Salutation.Mr,
+    value: Salutation.Mr,
+  },
+  {
+    label: Salutation.Ms,
+    value: Salutation.Ms,
+  },
+  {
+    label: Salutation.Mrs,
+    value: Salutation.Mrs,
+  },
+];
+
+const nationality: RadioOptions[] = [
+  {
+    label: Nationality.Filipino,
+    value: Nationality.Filipino,
+  },
+];
+
 const addMemberSchema = object().shape({
+  registrationType: string()
+    .nullable()
+    .oneOf([RegistrationType.Renewal, RegistrationType.NewRegistration])
+    .required('Select an option for registration type.'),
   lastName: string().required('Enter last name.'),
   firstName: string().required('Enter first name.'),
   middleName: string().required('Enter middle name.'),
+  salutation: string()
+    .nullable()
+    .oneOf([Salutation.Mr, Salutation.Ms, Salutation.Mrs])
+    .required('Select an option for salutation.'),
   contactNumber: string()
     .required('Enter contact number.')
     .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
   barangay: string().required('Select an option for barangay'),
   cityMunicipality: string().required('Enter city/municipality.'),
   province: string().required('Enter province.'),
-  residentYear: string().matches(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/, 'Please enter year.'),
-  age: string().matches(/^[0-9]\d(.\d+)?$|\s/, 'Age must be a number.').required('Enter age.'),
+  residentYear: string().matches(/^\d{4}$/, 'Please enter year.'),
+  gender: string()
+    .nullable()
+    .oneOf([Gender.Female, Gender.Male])
+    .required('Select an option for gender.'),
+  age: string()
+    .matches(/^$|\d{1,3}$/, 'Age must be a number.')
+    .required('Enter age.'),
   dateOfBirth: string().nullable().required('Select date of birth.'),
   placeOfBirth: string().required('Enter place of birth.'),
   civilStatus: string().required('Select an option for civil status.'),
-  educationalBackground: string().required('Select an option for educational background.'),
+  educationalBackground: string().required(
+    'Select an option for educational background.'
+  ),
   religion: string(),
-  numberOfChildren: string().matches(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/, 'Must be a number.'),
+  numberOfChildren: string().matches(
+    /^$|\d{1,2}$/,
+    'Must be a number.'
+  ),
+  nationality: string()
+    .nullable()
+    .oneOf([Nationality.Filipino])
+    .required('Select nationality.'),
   personToNotify: string().required('Enter person to notify.'),
-  ptnRelationship: string().required('Enter relationship with person to notify.'),
+  ptnRelationship: string().required(
+    'Enter relationship with person to notify.'
+  ),
   ptnContactNum: string()
     .required('Enter contact number of person to notify.')
-    .matches(/^(09|\+639)\d{9}$/, 'Enter a valid contact number.'),
-  address: string().required('Enter address of person to notify.'),
-  mainSourceofIncome: string().required('Select an option for main source of income.'),
+    .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
+  ptnAddress: string().required('Enter address of person to notify.'),
+  mainSourceOfIncome: string().required(
+    'Select an option for main source of income.'
+  ),
   mainGearUsed: string(),
   mainMethodUsed: string(),
-  otherSourceofIncome: string(),
+  otherSourceOfIncome: string().nullable(),
   otherGearsUsed: string(),
   otherMethodUsed: string(),
   orgName: string(),
-  orgMemberSince: string().matches(/^[0-9]\d(.\d+)?$|\s/, 'Please enter year.'),
+  orgMemberSince: string().matches(
+    /^$|\d{4}$/,
+    'Please enter year.'
+  ),
   orgPosition: string(),
-
 });
-interface CreateInputProps {
-  data: {
-    lastnameValidation: string;
-    fistNameValidation: string;
-    middleNameValidation: string;
-  }
-}
 
+const showSuccessAlert = () =>
+  Swal.fire({
+    icon: 'success',
+    title: 'Data has been saved',
+    showConfirmButton: false,
+    timer: 4000,
+  });
 
+const showFailAlert = () =>
+  Swal.fire({
+    icon: 'error',
+    title: 'Data has not been saved',
+    showConfirmButton: false,
+    timer: 4000,
+  });
 
 export default function AddMemberForm({
   open,
@@ -151,21 +237,94 @@ export default function AddMemberForm({
     resolver: yupResolver(addMemberSchema),
   });
 
-  const onSubmit = handleSubmit((data) => {
-    const createInput: CreateInputProps = {
-      data: {
-        lastnameValidation: data.lastName,
-        fistNameValidation: data.fistNameValidation,
-        middleNameValidation: data.middleNameValidation,
-      }
-    };
+  const [complete, setComplete] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const handleSubmitting = () => setIsSubmitting(true);
+  const handleComplete = () => setComplete(true);
+
+  const buttonSx = {
+    ...(complete && {
+      bgcolor: '#336CFB',
+      '&:hover': {
+        bgcolor: '#336CFB',
+      },
+    }),
+    display: 'block',
+    marginTop: 3,
+    marginLeft: 'auto',
+  };
+
+  const [createFisherfolk] = useMutation(CreateFisherfolkDocument, {
+    onCompleted: () => {
+      handleClose();
+      handleComplete();
+      showSuccessAlert();
+    },
+    onError: () => {
+      handleClose();
+      handleComplete();
+      showFailAlert();
+    },
   });
+
+  const onSubmit = handleSubmit( async (data) => {
+    handleSubmitting();
+    const createFisherfolkInput: MutationCreateFisherfolkArgs = {
+      data: {
+        age: parseInt(data.age),
+        barangay: data.barangay,
+        cityMunicipality: data.cityMunicipality,
+        civilStatus: data.civilStatus,
+        contactNum: data.contactNumber,
+        dateOfBirth: new Date(data.dateOfBirth).toISOString(),
+        educationalBackground: data.educationalBackground,
+        firstName: data.firstName,
+        gender: data.gender,
+        image: '',
+        lastName: data.lastName,
+        mainSrcGear: data.mainGearUsed,
+        mainSrcMethod: data.mainMethodUsed,
+        mainSrcOfIncome: data.mainSourceOfIncome,
+        middleName: data.middleName,
+        nationality: data.nationality,
+        personToNotify: data.personToNotify,
+        placeOfBirth: data.placeOfBirth,
+        province: data.province,
+        ptnAddress: data.ptnAddress,
+        ptnContactNum: data.ptnContactNum,
+        ptnRelationship: data.ptnRelationship,
+        registrationType: data.registrationType,
+        religion: data.religion,
+        residentYear: parseInt(data.residentYear),
+        salutation: data.salutation,
+        signature: '',
+        numOfChildren:
+          data.numberOfChildren === '' ? null : parseInt(data.numberOfChildren),
+        orgName: data.orgName,
+        orgPosition: data.orgPosition,
+        orgYearMember:
+          data.orgMemberSince === '' ? null : parseInt(data.orgMemberSince),
+        otherSrcGear: data.otherGearUsed,
+        otherSrcMethod: data.otherMethodUsed,
+        otherSrcOfIncome: data.otherSourceOfIncome ?? null,
+      },
+    };
+
+    await createFisherfolk({
+      variables: {
+        data: createFisherfolkInput.data
+      },
+
+    });
+  });
+
   const handleSubmitForm = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
     onSubmit();
   };
+
   return (
     <>
       <FormContainer
@@ -187,13 +346,13 @@ export default function AddMemberForm({
               mt: -2,
             }}
           >
-            <FormControlLabel
-              control={<Checkbox />}
-              label={RegistrationType.NewRegistration.replace('_', ' ')}
-            />
-            <FormControlLabel
-              control={<Checkbox />}
-              label={RegistrationType.Renewal}
+            <FormInputRadio
+              name="registrationType"
+              label="registrationType"
+              control={control}
+              register={register}
+              errors={errors}
+              radioOptions={registrationTypes}
             />
           </Box>
           <Typography variant="h6" color="GrayText" mt={2} mb={-1} ml={2}>
@@ -206,9 +365,14 @@ export default function AddMemberForm({
               pl: 2,
             }}
           >
-            <FormControlLabel control={<Checkbox />} label={Salutation.Mr} />
-            <FormControlLabel control={<Checkbox />} label={Salutation.Ms} />
-            <FormControlLabel control={<Checkbox />} label={Salutation.Mrs} />
+            <FormInputRadio
+              name="salutation"
+              label="salutation"
+              control={control}
+              register={register}
+              errors={errors}
+              radioOptions={salutations}
+            />
           </Box>
           <Grid container spacing={-2} sx={{ ml: 1, mr: 1 }}>
             <Grid item sm={6}>
@@ -245,7 +409,6 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-
                 name="contactNumber"
                 control={control}
                 label="Contact Number"
@@ -271,7 +434,7 @@ export default function AddMemberForm({
               <FormInputText
                 name="cityMunicipality"
                 control={control}
-                label="City Municipality"
+                label="City/Municipality"
                 placeholder=""
                 register={register}
                 errors={errors}
@@ -316,7 +479,7 @@ export default function AddMemberForm({
                 name="dateOfBirth"
                 control={control}
                 label="Date of Birth"
-                placeholder=""
+                placeholder="MM/DD/YYYY"
                 register={register}
                 errors={errors}
               />
@@ -361,10 +524,13 @@ export default function AddMemberForm({
                   pl: 0.5,
                 }}
               >
-                <FormControlLabel control={<Checkbox />} label={Gender.Male} />
-                <FormControlLabel
-                  control={<Checkbox />}
-                  label={Gender.Female}
+                <FormInputRadio
+                  name="gender"
+                  label="gender"
+                  register={register}
+                  errors={errors}
+                  control={control}
+                  radioOptions={genders}
                 />
               </Box>
             </Grid>
@@ -407,9 +573,13 @@ export default function AddMemberForm({
                   pl: 2,
                 }}
               >
-                <FormControlLabel
-                  control={<Checkbox />}
-                  label={Nationality.Filipino}
+                <FormInputRadio
+                  name="nationality"
+                  label="nationality"
+                  control={control}
+                  register={register}
+                  errors={errors}
+                  radioOptions={nationality}
                 />
               </Box>
             </Grid>
@@ -462,7 +632,7 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="address"
+                name="ptnAddress"
                 control={control}
                 label="Address"
                 placeholder=""
@@ -477,7 +647,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 2, mt: 2 }}>
             <Grid item sm={6}>
               <FormInputSelect
-                name="mainSourceofIncome"
+                name="mainSourceOfIncome"
                 label="Selct Main Source of Income"
                 data={sourcesOfIncome}
                 onSavedValue=""
@@ -490,7 +660,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="specifyGearUsed"
+                name="mainGearUsed"
                 control={control}
                 label="Specify gear used"
                 placeholder=""
@@ -500,7 +670,7 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="specifyMethodUsed"
+                name="mainMethodUsed"
                 control={control}
                 label="Specify method used"
                 placeholder=""
@@ -512,7 +682,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 2, mt: 2 }}>
             <Grid item sm={6}>
               <FormInputSelect
-                name="otherSourceofIncome"
+                name="otherSourceOfIncome"
                 label="Select Other Source of Income"
                 data={sourcesOfIncome}
                 onSavedValue=""
@@ -525,7 +695,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="otherGearsUsed"
+                name="otherGearUsed"
                 control={control}
                 label="Specify gear used"
                 placeholder=""
@@ -582,11 +752,19 @@ export default function AddMemberForm({
             </Grid>
           </Grid>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
-
-            <Button type="submit" variant="contained" fullWidth onClick={(e) => { handleSubmitForm(e); }}>
-              {' '}
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              onClick={(e) => {
+                handleSubmitForm(e);
+              }}
+              disabled={isSubmitting}
+              sx={buttonSx}
+            >
               Save
             </Button>
+            {isSubmitting}
           </Box>
         </DialogContent>
       </FormContainer>

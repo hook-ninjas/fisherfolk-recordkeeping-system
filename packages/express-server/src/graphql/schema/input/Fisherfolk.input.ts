@@ -13,7 +13,6 @@ const CreateFisherfolkInput = inputObjectType({
   name: 'CreateFisherfolkInput',
   definition(t) {
     t.nonNull.field('registrationType', { type: RegistrationType });
-    t.nonNull.int('registrationNum');
     t.nonNull.string('lastName');
     t.nonNull.string('firstName');
     t.nonNull.string('middleName');
@@ -38,13 +37,15 @@ const CreateFisherfolkInput = inputObjectType({
     t.nonNull.string('ptnContactNum');
     t.nonNull.field('mainSrcOfIncome', { type: SourceOfIncome });
     t.nullable.field('otherSrcOfIncome', { type: SourceOfIncome });
-    t.nonNull.string('mainSrcGear');
+    t.nullable.string('mainSrcGear');
     t.nullable.string('otherSrcGear');
-    t.nonNull.string('mainSrcMethod');
+    t.nullable.string('mainSrcMethod');
     t.nullable.string('otherSrcMethod');
     t.nullable.string('orgName');
     t.nullable.int('orgYearMember');
     t.nullable.string('orgPosition');
+    t.nonNull.string('image');
+    t.nonNull.string('signature');
   },
 });
 
