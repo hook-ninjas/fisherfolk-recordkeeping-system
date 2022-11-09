@@ -13,8 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import {
   RadioOptions,
-  FormInputRadio as FormInputRadio,
-  FormInputImage,
+  FormInputRadio,
   FormInputSelect,
   FormInputText,
 } from './FormInputFields';
@@ -162,7 +161,7 @@ const addMemberSchema = object().shape({
   barangay: string().required('Select an option for barangay'),
   cityMunicipality: string().required('Enter city/municipality.'),
   province: string().required('Enter province.'),
-  residentYear: string().matches(/^\d{4}/, 'Please enter year.'),
+  residentYear: string().matches(/^\d{4}$/, 'Please enter year.'),
   gender: string()
     .nullable()
     .oneOf([Gender.Female, Gender.Male])
@@ -203,12 +202,10 @@ const addMemberSchema = object().shape({
   otherMethodUsed: string(),
   orgName: string(),
   orgMemberSince: string().matches(
-    /^\d{4}/,
+    /^$|\d{4}$/,
     'Please enter year.'
   ),
   orgPosition: string(),
-  image: string().required('Attach some image.'),
-  signature: string().required('Attach some signature.'),
 });
 
 const showSuccessAlert = () =>
@@ -270,7 +267,7 @@ export default function AddMemberForm({
     },
   });
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit( async (data) => {
     handleSubmitting();
     const createFisherfolkInput: MutationCreateFisherfolkArgs = {
       data: {
@@ -283,7 +280,7 @@ export default function AddMemberForm({
         educationalBackground: data.educationalBackground,
         firstName: data.firstName,
         gender: data.gender,
-        image: data.image,
+        image: '',
         lastName: data.lastName,
         mainSrcGear: data.mainGearUsed,
         mainSrcMethod: data.mainMethodUsed,
@@ -300,7 +297,7 @@ export default function AddMemberForm({
         religion: data.religion,
         residentYear: parseInt(data.residentYear),
         salutation: data.salutation,
-        signature: data.signature,
+        signature: '',
         numOfChildren:
           data.numberOfChildren === '' ? null : parseInt(data.numberOfChildren),
         orgName: data.orgName,
@@ -313,10 +310,11 @@ export default function AddMemberForm({
       },
     };
 
-    createFisherfolk({
+    await createFisherfolk({
       variables: {
-        data: createFisherfolkInput.data,
+        data: createFisherfolkInput.data
       },
+
     });
   });
 
@@ -749,30 +747,6 @@ export default function AddMemberForm({
                 label="Position/Official Designation"
                 placeholder=""
                 register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ mt: 1 }}>
-            <Grid item sm={6}>
-              <Typography variant="body1" color="GrayText" mb={1} ml={2.3}>
-                Upload Image
-              </Typography>
-              <FormInputImage
-                name="image"
-                label="Upload Image"
-                control={control}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6}>
-              <Typography variant="body1" color="GrayText" mb={1} ml={2.3}>
-                Upload Signature
-              </Typography>
-              <FormInputImage
-                name="signature"
-                label="Upload Signature"
-                control={control}
                 errors={errors}
               />
             </Grid>

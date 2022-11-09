@@ -113,30 +113,6 @@ interface FormInputImageProps {
   errors: FieldValues;
 }
 
-export const FormInputImage = ({
-  name,
-  label,
-  control,
-  errors,
-}: FormInputImageProps) => {
-  return (
-    <FormControl aria-label={label} sx={{ marginLeft: 2.3 }}>
-      <Controller
-        name={name}
-        control={control}
-        render={({ field }) => (
-          <MuiFileInput
-            {...field}
-            helperText={errors[name]?.message}
-            error={!!errors[name]}
-            sx={{ marginBottom: 2, width: 233 }}
-          />
-        )}
-      />
-    </FormControl>
-  );
-};
-
 export interface RadioOptions {
   label: string;
   value: string;
