@@ -122,7 +122,6 @@ export type FisherfolkResolvers<ContextType = any, ParentType extends ResolversP
   dateOfBirth?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   educationalBackground?: Resolver<Maybe<ResolversTypes['EducationalBackground']>, ParentType, ContextType>;
   firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  fisherfolkStatus?: Resolver<Maybe<ResolversTypes['FisherfolkStatus']>, ParentType, ContextType>;
   fullName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   gender?: Resolver<Maybe<ResolversTypes['Gender']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -153,6 +152,7 @@ export type FisherfolkResolvers<ContextType = any, ParentType extends ResolversP
   residentYear?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   salutation?: Resolver<Maybe<ResolversTypes['Salutation']>, ParentType, ContextType>;
   signature?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  status?: Resolver<Maybe<ResolversTypes['FisherfolkStatus']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -233,6 +233,7 @@ export type CreateFisherfolkInput = {
   residentYear: Scalars['Int'];
   salutation: Salutation;
   signature: Scalars['String'];
+  status: FisherfolkStatus;
 };
 
 export type CreateUserInput = {
@@ -258,7 +259,6 @@ export type Fisherfolk = {
   dateOfBirth?: Maybe<Scalars['DateTime']>;
   educationalBackground?: Maybe<EducationalBackground>;
   firstName?: Maybe<Scalars['String']>;
-  fisherfolkStatus?: Maybe<FisherfolkStatus>;
   fullName?: Maybe<Scalars['String']>;
   gender?: Maybe<Gender>;
   id: Scalars['Int'];
@@ -289,6 +289,7 @@ export type Fisherfolk = {
   residentYear?: Maybe<Scalars['Int']>;
   salutation?: Maybe<Salutation>;
   signature?: Maybe<Scalars['String']>;
+  status?: Maybe<FisherfolkStatus>;
 };
 
 export enum FisherfolkStatus {
@@ -362,8 +363,8 @@ export type CreateFisherfolkMutation = { __typename?: 'Mutation', createFisherfo
 export type SampleFisherfolkQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SampleFisherfolkQueryQuery = { __typename?: 'Query', fisherfolks: Array<{ __typename?: 'Fisherfolk', id: number, lastName?: string | null, firstName?: string | null, middleName?: string | null, age?: number | null, barangay?: string | null, cityMunicipality?: string | null, province?: string | null, contactNum?: string | null }> };
+export type SampleFisherfolkQueryQuery = { __typename?: 'Query', fisherfolks: Array<{ __typename?: 'Fisherfolk', id: number, fullName?: string | null, registrationDate?: any | null, contactNum?: string | null, mainSrcOfIncome?: SourceOfIncome | null, barangay?: string | null, status?: FisherfolkStatus | null }> };
 
 
 export const CreateFisherfolkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateFisherfolk"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateFisherfolkInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createFisherfolk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateFisherfolkMutation, CreateFisherfolkMutationVariables>;
-export const SampleFisherfolkQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SampleFisherfolkQuery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fisherfolks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"middleName"}},{"kind":"Field","name":{"kind":"Name","value":"age"}},{"kind":"Field","name":{"kind":"Name","value":"barangay"}},{"kind":"Field","name":{"kind":"Name","value":"cityMunicipality"}},{"kind":"Field","name":{"kind":"Name","value":"province"}},{"kind":"Field","name":{"kind":"Name","value":"contactNum"}}]}}]}}]} as unknown as DocumentNode<SampleFisherfolkQueryQuery, SampleFisherfolkQueryQueryVariables>;
+export const SampleFisherfolkQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SampleFisherfolkQuery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fisherfolks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"registrationDate"}},{"kind":"Field","name":{"kind":"Name","value":"contactNum"}},{"kind":"Field","name":{"kind":"Name","value":"mainSrcOfIncome"}},{"kind":"Field","name":{"kind":"Name","value":"barangay"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]} as unknown as DocumentNode<SampleFisherfolkQueryQuery, SampleFisherfolkQueryQueryVariables>;

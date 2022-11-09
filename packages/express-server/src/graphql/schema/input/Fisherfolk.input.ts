@@ -2,6 +2,7 @@ import { inputObjectType } from 'nexus';
 import {
   CivilStatus,
   EducationalBackground,
+  FisherfolkStatus,
   Gender,
   Nationality,
   RegistrationType,
@@ -46,6 +47,7 @@ const CreateFisherfolkInput = inputObjectType({
     t.nullable.string('orgPosition');
     t.nonNull.string('image');
     t.nonNull.string('signature');
+    t.nonNull.field('status', { type: FisherfolkStatus});
   },
 });
 

@@ -65,6 +65,7 @@ export interface NexusGenInputs {
     residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
     signature: string; // String!
+    status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
   }
   CreateUserInput: { // input type
     password: string; // String!
@@ -102,7 +103,6 @@ export interface NexusGenObjects {
     dateOfBirth?: NexusGenScalars['DateTime'] | null; // DateTime
     educationalBackground?: NexusGenEnums['EducationalBackground'] | null; // EducationalBackground
     firstName?: string | null; // String
-    fisherfolkStatus?: NexusGenEnums['FisherfolkStatus'] | null; // FisherfolkStatus
     gender?: NexusGenEnums['Gender'] | null; // Gender
     id: number; // Int!
     image?: string | null; // String
@@ -132,6 +132,7 @@ export interface NexusGenObjects {
     residentYear?: number | null; // Int
     salutation?: NexusGenEnums['Salutation'] | null; // Salutation
     signature?: string | null; // String
+    status?: NexusGenEnums['FisherfolkStatus'] | null; // FisherfolkStatus
   }
   Mutation: {};
   Query: {};
@@ -162,7 +163,6 @@ export interface NexusGenFieldTypes {
     dateOfBirth: NexusGenScalars['DateTime'] | null; // DateTime
     educationalBackground: NexusGenEnums['EducationalBackground'] | null; // EducationalBackground
     firstName: string | null; // String
-    fisherfolkStatus: NexusGenEnums['FisherfolkStatus'] | null; // FisherfolkStatus
     fullName: string | null; // String
     gender: NexusGenEnums['Gender'] | null; // Gender
     id: number; // Int!
@@ -193,6 +193,7 @@ export interface NexusGenFieldTypes {
     residentYear: number | null; // Int
     salutation: NexusGenEnums['Salutation'] | null; // Salutation
     signature: string | null; // String
+    status: NexusGenEnums['FisherfolkStatus'] | null; // FisherfolkStatus
   }
   Mutation: { // field return type
     createFisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
@@ -218,7 +219,6 @@ export interface NexusGenFieldTypeNames {
     dateOfBirth: 'DateTime'
     educationalBackground: 'EducationalBackground'
     firstName: 'String'
-    fisherfolkStatus: 'FisherfolkStatus'
     fullName: 'String'
     gender: 'Gender'
     id: 'Int'
@@ -249,6 +249,7 @@ export interface NexusGenFieldTypeNames {
     residentYear: 'Int'
     salutation: 'Salutation'
     signature: 'String'
+    status: 'FisherfolkStatus'
   }
   Mutation: { // field return type name
     createFisherfolk: 'Fisherfolk'

@@ -16,6 +16,7 @@ import {
   RadioGroup,
   Radio,
 } from '@mui/material';
+import { replaceUnderscore } from '../../utils/utils';
 
 interface FormInputTextProps {
   name: string;
@@ -61,8 +62,6 @@ interface FormInputSelectProps {
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
 }
-
-const replaceUnderscore = (item: string) => item.replace('_', ' ');
 
 export const FormInputSelect = ({
   name,

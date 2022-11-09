@@ -1,0 +1,1236 @@
+{
+
+"fisherfolks": [
+
+
+{
+
+
+
+"registrationType": "NEW REGISTRATION",
+
+
+
+"salutation": "MRS",
+
+
+
+"lastName": "Cartwright",
+
+
+
+"firstName": "Francisco",
+
+
+
+"middleName": "Reagan",
+
+
+
+"contactNum": "09833064012",
+
+
+
+"barangay": "Brgy. Timawa Tanza II",
+
+
+
+"residentYear": 2021,
+
+
+
+"dateOfBirth": "07/02/49",
+
+
+
+"civilStatus": "SINGLE",
+
+
+
+"gender": "MALE",
+
+
+
+"educationalBackground": "HIGH SCHOOL",
+
+
+
+"numOfChildren": 5,
+
+
+
+"nationality": "FILIPINO",
+
+
+
+"personToNotify": "Robyn Kertzmann DVM",
+
+
+
+"ptnAddress": "San Mateo Indiana",
+
+
+
+"ptnContactNum": "09549718600",
+
+
+
+"mainSourceOfIncome": "AQUACULTURE",
+
+
+
+"orgMemberYear": 1998
+
+
+},
+
+
+{
+
+
+
+"registrationType": "NEW REGISTRATION",
+
+
+
+"salutation": "MRS",
+
+
+
+"lastName": "Beatty",
+
+
+
+"firstName": "Perry",
+
+
+
+"middleName": "Ellis",
+
+
+
+"contactNum": "09205551582",
+
+
+
+"barangay": "Brgy. Buhang Taft North",
+
+
+
+"residentYear": 1981,
+
+
+
+"dateOfBirth": "03/27/60",
+
+
+
+"civilStatus": "MARRIED",
+
+
+
+"gender": "MALE",
+
+
+
+"educationalBackground": "COLLEGE",
+
+
+
+"numOfChildren": 0,
+
+
+
+"nationality": "FILIPINO",
+
+
+
+"personToNotify": "Wendy Johnston",
+
+
+
+"ptnAddress": "Monahanside West Virginia",
+
+
+
+"ptnContactNum": "09587835785",
+
+
+
+"mainSourceOfIncome": "FISH VENDING",
+
+
+
+"orgMemberYear": 1999
+
+
+},
+
+
+{
+
+
+
+"registrationType": "RENEWAL",
+
+
+
+"salutation": "MR",
+
+
+
+"lastName": "Rempel",
+
+
+
+"firstName": "Mable",
+
+
+
+"middleName": "Dakota",
+
+
+
+"contactNum": "09222576615",
+
+
+
+"barangay": "Brgy. East Timawa",
+
+
+
+"residentYear": 2007,
+
+
+
+"dateOfBirth": "11/15/02",
+
+
+
+"civilStatus": "SINGLE",
+
+
+
+"gender": "MALE",
+
+
+
+"educationalBackground": "COLLEGE",
+
+
+
+"numOfChildren": 5,
+
+
+
+"nationality": "FILIPINO",
+
+
+
+"personToNotify": "Dwayne Cassin",
+
+
+
+"ptnAddress": "West Virginialand Tennessee",
+
+
+
+"ptnContactNum": "09564660206",
+
+
+
+"mainSourceOfIncome": "FISH VENDING",
+
+
+
+"orgMemberYear": 1998
+
+
+},
+
+
+{
+
+
+
+"registrationType": "RENEWAL",
+
+
+
+"salutation": "MS",
+
+
+
+"lastName": "Fisher",
+
+
+
+"firstName": "Dereck",
+
+
+
+"middleName": "Jules",
+
+
+
+"contactNum": "09443272173",
+
+
+
+"barangay": "Brgy. Tacas",
+
+
+
+"residentYear": 2009,
+
+
+
+"dateOfBirth": "01/18/67",
+
+
+
+"civilStatus": "SINGLE",
+
+
+
+"gender": "MALE",
+
+
+
+"educationalBackground": "POST GRADUATE",
+
+
+
+"numOfChildren": 10,
+
+
+
+"nationality": "FILIPINO",
+
+
+
+"personToNotify": "Hazel Halvorson",
+
+
+
+"ptnAddress": "Skilesport Kentucky",
+
+
+
+"ptnContactNum": "09889758183",
+
+
+
+"mainSourceOfIncome": "AQUACULTURE",
+
+
+
+"orgMemberYear": 1983
+
+
+},
+
+
+{
+
+
+
+"registrationType": "RENEWAL",
+
+
+
+"salutation": "MS",
+
+
+
+"lastName": "Deckow",
+
+
+
+"firstName": "Cyril",
+
+
+
+"middleName": "Micah",
+
+
+
+"contactNum": "09469650782",
+
+
+
+"barangay": "Brgy. Mohon",
+
+
+
+"residentYear": 2018,
+
+
+
+"dateOfBirth": "12/21/52",
+
+
+
+"civilStatus": "MARRIED",
+
+
+
+"gender": "MALE",
+
+
+
+"educationalBackground": "POST GRADUATE",
+
+
+
+"numOfChildren": 1,
+
+
+
+"nationality": "FILIPINO",
+
+
+
+"personToNotify": "Lynda Greenholt II",
+
+
+
+"ptnAddress": "Aldencester Massachusetts",
+
+
+
+"ptnContactNum": "09504132619",
+
+
+
+"mainSourceOfIncome": "FISH PROCESSING",
+
+
+
+"orgMemberYear": 1979
+
+
+},
+
+
+{
+
+
+
+"registrationType": "NEW REGISTRATION",
+
+
+
+"salutation": "MR",
+
+
+
+"lastName": "Stark",
+
+
+
+"firstName": "Henderson",
+
+
+
+"middleName": "Avery",
+
+
+
+"contactNum": "09749480982",
+
+
+
+"barangay": "Brgy. Liberation",
+
+
+
+"residentYear": 1983,
+
+
+
+"dateOfBirth": "08/24/61",
+
+
+
+"civilStatus": "MARRIED",
+
+
+
+"gender": "MALE",
+
+
+
+"educationalBackground": "HIGH SCHOOL",
+
+
+
+"numOfChildren": 4,
+
+
+
+"nationality": "FILIPINO",
+
+
+
+"personToNotify": "Pablo D'Amore",
+
+
+
+"ptnAddress": "Lake Eli Rhode Island",
+
+
+
+"ptnContactNum": "09757032943",
+
+
+
+"mainSourceOfIncome": "CAPTURE FISHING",
+
+
+
+"orgMemberYear": 2001
+
+
+},
+
+
+{
+
+
+
+"registrationType": "RENEWAL",
+
+
+
+"salutation": "MR",
+
+
+
+"lastName": "Jones",
+
+
+
+"firstName": "Callie",
+
+
+
+"middleName": "Nico",
+
+
+
+"contactNum": "09282487204",
+
+
+
+"barangay": "Brgy. Sampaguita",
+
+
+
+"residentYear": 1970,
+
+
+
+"dateOfBirth": "06/28/62",
+
+
+
+"civilStatus": "WIDOWED",
+
+
+
+"gender": "MALE",
+
+
+
+"educationalBackground": "ELEMENTARY",
+
+
+
+"numOfChildren": 2,
+
+
+
+"nationality": "FILIPINO",
+
+
+
+"personToNotify": "Darnell Herzog",
+
+
+
+"ptnAddress": "Santa Ana South Dakota",
+
+
+
+"ptnContactNum": "09002345480",
+
+
+
+"mainSourceOfIncome": "CAPTURE FISHING",
+
+
+
+"orgMemberYear": 2006
+
+
+},
+
+
+{
+
+
+
+"registrationType": "RENEWAL",
+
+
+
+"salutation": "MS",
+
+
+
+"lastName": "Braun",
+
+
+
+"firstName": "Teagan",
+
+
+
+"middleName": "James",
+
+
+
+"contactNum": "09387560427",
+
+
+
+"barangay": "Brgy. Mansaya",
+
+
+
+"residentYear": 1981,
+
+
+
+"dateOfBirth": "03/29/70",
+
+
+
+"civilStatus": "SINGLE",
+
+
+
+"gender": "MALE",
+
+
+
+"educationalBackground": "HIGH SCHOOL",
+
+
+
+"numOfChildren": 5,
+
+
+
+"nationality": "FILIPINO",
+
+
+
+"personToNotify": "Pearl Klocko",
+
+
+
+"ptnAddress": "Citlalliville Kentucky",
+
+
+
+"ptnContactNum": "09411519487",
+
+
+
+"mainSourceOfIncome": "CAPTURE FISHING",
+
+
+
+"orgMemberYear": 1985
+
+
+},
+
+
+{
+
+
+
+"registrationType": "NEW REGISTRATION",
+
+
+
+"salutation": "MRS",
+
+
+
+"lastName": "Schmeler",
+
+
+
+"firstName": "Dewayne",
+
+
+
+"middleName": "Micah",
+
+
+
+"contactNum": "09414624935",
+
+
+
+"barangay": "Brgy. Baybay Tanza",
+
+
+
+"residentYear": 2010,
+
+
+
+"dateOfBirth": "11/04/85",
+
+
+
+"civilStatus": "LEGALLY SEPARATED",
+
+
+
+"gender": "MALE",
+
+
+
+"educationalBackground": "ELEMENTARY",
+
+
+
+"numOfChildren": 7,
+
+
+
+"nationality": "FILIPINO",
+
+
+
+"personToNotify": "Ora Luettgen",
+
+
+
+"ptnAddress": "New Rowland Iowa",
+
+
+
+"ptnContactNum": "09596807700",
+
+
+
+"mainSourceOfIncome": "FISH PROCESSING",
+
+
+
+"orgMemberYear": 2011
+
+
+},
+
+
+{
+
+
+
+"registrationType": "RENEWAL",
+
+
+
+"salutation": "MR",
+
+
+
+"lastName": "Nitzsche",
+
+
+
+"firstName": "Kris",
+
+
+
+"middleName": "Reese",
+
+
+
+"contactNum": "09511964961",
+
+
+
+"barangay": "Brgy. Monica Blumentritt",
+
+
+
+"residentYear": 1973,
+
+
+
+"dateOfBirth": "01/19/82",
+
+
+
+"civilStatus": "LEGALLY SEPARATED",
+
+
+
+"gender": "FEMALE",
+
+
+
+"educationalBackground": "POST GRADUATE",
+
+
+
+"numOfChildren": 4,
+
+
+
+"nationality": "FILIPINO",
+
+
+
+"personToNotify": "Bonnie Berge",
+
+
+
+"ptnAddress": "McCulloughport Ohio",
+
+
+
+"ptnContactNum": "09174140521",
+
+
+
+"mainSourceOfIncome": "FISH VENDING",
+
+
+
+"orgMemberYear": 1973
+
+
+},
+
+
+{
+
+
+
+"registrationType": "NEW REGISTRATION",
+
+
+
+"salutation": "MR",
+
+
+
+"lastName": "Gottlieb",
+
+
+
+"firstName": "Efrain",
+
+
+
+"middleName": "Anderson",
+
+
+
+"contactNum": "09273270005",
+
+
+
+"barangay": "Brgy. South Fundidor",
+
+
+
+"residentYear": 2001,
+
+
+
+"dateOfBirth": "03/11/85",
+
+
+
+"civilStatus": "LEGALLY SEPARATED",
+
+
+
+"gender": "MALE",
+
+
+
+"educationalBackground": "POST GRADUATE",
+
+
+
+"numOfChildren": 7,
+
+
+
+"nationality": "FILIPINO",
+
+
+
+"personToNotify": "Jeannette Runolfsdottir",
+
+
+
+"ptnAddress": "Mariamstead Maine",
+
+
+
+"ptnContactNum": "09495858765",
+
+
+
+"mainSourceOfIncome": "FISH VENDING",
+
+
+
+"orgMemberYear": 1987
+
+
+},
+
+
+{
+
+
+
+"registrationType": "NEW REGISTRATION",
+
+
+
+"salutation": "MRS",
+
+
+
+"lastName": "Adams",
+
+
+
+"firstName": "Cathrine",
+
+
+
+"middleName": "Billie",
+
+
+
+"contactNum": "09397046280",
+
+
+
+"barangay": "Brgy. Tacas",
+
+
+
+"residentYear": 1985,
+
+
+
+"dateOfBirth": "07/27/80",
+
+
+
+"civilStatus": "SINGLE",
+
+
+
+"gender": "FEMALE",
+
+
+
+"educationalBackground": "POST GRADUATE",
+
+
+
+"numOfChildren": 6,
+
+
+
+"nationality": "FILIPINO",
+
+
+
+"personToNotify": "Antonio Cassin",
+
+
+
+"ptnAddress": "Aminafield Virginia",
+
+
+
+"ptnContactNum": "09403160685",
+
+
+
+"mainSourceOfIncome": "FISH VENDING",
+
+
+
+"orgMemberYear": 1983
+
+
+},
+
+
+{
+
+
+
+"registrationType": "RENEWAL",
+
+
+
+"salutation": "MR",
+
+
+
+"lastName": "Von",
+
+
+
+"firstName": "Hulda",
+
+
+
+"middleName": "Reagan",
+
+
+
+"contactNum": "09362199961",
+
+
+
+"barangay": "Brgy. Sooc",
+
+
+
+"residentYear": 2001,
+
+
+
+"dateOfBirth": "07/02/91",
+
+
+
+"civilStatus": "MARRIED",
+
+
+
+"gender": "MALE",
+
+
+
+"educationalBackground": "POST GRADUATE",
+
+
+
+"numOfChildren": 8,
+
+
+
+"nationality": "FILIPINO",
+
+
+
+"personToNotify": "Vicky Friesen",
+
+
+
+"ptnAddress": "North Danland Hawaii",
+
+
+
+"ptnContactNum": "09827624453",
+
+
+
+"mainSourceOfIncome": "CAPTURE FISHING",
+
+
+
+"orgMemberYear": 1994
+
+
+},
+
+
+{
+
+
+
+"registrationType": "NEW REGISTRATION",
+
+
+
+"salutation": "MR",
+
+
+
+"lastName": "Mraz",
+
+
+
+"firstName": "Jeremie",
+
+
+
+"middleName": "Shiloh",
+
+
+
+"contactNum": "09465324532",
+
+
+
+"barangay": "Brgy. Loboc",
+
+
+
+"residentYear": 1996,
+
+
+
+"dateOfBirth": "03/19/02",
+
+
+
+"civilStatus": "SINGLE",
+
+
+
+"gender": "MALE",
+
+
+
+"educationalBackground": "COLLEGE",
+
+
+
+"numOfChildren": 4,
+
+
+
+"nationality": "FILIPINO",
+
+
+
+"personToNotify": "Micheal Yost II",
+
+
+
+"ptnAddress": "South Eleonore North Carolina",
+
+
+
+"ptnContactNum": "09384364383",
+
+
+
+"mainSourceOfIncome": "FISH VENDING",
+
+
+
+"orgMemberYear": 1974
+
+
+},
+
+
+{
+
+
+
+"registrationType": "NEW REGISTRATION",
+
+
+
+"salutation": "MR",
+
+
+
+"lastName": "Huel",
+
+
+
+"firstName": "Lorna",
+
+
+
+"middleName": "Dakota",
+
+
+
+"contactNum": "09941156803",
+
+
+
+"barangay": "Brgy. Bantud",
+
+
+
+"residentYear": 1985,
+
+
+
+"dateOfBirth": "08/02/60",
+
+
+
+"civilStatus": "MARRIED",
+
+
+
+"gender": "MALE",
+
+
+
+"educationalBackground": "ELEMENTARY",
+
+
+
+"numOfChildren": 1,
+
+
+
+"nationality": "FILIPINO",
+
+
+
+"personToNotify": "Alvin Runte",
+
+
+
+"ptnAddress": "Ianmouth Nebraska",
+
+
+
+"ptnContactNum": "09262754861",
+
+
+
+"mainSourceOfIncome": "CAPTURE FISHING",
+
+
+
+"orgMemberYear": 2021
+
+
+}
+
+]
+}
