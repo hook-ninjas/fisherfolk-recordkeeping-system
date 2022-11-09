@@ -168,7 +168,7 @@ const addMemberSchema = object().shape({
     .oneOf([Gender.Female, Gender.Male])
     .required('Select an option for gender.'),
   age: string()
-    .matches(/^$|[0-9]\d(.\d+)?$|\s/, 'Age must be a number.')
+    .matches(/^$|\d{1,3}$/, 'Age must be a number.')
     .required('Enter age.'),
   dateOfBirth: string().nullable().required('Select date of birth.'),
   placeOfBirth: string().required('Enter place of birth.'),
@@ -178,7 +178,7 @@ const addMemberSchema = object().shape({
   ),
   religion: string(),
   numberOfChildren: string().matches(
-    /^$|[0-9]\d(.\d+)?$|\s/,
+    /^$|\d{1,2}$/,
     'Must be a number.'
   ),
   nationality: string()
@@ -203,7 +203,7 @@ const addMemberSchema = object().shape({
   otherMethodUsed: string(),
   orgName: string(),
   orgMemberSince: string().matches(
-    /^$|[0-9]\d(.\d+)?$|\s/,
+    /^\d{4}/,
     'Please enter year.'
   ),
   orgPosition: string(),
