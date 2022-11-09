@@ -44,6 +44,7 @@ input CreateFisherfolkInput {
   residentYear: Int!
   salutation: Salutation!
   signature: String!
+  status: FisherfolkStatus!
 }
 
 input CreateUserInput {
@@ -73,7 +74,6 @@ type Fisherfolk {
   dateOfBirth: DateTime
   educationalBackground: EducationalBackground
   firstName: String
-  fisherfolkStatus: FisherfolkStatus
   fullName: String
   gender: Gender
   id: Int!
@@ -104,6 +104,7 @@ type Fisherfolk {
   residentYear: Int
   salutation: Salutation
   signature: String
+  status: FisherfolkStatus
 }
 
 enum FisherfolkStatus {

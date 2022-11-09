@@ -51,7 +51,7 @@ const Fisherfolk = objectType({
     t.string('image');
     t.string('signature');
     t.field('registrationType', { type: RegistrationType });
-    t.field('fisherfolkStatus', { type: FisherfolkStatus });
+    t.field('status', { type: FisherfolkStatus });
     t.field('fullName', {
       type: 'String',
       resolve: (parent) => `${parent.firstName} ${parent.lastName}`,
