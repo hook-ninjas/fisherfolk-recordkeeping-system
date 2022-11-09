@@ -313,8 +313,6 @@ export default function AddMemberForm({
       },
     };
 
-    console.log(createFisherfolkInput.data);
-
     createFisherfolk({
       variables: {
         data: createFisherfolkInput.data,
@@ -784,7 +782,9 @@ export default function AddMemberForm({
               type="submit"
               variant="contained"
               fullWidth
-              onClick={handleSubmitForm}
+              onClick={(e) => {
+                handleSubmitForm(e);
+              }}
               disabled={isSubmitting}
               sx={buttonSx}
             >
