@@ -201,5 +201,12 @@ describe('Create Fisherfolk Record', () => {
       .should('contain', 'Data has been saved');
   });
 
-  // to add more test: check if applicant's name is on the fisherfolk list 
+  it('should see applicants name on fisherfolk list', () => {
+    const name = firstName + ' ' + lastName;
+
+    cy.visit('fisherfolk-record')
+      .get('table')
+      .should('be.visible')
+      .contains('td', name);
+  });
 });

@@ -7,7 +7,6 @@ const createFisherfolk = (input: CreateFisherfolkInput , ctx: Context) => {
   return ctx.prisma.fisherfolk.create({
     data: {
       ...input,
-      status: 'ACTIVE',
     },
   });
 };

@@ -24,6 +24,7 @@ import {
   CivilStatus,
   CreateFisherfolkDocument,
   EducationalBackground,
+  FisherfolkStatus,
   Gender,
   MutationCreateFisherfolkArgs,
   Nationality,
@@ -176,10 +177,7 @@ const addMemberSchema = object().shape({
     'Select an option for educational background.'
   ),
   religion: string(),
-  numberOfChildren: string().matches(
-    /^$|\d{1,2}$/,
-    'Must be a number.'
-  ),
+  numberOfChildren: string().matches(/^$|\d{1,2}$/, 'Must be a number.'),
   nationality: string()
     .nullable()
     .oneOf([Nationality.Filipino])
@@ -201,10 +199,7 @@ const addMemberSchema = object().shape({
   otherGearsUsed: string(),
   otherMethodUsed: string(),
   orgName: string(),
-  orgMemberSince: string().matches(
-    /^$|\d{4}$/,
-    'Please enter year.'
-  ),
+  orgMemberSince: string().matches(/^$|\d{4}$/, 'Please enter year.'),
   orgPosition: string(),
 });
 
@@ -267,7 +262,7 @@ export default function AddMemberForm({
     },
   });
 
-  const onSubmit = handleSubmit( async (data) => {
+  const onSubmit = handleSubmit(async (data) => {
     handleSubmitting();
     const createFisherfolkInput: MutationCreateFisherfolkArgs = {
       data: {
@@ -307,14 +302,14 @@ export default function AddMemberForm({
         otherSrcGear: data.otherGearUsed,
         otherSrcMethod: data.otherMethodUsed,
         otherSrcOfIncome: data.otherSourceOfIncome ?? null,
+        status: FisherfolkStatus.Active
       },
     };
 
     await createFisherfolk({
       variables: {
-        data: createFisherfolkInput.data
+        data: createFisherfolkInput.data,
       },
-
     });
   });
 
