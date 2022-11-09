@@ -2,8 +2,13 @@
 query SampleFisherfolkQuery {
   fisherfolks {
     id
-    fullName
+    lastName
+    firstName
+    middleName
+    age
     barangay
-    registrationDate
+    cityMunicipality
+    province
+    contactNum
   }
 }
