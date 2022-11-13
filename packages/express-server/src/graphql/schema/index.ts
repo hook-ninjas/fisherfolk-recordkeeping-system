@@ -9,6 +9,10 @@ import Models from './model';
 const DateTime = asNexusMethod(DateTimeResolver, 'date');
 
 const schema = makeSchema({
+  nonNullDefaults: {
+    input: true,
+    output: true,
+  },
   types: [...Models, ...Input, ...Mutation, ...Query, DateTime],
   outputs: {
     schema: `${__dirname}/../../schema.graphql`,
