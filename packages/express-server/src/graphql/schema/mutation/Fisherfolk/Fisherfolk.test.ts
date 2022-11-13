@@ -1,4 +1,14 @@
-import { CivilStatus, EducationalBackground, Fisherfolk, Gender, Nationality, RegistrationType, Salutation, SourceOfIncome, FisherfolkStatus } from '@prisma/client';
+import {
+  CivilStatus,
+  EducationalBackground,
+  Fisherfolk,
+  Gender,
+  Nationality,
+  RegistrationType,
+  Salutation,
+  SourceOfIncome,
+  FisherfolkStatus,
+} from '@prisma/client';
 import { Context, createMockContext } from '../../../context';
 import { createFisherfolk } from './Fisherfolk.resolver';
 import { MockContext } from '../../../../types/types';
@@ -50,15 +60,13 @@ test('should create fisherfolk record', async () => {
     orgPosition: 'Secretary',
     image: '',
     signature: '',
-    status: FisherfolkStatus.ACTIVE
+    status: FisherfolkStatus.ACTIVE,
   };
 
   mockCtx.prisma.fisherfolk.create.mockResolvedValue(fisherfolk);
 
   const input = {
-    registrationType: RegistrationType.NEW_REGISTRATION,
     registrationDate: new Date('2015-05-15'),
-    registrationNum: 89,
     lastName: 'San Jose',
     firstName: 'Mark',
     middleName: 'Santos',
@@ -74,32 +82,21 @@ test('should create fisherfolk record', async () => {
     religion: 'Catholic',
     gender: Gender.MALE,
     civilStatus: CivilStatus.SINGLE,
-    numOfChildren: null,
-    nationality: Nationality.FILIPINO,
+    numOfChildren: 0,
+    nationality: 'filipino',
     educationalBackground: EducationalBackground.COLLEGE,
     personToNotify: 'Nena San Jose',
     ptnRelationship: 'Spouse',
     ptnAddress: 'Brgy. Sambag, Jaro Iloilo City',
     ptnContactNum: '09991234567',
-    mainSrcOfIncome: SourceOfIncome.CAPTURE_FISHING,
-    otherSrcOfIncome: null,
-    mainSrcGear: '',
-    otherSrcGear: '',
-    mainSrcMethod: '',
-    otherSrcMethod: '',
-    orgName: 'Pamalakaya',
-    orgYearMember: 2000,
-    orgPosition: 'Secretary',
-    image: '',
-    signature: '',
-    status: FisherfolkStatus.ACTIVE
+    status: FisherfolkStatus.ACTIVE,
   };
 
   await expect(createFisherfolk(input, ctx)).resolves.toEqual(fisherfolk);
 
   expect(ctx.prisma.fisherfolk.create).toBeCalledWith({
     data: {
-      ...input
-    }
+      ...input,
+    },
   });
 });
