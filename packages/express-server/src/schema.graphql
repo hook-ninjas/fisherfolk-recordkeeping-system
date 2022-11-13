@@ -19,31 +19,20 @@ input CreateFisherfolkInput {
   educationalBackground: EducationalBackground!
   firstName: String!
   gender: Gender!
-  image: String!
   lastName: String!
-  mainSrcGear: String
-  mainSrcMethod: String
-  mainSrcOfIncome: SourceOfIncome!
   middleName: String!
-  nationality: Nationality!
-  numOfChildren: Int
-  orgName: String
-  orgPosition: String
-  orgYearMember: Int
-  otherSrcGear: String
-  otherSrcMethod: String
-  otherSrcOfIncome: SourceOfIncome
+  nationality: String!
+  numOfChildren: Int!
   personToNotify: String!
   placeOfBirth: String!
   province: String!
   ptnAddress: String!
   ptnContactNum: String!
   ptnRelationship: String!
-  registrationType: RegistrationType!
+  registrationDate: DateTime!
   religion: String!
   residentYear: Int!
   salutation: Salutation!
-  signature: String!
   status: FisherfolkStatus!
 }
 
@@ -66,45 +55,31 @@ enum EducationalBackground {
 }
 
 type Fisherfolk {
-  age: Int
-  barangay: String
-  cityMunicipality: String
-  civilStatus: CivilStatus
-  contactNum: String
-  dateOfBirth: DateTime
-  educationalBackground: EducationalBackground
-  firstName: String
-  fullName: String
-  gender: Gender
+  age: Int!
+  barangay: String!
+  cityMunicipality: String!
+  civilStatus: CivilStatus!
+  contactNum: String!
+  dateOfBirth: DateTime!
+  educationalBackground: EducationalBackground!
+  firstName: String!
+  gender: Gender!
   id: Int!
-  image: String
-  lastName: String
-  mainSrcGear: String
-  mainSrcMethod: String
-  mainSrcOfIncome: SourceOfIncome
-  middleName: String
-  nationality: Nationality
-  numOfChildren: Int
-  orgName: String
-  orgPosition: String
-  orgYearMember: Int
-  otherSrcGear: String
-  otherSrcMethod: String
-  otherSrcOfIncome: SourceOfIncome
-  personToNotify: String
-  placeOfBirth: String
-  province: String
-  ptnAddress: String
-  ptnContactNum: String
-  ptnRelationship: String
-  registrationDate: DateTime
-  registrationNum: Int
-  registrationType: RegistrationType
-  religion: String
-  residentYear: Int
-  salutation: Salutation
-  signature: String
-  status: FisherfolkStatus
+  lastName: String!
+  middleName: String!
+  nationality: String!
+  numOfChildren: Int!
+  personToNotify: String!
+  placeOfBirth: String!
+  province: String!
+  ptnAddress: String!
+  ptnContactNum: String!
+  ptnRelationship: String!
+  registrationDate: DateTime!
+  religion: String!
+  residentYear: Int!
+  salutation: Salutation!
+  status: FisherfolkStatus!
 }
 
 enum FisherfolkStatus {
@@ -119,34 +94,18 @@ enum Gender {
 }
 
 type Mutation {
-  createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk
-  createUser(data: CreateUserInput!): User
-}
-
-enum Nationality {
-  FILIPINO
+  createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
+  createUser(data: CreateUserInput!): User!
 }
 
 type Query {
   fisherfolks: [Fisherfolk!]!
 }
 
-enum RegistrationType {
-  NEW_REGISTRATION
-  RENEWAL
-}
-
 enum Salutation {
   MR
   MRS
   MS
-}
-
-enum SourceOfIncome {
-  AQUACULTURE
-  CAPTURE_FISHING
-  FISH_PROCESSING
-  FISH_VENDING
 }
 
 type User {
