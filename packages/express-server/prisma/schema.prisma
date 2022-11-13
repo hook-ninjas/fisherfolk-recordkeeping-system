@@ -11,14 +11,14 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @unique
-  password String
+  id                    Int                   @id @default(autoincrement())
+  username              String                @unique
+  password              String
   @@map("users")
 }
 
 model Fisherfolk {
-  id                    BigInt                   @id @default(autoincrement())
+  id                    BigInt                @id @default(autoincrement())
   registrationDate      DateTime              @default(now()) @map("registration_date")
   lastName              String                @map("last_name")
   firstName             String                @map("first_name")
@@ -57,7 +57,7 @@ model Fisherfolk {
 model Organization{
   id                    BigInt                @id @default(autoincrement())
   member                Fisherfolk            @relation(fields:[memberId], references:[id])
-  memberId              BigInt                   @map("fisherfolk_id")
+  memberId              BigInt                @map("fisherfolk_id")
   name                  String
   yearJoined            Int                   @map("year_joined")
   position              String
@@ -72,14 +72,14 @@ model Organization{
 model Livelihood{
   id                    BigInt                @id @default(autoincrement())
   fisherfolk            Fisherfolk            @relation(fields: [fisherfolkId], references: [id])
-  fisherfolkId          BigInt                   @map("fisherfolk_id")
+  fisherfolkId          BigInt                @map("fisherfolk_id")
   source                String
   isMain                Boolean               @map("is_main")
   isFishing             Boolean               @map("is_fishing")
   isarchive             Boolean               @map("is_archive")
   gears                 Gear[]
   vessels               Vessel[]
-  fishponds                 Fishpond[]                   
+  fishponds             Fishpond[]                   
 
   createdAt             DateTime              @default(now()) @map("created_at")
   updatedAt             DateTime              @updatedAt @map("updated_at")
@@ -147,7 +147,7 @@ model Vessel {
 model Fishpond {
   id                    BigInt                @id @default(autoincrement())
   livelihood            Livelihood            @relation(fields:[livelihoodId], references: [id])
-  livelihoodId          BigInt                   @map("livelihood_id")
+  livelihoodId          BigInt                @map("livelihood_id")
   length                Float
   width                 Float
   depth                 Float
