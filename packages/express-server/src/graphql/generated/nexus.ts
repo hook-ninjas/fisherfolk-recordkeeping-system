@@ -13,6 +13,10 @@ declare global {
      * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
      */
     date<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "DateTime";
+    /**
+     * The `BigInt` scalar type represents non-fractional signed whole numeric values.
+     */
+    bigInt<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "BigInt";
   }
 }
 declare global {
@@ -21,6 +25,10 @@ declare global {
      * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
      */
     date<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "DateTime";
+    /**
+     * The `BigInt` scalar type represents non-fractional signed whole numeric values.
+     */
+    bigInt<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "BigInt";
   }
 }
 
@@ -63,8 +71,8 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  CivilStatus: "LEGALLY_SEPARATED" | "MARRIED" | "SINGLE" | "WIDOWED"
-  EducationalBackground: "COLLEGE" | "ELEMENTARY" | "HIGH_SCHOOL" | "POST_GRADUATE" | "VOCATIONAL"
+  CivilStatus: "LEGALLYSEPARATED" | "MARRIED" | "SINGLE" | "WIDOWED"
+  EducationalBackground: "COLLEGE" | "ELEMENTARY" | "HIGHSCHOOL" | "POSTGRADUATE" | "VOCATIONAL"
   FisherfolkStatus: "ACTIVE" | "DECEASED" | "INACTIVE"
   Gender: "FEMALE" | "MALE"
   Salutation: "MR" | "MRS" | "MS"
@@ -76,6 +84,7 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  BigInt: any
   DateTime: any
 }
 
@@ -90,7 +99,8 @@ export interface NexusGenObjects {
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
     firstName: string; // String!
     gender: NexusGenEnums['Gender']; // Gender!
-    id: number; // Int!
+    id: NexusGenScalars['BigInt']; // BigInt!
+    isArchive: boolean; // Boolean!
     lastName: string; // String!
     middleName: string; // String!
     nationality: string; // String!
@@ -137,7 +147,8 @@ export interface NexusGenFieldTypes {
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
     firstName: string; // String!
     gender: NexusGenEnums['Gender']; // Gender!
-    id: number; // Int!
+    id: NexusGenScalars['BigInt']; // BigInt!
+    isArchive: boolean; // Boolean!
     lastName: string; // String!
     middleName: string; // String!
     nationality: string; // String!
@@ -179,7 +190,8 @@ export interface NexusGenFieldTypeNames {
     educationalBackground: 'EducationalBackground'
     firstName: 'String'
     gender: 'Gender'
-    id: 'Int'
+    id: 'BigInt'
+    isArchive: 'Boolean'
     lastName: 'String'
     middleName: 'String'
     nationality: 'String'

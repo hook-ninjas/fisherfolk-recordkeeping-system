@@ -2,8 +2,13 @@
 ### Do not make changes to this file directly
 
 
+"""
+The `BigInt` scalar type represents non-fractional signed whole numeric values.
+"""
+scalar BigInt
+
 enum CivilStatus {
-  LEGALLY_SEPARATED
+  LEGALLYSEPARATED
   MARRIED
   SINGLE
   WIDOWED
@@ -49,8 +54,8 @@ scalar DateTime
 enum EducationalBackground {
   COLLEGE
   ELEMENTARY
-  HIGH_SCHOOL
-  POST_GRADUATE
+  HIGHSCHOOL
+  POSTGRADUATE
   VOCATIONAL
 }
 
@@ -64,7 +69,8 @@ type Fisherfolk {
   educationalBackground: EducationalBackground!
   firstName: String!
   gender: Gender!
-  id: Int!
+  id: BigInt!
+  isArchive: Boolean!
   lastName: String!
   middleName: String!
   nationality: String!

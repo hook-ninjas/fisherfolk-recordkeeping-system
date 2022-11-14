@@ -10,7 +10,7 @@ import {
 const Fisherfolk = objectType({
   name: 'Fisherfolk',
   definition(t) {
-    t.nonNull.int('id');
+    t.nonNull.field('id', { type: 'BigInt' });
     t.field('registrationDate', { type: 'DateTime' });
     t.string('lastName');
     t.string('firstName');
@@ -35,6 +35,7 @@ const Fisherfolk = objectType({
     t.string('ptnAddress');
     t.string('ptnContactNum');
     t.field('status', { type: FisherfolkStatus });
+    t.boolean('isArchive');
   },
 });
 

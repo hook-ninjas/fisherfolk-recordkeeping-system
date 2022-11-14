@@ -12,17 +12,17 @@ export const Gender = enumType({
 
 export const CivilStatus = enumType({
   name: 'CivilStatus',
-  members: ['SINGLE', 'MARRIED', 'LEGALLY_SEPARATED', 'WIDOWED'],
+  members: ['SINGLE', 'MARRIED', 'LEGALLYSEPARATED', 'WIDOWED'],
 });
 
 export const EducationalBackground = enumType({
   name: 'EducationalBackground',
   members: [
     'ELEMENTARY',
-    'HIGH_SCHOOL',
+    'HIGHSCHOOL',
     'VOCATIONAL',
     'COLLEGE',
-    'POST_GRADUATE',
+    'POSTGRADUATE',
   ],
 });
 
