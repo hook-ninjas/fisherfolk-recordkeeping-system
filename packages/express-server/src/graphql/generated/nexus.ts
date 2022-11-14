@@ -13,6 +13,10 @@ declare global {
      * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
      */
     date<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "DateTime";
+    /**
+     * The `BigInt` scalar type represents non-fractional signed whole numeric values.
+     */
+    bigInt<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "BigInt";
   }
 }
 declare global {
@@ -21,6 +25,10 @@ declare global {
      * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
      */
     date<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "DateTime";
+    /**
+     * The `BigInt` scalar type represents non-fractional signed whole numeric values.
+     */
+    bigInt<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "BigInt";
   }
 }
 
@@ -40,31 +48,20 @@ export interface NexusGenInputs {
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
     firstName: string; // String!
     gender: NexusGenEnums['Gender']; // Gender!
-    image: string; // String!
     lastName: string; // String!
-    mainSrcGear?: string | null; // String
-    mainSrcMethod?: string | null; // String
-    mainSrcOfIncome: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
     middleName: string; // String!
-    nationality: NexusGenEnums['Nationality']; // Nationality!
-    numOfChildren?: number | null; // Int
-    orgName?: string | null; // String
-    orgPosition?: string | null; // String
-    orgYearMember?: number | null; // Int
-    otherSrcGear?: string | null; // String
-    otherSrcMethod?: string | null; // String
-    otherSrcOfIncome?: NexusGenEnums['SourceOfIncome'] | null; // SourceOfIncome
+    nationality: string; // String!
+    numOfChildren: number; // Int!
     personToNotify: string; // String!
     placeOfBirth: string; // String!
     province: string; // String!
     ptnAddress: string; // String!
     ptnContactNum: string; // String!
     ptnRelationship: string; // String!
-    registrationType: NexusGenEnums['RegistrationType']; // RegistrationType!
+    registrationDate: NexusGenScalars['DateTime']; // DateTime!
     religion: string; // String!
     residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
-    signature: string; // String!
     status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
   }
   CreateUserInput: { // input type
@@ -74,14 +71,11 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  CivilStatus: "LEGALLY_SEPARATED" | "MARRIED" | "SINGLE" | "WIDOWED"
-  EducationalBackground: "COLLEGE" | "ELEMENTARY" | "HIGH_SCHOOL" | "POST_GRADUATE" | "VOCATIONAL"
+  CivilStatus: "LEGALLYSEPARATED" | "MARRIED" | "SINGLE" | "WIDOWED"
+  EducationalBackground: "COLLEGE" | "ELEMENTARY" | "HIGHSCHOOL" | "POSTGRADUATE" | "VOCATIONAL"
   FisherfolkStatus: "ACTIVE" | "DECEASED" | "INACTIVE"
   Gender: "FEMALE" | "MALE"
-  Nationality: "FILIPINO"
-  RegistrationType: "NEW_REGISTRATION" | "RENEWAL"
   Salutation: "MR" | "MRS" | "MS"
-  SourceOfIncome: "AQUACULTURE" | "CAPTURE_FISHING" | "FISH_PROCESSING" | "FISH_VENDING"
 }
 
 export interface NexusGenScalars {
@@ -90,49 +84,38 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  BigInt: any
   DateTime: any
 }
 
 export interface NexusGenObjects {
   Fisherfolk: { // root type
-    age?: number | null; // Int
-    barangay?: string | null; // String
-    cityMunicipality?: string | null; // String
-    civilStatus?: NexusGenEnums['CivilStatus'] | null; // CivilStatus
-    contactNum?: string | null; // String
-    dateOfBirth?: NexusGenScalars['DateTime'] | null; // DateTime
-    educationalBackground?: NexusGenEnums['EducationalBackground'] | null; // EducationalBackground
-    firstName?: string | null; // String
-    gender?: NexusGenEnums['Gender'] | null; // Gender
-    id: number; // Int!
-    image?: string | null; // String
-    lastName?: string | null; // String
-    mainSrcGear?: string | null; // String
-    mainSrcMethod?: string | null; // String
-    mainSrcOfIncome?: NexusGenEnums['SourceOfIncome'] | null; // SourceOfIncome
-    middleName?: string | null; // String
-    nationality?: NexusGenEnums['Nationality'] | null; // Nationality
-    numOfChildren?: number | null; // Int
-    orgName?: string | null; // String
-    orgPosition?: string | null; // String
-    orgYearMember?: number | null; // Int
-    otherSrcGear?: string | null; // String
-    otherSrcMethod?: string | null; // String
-    otherSrcOfIncome?: NexusGenEnums['SourceOfIncome'] | null; // SourceOfIncome
-    personToNotify?: string | null; // String
-    placeOfBirth?: string | null; // String
-    province?: string | null; // String
-    ptnAddress?: string | null; // String
-    ptnContactNum?: string | null; // String
-    ptnRelationship?: string | null; // String
-    registrationDate?: NexusGenScalars['DateTime'] | null; // DateTime
-    registrationNum?: number | null; // Int
-    registrationType?: NexusGenEnums['RegistrationType'] | null; // RegistrationType
-    religion?: string | null; // String
-    residentYear?: number | null; // Int
-    salutation?: NexusGenEnums['Salutation'] | null; // Salutation
-    signature?: string | null; // String
-    status?: NexusGenEnums['FisherfolkStatus'] | null; // FisherfolkStatus
+    age: number; // Int!
+    barangay: string; // String!
+    cityMunicipality: string; // String!
+    civilStatus: NexusGenEnums['CivilStatus']; // CivilStatus!
+    contactNum: string; // String!
+    dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
+    educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
+    firstName: string; // String!
+    gender: NexusGenEnums['Gender']; // Gender!
+    id: NexusGenScalars['BigInt']; // BigInt!
+    isArchive: boolean; // Boolean!
+    lastName: string; // String!
+    middleName: string; // String!
+    nationality: string; // String!
+    numOfChildren: number; // Int!
+    personToNotify: string; // String!
+    placeOfBirth: string; // String!
+    province: string; // String!
+    ptnAddress: string; // String!
+    ptnContactNum: string; // String!
+    ptnRelationship: string; // String!
+    registrationDate: NexusGenScalars['DateTime']; // DateTime!
+    religion: string; // String!
+    residentYear: number; // Int!
+    salutation: NexusGenEnums['Salutation']; // Salutation!
+    status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
   }
   Mutation: {};
   Query: {};
@@ -155,49 +138,36 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnu
 
 export interface NexusGenFieldTypes {
   Fisherfolk: { // field return type
-    age: number | null; // Int
-    barangay: string | null; // String
-    cityMunicipality: string | null; // String
-    civilStatus: NexusGenEnums['CivilStatus'] | null; // CivilStatus
-    contactNum: string | null; // String
-    dateOfBirth: NexusGenScalars['DateTime'] | null; // DateTime
-    educationalBackground: NexusGenEnums['EducationalBackground'] | null; // EducationalBackground
-    firstName: string | null; // String
-    fullName: string | null; // String
-    gender: NexusGenEnums['Gender'] | null; // Gender
-    id: number; // Int!
-    image: string | null; // String
-    lastName: string | null; // String
-    mainSrcGear: string | null; // String
-    mainSrcMethod: string | null; // String
-    mainSrcOfIncome: NexusGenEnums['SourceOfIncome'] | null; // SourceOfIncome
-    middleName: string | null; // String
-    nationality: NexusGenEnums['Nationality'] | null; // Nationality
-    numOfChildren: number | null; // Int
-    orgName: string | null; // String
-    orgPosition: string | null; // String
-    orgYearMember: number | null; // Int
-    otherSrcGear: string | null; // String
-    otherSrcMethod: string | null; // String
-    otherSrcOfIncome: NexusGenEnums['SourceOfIncome'] | null; // SourceOfIncome
-    personToNotify: string | null; // String
-    placeOfBirth: string | null; // String
-    province: string | null; // String
-    ptnAddress: string | null; // String
-    ptnContactNum: string | null; // String
-    ptnRelationship: string | null; // String
-    registrationDate: NexusGenScalars['DateTime'] | null; // DateTime
-    registrationNum: number | null; // Int
-    registrationType: NexusGenEnums['RegistrationType'] | null; // RegistrationType
-    religion: string | null; // String
-    residentYear: number | null; // Int
-    salutation: NexusGenEnums['Salutation'] | null; // Salutation
-    signature: string | null; // String
-    status: NexusGenEnums['FisherfolkStatus'] | null; // FisherfolkStatus
+    age: number; // Int!
+    barangay: string; // String!
+    cityMunicipality: string; // String!
+    civilStatus: NexusGenEnums['CivilStatus']; // CivilStatus!
+    contactNum: string; // String!
+    dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
+    educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
+    firstName: string; // String!
+    gender: NexusGenEnums['Gender']; // Gender!
+    id: NexusGenScalars['BigInt']; // BigInt!
+    isArchive: boolean; // Boolean!
+    lastName: string; // String!
+    middleName: string; // String!
+    nationality: string; // String!
+    numOfChildren: number; // Int!
+    personToNotify: string; // String!
+    placeOfBirth: string; // String!
+    province: string; // String!
+    ptnAddress: string; // String!
+    ptnContactNum: string; // String!
+    ptnRelationship: string; // String!
+    registrationDate: NexusGenScalars['DateTime']; // DateTime!
+    religion: string; // String!
+    residentYear: number; // Int!
+    salutation: NexusGenEnums['Salutation']; // Salutation!
+    status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
   }
   Mutation: { // field return type
-    createFisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
-    createUser: NexusGenRootTypes['User'] | null; // User
+    createFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
+    createUser: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type
     fisherfolks: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
@@ -219,23 +189,13 @@ export interface NexusGenFieldTypeNames {
     dateOfBirth: 'DateTime'
     educationalBackground: 'EducationalBackground'
     firstName: 'String'
-    fullName: 'String'
     gender: 'Gender'
-    id: 'Int'
-    image: 'String'
+    id: 'BigInt'
+    isArchive: 'Boolean'
     lastName: 'String'
-    mainSrcGear: 'String'
-    mainSrcMethod: 'String'
-    mainSrcOfIncome: 'SourceOfIncome'
     middleName: 'String'
-    nationality: 'Nationality'
+    nationality: 'String'
     numOfChildren: 'Int'
-    orgName: 'String'
-    orgPosition: 'String'
-    orgYearMember: 'Int'
-    otherSrcGear: 'String'
-    otherSrcMethod: 'String'
-    otherSrcOfIncome: 'SourceOfIncome'
     personToNotify: 'String'
     placeOfBirth: 'String'
     province: 'String'
@@ -243,12 +203,9 @@ export interface NexusGenFieldTypeNames {
     ptnContactNum: 'String'
     ptnRelationship: 'String'
     registrationDate: 'DateTime'
-    registrationNum: 'Int'
-    registrationType: 'RegistrationType'
     religion: 'String'
     residentYear: 'Int'
     salutation: 'Salutation'
-    signature: 'String'
     status: 'FisherfolkStatus'
   }
   Mutation: { // field return type name

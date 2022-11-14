@@ -4,19 +4,14 @@ import {
   EducationalBackground,
   FisherfolkStatus,
   Gender,
-  Nationality,
-  RegistrationType,
   Salutation,
-  SourceOfIncome,
 } from '../enums/';
 
 const Fisherfolk = objectType({
   name: 'Fisherfolk',
   definition(t) {
-    t.nonNull.int('id');
-    t.int('registrationNum');
+    t.nonNull.field('id', { type: 'BigInt' });
     t.field('registrationDate', { type: 'DateTime' });
-    t.field('registrationType', { type: RegistrationType });
     t.string('lastName');
     t.string('firstName');
     t.string('middleName');
@@ -32,30 +27,15 @@ const Fisherfolk = objectType({
     t.string('religion');
     t.field('gender', { type: Gender });
     t.field('civilStatus', { type: CivilStatus });
-    t.nullable.int('numOfChildren');
-    t.field('nationality', { type: Nationality });
+    t.int('numOfChildren');
+    t.string('nationality');
     t.field('educationalBackground', { type: EducationalBackground });
     t.string('personToNotify');
     t.string('ptnRelationship');
     t.string('ptnAddress');
     t.string('ptnContactNum');
-    t.field('mainSrcOfIncome', { type: SourceOfIncome });
-    t.nullable.field('otherSrcOfIncome', { type: SourceOfIncome });
-    t.nullable.string('mainSrcGear');
-    t.nullable.string('otherSrcGear');
-    t.nullable.string('mainSrcMethod');
-    t.nullable.string('otherSrcMethod');
-    t.nullable.string('orgName');
-    t.nullable.int('orgYearMember');
-    t.nullable.string('orgPosition');
-    t.string('image');
-    t.string('signature');
-    t.field('registrationType', { type: RegistrationType });
     t.field('status', { type: FisherfolkStatus });
-    t.field('fullName', {
-      type: 'String',
-      resolve: (parent) => `${parent.firstName} ${parent.lastName}`,
-    });
+    t.boolean('isArchive');
   },
 });
 

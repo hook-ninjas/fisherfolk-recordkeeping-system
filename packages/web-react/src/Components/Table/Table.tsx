@@ -12,13 +12,13 @@ import {
   TableRow,
 } from '@mui/material';
 import React from 'react';
-import { SampleFisherfolkQueryDocument } from '../../graphql/generated';
+// import { SampleFisherfolkQueryDocument } from '../../graphql/generated';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { replaceUnderscore } from '../../utils/utils';
 import Loading from '../Loading/Loading';
 
 export function RecordsTable() {
-  const { loading, error, data } = useQuery(SampleFisherfolkQueryDocument);
+  // const { loading, error, data } = useQuery(SampleFisherfolkQueryDocument);
 
   const [drop, setDropDown] = React.useState<null | HTMLElement>(null);
   const handleDismissDropdown = () => setDropDown(null);
@@ -26,14 +26,14 @@ export function RecordsTable() {
     setDropDown(event.currentTarget);
   const open = Boolean(drop);
 
-  if (error) {
-    console.log(error);
-    return <h1>Error Failed to Fetch!!!</h1>;
-  }
+  // if (error) {
+  //   console.log(error);
+  //   return <h1>Error Failed to Fetch!!!</h1>;
+  // }
 
-  if (loading) {
-    <Loading />;
-  }
+  // if (loading) {
+  //   <Loading />;
+  // }
 
   return (
     <TableContainer component={Paper}>
@@ -64,7 +64,7 @@ export function RecordsTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data &&
+          {/* {data &&
             data.fisherfolks.map((fisherfolk) => {
               const {
                 id,
@@ -118,7 +118,7 @@ export function RecordsTable() {
                   </TableCell>
                 </TableRow>
               );
-            })}
+            })} */}
         </TableBody>
       </Table>
     </TableContainer>

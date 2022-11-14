@@ -2,8 +2,13 @@
 ### Do not make changes to this file directly
 
 
+"""
+The `BigInt` scalar type represents non-fractional signed whole numeric values.
+"""
+scalar BigInt
+
 enum CivilStatus {
-  LEGALLY_SEPARATED
+  LEGALLYSEPARATED
   MARRIED
   SINGLE
   WIDOWED
@@ -19,31 +24,20 @@ input CreateFisherfolkInput {
   educationalBackground: EducationalBackground!
   firstName: String!
   gender: Gender!
-  image: String!
   lastName: String!
-  mainSrcGear: String
-  mainSrcMethod: String
-  mainSrcOfIncome: SourceOfIncome!
   middleName: String!
-  nationality: Nationality!
-  numOfChildren: Int
-  orgName: String
-  orgPosition: String
-  orgYearMember: Int
-  otherSrcGear: String
-  otherSrcMethod: String
-  otherSrcOfIncome: SourceOfIncome
+  nationality: String!
+  numOfChildren: Int!
   personToNotify: String!
   placeOfBirth: String!
   province: String!
   ptnAddress: String!
   ptnContactNum: String!
   ptnRelationship: String!
-  registrationType: RegistrationType!
+  registrationDate: DateTime!
   religion: String!
   residentYear: Int!
   salutation: Salutation!
-  signature: String!
   status: FisherfolkStatus!
 }
 
@@ -60,51 +54,38 @@ scalar DateTime
 enum EducationalBackground {
   COLLEGE
   ELEMENTARY
-  HIGH_SCHOOL
-  POST_GRADUATE
+  HIGHSCHOOL
+  POSTGRADUATE
   VOCATIONAL
 }
 
 type Fisherfolk {
-  age: Int
-  barangay: String
-  cityMunicipality: String
-  civilStatus: CivilStatus
-  contactNum: String
-  dateOfBirth: DateTime
-  educationalBackground: EducationalBackground
-  firstName: String
-  fullName: String
-  gender: Gender
-  id: Int!
-  image: String
-  lastName: String
-  mainSrcGear: String
-  mainSrcMethod: String
-  mainSrcOfIncome: SourceOfIncome
-  middleName: String
-  nationality: Nationality
-  numOfChildren: Int
-  orgName: String
-  orgPosition: String
-  orgYearMember: Int
-  otherSrcGear: String
-  otherSrcMethod: String
-  otherSrcOfIncome: SourceOfIncome
-  personToNotify: String
-  placeOfBirth: String
-  province: String
-  ptnAddress: String
-  ptnContactNum: String
-  ptnRelationship: String
-  registrationDate: DateTime
-  registrationNum: Int
-  registrationType: RegistrationType
-  religion: String
-  residentYear: Int
-  salutation: Salutation
-  signature: String
-  status: FisherfolkStatus
+  age: Int!
+  barangay: String!
+  cityMunicipality: String!
+  civilStatus: CivilStatus!
+  contactNum: String!
+  dateOfBirth: DateTime!
+  educationalBackground: EducationalBackground!
+  firstName: String!
+  gender: Gender!
+  id: BigInt!
+  isArchive: Boolean!
+  lastName: String!
+  middleName: String!
+  nationality: String!
+  numOfChildren: Int!
+  personToNotify: String!
+  placeOfBirth: String!
+  province: String!
+  ptnAddress: String!
+  ptnContactNum: String!
+  ptnRelationship: String!
+  registrationDate: DateTime!
+  religion: String!
+  residentYear: Int!
+  salutation: Salutation!
+  status: FisherfolkStatus!
 }
 
 enum FisherfolkStatus {
@@ -119,34 +100,18 @@ enum Gender {
 }
 
 type Mutation {
-  createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk
-  createUser(data: CreateUserInput!): User
-}
-
-enum Nationality {
-  FILIPINO
+  createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
+  createUser(data: CreateUserInput!): User!
 }
 
 type Query {
   fisherfolks: [Fisherfolk!]!
 }
 
-enum RegistrationType {
-  NEW_REGISTRATION
-  RENEWAL
-}
-
 enum Salutation {
   MR
   MRS
   MS
-}
-
-enum SourceOfIncome {
-  AQUACULTURE
-  CAPTURE_FISHING
-  FISH_PROCESSING
-  FISH_VENDING
 }
 
 type User {
