@@ -43,7 +43,7 @@ model Fisherfolk {
   ptnRelationship       String                   @map("ptn_relationship")
   ptnAddress            String                   @map("ptn_address")
   ptnContactNum         String                   @map("ptn_contact_num")
-  status                FisherfolkStatus
+  status                FisherfolkStatus         @default(ACTIVE)
   isArchive             Boolean                  @default(false) @map("is_archive")
   livelihoods           Livelihood[]
   organizations         FisherfolkOrganization[]
