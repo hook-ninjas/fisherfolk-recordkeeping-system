@@ -56,7 +56,7 @@ model Fisherfolk {
 
 model Organization{
   id                    BigInt                @id @default(autoincrement())
-  member                Fisherfolk            @relation(fields:[memberId], references:[id])
+  member                Fisherfolk?            @relation(fields:[memberId], references:[id])
   memberId              BigInt                @map("fisherfolk_id")
   name                  String
   yearJoined            Int                   @map("year_joined")
@@ -66,8 +66,6 @@ model Organization{
   updatedAt             DateTime              @updatedAt @map("updated_at")
   @@map("organizations")
 }
-
-
 
 model Livelihood{
   id                    BigInt                @id @default(autoincrement())
@@ -86,20 +84,6 @@ model Livelihood{
   @@map("livelihoods")
 }
 
-model Permit{
-  certificateNum        String                @unique @map("certificate_num")
-  registeredAt          DateTime              @default(now()) @map("registered_at")
-  renewedAt             DateTime              @map("renewed_at")
-  expiresOn             DateTime              @map("expires_on")
-  gears                 Gear[]
-  vessels               Vessel[]
-  isArchive             Boolean               @map("is_archive")
-
-  createdAt             DateTime              @default(now()) @map("created_at")
-  updatedAt             DateTime              @updatedAt @map("updated_at")
-  @@map("permit")
-}
-
 model Gear {
   id                    BigInt                @id @default(autoincrement())
   livelihood            Livelihood            @relation(fields:[livelihoodId], references: [id])
@@ -108,6 +92,10 @@ model Gear {
   permitId              String                
   classification        String
   isArchive             Boolean               @map("is_archive")
+  certificateNum        String                @unique @map("certificate_num")
+  registeredAt          DateTime              @default(now()) @map("registered_at")
+  renewedAt             DateTime              @map("renewed_at")
+  expiresOn             DateTime              @map("expires_on")
   images                Image[]
   
   createdAt             DateTime              @default(now()) @map("created_at")
@@ -136,7 +124,11 @@ model Vessel {
   netTonnage            Float                 @map("net_tonnage")
   engineMake            String                @map("engine_make")
   serialNumber          String                @map("serial_number")
-  horsepower            Float                 
+  horsepower            Float
+  certificateNum        String                @unique @map("certificate_num")
+  registeredAt          DateTime              @default(now()) @map("registered_at")
+  renewedAt             DateTime              @map("renewed_at")
+  expiresOn             DateTime              @map("expires_on")                 
   images                Image[]
 
   createdAt             DateTime              @default(now()) @map("created_at")
@@ -166,7 +158,7 @@ model Image {
   fisherfolkId          BigInt                @map("fisherfolk_id")
   gear                  Gear?                 @relation(fields:[gearId], references:[id])
   gearId                BigInt                @map("gear_id")
-  vessel                Vessel                @relation(fields:[vesselId], references:[id])
+  vessel                Vessel?               @relation(fields:[vesselId], references:[id])
   vesselId              BigInt                @map("vessel_id")
   name                  String
   url                   String
