@@ -3,10 +3,7 @@ import {
   EducationalBackground,
   Fisherfolk,
   Gender,
-  Nationality,
-  RegistrationType,
   Salutation,
-  SourceOfIncome,
   FisherfolkStatus,
 } from '@prisma/client';
 import { Context, createMockContext } from '../../../context';
@@ -23,7 +20,7 @@ beforeEach(() => {
 
 test('should create fisherfolk record', async () => {
   const fisherfolk: Fisherfolk = {
-    id: 1,
+    id: BigInt(1),
     registrationDate: new Date('2015-05-15'),
     lastName: 'San Jose',
     firstName: 'Mark',
@@ -48,6 +45,9 @@ test('should create fisherfolk record', async () => {
     ptnAddress: 'Brgy. Sambag, Jaro Iloilo City',
     ptnContactNum: '09991234567',
     status: FisherfolkStatus.ACTIVE,
+    isArchive: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   };
 
   mockCtx.prisma.fisherfolk.create.mockResolvedValue(fisherfolk);
@@ -77,6 +77,9 @@ test('should create fisherfolk record', async () => {
     ptnAddress: 'Brgy. Sambag, Jaro Iloilo City',
     ptnContactNum: '09991234567',
     status: FisherfolkStatus.ACTIVE,
+    isArchive: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   };
 
   await expect(createFisherfolk(input, ctx)).resolves.toEqual(fisherfolk);
