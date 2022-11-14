@@ -44,7 +44,7 @@ model Fisherfolk {
   ptnAddress            String                   @map("ptn_address")
   ptnContactNum         String                   @map("ptn_contact_num")
   status                FisherfolkStatus
-  isArchive             Boolean                  @map("is_archive")
+  isArchive             Boolean                  @default(false) @map("is_archive")
   livelihoods           Livelihood[]
   organizations         FisherfolkOrganization[]
   governmentAid         FisherfolkAid[]
@@ -117,8 +117,8 @@ model Livelihood {
   fisherfolkId BigInt         @map("fisherfolk_id")
   type         SourceOfIncome
   description  String
-  isMain       Boolean        @map("is_main")
-  isarchive    Boolean        @map("is_archive")
+  isMain       Boolean        @default(true) @map("is_main")
+  isArchive    Boolean        @default(false) @map("is_archive")
   permits      Permit[]
   fishponds    Fishpond[]
 
@@ -135,7 +135,7 @@ model Permit {
   registeredAt      DateTime   @default(now()) @map("registered_at")
   renewedAt         DateTime   @map("renewed_at")
   expiresOn         DateTime   @map("expires_on")
-  expired           Boolean
+  expired           Boolean    @default(false)
   gears             Gear[]
   vessels           Vessel[]
 
@@ -150,7 +150,7 @@ model Gear {
   permit         Permit  @relation(fields: [permitId], references: [certificateNumber])
   permitId       String
   classification String
-  isArchive      Boolean @map("is_archive")
+  isArchive      Boolean @default(false) @map("is_archive")
   certificateNum String  @unique @map("certificate_num")
   images         Image[]
 
@@ -201,7 +201,7 @@ model Fishpond {
   depth        Float
   location     String
   production   String
-  isArchive    Boolean    @map("is_archive")
+  isArchive    Boolean    @default(false) @map("is_archive")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -221,7 +221,7 @@ model Image {
   url          String
   format       String
   version      String
-  isArchive    Boolean     @map("is_archive")
+  isArchive    Boolean     @default(false) @map("is_archive")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
