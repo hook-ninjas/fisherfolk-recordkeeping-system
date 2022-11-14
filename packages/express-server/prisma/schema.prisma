@@ -168,7 +168,7 @@ model Vessel {
   name              String
   type              String
   placeBuilt        String   @map("place_built")
-  yearBuilt         String   @map("year_built")
+  yearBuilt         Int      @map("year_built")
   material          Material
   registeredLength  Float    @map("registered_length")
   registeredBreadth Float    @map("registered_breadth")
