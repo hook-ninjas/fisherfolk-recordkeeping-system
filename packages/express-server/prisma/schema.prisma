@@ -24,6 +24,7 @@ model Fisherfolk {
   lastName              String                   @map("last_name")
   firstName             String                   @map("first_name")
   middleName            String                   @map("middle_name")
+  appellation           String
   age                   Int
   salutation            Salutation
   barangay              String

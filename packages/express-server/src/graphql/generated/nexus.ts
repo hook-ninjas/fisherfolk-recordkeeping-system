@@ -40,6 +40,7 @@ declare global {
 export interface NexusGenInputs {
   CreateFisherfolkInput: { // input type
     age: number; // Int!
+    appellation: string; // String!
     barangay: string; // String!
     cityMunicipality: string; // String!
     civilStatus: NexusGenEnums['CivilStatus']; // CivilStatus!
@@ -91,6 +92,7 @@ export interface NexusGenScalars {
 export interface NexusGenObjects {
   Fisherfolk: { // root type
     age: number; // Int!
+    appellation: string; // String!
     barangay: string; // String!
     cityMunicipality: string; // String!
     civilStatus: NexusGenEnums['CivilStatus']; // CivilStatus!
@@ -139,6 +141,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnu
 export interface NexusGenFieldTypes {
   Fisherfolk: { // field return type
     age: number; // Int!
+    appellation: string; // String!
     barangay: string; // String!
     cityMunicipality: string; // String!
     civilStatus: NexusGenEnums['CivilStatus']; // CivilStatus!
@@ -182,6 +185,7 @@ export interface NexusGenFieldTypes {
 export interface NexusGenFieldTypeNames {
   Fisherfolk: { // field return type name
     age: 'Int'
+    appellation: 'String'
     barangay: 'String'
     cityMunicipality: 'String'
     civilStatus: 'CivilStatus'

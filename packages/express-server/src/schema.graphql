@@ -16,6 +16,7 @@ enum CivilStatus {
 
 input CreateFisherfolkInput {
   age: Int!
+  appellation: String!
   barangay: String!
   cityMunicipality: String!
   civilStatus: CivilStatus!
@@ -61,6 +62,7 @@ enum EducationalBackground {
 
 type Fisherfolk {
   age: Int!
+  appellation: String!
   barangay: String!
   cityMunicipality: String!
   civilStatus: CivilStatus!
