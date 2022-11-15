@@ -15,6 +15,7 @@ const Fisherfolk = objectType({
     t.string('lastName');
     t.string('firstName');
     t.string('middleName');
+    t.string('appellation');
     t.int('age');
     t.field('salutation', { type: Salutation });
     t.string('barangay');

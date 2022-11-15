@@ -13,6 +13,7 @@ const CreateFisherfolkInput = inputObjectType({
     t.nonNull.string('lastName');
     t.nonNull.string('firstName');
     t.nonNull.string('middleName');
+    t.nonNull.string('appellation');
     t.nonNull.field('registrationDate', { type: 'DateTime' });
     t.nonNull.int('age');
     t.nonNull.field('salutation', { type: Salutation });
