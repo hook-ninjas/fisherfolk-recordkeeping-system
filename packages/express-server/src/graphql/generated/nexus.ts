@@ -72,11 +72,12 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  CivilStatus: "LEGALLYSEPARATED" | "MARRIED" | "SINGLE" | "WIDOWED"
-  EducationalBackground: "COLLEGE" | "ELEMENTARY" | "HIGHSCHOOL" | "POSTGRADUATE" | "VOCATIONAL"
-  FisherfolkStatus: "ACTIVE" | "DECEASED" | "INACTIVE"
-  Gender: "FEMALE" | "MALE"
-  Salutation: "MR" | "MRS" | "MS"
+  CivilStatus: "LegallySeparated" | "Married" | "Single" | "Widowed"
+  EducationalBackground: "College" | "Elementary" | "HighSchool" | "PostGraduate" | "Vocational"
+  FisherfolkStatus: "Active" | "Deceased" | "Inactive"
+  Gender: "Female" | "Male"
+  Salutation: "Mr" | "Mrs" | "Ms"
+  SourceOfIncome: "AquaCulture" | "CaptureFishing" | "FishProcessing" | "FishVending" | "Others"
 }
 
 export interface NexusGenScalars {
@@ -119,6 +120,16 @@ export interface NexusGenObjects {
     salutation: NexusGenEnums['Salutation']; // Salutation!
     status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
   }
+  Livelihood: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    description: string; // String!
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    id: NexusGenScalars['BigInt']; // BigInt!
+    isArchive: boolean; // Boolean!
+    isMain: boolean; // Boolean!
+    type: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
   Mutation: {};
   Query: {};
   User: { // root type
@@ -153,6 +164,7 @@ export interface NexusGenFieldTypes {
     id: NexusGenScalars['BigInt']; // BigInt!
     isArchive: boolean; // Boolean!
     lastName: string; // String!
+    livelihoods: NexusGenRootTypes['Livelihood'][]; // [Livelihood!]!
     middleName: string; // String!
     nationality: string; // String!
     numOfChildren: number; // Int!
@@ -167,6 +179,16 @@ export interface NexusGenFieldTypes {
     residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
     status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
+  }
+  Livelihood: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    description: string; // String!
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    id: NexusGenScalars['BigInt']; // BigInt!
+    isArchive: boolean; // Boolean!
+    isMain: boolean; // Boolean!
+    type: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Mutation: { // field return type
     createFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
@@ -197,6 +219,7 @@ export interface NexusGenFieldTypeNames {
     id: 'BigInt'
     isArchive: 'Boolean'
     lastName: 'String'
+    livelihoods: 'Livelihood'
     middleName: 'String'
     nationality: 'String'
     numOfChildren: 'Int'
@@ -211,6 +234,16 @@ export interface NexusGenFieldTypeNames {
     residentYear: 'Int'
     salutation: 'Salutation'
     status: 'FisherfolkStatus'
+  }
+  Livelihood: { // field return type name
+    createdAt: 'DateTime'
+    description: 'String'
+    fisherfolkId: 'BigInt'
+    id: 'BigInt'
+    isArchive: 'Boolean'
+    isMain: 'Boolean'
+    type: 'SourceOfIncome'
+    updatedAt: 'DateTime'
   }
   Mutation: { // field return type name
     createFisherfolk: 'Fisherfolk'
