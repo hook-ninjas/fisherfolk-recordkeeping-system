@@ -44,8 +44,12 @@ model Fisherfolk {
   ptnRelationship       String                   @map("ptn_relationship")
   ptnAddress            String                   @map("ptn_address")
   ptnContactNum         String                   @map("ptn_contact_num")
-  status                FisherfolkStatus         @default(ACTIVE)
+  status                FisherfolkStatus         @default(Active)
   isArchive             Boolean                  @default(false) @map("is_archive")
+  gears                 Gear[]
+  vessels               Vessel[]
+  fishponds             Fishpond[]
+  permit                Permit?
   livelihoods           Livelihood[]
   organizations         FisherfolkOrganization[]
   governmentAid         FisherfolkAid[]
@@ -120,8 +124,6 @@ model Livelihood {
   description  String
   isMain       Boolean        @default(true) @map("is_main")
   isArchive    Boolean        @default(false) @map("is_archive")
-  permits      Permit[]
-  fishponds    Fishpond[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -130,13 +132,13 @@ model Livelihood {
 }
 
 model Permit {
-  certificateNumber String     @id @map("certificate_number")
-  livelihood        Livelihood @relation(fields: [livelihoodId], references: [id])
-  livelihoodId      BigInt     @map("livelihood_id")
-  registeredAt      DateTime   @default(now()) @map("registered_at")
-  renewedAt         DateTime   @map("renewed_at")
-  expiresOn         DateTime   @map("expires_on")
-  expired           Boolean    @default(false)
+  certificateNumber String      @id @map("certificate_number")
+  fisherfolk        Fisherfolk? @relation(fields: [fisherfolkId], references: [id])
+  fisherfolkId      BigInt?     @unique @map("fisherfolk_id")
+  registeredAt      DateTime    @default(now()) @map("registered_at")
+  renewedAt         DateTime    @map("renewed_at")
+  expiresOn         DateTime    @map("expires_on")
+  expired           Boolean     @default(false)
   gears             Gear[]
   vessels           Vessel[]
 
@@ -147,12 +149,14 @@ model Permit {
 }
 
 model Gear {
-  id             BigInt  @id @default(autoincrement())
-  permit         Permit  @relation(fields: [permitId], references: [certificateNumber])
-  permitId       String
-  classification String
-  isArchive      Boolean @default(false) @map("is_archive")
-  certificateNum String  @unique @map("certificate_num")
+  id           BigInt     @id @default(autoincrement())
+  permit       Permit?    @relation(fields: [permitId], references: [certificateNumber])
+  permitId       String?
+  fisherfolk   Fisherfolk @relation(fields: [fisherfolkId], references: [id])
+  fisherfolkId BigInt
+  classification GearClassification
+  type           String
+  isArchive      Boolean            @default(false) @map("is_archive")
   images         Image[]
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -162,30 +166,29 @@ model Gear {
 }
 
 model Vessel {
-  id                BigInt   @id @default(autoincrement())
-  permit            Permit   @relation(fields: [permitId], references: [certificateNumber])
-  permitId          String
+  id                BigInt     @id @default(autoincrement())
+  fisherfolk        Fisherfolk @relation(fields: [fisherfolkId], references: [id])
+  fisherfolkId      BigInt
+  permit            Permit?    @relation(fields: [permitId], references: [certificateNumber])
+  permitId          String?
+  mfvrNumber        String     @map("mfvr_num")
   homeport          String
   name              String
   type              String
-  placeBuilt        String   @map("place_built")
-  yearBuilt         Int      @map("year_built")
+  placeBuilt        String     @map("place_built")
+  yearBuilt         Int        @map("year_built")
   material          Material
-  registeredLength  Float    @map("registered_length")
-  registeredBreadth Float    @map("registered_breadth")
-  registeredDepth   Float    @map("registered_depth")
-  tonnageLength     Float    @map("tonnage_length")
-  tonnageBreadth    Float    @map("tonnage_breadth")
-  tonnageDepth      Float    @map("tonnage_depth")
-  grossTonnage      Float    @map("gross_tonnage")
-  netTonnage        Float    @map("net_tonnage")
-  engineMake        String   @map("engine_make")
-  serialNumber      String   @map("serial_number")
+  registeredLength  Float      @map("registered_length")
+  registeredBreadth Float      @map("registered_breadth")
+  registeredDepth   Float      @map("registered_depth")
+  tonnageLength     Float      @map("tonnage_length")
+  tonnageBreadth    Float      @map("tonnage_breadth")
+  tonnageDepth      Float      @map("tonnage_depth")
+  grossTonnage      Float      @map("gross_tonnage")
+  netTonnage        Float      @map("net_tonnage")
+  engineMake        String     @map("engine_make")
+  serialNumber      String     @map("serial_number")
   horsepower        Float
-  certificateNum    String   @unique @map("certificate_num")
-  registeredAt      DateTime @default(now()) @map("registered_at")
-  renewedAt         DateTime @map("renewed_at")
-  expiresOn         DateTime @map("expires_on")
   images            Image[]
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -196,8 +199,8 @@ model Vessel {
 
 model Fishpond {
   id           BigInt     @id @default(autoincrement())
-  livelihood   Livelihood @relation(fields: [livelihoodId], references: [id])
-  livelihoodId BigInt     @map("livelihood_id")
+  fisherfolk   Fisherfolk @relation(fields: [fisherfolkId], references: [id])
+  fisherfolkId BigInt     @map("fisherfolk_id")
   length       Float
   width        Float
   depth        Float
@@ -214,11 +217,11 @@ model Fishpond {
 model Image {
   id           String      @id @default(cuid())
   fisherfolk   Fisherfolk? @relation(fields: [fisherfolkId], references: [id])
-  fisherfolkId BigInt      @map("fisherfolk_id")
+  fisherfolkId BigInt?     @map("fisherfolk_id")
   gear         Gear?       @relation(fields: [gearId], references: [id])
-  gearId       BigInt      @map("gear_id")
+  gearId       BigInt?     @map("gear_id")
   vessel       Vessel?     @relation(fields: [vesselId], references: [id])
-  vesselId     BigInt      @map("vessel_id")
+  vesselId     BigInt?     @map("vessel_id")
   name         String
   url          String
   format       String
@@ -232,61 +235,75 @@ model Image {
 }
 
 enum Salutation {
-  MR
-  MS
-  MRS
+  Mr
+  Ms
+  Mrs
 
   @@map("salutation")
 }
 
 enum Gender {
-  MALE
-  FEMALE
+  Male
+  Female
 
   @@map("gender")
 }
 
 enum CivilStatus {
-  SINGLE
-  MARRIED
-  LEGALLYSEPARATED @map("LEGALLY_SEPARATED")
-  WIDOWED
+  Single
+  Married
+  LegallySeparated @map("LEGALLY_SEPARATED")
+  Widowed
 
   @@map("civil_status")
 }
 
 enum EducationalBackground {
-  ELEMENTARY
-  HIGHSCHOOL   @map("HIGH_SCHOOL")
-  VOCATIONAL
-  COLLEGE
-  POSTGRADUATE @map("POST_GRADUATE")
+  Elementary
+  HighSchool   @map("HIGH_SCHOOL")
+  Vocational
+  College
+  PostGraduate @map("POST_GRADUATE")
 
   @@map("educational_background")
 }
 
 enum SourceOfIncome {
-  CAPTUREFISHING @map("CAPTURE_FISHING")
-  AQUACULTURE
-  FISHVENDING    @map("FISH_VENDING")
-  FISHPROCESSING @map("FISH_PROCESSING")
-  OTHERS
+  CaptureFishing @map("CAPTURE_FISHING")
+  AquaCulture
+  FishVending    @map("FISH_VENDING")
+  FishProcessing @map("FISH_PROCESSING")
+  Others
 
   @@map("source_of_income")
 }
 
 enum FisherfolkStatus {
-  ACTIVE
-  INACTIVE
-  DECEASED
+  Active
+  Inactive
+  Deceased
 
   @@map("fisherfolk_status")
 }
 
 enum Material {
-  WOOD
-  FIBERGLASS
-  COMPOSITE
+  Wood
+  Fiberglass
+  Composite
 
   @@map("material")
+}
+
+enum GearClassification {
+  HookAndLine   @map("HOOK_AND_LINE")
+  GillNets      @map("GILL_NETS")
+  SeineNets     @map("SEINE_NETS")
+  PotsAndTraps  @map("POTS_AND_TRAPS")
+  LiftNets      @map("LIFT_NETS")
+  FallingGear   @map("FALLING_GEAR")
+  ScoopNets     @map("SCOOP_NETS")
+  Miscellaneous @map("MISCELLANEOUS")
+  Others        @map("OTHERS")
+
+  @@map("gear_classification")
 }

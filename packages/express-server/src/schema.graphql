@@ -8,10 +8,10 @@ The `BigInt` scalar type represents non-fractional signed whole numeric values.
 scalar BigInt
 
 enum CivilStatus {
-  LEGALLYSEPARATED
-  MARRIED
-  SINGLE
-  WIDOWED
+  LegallySeparated
+  Married
+  Single
+  Widowed
 }
 
 input CreateFisherfolkInput {
@@ -53,11 +53,11 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 scalar DateTime
 
 enum EducationalBackground {
-  COLLEGE
-  ELEMENTARY
-  HIGHSCHOOL
-  POSTGRADUATE
-  VOCATIONAL
+  College
+  Elementary
+  HighSchool
+  PostGraduate
+  Vocational
 }
 
 type Fisherfolk {
@@ -74,6 +74,7 @@ type Fisherfolk {
   id: BigInt!
   isArchive: Boolean!
   lastName: String!
+  livelihoods: [Livelihood!]!
   middleName: String!
   nationality: String!
   numOfChildren: Int!
@@ -91,14 +92,25 @@ type Fisherfolk {
 }
 
 enum FisherfolkStatus {
-  ACTIVE
-  DECEASED
-  INACTIVE
+  Active
+  Deceased
+  Inactive
 }
 
 enum Gender {
-  FEMALE
-  MALE
+  Female
+  Male
+}
+
+type Livelihood {
+  createdAt: DateTime!
+  description: String!
+  fisherfolkId: BigInt!
+  id: BigInt!
+  isArchive: Boolean!
+  isMain: Boolean!
+  type: SourceOfIncome!
+  updatedAt: DateTime!
 }
 
 type Mutation {
@@ -111,9 +123,17 @@ type Query {
 }
 
 enum Salutation {
-  MR
-  MRS
-  MS
+  Mr
+  Mrs
+  Ms
+}
+
+enum SourceOfIncome {
+  AquaCulture
+  CaptureFishing
+  FishProcessing
+  FishVending
+  Others
 }
 
 type User {

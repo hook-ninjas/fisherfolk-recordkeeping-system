@@ -1,11 +1,12 @@
-import { objectType } from 'nexus';
+import { list, objectType } from 'nexus';
+import { Context } from '../../../types/types';
 import {
   CivilStatus,
   EducationalBackground,
   FisherfolkStatus,
   Gender,
   Salutation,
-} from '../enums/';
+} from '../enums';
 
 const Fisherfolk = objectType({
   name: 'Fisherfolk',
@@ -37,6 +38,14 @@ const Fisherfolk = objectType({
     t.string('ptnContactNum');
     t.field('status', { type: FisherfolkStatus });
     t.boolean('isArchive');
+    t.field('livelihoods', {
+      type: list('Livelihood'),
+      resolve: ({ id }, _, context: Context) => {
+        return context.prisma.fisherfolk
+          .findUnique({ where: { id: id } })
+          .livelihoods();
+      },
+    });
   },
 });
 

@@ -2,33 +2,44 @@ import { enumType } from 'nexus';
 
 export const Salutation = enumType({
   name: 'Salutation',
-  members: ['MR', 'MRS', 'MS'],
+  members: ['Mr', 'Mrs', 'Ms'],
 });
 
 export const Gender = enumType({
   name: 'Gender',
-  members: ['MALE', 'FEMALE'],
+  members: ['Male', 'Female'],
 });
 
 export const CivilStatus = enumType({
   name: 'CivilStatus',
-  members: ['SINGLE', 'MARRIED', 'LEGALLYSEPARATED', 'WIDOWED'],
+  members: ['Single', 'Married', 'LegallySeparated', 'Widowed'],
 });
 
 export const EducationalBackground = enumType({
   name: 'EducationalBackground',
   members: [
-    'ELEMENTARY',
-    'HIGHSCHOOL',
-    'VOCATIONAL',
-    'COLLEGE',
-    'POSTGRADUATE',
+    'Elementary',
+    'HighSchool',
+    'Vocational',
+    'College',
+    'PostGraduate',
   ],
 });
 
 export const FisherfolkStatus = enumType({
   name: 'FisherfolkStatus',
-  members: ['ACTIVE', 'INACTIVE', 'DECEASED'],
+  members: ['Active', 'Inactive', 'Deceased'],
+});
+
+export const SourceOfIncome = enumType({
+  name: 'SourceOfIncome',
+  members: [
+    'CaptureFishing',
+    'AquaCulture',
+    'FishVending',
+    'FishProcessing',
+    'Others',
+  ],
 });
 
 export default [
@@ -37,4 +48,5 @@ export default [
   FisherfolkStatus,
   Gender,
   Salutation,
+  SourceOfIncome,
 ];
