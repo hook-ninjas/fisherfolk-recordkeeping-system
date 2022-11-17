@@ -73,6 +73,7 @@ type Fisherfolk {
   firstName: String!
   gender: Gender!
   id: BigInt!
+  images: [Image]
   isArchive: Boolean!
   lastName: String!
   livelihoods: [Livelihood!]!
@@ -103,6 +104,19 @@ enum FisherfolkStatus {
 enum Gender {
   Female
   Male
+}
+
+type Image {
+  createdAt: DateTime!
+  fisherfolk: Fisherfolk
+  fisherfolkId: BigInt!
+  format: String!
+  id: String!
+  isArchive: Boolean!
+  name: String!
+  updatedAt: DateTime!
+  url: String!
+  version: String!
 }
 
 type Livelihood {

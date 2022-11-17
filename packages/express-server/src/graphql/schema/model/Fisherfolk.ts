@@ -8,6 +8,7 @@ import {
   Gender,
   Salutation,
 } from '../enums';
+import Image from './Image';
 import Organization from './Organization';
 
 const Fisherfolk = objectType({
@@ -17,7 +18,7 @@ const Fisherfolk = objectType({
   },
   name: 'Fisherfolk',
   definition(t) {
-    t.field('id', { type: 'BigInt' });
+    t.bigInt('id');
     t.field('registrationDate', { type: 'DateTime' });
     t.string('lastName');
     t.string('firstName');
@@ -58,6 +59,12 @@ const Fisherfolk = objectType({
         return context.prisma.fisherfolk
           .findUnique({ where: id })
           .organizations();
+      },
+    });
+    t.field('images', {
+      type: nullableList(Image),
+      resolve: ({ id }, _, context) => {
+        return context.prisma.fisherfolk.findUnique({ where: id }).images();
       },
     });
     t.field('createdAt', { type: 'DateTime' });

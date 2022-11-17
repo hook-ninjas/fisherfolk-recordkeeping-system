@@ -122,6 +122,17 @@ export interface NexusGenObjects {
     status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
+  Image: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    format: string; // String!
+    id: string; // String!
+    isArchive: boolean; // Boolean!
+    name: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    url: string; // String!
+    version: string; // String!
+  }
   Livelihood: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
@@ -173,6 +184,7 @@ export interface NexusGenFieldTypes {
     firstName: string; // String!
     gender: NexusGenEnums['Gender']; // Gender!
     id: NexusGenScalars['BigInt']; // BigInt!
+    images: Array<NexusGenRootTypes['Image'] | null> | null; // [Image]
     isArchive: boolean; // Boolean!
     lastName: string; // String!
     livelihoods: NexusGenRootTypes['Livelihood'][]; // [Livelihood!]!
@@ -192,6 +204,18 @@ export interface NexusGenFieldTypes {
     salutation: NexusGenEnums['Salutation']; // Salutation!
     status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
+  Image: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    fisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    format: string; // String!
+    id: string; // String!
+    isArchive: boolean; // Boolean!
+    name: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    url: string; // String!
+    version: string; // String!
   }
   Livelihood: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -240,6 +264,7 @@ export interface NexusGenFieldTypeNames {
     firstName: 'String'
     gender: 'Gender'
     id: 'BigInt'
+    images: 'Image'
     isArchive: 'Boolean'
     lastName: 'String'
     livelihoods: 'Livelihood'
@@ -259,6 +284,18 @@ export interface NexusGenFieldTypeNames {
     salutation: 'Salutation'
     status: 'FisherfolkStatus'
     updatedAt: 'DateTime'
+  }
+  Image: { // field return type name
+    createdAt: 'DateTime'
+    fisherfolk: 'Fisherfolk'
+    fisherfolkId: 'BigInt'
+    format: 'String'
+    id: 'String'
+    isArchive: 'Boolean'
+    name: 'String'
+    updatedAt: 'DateTime'
+    url: 'String'
+    version: 'String'
   }
   Livelihood: { // field return type name
     createdAt: 'DateTime'
