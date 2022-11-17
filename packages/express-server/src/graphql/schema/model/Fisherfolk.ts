@@ -1,5 +1,5 @@
-import { list, objectType } from 'nexus';
-import { Context } from '../../../types/types';
+import { objectType, nullable } from 'nexus';
+import { nullableList } from '../../../utils/utils';
 import {
   CivilStatus,
   EducationalBackground,
@@ -7,11 +7,20 @@ import {
   Gender,
   Salutation,
 } from '../enums';
+import Image from './Image';
+import Livelihood from './Livelihood';
+import Organization from './Organization';
+import Permit from './Permit';
+import Queue from './Queue';
 
 const Fisherfolk = objectType({
+  nonNullDefaults: {
+    input: true,
+    output: true,
+  },
   name: 'Fisherfolk',
   definition(t) {
-    t.nonNull.field('id', { type: 'BigInt' });
+    t.bigInt('id');
     t.field('registrationDate', { type: 'DateTime' });
     t.string('lastName');
     t.string('firstName');
@@ -39,13 +48,43 @@ const Fisherfolk = objectType({
     t.field('status', { type: FisherfolkStatus });
     t.boolean('isArchive');
     t.field('livelihoods', {
-      type: list('Livelihood'),
-      resolve: ({ id }, _, context: Context) => {
+      type: nullableList(Livelihood),
+      resolve: ({ id }, _, context) => {
         return context.prisma.fisherfolk
-          .findUnique({ where: { id: id } })
+          .findUnique({ where: id })
           .livelihoods();
       },
     });
+    t.field('organizations', {
+      type: nullableList(Organization),
+      resolve: ({ id }, _, context) => {
+        return context.prisma.fisherfolk
+          .findUnique({ where: id })
+          .organizations();
+      },
+    });
+    t.field('permit', {
+      type: nullable(Permit),
+      resolve: ({ id }, _, context) => {
+        return context.prisma.fisherfolk.findUnique({ where: id }).permit();
+      },
+    });
+    t.field('governmentAid', {
+      type: nullableList(Queue),
+      resolve: ({ id }, _, context) => {
+        return context.prisma.fisherfolk
+          .findUnique({ where: id })
+          .governmentAid();
+      },
+    });
+    t.field('images', {
+      type: nullableList(Image),
+      resolve: ({ id }, _, context) => {
+        return context.prisma.fisherfolk.findUnique({ where: id }).images();
+      },
+    });
+    t.field('createdAt', { type: 'DateTime' });
+    t.field('updatedAt', { type: 'DateTime' });
   },
 });
 
