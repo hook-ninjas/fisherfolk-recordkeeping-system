@@ -67,17 +67,22 @@ type Fisherfolk {
   cityMunicipality: String!
   civilStatus: CivilStatus!
   contactNum: String!
+  createdAt: DateTime!
   dateOfBirth: DateTime!
   educationalBackground: EducationalBackground!
   firstName: String!
   gender: Gender!
+  governmentAid: [Queue]
   id: BigInt!
+  images: [Image]
   isArchive: Boolean!
   lastName: String!
-  livelihoods: [Livelihood!]!
+  livelihoods: [Livelihood]
   middleName: String!
   nationality: String!
   numOfChildren: Int!
+  organizations: [Organization]
+  permit: Permit
   personToNotify: String!
   placeOfBirth: String!
   province: String!
@@ -89,6 +94,7 @@ type Fisherfolk {
   residentYear: Int!
   salutation: Salutation!
   status: FisherfolkStatus!
+  updatedAt: DateTime!
 }
 
 enum FisherfolkStatus {
@@ -121,9 +127,33 @@ enum Gender {
   Male
 }
 
+type GovernmentAid {
+  createdAt: DateTime!
+  endDate: DateTime!
+  id: Int!
+  slot: Int!
+  startDate: DateTime!
+  title: String!
+  updatedAt: DateTime!
+}
+
+type Image {
+  createdAt: DateTime!
+  fisherfolk: Fisherfolk
+  fisherfolkId: BigInt!
+  format: String!
+  id: String!
+  isArchive: Boolean!
+  name: String!
+  updatedAt: DateTime!
+  url: String!
+  version: String!
+}
+
 type Livelihood {
   createdAt: DateTime!
   description: String!
+  fisherfolk: Fisherfolk
   fisherfolkId: BigInt!
   id: BigInt!
   isArchive: Boolean!
@@ -143,8 +173,39 @@ type Mutation {
   createUser(data: CreateUserInput!): User!
 }
 
+type Organization {
+  createdAt: DateTime!
+  fisherfolks: [Fisherfolk!]
+  id: BigInt!
+  name: String!
+  position: String!
+  updatedAt: DateTime!
+  yearJoined: Int!
+}
+
+type Permit {
+  certificateNumber: String!
+  expired: Boolean!
+  expiresOn: DateTime!
+  fisherfolk: Fisherfolk
+  fisherfolkId: BigInt!
+  registeredAt: DateTime!
+  renewedAt: DateTime!
+}
+
 type Query {
   fisherfolks: [Fisherfolk!]!
+}
+
+type Queue {
+  createdAt: DateTime!
+  date: DateTime!
+  fisherfolk: Fisherfolk
+  fisherfolkId: BigInt!
+  governmentAid: GovernmentAid
+  governmentAidId: Int!
+  queueNumber: Int!
+  updatedAt: DateTime!
 }
 
 enum Salutation {

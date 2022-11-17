@@ -1,5 +1,6 @@
-import { objectType } from 'nexus';
+import { objectType, nullable } from 'nexus';
 import { SourceOfIncome } from '../enums';
+import Fisherfolk from './Fisherfolk';
 
 const Livelihood = objectType({
   name: 'Livelihood',
@@ -12,6 +13,12 @@ const Livelihood = objectType({
     t.boolean('isArchive');
     t.field('createdAt', { type: 'DateTime' });
     t.field('updatedAt', { type: 'DateTime' });
+    t.field('fisherfolk', {
+      type: nullable(Fisherfolk),
+      resolve: ({ id }, _, context) => {
+        return context.prisma.livelihood.findUnique({ where: id }).fisherfolk();
+      },
+    });
   },
 });
 

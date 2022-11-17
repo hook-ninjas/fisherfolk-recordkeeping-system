@@ -19,40 +19,40 @@ model User {
 }
 
 model Fisherfolk {
-  id                    BigInt                   @id @default(autoincrement())
-  registrationDate      DateTime                 @default(now()) @map("registration_date")
-  lastName              String                   @map("last_name")
-  firstName             String                   @map("first_name")
-  middleName            String                   @map("middle_name")
+  id                    BigInt                @id @default(autoincrement())
+  registrationDate      DateTime              @default(now()) @map("registration_date")
+  lastName              String                @map("last_name")
+  firstName             String                @map("first_name")
+  middleName            String                @map("middle_name")
   appellation           String
   age                   Int
   salutation            Salutation
   barangay              String
-  cityMunicipality      String                   @map("city_municipality")
+  cityMunicipality      String                @map("city_municipality")
   province              String
-  contactNum            String                   @map("contact_num")
-  residentYear          Int                      @map("resident_year")
-  dateOfBirth           DateTime                 @map("date_of_birth")
-  placeOfBirth          String                   @map("place_of_birth")
+  contactNum            String                @map("contact_num")
+  residentYear          Int                   @map("resident_year")
+  dateOfBirth           DateTime              @map("date_of_birth")
+  placeOfBirth          String                @map("place_of_birth")
   religion              String
   gender                Gender
-  civilStatus           CivilStatus              @map("civil_status")
-  numOfChildren         Int                      @map("num_of_children")
+  civilStatus           CivilStatus           @map("civil_status")
+  numOfChildren         Int                   @map("num_of_children")
   nationality           String
-  educationalBackground EducationalBackground    @map("educational_background")
-  personToNotify        String                   @map("person_to_notify")
-  ptnRelationship       String                   @map("ptn_relationship")
-  ptnAddress            String                   @map("ptn_address")
-  ptnContactNum         String                   @map("ptn_contact_num")
-  status                FisherfolkStatus         @default(Active)
-  isArchive             Boolean                  @default(false) @map("is_archive")
+  educationalBackground EducationalBackground @map("educational_background")
+  personToNotify        String                @map("person_to_notify")
+  ptnRelationship       String                @map("ptn_relationship")
+  ptnAddress            String                @map("ptn_address")
+  ptnContactNum         String                @map("ptn_contact_num")
+  status                FisherfolkStatus      @default(Active)
+  isArchive             Boolean               @default(false) @map("is_archive")
   gears                 Gear[]
   vessels               Vessel[]
   fishponds             Fishpond[]
   permit                Permit?
   livelihoods           Livelihood[]
-  organizations         FisherfolkOrganization[]
-  governmentAid         FisherfolkAid[]
+  organizations         Organization[]
+  governmentAid         Queue[]
   images                Image[]
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -62,9 +62,11 @@ model Fisherfolk {
 }
 
 model Organization {
-  id          Int                      @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   name        String
-  fisherfolks FisherfolkOrganization[]
+  yearJoined  Int          @map("year_joined")
+  position    String
+  fisherfolks Fisherfolk[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -73,12 +75,12 @@ model Organization {
 }
 
 model GovernmentAid {
-  id          Int             @id
+  id          Int      @id
   title       String
   slot        Int
-  startDate   DateTime        @map("start_date")
-  endDate     DateTime        @map("end_date")
-  fisherfolks FisherfolkAid[]
+  startDate   DateTime @map("start_date")
+  endDate     DateTime @map("end_date")
+  fisherfolks Queue[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -86,25 +88,10 @@ model GovernmentAid {
   @@map("government_aid")
 }
 
-model FisherfolkOrganization {
-  fisherfolk     Fisherfolk   @relation(fields: [fisherfolkId], references: [id])
-  fisherfolkId   BigInt       @map("fisherfolk_id")
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId Int          @map("organization_id")
-  yearJoined     Int          @map("year_joined")
-  position       String
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@id(fields: [fisherfolkId, organizationId])
-  @@map("fisherfolk_organizations")
-}
-
-model FisherfolkAid {
+model Queue {
   fisherfolk      Fisherfolk    @relation(fields: [fisherfolkId], references: [id])
   fisherfolkId    BigInt        @map("fisherfolk_id")
-  GovernmentAid   GovernmentAid @relation(fields: [governmentAidId], references: [id])
+  governmentAid   GovernmentAid @relation(fields: [governmentAidId], references: [id])
   governmentAidId Int           @map("government_aid_id")
   queueNumber     Int           @map("queue_number")
   date            DateTime
@@ -113,7 +100,7 @@ model FisherfolkAid {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@id(fields: [fisherfolkId, governmentAidId])
-  @@map("fisherfolk_aid")
+  @@map("queue")
 }
 
 model Livelihood {
@@ -149,11 +136,11 @@ model Permit {
 }
 
 model Gear {
-  id           BigInt     @id @default(autoincrement())
-  permit       Permit?    @relation(fields: [permitId], references: [certificateNumber])
+  id             BigInt             @id @default(autoincrement())
+  permit         Permit?            @relation(fields: [permitId], references: [certificateNumber])
   permitId       String?
-  fisherfolk   Fisherfolk @relation(fields: [fisherfolkId], references: [id])
-  fisherfolkId BigInt
+  fisherfolk     Fisherfolk         @relation(fields: [fisherfolkId], references: [id])
+  fisherfolkId   BigInt
   classification GearClassification
   type           String
   isArchive      Boolean            @default(false) @map("is_archive")

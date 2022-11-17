@@ -100,6 +100,7 @@ export interface NexusGenObjects {
     cityMunicipality: string; // String!
     civilStatus: NexusGenEnums['CivilStatus']; // CivilStatus!
     contactNum: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
     firstName: string; // String!
@@ -121,6 +122,27 @@ export interface NexusGenObjects {
     residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
     status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
+  GovernmentAid: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    endDate: NexusGenScalars['DateTime']; // DateTime!
+    id: number; // Int!
+    slot: number; // Int!
+    startDate: NexusGenScalars['DateTime']; // DateTime!
+    title: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
+  Image: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    format: string; // String!
+    id: string; // String!
+    isArchive: boolean; // Boolean!
+    name: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    url: string; // String!
+    version: string; // String!
   }
   Gear: { // root type
     classification: NexusGenEnums['GearClassification']; // GearClassification!
@@ -138,7 +160,31 @@ export interface NexusGenObjects {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Mutation: {};
+  Organization: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: NexusGenScalars['BigInt']; // BigInt!
+    name: string; // String!
+    position: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    yearJoined: number; // Int!
+  }
+  Permit: { // root type
+    certificateNumber: string; // String!
+    expired: boolean; // Boolean!
+    expiresOn: NexusGenScalars['DateTime']; // DateTime!
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    registeredAt: NexusGenScalars['DateTime']; // DateTime!
+    renewedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
   Query: {};
+  Queue: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    date: NexusGenScalars['DateTime']; // DateTime!
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    governmentAidId: number; // Int!
+    queueNumber: number; // Int!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
   User: { // root type
     id: number; // Int!
     password: string; // String!
@@ -185,17 +231,22 @@ export interface NexusGenFieldTypes {
     cityMunicipality: string; // String!
     civilStatus: NexusGenEnums['CivilStatus']; // CivilStatus!
     contactNum: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
     firstName: string; // String!
     gender: NexusGenEnums['Gender']; // Gender!
+    governmentAid: Array<NexusGenRootTypes['Queue'] | null> | null; // [Queue]
     id: NexusGenScalars['BigInt']; // BigInt!
+    images: Array<NexusGenRootTypes['Image'] | null> | null; // [Image]
     isArchive: boolean; // Boolean!
     lastName: string; // String!
-    livelihoods: NexusGenRootTypes['Livelihood'][]; // [Livelihood!]!
+    livelihoods: Array<NexusGenRootTypes['Livelihood'] | null> | null; // [Livelihood]
     middleName: string; // String!
     nationality: string; // String!
     numOfChildren: number; // Int!
+    organizations: Array<NexusGenRootTypes['Organization'] | null> | null; // [Organization]
+    permit: NexusGenRootTypes['Permit'] | null; // Permit
     personToNotify: string; // String!
     placeOfBirth: string; // String!
     province: string; // String!
@@ -207,6 +258,28 @@ export interface NexusGenFieldTypes {
     residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
     status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
+  GovernmentAid: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    endDate: NexusGenScalars['DateTime']; // DateTime!
+    id: number; // Int!
+    slot: number; // Int!
+    startDate: NexusGenScalars['DateTime']; // DateTime!
+    title: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
+  Image: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    fisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    format: string; // String!
+    id: string; // String!
+    isArchive: boolean; // Boolean!
+    name: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    url: string; // String!
+    version: string; // String!
   }
   Gear: { // field return type
     classification: NexusGenEnums['GearClassification']; // GearClassification!
@@ -217,6 +290,7 @@ export interface NexusGenFieldTypes {
   Livelihood: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
+    fisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
     fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
     id: NexusGenScalars['BigInt']; // BigInt!
     isArchive: boolean; // Boolean!
@@ -228,8 +302,36 @@ export interface NexusGenFieldTypes {
     createFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     createUser: NexusGenRootTypes['User']; // User!
   }
+  Organization: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    fisherfolks: NexusGenRootTypes['Fisherfolk'][] | null; // [Fisherfolk!]
+    id: NexusGenScalars['BigInt']; // BigInt!
+    name: string; // String!
+    position: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    yearJoined: number; // Int!
+  }
+  Permit: { // field return type
+    certificateNumber: string; // String!
+    expired: boolean; // Boolean!
+    expiresOn: NexusGenScalars['DateTime']; // DateTime!
+    fisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    registeredAt: NexusGenScalars['DateTime']; // DateTime!
+    renewedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
   Query: { // field return type
     fisherfolks: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
+  }
+  Queue: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    date: NexusGenScalars['DateTime']; // DateTime!
+    fisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    governmentAid: NexusGenRootTypes['GovernmentAid'] | null; // GovernmentAid
+    governmentAidId: number; // Int!
+    queueNumber: number; // Int!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   User: { // field return type
     id: number; // Int!
@@ -268,17 +370,22 @@ export interface NexusGenFieldTypeNames {
     cityMunicipality: 'String'
     civilStatus: 'CivilStatus'
     contactNum: 'String'
+    createdAt: 'DateTime'
     dateOfBirth: 'DateTime'
     educationalBackground: 'EducationalBackground'
     firstName: 'String'
     gender: 'Gender'
+    governmentAid: 'Queue'
     id: 'BigInt'
+    images: 'Image'
     isArchive: 'Boolean'
     lastName: 'String'
     livelihoods: 'Livelihood'
     middleName: 'String'
     nationality: 'String'
     numOfChildren: 'Int'
+    organizations: 'Organization'
+    permit: 'Permit'
     personToNotify: 'String'
     placeOfBirth: 'String'
     province: 'String'
@@ -290,6 +397,28 @@ export interface NexusGenFieldTypeNames {
     residentYear: 'Int'
     salutation: 'Salutation'
     status: 'FisherfolkStatus'
+    updatedAt: 'DateTime'
+  }
+  GovernmentAid: { // field return type name
+    createdAt: 'DateTime'
+    endDate: 'DateTime'
+    id: 'Int'
+    slot: 'Int'
+    startDate: 'DateTime'
+    title: 'String'
+    updatedAt: 'DateTime'
+  }
+  Image: { // field return type name
+    createdAt: 'DateTime'
+    fisherfolk: 'Fisherfolk'
+    fisherfolkId: 'BigInt'
+    format: 'String'
+    id: 'String'
+    isArchive: 'Boolean'
+    name: 'String'
+    updatedAt: 'DateTime'
+    url: 'String'
+    version: 'String'
   }
   Gear: { // field return type name
     classification: 'GearClassification'
@@ -300,6 +429,7 @@ export interface NexusGenFieldTypeNames {
   Livelihood: { // field return type name
     createdAt: 'DateTime'
     description: 'String'
+    fisherfolk: 'Fisherfolk'
     fisherfolkId: 'BigInt'
     id: 'BigInt'
     isArchive: 'Boolean'
@@ -311,8 +441,36 @@ export interface NexusGenFieldTypeNames {
     createFisherfolk: 'Fisherfolk'
     createUser: 'User'
   }
+  Organization: { // field return type name
+    createdAt: 'DateTime'
+    fisherfolks: 'Fisherfolk'
+    id: 'BigInt'
+    name: 'String'
+    position: 'String'
+    updatedAt: 'DateTime'
+    yearJoined: 'Int'
+  }
+  Permit: { // field return type name
+    certificateNumber: 'String'
+    expired: 'Boolean'
+    expiresOn: 'DateTime'
+    fisherfolk: 'Fisherfolk'
+    fisherfolkId: 'BigInt'
+    registeredAt: 'DateTime'
+    renewedAt: 'DateTime'
+  }
   Query: { // field return type name
     fisherfolks: 'Fisherfolk'
+  }
+  Queue: { // field return type name
+    createdAt: 'DateTime'
+    date: 'DateTime'
+    fisherfolk: 'Fisherfolk'
+    fisherfolkId: 'BigInt'
+    governmentAid: 'GovernmentAid'
+    governmentAidId: 'Int'
+    queueNumber: 'Int'
+    updatedAt: 'DateTime'
   }
   User: { // field return type name
     id: 'Int'
