@@ -75,6 +75,7 @@ export interface NexusGenEnums {
   CivilStatus: "LegallySeparated" | "Married" | "Single" | "Widowed"
   EducationalBackground: "College" | "Elementary" | "HighSchool" | "PostGraduate" | "Vocational"
   FisherfolkStatus: "Active" | "Deceased" | "Inactive"
+  GearClassification: "FallingGear" | "GillNets" | "HookAndLine" | "LiftNets" | "Miscellaneous" | "Others" | "PotsAndTraps" | "ScoopNets" | "SeineNets"
   Gender: "Female" | "Male"
   Material: "Composite" | "FiberGlass" | "Wood"
   Salutation: "Mr" | "Mrs" | "Ms"
@@ -120,6 +121,11 @@ export interface NexusGenObjects {
     residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
     status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
+  }
+  Gear: { // root type
+    classification: NexusGenEnums['GearClassification']; // GearClassification!
+    id: NexusGenScalars['BigInt']; // BigInt!
+    type: string; // String!
   }
   Livelihood: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -202,6 +208,12 @@ export interface NexusGenFieldTypes {
     salutation: NexusGenEnums['Salutation']; // Salutation!
     status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
   }
+  Gear: { // field return type
+    classification: NexusGenEnums['GearClassification']; // GearClassification!
+    fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
+    id: NexusGenScalars['BigInt']; // BigInt!
+    type: string; // String!
+  }
   Livelihood: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
@@ -226,7 +238,7 @@ export interface NexusGenFieldTypes {
   }
   Vessel: { // field return type
     engineMake: string; // String!
-    fisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
+    fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     grossTonnage: number; // Float!
     homeport: string; // String!
     horsepower: number; // Float!
@@ -278,6 +290,12 @@ export interface NexusGenFieldTypeNames {
     residentYear: 'Int'
     salutation: 'Salutation'
     status: 'FisherfolkStatus'
+  }
+  Gear: { // field return type name
+    classification: 'GearClassification'
+    fisherfolk: 'Fisherfolk'
+    id: 'BigInt'
+    type: 'String'
   }
   Livelihood: { // field return type name
     createdAt: 'DateTime'

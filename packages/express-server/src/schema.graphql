@@ -97,6 +97,25 @@ enum FisherfolkStatus {
   Inactive
 }
 
+type Gear {
+  classification: GearClassification!
+  fisherfolk: Fisherfolk!
+  id: BigInt!
+  type: String!
+}
+
+enum GearClassification {
+  FallingGear
+  GillNets
+  HookAndLine
+  LiftNets
+  Miscellaneous
+  Others
+  PotsAndTraps
+  ScoopNets
+  SeineNets
+}
+
 enum Gender {
   Female
   Male
@@ -150,7 +169,7 @@ type User {
 
 type Vessel {
   engineMake: String!
-  fisherfolk: Fisherfolk
+  fisherfolk: Fisherfolk!
   grossTonnage: Float!
   homeport: String!
   horsepower: Float!
