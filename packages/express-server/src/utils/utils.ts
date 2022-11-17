@@ -7,7 +7,7 @@ const nonNullArg = (input: NexusInputObjectTypeDef<any>) => {
   return arg({ type: nonNull(input) });
 };
 
-//
+// Enables Nullability of nexus list types
 const nullableList = (type: NexusNullableTypes) => {
   return nullable(list(nullable(type)));
 };

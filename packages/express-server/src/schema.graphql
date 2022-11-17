@@ -106,6 +106,16 @@ enum Gender {
   Male
 }
 
+type GovernmentAid {
+  createdAt: DateTime!
+  endDate: DateTime!
+  id: Int!
+  slot: Int!
+  startDate: DateTime!
+  title: String!
+  updatedAt: DateTime!
+}
+
 type Image {
   createdAt: DateTime!
   fisherfolk: Fisherfolk
@@ -147,6 +157,17 @@ type Organization {
 
 type Query {
   fisherfolks: [Fisherfolk!]!
+}
+
+type Queue {
+  createdAt: DateTime!
+  date: DateTime!
+  fisherfolk: Fisherfolk
+  fisherfolkId: BigInt!
+  governmentAid: GovernmentAid
+  governmentAidId: Int!
+  queueNumber: Int!
+  updatedAt: DateTime!
 }
 
 enum Salutation {
