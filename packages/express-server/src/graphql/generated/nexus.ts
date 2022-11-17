@@ -279,6 +279,7 @@ export interface NexusGenFieldTypes {
     certificateNumber: string; // String!
     expired: boolean; // Boolean!
     expiresOn: NexusGenScalars['DateTime']; // DateTime!
+    fisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
     fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
     registeredAt: NexusGenScalars['DateTime']; // DateTime!
     renewedAt: NexusGenScalars['DateTime']; // DateTime!
@@ -387,6 +388,7 @@ export interface NexusGenFieldTypeNames {
     certificateNumber: 'String'
     expired: 'Boolean'
     expiresOn: 'DateTime'
+    fisherfolk: 'Fisherfolk'
     fisherfolkId: 'BigInt'
     registeredAt: 'DateTime'
     renewedAt: 'DateTime'
