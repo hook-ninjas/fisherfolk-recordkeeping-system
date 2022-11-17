@@ -47,6 +47,26 @@ input CreateUserInput {
   username: String!
 }
 
+input CreateVesselInput {
+  engineMake: String!
+  grossTonnage: Float!
+  homeport: String!
+  horsepower: Float!
+  material: Material!
+  name: String!
+  netTonnage: Float!
+  placeBuilt: String!
+  registeredBreadth: Float!
+  registeredDepth: Float!
+  registeredLength: Float!
+  serialNumber: String!
+  tonnageBreadth: Float!
+  tonnageDepth: Float!
+  tonnageLength: Float!
+  type: String!
+  yearBuilt: Int!
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """

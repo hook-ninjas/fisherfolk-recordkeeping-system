@@ -69,6 +69,25 @@ export interface NexusGenInputs {
     password: string; // String!
     username: string; // String!
   }
+  CreateVesselInput: { // input type
+    engineMake: string; // String!
+    grossTonnage: number; // Float!
+    homeport: string; // String!
+    horsepower: number; // Float!
+    material: NexusGenEnums['Material']; // Material!
+    name: string; // String!
+    netTonnage: number; // Float!
+    placeBuilt: string; // String!
+    registeredBreadth: number; // Float!
+    registeredDepth: number; // Float!
+    registeredLength: number; // Float!
+    serialNumber: string; // String!
+    tonnageBreadth: number; // Float!
+    tonnageDepth: number; // Float!
+    tonnageLength: number; // Float!
+    type: string; // String!
+    yearBuilt: number; // Int!
+  }
 }
 
 export interface NexusGenEnums {
