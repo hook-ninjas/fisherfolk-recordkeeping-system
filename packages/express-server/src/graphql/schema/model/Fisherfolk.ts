@@ -7,7 +7,7 @@ import {
   Gender,
   Salutation,
 } from '../enums';
-import Organization from './Organization';
+
 const Fisherfolk = objectType({
   nonNullDefaults: {
     input: true,
