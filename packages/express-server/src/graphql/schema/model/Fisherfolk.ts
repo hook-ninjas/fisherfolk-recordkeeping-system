@@ -1,5 +1,6 @@
 import { list, objectType, nullable } from 'nexus';
 import { Context } from '../../../types/types';
+import { nullableList } from '../../../utils/utils';
 import {
   CivilStatus,
   EducationalBackground,
@@ -7,6 +8,7 @@ import {
   Gender,
   Salutation,
 } from '../enums';
+import Organization from './Organization';
 
 const Fisherfolk = objectType({
   nonNullDefaults: {
@@ -51,7 +53,7 @@ const Fisherfolk = objectType({
       },
     });
     t.field('organizations', {
-      type: nullable(list(nullable('Organization'))),
+      type: nullableList(Organization),
       resolve: ({ id }, _, context) => {
         return context.prisma.fisherfolk
           .findUnique({ where: id })
