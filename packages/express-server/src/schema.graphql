@@ -77,7 +77,7 @@ type Fisherfolk {
   images: [Image]
   isArchive: Boolean!
   lastName: String!
-  livelihoods: [Livelihood!]!
+  livelihoods: [Livelihood]
   middleName: String!
   nationality: String!
   numOfChildren: Int!
@@ -134,6 +134,7 @@ type Image {
 type Livelihood {
   createdAt: DateTime!
   description: String!
+  fisherfolk: Fisherfolk
   fisherfolkId: BigInt!
   id: BigInt!
   isArchive: Boolean!

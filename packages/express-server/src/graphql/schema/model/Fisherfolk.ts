@@ -1,5 +1,4 @@
-import { list, objectType, nullable } from 'nexus';
-import { Context } from '../../../types/types';
+import { objectType, nullable } from 'nexus';
 import { nullableList } from '../../../utils/utils';
 import {
   CivilStatus,
@@ -9,6 +8,7 @@ import {
   Salutation,
 } from '../enums';
 import Image from './Image';
+import Livelihood from './Livelihood';
 import Organization from './Organization';
 import Permit from './Permit';
 import Queue from './Queue';
@@ -48,8 +48,8 @@ const Fisherfolk = objectType({
     t.field('status', { type: FisherfolkStatus });
     t.boolean('isArchive');
     t.field('livelihoods', {
-      type: list('Livelihood'),
-      resolve: ({ id }, _, context: Context) => {
+      type: nullableList(Livelihood),
+      resolve: ({ id }, _, context) => {
         return context.prisma.fisherfolk
           .findUnique({ where: id })
           .livelihoods();

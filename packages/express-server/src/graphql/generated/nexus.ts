@@ -213,7 +213,7 @@ export interface NexusGenFieldTypes {
     images: Array<NexusGenRootTypes['Image'] | null> | null; // [Image]
     isArchive: boolean; // Boolean!
     lastName: string; // String!
-    livelihoods: NexusGenRootTypes['Livelihood'][]; // [Livelihood!]!
+    livelihoods: Array<NexusGenRootTypes['Livelihood'] | null> | null; // [Livelihood]
     middleName: string; // String!
     nationality: string; // String!
     numOfChildren: number; // Int!
@@ -256,6 +256,7 @@ export interface NexusGenFieldTypes {
   Livelihood: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
+    fisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
     fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
     id: NexusGenScalars['BigInt']; // BigInt!
     isArchive: boolean; // Boolean!
@@ -366,6 +367,7 @@ export interface NexusGenFieldTypeNames {
   Livelihood: { // field return type name
     createdAt: 'DateTime'
     description: 'String'
+    fisherfolk: 'Fisherfolk'
     fisherfolkId: 'BigInt'
     id: 'BigInt'
     isArchive: 'Boolean'
