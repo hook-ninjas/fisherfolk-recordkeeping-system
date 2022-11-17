@@ -218,6 +218,7 @@ export interface NexusGenFieldTypes {
     nationality: string; // String!
     numOfChildren: number; // Int!
     organizations: Array<NexusGenRootTypes['Organization'] | null> | null; // [Organization]
+    permit: NexusGenRootTypes['Permit'] | null; // Permit
     personToNotify: string; // String!
     placeOfBirth: string; // String!
     province: string; // String!
@@ -327,6 +328,7 @@ export interface NexusGenFieldTypeNames {
     nationality: 'String'
     numOfChildren: 'Int'
     organizations: 'Organization'
+    permit: 'Permit'
     personToNotify: 'String'
     placeOfBirth: 'String'
     province: 'String'

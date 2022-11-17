@@ -82,6 +82,7 @@ type Fisherfolk {
   nationality: String!
   numOfChildren: Int!
   organizations: [Organization]
+  permit: Permit
   personToNotify: String!
   placeOfBirth: String!
   province: String!
