@@ -18,6 +18,7 @@ const Models = [
   GovernmentAid,
   Queue,
   Permit,
-, Vessel, Gear];
+  Vessel, 
+  Gear];
 
 export default Models;

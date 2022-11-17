@@ -51,6 +51,21 @@ export const Material = enumType({
   ],
 });
 
+export const GearClassification = enumType({
+  name: 'GearClassification',
+  members: [
+    'HookAndLine',
+    'GillNets',
+    'SeineNets',
+    'PotsAndTraps',
+    'LiftNets',
+    'FallingGear',
+    'ScoopNets',
+    'Miscellaneous',
+    'Others'
+  ],
+});
+
 export default [
   CivilStatus,
   EducationalBackground,
@@ -58,5 +73,6 @@ export default [
   Gender,
   Salutation,
   SourceOfIncome,
-  Material
+  Material,
+  GearClassification
 ];
