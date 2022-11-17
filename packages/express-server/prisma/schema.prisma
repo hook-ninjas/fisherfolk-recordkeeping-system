@@ -52,7 +52,7 @@ model Fisherfolk {
   permit                Permit?
   livelihoods           Livelihood[]
   organizations         Organization[]
-  governmentAid         FisherfolkAid[]
+  governmentAid         Queue[]
   images                Image[]
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -75,12 +75,12 @@ model Organization {
 }
 
 model GovernmentAid {
-  id          Int             @id
+  id          Int      @id
   title       String
   slot        Int
-  startDate   DateTime        @map("start_date")
-  endDate     DateTime        @map("end_date")
-  fisherfolks FisherfolkAid[]
+  startDate   DateTime @map("start_date")
+  endDate     DateTime @map("end_date")
+  fisherfolks Queue[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -88,10 +88,10 @@ model GovernmentAid {
   @@map("government_aid")
 }
 
-model FisherfolkAid {
+model Queue {
   fisherfolk      Fisherfolk    @relation(fields: [fisherfolkId], references: [id])
   fisherfolkId    BigInt        @map("fisherfolk_id")
-  GovernmentAid   GovernmentAid @relation(fields: [governmentAidId], references: [id])
+  governmentAid   GovernmentAid @relation(fields: [governmentAidId], references: [id])
   governmentAidId Int           @map("government_aid_id")
   queueNumber     Int           @map("queue_number")
   date            DateTime
@@ -100,7 +100,7 @@ model FisherfolkAid {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@id(fields: [fisherfolkId, governmentAidId])
-  @@map("fisherfolk_aid")
+  @@map("queue")
 }
 
 model Livelihood {
