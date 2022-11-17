@@ -65,6 +65,10 @@ export interface NexusGenInputs {
     salutation: NexusGenEnums['Salutation']; // Salutation!
     status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
   }
+  CreateGearInput: { // input type
+    classification: NexusGenEnums['GearClassification']; // GearClassification!
+    type: string; // String!
+  }
   CreateUserInput: { // input type
     password: string; // String!
     username: string; // String!

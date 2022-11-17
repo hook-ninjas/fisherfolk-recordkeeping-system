@@ -42,6 +42,11 @@ input CreateFisherfolkInput {
   status: FisherfolkStatus!
 }
 
+input CreateGearInput {
+  classification: GearClassification!
+  type: String!
+}
+
 input CreateUserInput {
   password: String!
   username: String!
