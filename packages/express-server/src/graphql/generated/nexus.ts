@@ -164,7 +164,7 @@ export interface NexusGenObjects {
   Permit: { // root type
     certificateNumber: string; // String!
     expired: boolean; // Boolean!
-    expiresOn: NexusGenScalars['DateTime']; // DateTime!
+    expiresOn?: NexusGenScalars['DateTime'] | null; // DateTime
     fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
     registeredAt: NexusGenScalars['DateTime']; // DateTime!
     renewedAt: NexusGenScalars['DateTime']; // DateTime!
@@ -280,7 +280,7 @@ export interface NexusGenFieldTypes {
   Permit: { // field return type
     certificateNumber: string; // String!
     expired: boolean; // Boolean!
-    expiresOn: NexusGenScalars['DateTime']; // DateTime!
+    expiresOn: NexusGenScalars['DateTime'] | null; // DateTime
     fisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
     fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
     registeredAt: NexusGenScalars['DateTime']; // DateTime!

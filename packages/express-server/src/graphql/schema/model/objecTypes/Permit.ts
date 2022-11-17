@@ -8,7 +8,7 @@ const Permit = objectType({
     t.bigInt('fisherfolkId');
     t.date('registeredAt');
     t.date('renewedAt');
-    t.date('expiresOn');
+    t.nullable.date('expiresOn');
     t.boolean('expired');
     t.field('fisherfolk', {
       type: nullable(Fisherfolk),

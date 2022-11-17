@@ -123,7 +123,7 @@ model Permit {
   fisherfolk        Fisherfolk? @relation(fields: [fisherfolkId], references: [id])
   fisherfolkId      BigInt?     @unique @map("fisherfolk_id")
   registeredAt      DateTime    @default(now()) @map("registered_at")
-  renewedAt         DateTime    @map("renewed_at")
+  renewedAt         DateTime?   @map("renewed_at")
   expiresOn         DateTime    @map("expires_on")
   expired           Boolean     @default(false)
   gears             Gear[]
