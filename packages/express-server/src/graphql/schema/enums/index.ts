@@ -46,7 +46,7 @@ export const Material = enumType({
   name: 'Material',
   members: [
     'Wood', 
-    'FiberGlass',
+    'Fiberglass',
     'Composite',
   ],
 });

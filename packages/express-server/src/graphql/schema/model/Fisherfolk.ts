@@ -1,4 +1,4 @@
-import { objectType, nullable } from 'nexus';
+import { objectType, nullable, list, nonNull, } from 'nexus';
 import { nullableList } from '../../../utils/utils';
 import {
   CivilStatus,
@@ -7,11 +7,13 @@ import {
   Gender,
   Salutation,
 } from '../enums';
+import Gear from './Gear';
 import Image from './Image';
 import Livelihood from './Livelihood';
 import Organization from './Organization';
 import Permit from './Permit';
 import Queue from './Queue';
+import Vessel from './Vessel';
 
 const Fisherfolk = objectType({
   nonNullDefaults: {
@@ -85,6 +87,18 @@ const Fisherfolk = objectType({
     });
     t.field('createdAt', { type: 'DateTime' });
     t.field('updatedAt', { type: 'DateTime' });
+    t.field('gears', {
+      type: nonNull(list(Gear)),
+      resolve: ({ id }, _, context) => {
+        return context.prisma.fisherfolk.findUniqueOrThrow({where: id }).gears();
+      }
+    });
+    t.field('vessels', {
+      type: nonNull(list(Vessel)),
+      resolve: ({ id }, _, context) => {
+        return context.prisma.fisherfolk.findUniqueOrThrow({where: id }).vessels();
+      }
+    });
   },
 });
 

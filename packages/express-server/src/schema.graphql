@@ -71,6 +71,7 @@ type Fisherfolk {
   dateOfBirth: DateTime!
   educationalBackground: EducationalBackground!
   firstName: String!
+  gears: [Gear!]!
   gender: Gender!
   governmentAid: [Queue]
   id: BigInt!
@@ -95,6 +96,7 @@ type Fisherfolk {
   salutation: Salutation!
   status: FisherfolkStatus!
   updatedAt: DateTime!
+  vessels: [Vessel!]!
 }
 
 enum FisherfolkStatus {
@@ -164,7 +166,7 @@ type Livelihood {
 
 enum Material {
   Composite
-  FiberGlass
+  Fiberglass
   Wood
 }
 

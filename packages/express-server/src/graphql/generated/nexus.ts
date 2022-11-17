@@ -77,7 +77,7 @@ export interface NexusGenEnums {
   FisherfolkStatus: "Active" | "Deceased" | "Inactive"
   GearClassification: "FallingGear" | "GillNets" | "HookAndLine" | "LiftNets" | "Miscellaneous" | "Others" | "PotsAndTraps" | "ScoopNets" | "SeineNets"
   Gender: "Female" | "Male"
-  Material: "Composite" | "FiberGlass" | "Wood"
+  Material: "Composite" | "Fiberglass" | "Wood"
   Salutation: "Mr" | "Mrs" | "Ms"
   SourceOfIncome: "AquaCulture" | "CaptureFishing" | "FishProcessing" | "FishVending" | "Others"
 }
@@ -124,6 +124,11 @@ export interface NexusGenObjects {
     status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
+  Gear: { // root type
+    classification: NexusGenEnums['GearClassification']; // GearClassification!
+    id: NexusGenScalars['BigInt']; // BigInt!
+    type: string; // String!
+  }
   GovernmentAid: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     endDate: NexusGenScalars['DateTime']; // DateTime!
@@ -143,11 +148,6 @@ export interface NexusGenObjects {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     url: string; // String!
     version: string; // String!
-  }
-  Gear: { // root type
-    classification: NexusGenEnums['GearClassification']; // GearClassification!
-    id: NexusGenScalars['BigInt']; // BigInt!
-    type: string; // String!
   }
   Livelihood: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -235,6 +235,7 @@ export interface NexusGenFieldTypes {
     dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
     firstName: string; // String!
+    gears: NexusGenRootTypes['Gear'][]; // [Gear!]!
     gender: NexusGenEnums['Gender']; // Gender!
     governmentAid: Array<NexusGenRootTypes['Queue'] | null> | null; // [Queue]
     id: NexusGenScalars['BigInt']; // BigInt!
@@ -259,6 +260,13 @@ export interface NexusGenFieldTypes {
     salutation: NexusGenEnums['Salutation']; // Salutation!
     status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    vessels: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
+  }
+  Gear: { // field return type
+    classification: NexusGenEnums['GearClassification']; // GearClassification!
+    fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
+    id: NexusGenScalars['BigInt']; // BigInt!
+    type: string; // String!
   }
   GovernmentAid: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -280,12 +288,6 @@ export interface NexusGenFieldTypes {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     url: string; // String!
     version: string; // String!
-  }
-  Gear: { // field return type
-    classification: NexusGenEnums['GearClassification']; // GearClassification!
-    fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
-    id: NexusGenScalars['BigInt']; // BigInt!
-    type: string; // String!
   }
   Livelihood: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -374,6 +376,7 @@ export interface NexusGenFieldTypeNames {
     dateOfBirth: 'DateTime'
     educationalBackground: 'EducationalBackground'
     firstName: 'String'
+    gears: 'Gear'
     gender: 'Gender'
     governmentAid: 'Queue'
     id: 'BigInt'
@@ -398,6 +401,13 @@ export interface NexusGenFieldTypeNames {
     salutation: 'Salutation'
     status: 'FisherfolkStatus'
     updatedAt: 'DateTime'
+    vessels: 'Vessel'
+  }
+  Gear: { // field return type name
+    classification: 'GearClassification'
+    fisherfolk: 'Fisherfolk'
+    id: 'BigInt'
+    type: 'String'
   }
   GovernmentAid: { // field return type name
     createdAt: 'DateTime'
@@ -419,12 +429,6 @@ export interface NexusGenFieldTypeNames {
     updatedAt: 'DateTime'
     url: 'String'
     version: 'String'
-  }
-  Gear: { // field return type name
-    classification: 'GearClassification'
-    fisherfolk: 'Fisherfolk'
-    id: 'BigInt'
-    type: 'String'
   }
   Livelihood: { // field return type name
     createdAt: 'DateTime'
