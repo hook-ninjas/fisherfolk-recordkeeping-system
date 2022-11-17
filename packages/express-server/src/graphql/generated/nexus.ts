@@ -200,6 +200,7 @@ export interface NexusGenFieldTypes {
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
     firstName: string; // String!
     gender: NexusGenEnums['Gender']; // Gender!
+    governmentAid: Array<NexusGenRootTypes['Queue'] | null> | null; // [Queue]
     id: NexusGenScalars['BigInt']; // BigInt!
     images: Array<NexusGenRootTypes['Image'] | null> | null; // [Image]
     isArchive: boolean; // Boolean!
@@ -299,6 +300,7 @@ export interface NexusGenFieldTypeNames {
     educationalBackground: 'EducationalBackground'
     firstName: 'String'
     gender: 'Gender'
+    governmentAid: 'Queue'
     id: 'BigInt'
     images: 'Image'
     isArchive: 'Boolean'

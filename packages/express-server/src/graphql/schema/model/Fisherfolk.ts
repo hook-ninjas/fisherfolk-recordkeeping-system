@@ -10,6 +10,7 @@ import {
 } from '../enums';
 import Image from './Image';
 import Organization from './Organization';
+import Queue from './Queue';
 
 const Fisherfolk = objectType({
   nonNullDefaults: {
@@ -59,6 +60,14 @@ const Fisherfolk = objectType({
         return context.prisma.fisherfolk
           .findUnique({ where: id })
           .organizations();
+      },
+    });
+    t.field('governmentAid', {
+      type: nullableList(Queue),
+      resolve: ({ id }, _, context) => {
+        return context.prisma.fisherfolk
+          .findUnique({ where: id })
+          .governmentAid();
       },
     });
     t.field('images', {
