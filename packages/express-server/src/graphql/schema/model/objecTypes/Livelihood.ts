@@ -1,5 +1,5 @@
 import { objectType, nullable } from 'nexus';
-import { SourceOfIncome } from '../enums';
+import { SourceOfIncome } from '../../enums';
 import Fisherfolk from './Fisherfolk';
 
 const Livelihood = objectType({

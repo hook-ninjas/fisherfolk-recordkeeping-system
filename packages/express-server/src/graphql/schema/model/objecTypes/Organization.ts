@@ -1,5 +1,5 @@
 import { list, objectType } from 'nexus';
-import { Context } from '../../../types/types';
+import { Context } from '../../../../types/types';
 
 const Organization = objectType({
   name: 'Organization',

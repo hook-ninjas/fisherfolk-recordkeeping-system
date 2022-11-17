@@ -1,12 +1,12 @@
 import { objectType, nullable } from 'nexus';
-import { nullableList } from '../../../utils/utils';
+import { nullableList } from '../../../../utils/utils';
 import {
   CivilStatus,
   EducationalBackground,
   FisherfolkStatus,
   Gender,
   Salutation,
-} from '../enums';
+} from '../../enums';
 import Image from './Image';
 import Livelihood from './Livelihood';
 import Organization from './Organization';
