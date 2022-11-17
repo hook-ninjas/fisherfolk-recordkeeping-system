@@ -263,17 +263,17 @@ export interface NexusGenFieldTypes {
     firstName: string; // String!
     gears: NexusGenRootTypes['Gear'][]; // [Gear!]!
     gender: NexusGenEnums['Gender']; // Gender!
-    governmentAid: Array<NexusGenRootTypes['Queue'] | null> | null; // [Queue]
+    governmentAid: NexusGenRootTypes['Queue'][]; // [Queue!]!
     id: NexusGenScalars['BigInt']; // BigInt!
-    images: Array<NexusGenRootTypes['Image'] | null> | null; // [Image]
+    images: NexusGenRootTypes['Image'][]; // [Image!]!
     isArchive: boolean; // Boolean!
     lastName: string; // String!
-    livelihoods: Array<NexusGenRootTypes['Livelihood'] | null> | null; // [Livelihood]
+    livelihoods: NexusGenRootTypes['Livelihood'][]; // [Livelihood!]!
     middleName: string; // String!
     nationality: string; // String!
     numOfChildren: number; // Int!
-    organizations: Array<NexusGenRootTypes['Organization'] | null> | null; // [Organization]
-    permit: NexusGenRootTypes['Permit'] | null; // Permit
+    organizations: NexusGenRootTypes['Organization'][]; // [Organization!]!
+    permit: NexusGenRootTypes['Permit']; // Permit!
     personToNotify: string; // String!
     placeOfBirth: string; // String!
     province: string; // String!
