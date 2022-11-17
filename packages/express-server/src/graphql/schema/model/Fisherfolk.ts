@@ -1,4 +1,4 @@
-import { list, objectType } from 'nexus';
+import { list, objectType, nullable } from 'nexus';
 import { Context } from '../../../types/types';
 import {
   CivilStatus,
@@ -7,11 +7,15 @@ import {
   Gender,
   Salutation,
 } from '../enums';
-
+import Organization from './Organization';
 const Fisherfolk = objectType({
+  nonNullDefaults: {
+    input: true,
+    output: true,
+  },
   name: 'Fisherfolk',
   definition(t) {
-    t.nonNull.field('id', { type: 'BigInt' });
+    t.field('id', { type: 'BigInt' });
     t.field('registrationDate', { type: 'DateTime' });
     t.string('lastName');
     t.string('firstName');
@@ -42,10 +46,20 @@ const Fisherfolk = objectType({
       type: list('Livelihood'),
       resolve: ({ id }, _, context: Context) => {
         return context.prisma.fisherfolk
-          .findUnique({ where: { id: id } })
+          .findUnique({ where: id })
           .livelihoods();
       },
     });
+    t.field('organizations', {
+      type: nullable(list(nullable('Organization'))),
+      resolve: ({ id }, _, context) => {
+        return context.prisma.fisherfolk
+          .findUnique({ where: id })
+          .organizations();
+      },
+    });
+    t.field('createdAt', { type: 'DateTime' });
+    t.field('updatedAt', { type: 'DateTime' });
   },
 });
 

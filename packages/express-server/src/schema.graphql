@@ -67,6 +67,7 @@ type Fisherfolk {
   cityMunicipality: String!
   civilStatus: CivilStatus!
   contactNum: String!
+  createdAt: DateTime!
   dateOfBirth: DateTime!
   educationalBackground: EducationalBackground!
   firstName: String!
@@ -78,6 +79,7 @@ type Fisherfolk {
   middleName: String!
   nationality: String!
   numOfChildren: Int!
+  organizations: [Organization]
   personToNotify: String!
   placeOfBirth: String!
   province: String!
@@ -89,6 +91,7 @@ type Fisherfolk {
   residentYear: Int!
   salutation: Salutation!
   status: FisherfolkStatus!
+  updatedAt: DateTime!
 }
 
 enum FisherfolkStatus {
@@ -116,6 +119,16 @@ type Livelihood {
 type Mutation {
   createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
   createUser(data: CreateUserInput!): User!
+}
+
+type Organization {
+  createdAt: DateTime!
+  fisherfolks: [Fisherfolk!]
+  id: BigInt!
+  name: String!
+  position: String!
+  updatedAt: DateTime!
+  yearJoined: Int!
 }
 
 type Query {

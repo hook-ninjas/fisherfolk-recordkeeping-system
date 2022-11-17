@@ -98,6 +98,7 @@ export interface NexusGenObjects {
     cityMunicipality: string; // String!
     civilStatus: NexusGenEnums['CivilStatus']; // CivilStatus!
     contactNum: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
     firstName: string; // String!
@@ -119,6 +120,7 @@ export interface NexusGenObjects {
     residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
     status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Livelihood: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -131,6 +133,14 @@ export interface NexusGenObjects {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Mutation: {};
+  Organization: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: NexusGenScalars['BigInt']; // BigInt!
+    name: string; // String!
+    position: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    yearJoined: number; // Int!
+  }
   Query: {};
   User: { // root type
     id: number; // Int!
@@ -157,6 +167,7 @@ export interface NexusGenFieldTypes {
     cityMunicipality: string; // String!
     civilStatus: NexusGenEnums['CivilStatus']; // CivilStatus!
     contactNum: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
     firstName: string; // String!
@@ -168,6 +179,7 @@ export interface NexusGenFieldTypes {
     middleName: string; // String!
     nationality: string; // String!
     numOfChildren: number; // Int!
+    organizations: Array<NexusGenRootTypes['Organization'] | null> | null; // [Organization]
     personToNotify: string; // String!
     placeOfBirth: string; // String!
     province: string; // String!
@@ -179,6 +191,7 @@ export interface NexusGenFieldTypes {
     residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
     status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Livelihood: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -193,6 +206,15 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     createUser: NexusGenRootTypes['User']; // User!
+  }
+  Organization: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    fisherfolks: NexusGenRootTypes['Fisherfolk'][] | null; // [Fisherfolk!]
+    id: NexusGenScalars['BigInt']; // BigInt!
+    name: string; // String!
+    position: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    yearJoined: number; // Int!
   }
   Query: { // field return type
     fisherfolks: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
@@ -212,6 +234,7 @@ export interface NexusGenFieldTypeNames {
     cityMunicipality: 'String'
     civilStatus: 'CivilStatus'
     contactNum: 'String'
+    createdAt: 'DateTime'
     dateOfBirth: 'DateTime'
     educationalBackground: 'EducationalBackground'
     firstName: 'String'
@@ -223,6 +246,7 @@ export interface NexusGenFieldTypeNames {
     middleName: 'String'
     nationality: 'String'
     numOfChildren: 'Int'
+    organizations: 'Organization'
     personToNotify: 'String'
     placeOfBirth: 'String'
     province: 'String'
@@ -234,6 +258,7 @@ export interface NexusGenFieldTypeNames {
     residentYear: 'Int'
     salutation: 'Salutation'
     status: 'FisherfolkStatus'
+    updatedAt: 'DateTime'
   }
   Livelihood: { // field return type name
     createdAt: 'DateTime'
@@ -248,6 +273,15 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createFisherfolk: 'Fisherfolk'
     createUser: 'User'
+  }
+  Organization: { // field return type name
+    createdAt: 'DateTime'
+    fisherfolks: 'Fisherfolk'
+    id: 'BigInt'
+    name: 'String'
+    position: 'String'
+    updatedAt: 'DateTime'
+    yearJoined: 'Int'
   }
   Query: { // field return type name
     fisherfolks: 'Fisherfolk'
