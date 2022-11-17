@@ -113,6 +113,12 @@ type Livelihood {
   updatedAt: DateTime!
 }
 
+enum Material {
+  Composite
+  FiberGlass
+  Wood
+}
+
 type Mutation {
   createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
   createUser(data: CreateUserInput!): User!
@@ -140,4 +146,27 @@ type User {
   id: Int!
   password: String!
   username: String!
+}
+
+type Vessel {
+  engineMake: String!
+  fisherfolk: Fisherfolk
+  grossTonnage: Float!
+  homeport: String!
+  horsepower: Float!
+  id: BigInt!
+  material: Material!
+  mfvrNumber: String!
+  name: String!
+  netTonnage: Float!
+  placeBuilt: String!
+  registeredBreadth: Float!
+  registeredDepth: Float!
+  registeredLength: Float!
+  serialNumber: String!
+  tonnageBreadth: Float!
+  tonnageDepth: Float!
+  tonnageLength: Float!
+  type: String!
+  yearBuilt: Int!
 }

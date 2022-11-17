@@ -76,6 +76,7 @@ export interface NexusGenEnums {
   EducationalBackground: "College" | "Elementary" | "HighSchool" | "PostGraduate" | "Vocational"
   FisherfolkStatus: "Active" | "Deceased" | "Inactive"
   Gender: "Female" | "Male"
+  Material: "Composite" | "FiberGlass" | "Wood"
   Salutation: "Mr" | "Mrs" | "Ms"
   SourceOfIncome: "AquaCulture" | "CaptureFishing" | "FishProcessing" | "FishVending" | "Others"
 }
@@ -136,6 +137,27 @@ export interface NexusGenObjects {
     id: number; // Int!
     password: string; // String!
     username: string; // String!
+  }
+  Vessel: { // root type
+    engineMake: string; // String!
+    grossTonnage: number; // Float!
+    homeport: string; // String!
+    horsepower: number; // Float!
+    id: NexusGenScalars['BigInt']; // BigInt!
+    material: NexusGenEnums['Material']; // Material!
+    mfvrNumber: string; // String!
+    name: string; // String!
+    netTonnage: number; // Float!
+    placeBuilt: string; // String!
+    registeredBreadth: number; // Float!
+    registeredDepth: number; // Float!
+    registeredLength: number; // Float!
+    serialNumber: string; // String!
+    tonnageBreadth: number; // Float!
+    tonnageDepth: number; // Float!
+    tonnageLength: number; // Float!
+    type: string; // String!
+    yearBuilt: number; // Int!
   }
 }
 
@@ -202,6 +224,28 @@ export interface NexusGenFieldTypes {
     password: string; // String!
     username: string; // String!
   }
+  Vessel: { // field return type
+    engineMake: string; // String!
+    fisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
+    grossTonnage: number; // Float!
+    homeport: string; // String!
+    horsepower: number; // Float!
+    id: NexusGenScalars['BigInt']; // BigInt!
+    material: NexusGenEnums['Material']; // Material!
+    mfvrNumber: string; // String!
+    name: string; // String!
+    netTonnage: number; // Float!
+    placeBuilt: string; // String!
+    registeredBreadth: number; // Float!
+    registeredDepth: number; // Float!
+    registeredLength: number; // Float!
+    serialNumber: string; // String!
+    tonnageBreadth: number; // Float!
+    tonnageDepth: number; // Float!
+    tonnageLength: number; // Float!
+    type: string; // String!
+    yearBuilt: number; // Int!
+  }
 }
 
 export interface NexusGenFieldTypeNames {
@@ -256,6 +300,28 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
     password: 'String'
     username: 'String'
+  }
+  Vessel: { // field return type name
+    engineMake: 'String'
+    fisherfolk: 'Fisherfolk'
+    grossTonnage: 'Float'
+    homeport: 'String'
+    horsepower: 'Float'
+    id: 'BigInt'
+    material: 'Material'
+    mfvrNumber: 'String'
+    name: 'String'
+    netTonnage: 'Float'
+    placeBuilt: 'String'
+    registeredBreadth: 'Float'
+    registeredDepth: 'Float'
+    registeredLength: 'Float'
+    serialNumber: 'String'
+    tonnageBreadth: 'Float'
+    tonnageDepth: 'Float'
+    tonnageLength: 'Float'
+    type: 'String'
+    yearBuilt: 'Int'
   }
 }
 

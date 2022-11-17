@@ -42,6 +42,15 @@ export const SourceOfIncome = enumType({
   ],
 });
 
+export const Material = enumType({
+  name: 'Material',
+  members: [
+    'Wood', 
+    'FiberGlass',
+    'Composite',
+  ],
+});
+
 export default [
   CivilStatus,
   EducationalBackground,
@@ -49,4 +58,5 @@ export default [
   Gender,
   Salutation,
   SourceOfIncome,
+  Material
 ];
