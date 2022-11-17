@@ -44,6 +44,7 @@ input CreateFisherfolkInput {
 
 input CreateGearInput {
   classification: GearClassification!
+  fisherfolkId: BigInt!
   type: String!
 }
 
@@ -54,10 +55,12 @@ input CreateUserInput {
 
 input CreateVesselInput {
   engineMake: String!
+  fisherfolkId: BigInt!
   grossTonnage: Float!
   homeport: String!
   horsepower: Float!
   material: Material!
+  mfvrNumber: String!
   name: String!
   netTonnage: Float!
   placeBuilt: String!

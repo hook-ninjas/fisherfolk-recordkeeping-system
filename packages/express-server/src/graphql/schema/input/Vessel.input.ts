@@ -4,6 +4,8 @@ import { Material } from '../enums';
 const CreateVesselInput = inputObjectType({
   name: 'CreateVesselInput',
   definition(t) {
+    t.field('fisherfolkId', {type: 'BigInt'});
+    t.string('mfvrNumber');
     t.string('homeport');
     t.string('name');
     t.string('type');

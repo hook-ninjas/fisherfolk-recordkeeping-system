@@ -67,6 +67,7 @@ export interface NexusGenInputs {
   }
   CreateGearInput: { // input type
     classification: NexusGenEnums['GearClassification']; // GearClassification!
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
     type: string; // String!
   }
   CreateUserInput: { // input type
@@ -75,10 +76,12 @@ export interface NexusGenInputs {
   }
   CreateVesselInput: { // input type
     engineMake: string; // String!
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
     grossTonnage: number; // Float!
     homeport: string; // String!
     horsepower: number; // Float!
     material: NexusGenEnums['Material']; // Material!
+    mfvrNumber: string; // String!
     name: string; // String!
     netTonnage: number; // Float!
     placeBuilt: string; // String!
