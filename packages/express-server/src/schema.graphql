@@ -156,6 +156,15 @@ type Organization {
   yearJoined: Int!
 }
 
+type Permit {
+  certificateNumber: String!
+  expired: Boolean!
+  expiresOn: DateTime!
+  fisherfolkId: BigInt!
+  registeredAt: DateTime!
+  renewedAt: DateTime!
+}
+
 type Query {
   fisherfolks: [Fisherfolk!]!
 }

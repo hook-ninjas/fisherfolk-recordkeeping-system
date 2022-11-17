@@ -5,6 +5,7 @@ import Organization from './Organization';
 import Image from './Image';
 import GovernmentAid from './GovernmentAid';
 import Queue from './Queue';
+import Permit from './Permit';
 
 const Models = [
   User,
@@ -14,6 +15,7 @@ const Models = [
   Image,
   GovernmentAid,
   Queue,
+  Permit,
 ];
 
 export default Models;

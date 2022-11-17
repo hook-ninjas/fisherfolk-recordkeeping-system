@@ -161,6 +161,14 @@ export interface NexusGenObjects {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     yearJoined: number; // Int!
   }
+  Permit: { // root type
+    certificateNumber: string; // String!
+    expired: boolean; // Boolean!
+    expiresOn: NexusGenScalars['DateTime']; // DateTime!
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    registeredAt: NexusGenScalars['DateTime']; // DateTime!
+    renewedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
   Query: {};
   Queue: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -267,6 +275,14 @@ export interface NexusGenFieldTypes {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     yearJoined: number; // Int!
   }
+  Permit: { // field return type
+    certificateNumber: string; // String!
+    expired: boolean; // Boolean!
+    expiresOn: NexusGenScalars['DateTime']; // DateTime!
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    registeredAt: NexusGenScalars['DateTime']; // DateTime!
+    renewedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
   Query: { // field return type
     fisherfolks: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
   }
@@ -366,6 +382,14 @@ export interface NexusGenFieldTypeNames {
     position: 'String'
     updatedAt: 'DateTime'
     yearJoined: 'Int'
+  }
+  Permit: { // field return type name
+    certificateNumber: 'String'
+    expired: 'Boolean'
+    expiresOn: 'DateTime'
+    fisherfolkId: 'BigInt'
+    registeredAt: 'DateTime'
+    renewedAt: 'DateTime'
   }
   Query: { // field return type name
     fisherfolks: 'Fisherfolk'
