@@ -329,6 +329,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     createUser: NexusGenRootTypes['User']; // User!
+    createVesselWithGear: NexusGenRootTypes['Vessel']; // Vessel!
   }
   Organization: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -470,6 +471,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createFisherfolk: 'Fisherfolk'
     createUser: 'User'
+    createVesselWithGear: 'Vessel'
   }
   Organization: { // field return type name
     createdAt: 'DateTime'
@@ -538,6 +540,10 @@ export interface NexusGenArgTypes {
     }
     createUser: { // args
       data: NexusGenInputs['CreateUserInput']; // CreateUserInput!
+    }
+    createVesselWithGear: { // args
+      gears: NexusGenInputs['CreateGearInput'][]; // [CreateGearInput!]!
+      vessel: NexusGenInputs['CreateVesselInput']; // CreateVesselInput!
     }
   }
 }

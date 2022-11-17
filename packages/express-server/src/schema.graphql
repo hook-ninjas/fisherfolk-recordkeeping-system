@@ -201,6 +201,7 @@ enum Material {
 type Mutation {
   createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
   createUser(data: CreateUserInput!): User!
+  createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
 }
 
 type Organization {
