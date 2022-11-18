@@ -35,7 +35,7 @@ export const SourceOfIncome = enumType({
   name: 'SourceOfIncome',
   members: [
     'CaptureFishing',
-    'AquaCulture',
+    'Aquaculture',
     'FishVending',
     'FishProcessing',
     'Others',
@@ -44,11 +44,7 @@ export const SourceOfIncome = enumType({
 
 export const Material = enumType({
   name: 'Material',
-  members: [
-    'Wood', 
-    'Fiberglass',
-    'Composite',
-  ],
+  members: ['Wood', 'Fiberglass', 'Composite'],
 });
 
 export const GearClassification = enumType({
@@ -62,7 +58,7 @@ export const GearClassification = enumType({
     'FallingGear',
     'ScoopNets',
     'Miscellaneous',
-    'Others'
+    'Others',
   ],
 });
 
@@ -74,5 +70,5 @@ export default [
   Salutation,
   SourceOfIncome,
   Material,
-  GearClassification
+  GearClassification,
 ];

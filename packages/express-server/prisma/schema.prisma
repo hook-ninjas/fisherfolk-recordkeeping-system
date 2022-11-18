@@ -123,7 +123,7 @@ model Permit {
   fisherfolk        Fisherfolk? @relation(fields: [fisherfolkId], references: [id])
   fisherfolkId      BigInt?     @unique @map("fisherfolk_id")
   registeredAt      DateTime    @default(now()) @map("registered_at")
-  renewedAt         DateTime    @map("renewed_at")
+  renewedAt         DateTime?   @map("renewed_at")
   expiresOn         DateTime    @map("expires_on")
   expired           Boolean     @default(false)
   gears             Gear[]
@@ -222,34 +222,34 @@ model Image {
 }
 
 enum Salutation {
-  Mr
-  Ms
-  Mrs
+  Mr  @map("MR")
+  Ms  @map("MS")
+  Mrs @map("MRS")
 
   @@map("salutation")
 }
 
 enum Gender {
-  Male
-  Female
+  Male   @map("MALE")
+  Female @map("FEMALE")
 
   @@map("gender")
 }
 
 enum CivilStatus {
-  Single
-  Married
+  Single           @map("SINGLE")
+  Married          @map("MARRIED")
   LegallySeparated @map("LEGALLY_SEPARATED")
-  Widowed
+  Widowed          @map("WIDOWED")
 
   @@map("civil_status")
 }
 
 enum EducationalBackground {
-  Elementary
+  Elementary   @map("ELEMENTARY")
   HighSchool   @map("HIGH_SCHOOL")
-  Vocational
-  College
+  Vocational   @map("VOCATIONL")
+  College      @map("COLLEGE")
   PostGraduate @map("POST_GRADUATE")
 
   @@map("educational_background")
@@ -257,7 +257,7 @@ enum EducationalBackground {
 
 enum SourceOfIncome {
   CaptureFishing @map("CAPTURE_FISHING")
-  AquaCulture
+  Aquaculture    @map("AQUACULTURE")
   FishVending    @map("FISH_VENDING")
   FishProcessing @map("FISH_PROCESSING")
   Others
@@ -266,17 +266,17 @@ enum SourceOfIncome {
 }
 
 enum FisherfolkStatus {
-  Active
-  Inactive
-  Deceased
+  Active   @map("ACTIVE")
+  Inactive @map("INACTIVE")
+  Deceased @map("DECEASED")
 
   @@map("fisherfolk_status")
 }
 
 enum Material {
-  Wood
-  Fiberglass
-  Composite
+  Wood       @map("WOOD")
+  Fiberglass @map("FIBERGLASS")
+  Composite  @map("COMPOSITE")
 
   @@map("material")
 }

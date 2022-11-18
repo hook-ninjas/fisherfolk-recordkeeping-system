@@ -2,7 +2,7 @@ import { mutationField } from 'nexus';
 import { createFisherfolk } from './Fisherfolk.resolver';
 import CreateFisherfolkInput from '../../input/Fisherfolk.input';
 import { nonNullArg } from '../../../../utils/utils';
-import Fisherfolk from '../../model/Fisherfolk';
+import Fisherfolk from '../../model/objecTypes/Fisherfolk';
 
 const CreateFisherfolk = mutationField('createFisherfolk', {
   type: Fisherfolk,

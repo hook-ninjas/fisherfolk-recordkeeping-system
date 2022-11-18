@@ -1,5 +1,5 @@
 import { objectType } from 'nexus';
-import { Material } from '../enums';
+import { Material } from '../../enums';
 
 const Vessel = objectType({
   name: 'Vessel',
@@ -26,15 +26,16 @@ const Vessel = objectType({
     t.field('fisherfolk', {
       type: 'Fisherfolk',
       resolve: (parent, _, context) => {
-        return context.prisma.vessel.findUniqueOrThrow({
-          where: {
-            id: parent.id
-          }
-        })
+        return context.prisma.vessel
+          .findUniqueOrThrow({
+            where: {
+              id: parent.id,
+            },
+          })
           .fisherfolk();
-      }
+      },
     });
-  }
+  },
 });
 
 export default Vessel;
