@@ -1,4 +1,4 @@
-import { objectType, nullable } from 'nexus';
+import { objectType } from 'nexus';
 import { SourceOfIncome } from '../../enums';
 import Fisherfolk from './Fisherfolk';
 

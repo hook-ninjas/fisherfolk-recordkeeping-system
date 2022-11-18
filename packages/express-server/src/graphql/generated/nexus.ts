@@ -261,19 +261,19 @@ export interface NexusGenFieldTypes {
     dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
     firstName: string; // String!
-    gears: NexusGenRootTypes['Gear'][]; // [Gear!]!
+    gears: Array<NexusGenRootTypes['Gear'] | null> | null; // [Gear]
     gender: NexusGenEnums['Gender']; // Gender!
-    governmentAid: NexusGenRootTypes['Queue'][]; // [Queue!]!
+    governmentAid: Array<NexusGenRootTypes['Queue'] | null> | null; // [Queue]
     id: NexusGenScalars['BigInt']; // BigInt!
-    images: NexusGenRootTypes['Image'][]; // [Image!]!
+    images: Array<NexusGenRootTypes['Image'] | null> | null; // [Image]
     isArchive: boolean; // Boolean!
     lastName: string; // String!
-    livelihoods: NexusGenRootTypes['Livelihood'][]; // [Livelihood!]!
+    livelihoods: Array<NexusGenRootTypes['Livelihood'] | null> | null; // [Livelihood]
     middleName: string; // String!
     nationality: string; // String!
     numOfChildren: number; // Int!
-    organizations: NexusGenRootTypes['Organization'][]; // [Organization!]!
-    permit: NexusGenRootTypes['Permit']; // Permit!
+    organizations: Array<NexusGenRootTypes['Organization'] | null> | null; // [Organization]
+    permit: NexusGenRootTypes['Permit'] | null; // Permit
     personToNotify: string; // String!
     placeOfBirth: string; // String!
     province: string; // String!
@@ -286,7 +286,7 @@ export interface NexusGenFieldTypes {
     salutation: NexusGenEnums['Salutation']; // Salutation!
     status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
-    vessels: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
+    vessels: Array<NexusGenRootTypes['Vessel'] | null> | null; // [Vessel]
   }
   Gear: { // field return type
     classification: NexusGenEnums['GearClassification']; // GearClassification!
@@ -318,7 +318,7 @@ export interface NexusGenFieldTypes {
   Livelihood: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
-    fisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
+    fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
     id: NexusGenScalars['BigInt']; // BigInt!
     isArchive: boolean; // Boolean!

@@ -1,4 +1,4 @@
-import { objectType, nullable } from 'nexus';
+import { objectType } from 'nexus';
 import Fisherfolk from './Fisherfolk';
 import GovernmentAid from './GovernmentAid';
 
