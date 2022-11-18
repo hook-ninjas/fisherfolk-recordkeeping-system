@@ -42,9 +42,37 @@ input CreateFisherfolkInput {
   status: FisherfolkStatus!
 }
 
+input CreateGearInput {
+  classification: GearClassification!
+  fisherfolkId: BigInt!
+  type: String!
+}
+
 input CreateUserInput {
   password: String!
   username: String!
+}
+
+input CreateVesselInput {
+  engineMake: String!
+  fisherfolkId: BigInt!
+  grossTonnage: Float!
+  homeport: String!
+  horsepower: Float!
+  material: Material!
+  mfvrNumber: String!
+  name: String!
+  netTonnage: Float!
+  placeBuilt: String!
+  registeredBreadth: Float!
+  registeredDepth: Float!
+  registeredLength: Float!
+  serialNumber: String!
+  tonnageBreadth: Float!
+  tonnageDepth: Float!
+  tonnageLength: Float!
+  type: String!
+  yearBuilt: Int!
 }
 
 """
@@ -71,18 +99,19 @@ type Fisherfolk {
   dateOfBirth: DateTime!
   educationalBackground: EducationalBackground!
   firstName: String!
+  gears: [Gear!]!
   gender: Gender!
-  governmentAid: [Queue]
+  governmentAid: [Queue!]!
   id: BigInt!
-  images: [Image]
+  images: [Image!]!
   isArchive: Boolean!
   lastName: String!
-  livelihoods: [Livelihood]
+  livelihoods: [Livelihood!]!
   middleName: String!
   nationality: String!
   numOfChildren: Int!
-  organizations: [Organization]
-  permit: Permit
+  organizations: [Organization!]!
+  permit: Permit!
   personToNotify: String!
   placeOfBirth: String!
   province: String!
@@ -95,12 +124,32 @@ type Fisherfolk {
   salutation: Salutation!
   status: FisherfolkStatus!
   updatedAt: DateTime!
+  vessels: [Vessel!]!
 }
 
 enum FisherfolkStatus {
   Active
   Deceased
   Inactive
+}
+
+type Gear {
+  classification: GearClassification!
+  fisherfolk: Fisherfolk!
+  id: BigInt!
+  type: String!
+}
+
+enum GearClassification {
+  FallingGear
+  GillNets
+  HookAndLine
+  LiftNets
+  Miscellaneous
+  Others
+  PotsAndTraps
+  ScoopNets
+  SeineNets
 }
 
 enum Gender {
@@ -143,9 +192,16 @@ type Livelihood {
   updatedAt: DateTime!
 }
 
+enum Material {
+  Composite
+  Fiberglass
+  Wood
+}
+
 type Mutation {
   createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
   createUser(data: CreateUserInput!): User!
+  createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
 }
 
 type Organization {
@@ -201,4 +257,27 @@ type User {
   id: Int!
   password: String!
   username: String!
+}
+
+type Vessel {
+  engineMake: String!
+  fisherfolk: Fisherfolk!
+  grossTonnage: Float!
+  homeport: String!
+  horsepower: Float!
+  id: BigInt!
+  material: Material!
+  mfvrNumber: String!
+  name: String!
+  netTonnage: Float!
+  placeBuilt: String!
+  registeredBreadth: Float!
+  registeredDepth: Float!
+  registeredLength: Float!
+  serialNumber: String!
+  tonnageBreadth: Float!
+  tonnageDepth: Float!
+  tonnageLength: Float!
+  type: String!
+  yearBuilt: Int!
 }

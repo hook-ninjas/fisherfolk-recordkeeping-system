@@ -1,5 +1,4 @@
-import { objectType, nullable } from 'nexus';
-import { nullableList } from '../../../utils/utils';
+import { objectType, list, nonNull, } from 'nexus';
 import {
   CivilStatus,
   EducationalBackground,
@@ -7,11 +6,13 @@ import {
   Gender,
   Salutation,
 } from '../enums';
+import Gear from './Gear';
 import Image from './Image';
 import Livelihood from './Livelihood';
 import Organization from './Organization';
 import Permit from './Permit';
 import Queue from './Queue';
+import Vessel from './Vessel';
 
 const Fisherfolk = objectType({
   nonNullDefaults: {
@@ -48,43 +49,55 @@ const Fisherfolk = objectType({
     t.field('status', { type: FisherfolkStatus });
     t.boolean('isArchive');
     t.field('livelihoods', {
-      type: nullableList(Livelihood),
+      type: nonNull(list(Livelihood)),
       resolve: ({ id }, _, context) => {
         return context.prisma.fisherfolk
-          .findUnique({ where: id })
+          .findUniqueOrThrow({ where: id })
           .livelihoods();
       },
     });
     t.field('organizations', {
-      type: nullableList(Organization),
+      type: nonNull(list(Organization)),
       resolve: ({ id }, _, context) => {
         return context.prisma.fisherfolk
-          .findUnique({ where: id })
+          .findUniqueOrThrow({ where: id })
           .organizations();
       },
     });
     t.field('permit', {
-      type: nullable(Permit),
+      type: nonNull(Permit),
       resolve: ({ id }, _, context) => {
-        return context.prisma.fisherfolk.findUnique({ where: id }).permit();
+        return context.prisma.fisherfolk.findUniqueOrThrow({ where: id }).permit();
       },
     });
     t.field('governmentAid', {
-      type: nullableList(Queue),
+      type: nonNull(list(Queue)),
       resolve: ({ id }, _, context) => {
         return context.prisma.fisherfolk
-          .findUnique({ where: id })
+          .findUniqueOrThrow({ where: id })
           .governmentAid();
       },
     });
     t.field('images', {
-      type: nullableList(Image),
+      type: nonNull(list(Image)),
       resolve: ({ id }, _, context) => {
-        return context.prisma.fisherfolk.findUnique({ where: id }).images();
+        return context.prisma.fisherfolk.findUniqueOrThrow({ where: id }).images();
       },
     });
     t.field('createdAt', { type: 'DateTime' });
     t.field('updatedAt', { type: 'DateTime' });
+    t.field('gears', {
+      type: nonNull(list(Gear)),
+      resolve: ({ id }, _, context) => {
+        return context.prisma.fisherfolk.findUniqueOrThrow({ where: id }).gears();
+      }
+    });
+    t.field('vessels', {
+      type: nonNull(list(Vessel)),
+      resolve: ({ id }, _, context) => {
+        return context.prisma.fisherfolk.findUniqueOrThrow({ where: id }).vessels();
+      }
+    });
   },
 });
 
