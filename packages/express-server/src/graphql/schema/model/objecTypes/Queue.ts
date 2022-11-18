@@ -12,10 +12,10 @@ const Queue = objectType({
     t.date('createdAt');
     t.date('updatedAt');
     t.field('fisherfolk', {
-      type: nullable(Fisherfolk),
+      type: Fisherfolk,
       resolve: ({ fisherfolkId, governmentAidId }, _, context) => {
         return context.prisma.queue
-          .findUnique({
+          .findUniqueOrThrow({
             where: {
               fisherfolkId_governmentAidId: { fisherfolkId, governmentAidId },
             },
@@ -24,10 +24,10 @@ const Queue = objectType({
       },
     });
     t.field('governmentAid', {
-      type: nullable(GovernmentAid),
+      type: GovernmentAid,
       resolve: ({ fisherfolkId, governmentAidId }, _, context) => {
         return context.prisma.queue
-          .findUnique({
+          .findUniqueOrThrow({
             where: {
               fisherfolkId_governmentAidId: { fisherfolkId, governmentAidId },
             },
