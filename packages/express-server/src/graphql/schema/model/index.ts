@@ -6,6 +6,8 @@ import Image from './objecTypes/Image';
 import GovernmentAid from './objecTypes/GovernmentAid';
 import Queue from './objecTypes/Queue';
 import Permit from './objecTypes/Permit';
+import Gear from './objecTypes/Gear';
+import Vessel from './objecTypes/Vessel';
 
 const Models = [
   User,
@@ -16,6 +18,8 @@ const Models = [
   GovernmentAid,
   Queue,
   Permit,
+  Vessel,
+  Gear,
 ];
 
 export default Models;
