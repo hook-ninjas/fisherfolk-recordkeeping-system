@@ -105,7 +105,7 @@ export interface NexusGenEnums {
   Gender: "Female" | "Male"
   Material: "Composite" | "Fiberglass" | "Wood"
   Salutation: "Mr" | "Mrs" | "Ms"
-  SourceOfIncome: "AquaCulture" | "CaptureFishing" | "FishProcessing" | "FishVending" | "Others"
+  SourceOfIncome: "Aquaculture" | "CaptureFishing" | "FishProcessing" | "FishVending" | "Others"
 }
 
 export interface NexusGenScalars {
@@ -346,8 +346,10 @@ export interface NexusGenFieldTypes {
     expiresOn: NexusGenScalars['DateTime'] | null; // DateTime
     fisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
     fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    gears: Array<NexusGenRootTypes['Gear'] | null> | null; // [Gear]
     registeredAt: NexusGenScalars['DateTime']; // DateTime!
     renewedAt: NexusGenScalars['DateTime']; // DateTime!
+    vessels: Array<NexusGenRootTypes['Vessel'] | null> | null; // [Vessel]
   }
   Query: { // field return type
     fisherfolks: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
@@ -355,9 +357,9 @@ export interface NexusGenFieldTypes {
   Queue: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     date: NexusGenScalars['DateTime']; // DateTime!
-    fisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
+    fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
-    governmentAid: NexusGenRootTypes['GovernmentAid'] | null; // GovernmentAid
+    governmentAid: NexusGenRootTypes['GovernmentAid']; // GovernmentAid!
     governmentAidId: number; // Int!
     queueNumber: number; // Int!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
@@ -488,8 +490,10 @@ export interface NexusGenFieldTypeNames {
     expiresOn: 'DateTime'
     fisherfolk: 'Fisherfolk'
     fisherfolkId: 'BigInt'
+    gears: 'Gear'
     registeredAt: 'DateTime'
     renewedAt: 'DateTime'
+    vessels: 'Vessel'
   }
   Query: { // field return type name
     fisherfolks: 'Fisherfolk'

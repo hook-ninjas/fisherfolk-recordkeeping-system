@@ -99,19 +99,19 @@ type Fisherfolk {
   dateOfBirth: DateTime!
   educationalBackground: EducationalBackground!
   firstName: String!
-  gears: [Gear!]!
+  gears: [Gear]
   gender: Gender!
-  governmentAid: [Queue!]!
+  governmentAid: [Queue]
   id: BigInt!
-  images: [Image!]!
+  images: [Image]
   isArchive: Boolean!
   lastName: String!
-  livelihoods: [Livelihood!]!
+  livelihoods: [Livelihood]
   middleName: String!
   nationality: String!
   numOfChildren: Int!
-  organizations: [Organization!]!
-  permit: Permit!
+  organizations: [Organization]
+  permit: Permit
   personToNotify: String!
   placeOfBirth: String!
   province: String!
@@ -124,7 +124,7 @@ type Fisherfolk {
   salutation: Salutation!
   status: FisherfolkStatus!
   updatedAt: DateTime!
-  vessels: [Vessel!]!
+  vessels: [Vessel]
 }
 
 enum FisherfolkStatus {
@@ -183,7 +183,7 @@ type Image {
 type Livelihood {
   createdAt: DateTime!
   description: String!
-  fisherfolk: Fisherfolk
+  fisherfolk: Fisherfolk!
   fisherfolkId: BigInt!
   id: BigInt!
   isArchive: Boolean!
@@ -217,11 +217,13 @@ type Organization {
 type Permit {
   certificateNumber: String!
   expired: Boolean!
-  expiresOn: DateTime!
+  expiresOn: DateTime
   fisherfolk: Fisherfolk
   fisherfolkId: BigInt!
+  gears: [Gear]
   registeredAt: DateTime!
   renewedAt: DateTime!
+  vessels: [Vessel]
 }
 
 type Query {
@@ -231,9 +233,9 @@ type Query {
 type Queue {
   createdAt: DateTime!
   date: DateTime!
-  fisherfolk: Fisherfolk
+  fisherfolk: Fisherfolk!
   fisherfolkId: BigInt!
-  governmentAid: GovernmentAid
+  governmentAid: GovernmentAid!
   governmentAidId: Int!
   queueNumber: Int!
   updatedAt: DateTime!
@@ -246,7 +248,7 @@ enum Salutation {
 }
 
 enum SourceOfIncome {
-  AquaCulture
+  Aquaculture
   CaptureFishing
   FishProcessing
   FishVending

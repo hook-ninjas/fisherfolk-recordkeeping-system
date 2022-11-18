@@ -26,7 +26,7 @@ const Permit = objectType({
       resolve: ({ certificateNumber }, _, context) => {
         return context.prisma.permit
           .findUnique({ where: { certificateNumber } })
-          .fisherfolk();
+          .gears();
       },
     });
     t.field('vessels', {
@@ -34,7 +34,7 @@ const Permit = objectType({
       resolve: ({ certificateNumber }, _, context) => {
         return context.prisma.permit
           .findUnique({ where: { certificateNumber } })
-          .fisherfolk();
+          .vessels();
       },
     });
   },
