@@ -14,12 +14,12 @@ import {
 import React from 'react';
 // import { SampleFisherfolkQueryDocument } from '../../graphql/generated';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { replaceUnderscore } from '../../utils/utils';
 import Loading from '../Loading/Loading';
+import { useNavigate } from 'react-router-dom';
 
 export function RecordsTable() {
   // const { loading, error, data } = useQuery(SampleFisherfolkQueryDocument);
-
+  const navigate = useNavigate();
   const [drop, setDropDown] = React.useState<null | HTMLElement>(null);
   const handleDismissDropdown = () => setDropDown(null);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
@@ -34,6 +34,24 @@ export function RecordsTable() {
   // if (loading) {
   //   <Loading />;
   // }
+
+  const handleViewProfile = (id: string) => () => {
+    navigate(`/fisherfolk-profile/${id}`);
+  };
+
+  const data = {
+    fisherfolks: [
+      {
+        id: '099',
+        fullName: 'Jerome Ponce',
+        registrationDate: '2022-06-28T00:00:00.00',
+        contactNum: '09998018530',
+        mainSrcOfIncome: 'Capture Fishing',
+        barangay: 'Brgy. Baldoza',
+        status: 'Active',
+      },
+    ],
+  };
 
   return (
     <TableContainer component={Paper}>
@@ -64,7 +82,7 @@ export function RecordsTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {/* {data &&
+          {data &&
             data.fisherfolks.map((fisherfolk) => {
               const {
                 id,
@@ -84,9 +102,7 @@ export function RecordsTable() {
                     {new Date(registrationDate).toLocaleDateString()}
                   </TableCell>
                   <TableCell align="left">{fullName}</TableCell>
-                  <TableCell align="left">
-                    {replaceUnderscore(mainSrcOfIncome!)}
-                  </TableCell>
+                  <TableCell align="left">{mainSrcOfIncome}</TableCell>
                   <TableCell align="left">{contactNum}</TableCell>
                   <TableCell align="left">{barangay}</TableCell>
                   <TableCell align="left">{status}</TableCell>
@@ -112,13 +128,14 @@ export function RecordsTable() {
                         'aria-labelledby': 'basic-button',
                       }}
                     >
+                      <MenuItem onClick={handleViewProfile(id)}>View</MenuItem>
                       <MenuItem>Edit</MenuItem>
                       <MenuItem>Archive</MenuItem>
                     </Menu>
                   </TableCell>
                 </TableRow>
               );
-            })} */}
+            })}
         </TableBody>
       </Table>
     </TableContainer>
