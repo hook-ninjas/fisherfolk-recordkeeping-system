@@ -12,6 +12,8 @@ import {
 } from '@mui/material';
 import VesselTable from '../Table/VesselTable';
 import GearTable from '../Table/GearTable';
+import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
+import { FisherfolkStatus } from '../../graphql/generated';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -135,11 +137,11 @@ const FisherfolkViewProfile = () => {
       <Grid item xs={12} sm={5} md={2.8}>
         <Item>
           <Stack direction="row" spacing={1}>
-            <Typography>Lopez, Mar Fermin</Typography>
+            <Typography variant='h6'>Lopez, Mar Fermin</Typography>
           </Stack>
-          <Stack direction="row" spacing={1}>
-            <Typography variant="body2">2022-0001</Typography>
-            <Typography variant="body2">ACTIVE</Typography>
+          <Stack direction="row" spacing={5}>
+            <Typography variant="body2" width={200}>2022-0001</Typography>
+            <FisherfolkStatusButton label={FisherfolkStatus.Active}/>
           </Stack>
           <InfoTitle description="Personal Information" />
           <Info title="Contact Number" description="09998018540" />
