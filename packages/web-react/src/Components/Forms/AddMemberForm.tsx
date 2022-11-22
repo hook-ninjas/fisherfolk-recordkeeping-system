@@ -161,10 +161,10 @@ const salutations: RadioOptions[] = [
 ];
 
 const nationality = [
-  
-    Nationality.Filipino,
-    
-  
+
+  Nationality.Filipino,
+
+
 ];
 
 const addMemberSchema = object().shape({
@@ -184,7 +184,7 @@ const addMemberSchema = object().shape({
     .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
   barangay: string().required('Select an option for barangay'),
 
-  appliation:  string().required('Please Enter Appliation .'),
+  appliation: string().required('Please Enter Appliation .'),
   cityMunicipality: string().required('Enter city/municipality.'),
   province: string().required('Enter province.'),
   residentYear: string().matches(/^\d{4}$/, 'Please enter year.'),
@@ -223,7 +223,7 @@ const addMemberSchema = object().shape({
   orgName: string(),
   orgMemberSince: string().matches(/^$|\d{4}$/, 'Please enter year.'),
   orgPosition: string(),
-  
+
 });
 
 const showSuccessAlert = () =>
@@ -266,8 +266,8 @@ export default function AddMemberForm({
       [event.target.name]: event.target.checked,
     });
   };
-  const { CaptureFishing, Aquaculture, FishVending,FishPrcoessing } = state;
-  const error = [CaptureFishing, Aquaculture, FishVending,FishPrcoessing].filter((v) => v).length !== 2;
+  const { CaptureFishing, Aquaculture, FishVending, FishPrcoessing } = state;
+  const error = [CaptureFishing, Aquaculture, FishVending, FishPrcoessing].filter((v) => v).length !== 2;
   const [complete, setComplete] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSubmitting = () => setIsSubmitting(true);
@@ -370,9 +370,9 @@ export default function AddMemberForm({
           Fisher Folk Registration
         </FormContainerTitle>
         <DialogContent dividers>
-        <Typography variant="h6" color="GrayText" mt={2} mb={3} ml={2}>
-              Type of Registration
-            </Typography>
+          <Typography variant="h6" color="GrayText" mt={2} mb={3} ml={2}>
+            Type of Registration
+          </Typography>
           <Box
             sx={{
               display: 'flex',
@@ -380,7 +380,7 @@ export default function AddMemberForm({
               mt: -2,
             }}
           >
-        
+
             <FormInputRadio
               name="registrationType"
               label="registrationType"
@@ -601,9 +601,9 @@ export default function AddMemberForm({
                 register={register}
                 errors={errors}
               />
-              
+
             </Grid>
-            <Grid item sm={6} sx={{  ml: 0,mt: 1 }}>
+            <Grid item sm={6} sx={{ ml: 0, mt: 1 }}>
               <FormInputSelect
                 name="nationality"
                 label="Nationality"
@@ -613,7 +613,7 @@ export default function AddMemberForm({
                 register={register}
                 errors={errors}
               />
-           
+
             </Grid>
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 2, mt: 1 }}>
@@ -630,7 +630,7 @@ export default function AddMemberForm({
             </Grid>
           </Grid>
           <Typography variant="h6" color="GrayText" mt={2} mb={-1} ml={2}>
-          Person to Notify Incase of Emergency
+            Person to Notify Incase of Emergency
           </Typography>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
             <Grid item sm={6}>
@@ -677,7 +677,7 @@ export default function AddMemberForm({
             </Grid>
           </Grid>
           <Typography variant="h6" color="GrayText" mt={2} mb={-1} ml={2}>
-          Fishing Activity
+            Fishing Activity
           </Typography>
           <Grid container spacing={-2} sx={{ ml: 2, mt: 2 }}>
             <Grid item sm={6}>
@@ -690,11 +690,11 @@ export default function AddMemberForm({
                 register={register}
                 errors={errors}
               />
-              
+
             </Grid>
-            <Grid item sm={6}>    <Typography  color="GrayText" mt={-4} mb={-1} ml={2}>
-            Other Fishing Activities
-          </Typography> </Grid>
+            <Grid item sm={6}>    <Typography color="GrayText" mt={-4} mb={-1} ml={2}>
+              Other Fishing Activities
+            </Typography> </Grid>
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
@@ -708,40 +708,40 @@ export default function AddMemberForm({
               />
             </Grid>
             <Grid item sm={6}>
-            <Box
-            sx={{
-              display: 'flex',
-              pl: 5,
-              mt: -13,
-            }}
-          >
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Checkbox checked={CaptureFishing} onChange={handleChange} name="CaptureFishing" />
-            }
-            label="Capture Fishing"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox checked={Aquaculture} onChange={handleChange} name="Aquaculture" />
-            }
-            label="Aquaculture"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox checked={FishVending} onChange={handleChange} name="FishVending" />
-            }
-            label="Fish Vending"
-          />
-           <FormControlLabel
-            control={
-              <Checkbox checked={FishPrcoessing} onChange={handleChange} name="FishPrcoessing" />
-            }
-            label="Fish Prcoessing"
-          />
-        </FormGroup>
-          </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  pl: 5,
+                  mt: -13,
+                }}
+              >
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={CaptureFishing} onChange={handleChange} name="CaptureFishing" />
+                    }
+                    label="Capture Fishing"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={Aquaculture} onChange={handleChange} name="Aquaculture" />
+                    }
+                    label="Aquaculture"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={FishVending} onChange={handleChange} name="FishVending" />
+                    }
+                    label="Fish Vending"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={FishPrcoessing} onChange={handleChange} name="FishPrcoessing" />
+                    }
+                    label="Fish Prcoessing"
+                  />
+                </FormGroup>
+              </Box>
             </Grid>
           </Grid>
           <Typography variant="h6" color="GrayText" mt={2} mb={-1} ml={2}>
