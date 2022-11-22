@@ -139,7 +139,7 @@ const FisherfolkViewProfile = () => {
           <Stack direction="row" spacing={1}>
             <Typography variant='h6'>Lopez, Mar Fermin</Typography>
           </Stack>
-          <Stack direction="row" spacing={5}>
+          <Stack direction="row" spacing={3}>
             <Typography variant="body2" width={200}>2022-0001</Typography>
             <FisherfolkStatusButton label={FisherfolkStatus.Active}/>
           </Stack>
