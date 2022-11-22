@@ -10,3 +10,18 @@
 #     status
 #   }
 # }
+
+query VesselQuery {
+  vessels {
+    id
+    name
+    serialNumber
+    type
+    yearBuilt
+    fisherfolk {
+      lastName
+      firstName
+      middleName
+    }
+  }
+}
