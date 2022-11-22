@@ -25,3 +25,16 @@ query VesselQuery {
     }
   }
 }
+
+query GearsQuery {
+  gears {
+    id
+    classification
+    type
+    fisherfolk {
+      lastName
+      firstName
+      middleName
+    }
+  }
+}
