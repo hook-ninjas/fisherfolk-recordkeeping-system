@@ -17,21 +17,30 @@ import React from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Loading from '../Loading/Loading';
 import { useNavigate } from 'react-router-dom';
+import { FisherfolkStatus } from '../../graphql/generated';
+import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 
 interface Column {
-  id: 'id' | 'registrationDate' | 'name' |'contactNum' | 'mainSrcOfIncome' | 'barangay' | 'status';
+  id:
+    | 'id'
+    | 'registrationDate'
+    | 'name'
+    | 'contactNum'
+    | 'mainSrcOfIncome'
+    | 'barangay'
+    | 'status';
   label: string;
-  align?: 'right';
+  align?: 'right' | 'left';
 }
 
 const columns: readonly Column[] = [
-  { id: 'id', label: 'Id'},
-  { id: 'registrationDate', label: 'Date Registered', align: 'right' },
-  { id: 'name', label: 'Name', align: 'right' },
-  { id: 'contactNum', label: 'Contact Number', align: 'right' },
-  { id: 'mainSrcOfIncome', label: 'Livelihood', align: 'right' },
-  { id: 'barangay', label: 'Barangay', align: 'right' },
-  { id: 'status', label: 'Status', align: 'right' },
+  { id: 'id', label: 'Id' },
+  { id: 'registrationDate', label: 'Date Registered', align: 'left' },
+  { id: 'name', label: 'Name', align: 'left' },
+  { id: 'contactNum', label: 'Contact Number', align: 'left' },
+  { id: 'mainSrcOfIncome', label: 'Livelihood', align: 'left' },
+  { id: 'barangay', label: 'Barangay', align: 'left' },
+  { id: 'status', label: 'Status', align: 'left' },
 ];
 
 export function RecordsTable() {
@@ -40,8 +49,11 @@ export function RecordsTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const handleChangePage = (event: unknown, newPage: number) => setPage(newPage);
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangePage = (event: unknown, newPage: number) =>
+    setPage(newPage);
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
@@ -74,7 +86,7 @@ export function RecordsTable() {
         contactNum: '09998018530',
         mainSrcOfIncome: 'Capture Fishing',
         barangay: 'Brgy. Baldoza',
-        status: 'Active',
+        status: FisherfolkStatus.Active,
       },
       {
         id: '099',
@@ -83,7 +95,7 @@ export function RecordsTable() {
         contactNum: '09998018530',
         mainSrcOfIncome: 'Capture Fishing',
         barangay: 'Brgy. Baldoza',
-        status: 'Active',
+        status: FisherfolkStatus.Active,
       },
       {
         id: '099',
@@ -92,7 +104,7 @@ export function RecordsTable() {
         contactNum: '09998018530',
         mainSrcOfIncome: 'Capture Fishing',
         barangay: 'Brgy. Baldoza',
-        status: 'Active',
+        status: FisherfolkStatus.Inactive,
       },
       {
         id: '099',
@@ -101,7 +113,7 @@ export function RecordsTable() {
         contactNum: '09998018530',
         mainSrcOfIncome: 'Capture Fishing',
         barangay: 'Brgy. Baldoza',
-        status: 'Active',
+        status: FisherfolkStatus.Active,
       },
       {
         id: '099',
@@ -110,7 +122,7 @@ export function RecordsTable() {
         contactNum: '09998018530',
         mainSrcOfIncome: 'Capture Fishing',
         barangay: 'Brgy. Baldoza',
-        status: 'Active',
+        status: FisherfolkStatus.Active,
       },
       {
         id: '099',
@@ -119,7 +131,7 @@ export function RecordsTable() {
         contactNum: '09998018530',
         mainSrcOfIncome: 'Capture Fishing',
         barangay: 'Brgy. Baldoza',
-        status: 'Active',
+        status: FisherfolkStatus.Active,
       },
       {
         id: '099',
@@ -128,20 +140,23 @@ export function RecordsTable() {
         contactNum: '09998018530',
         mainSrcOfIncome: 'Capture Fishing',
         barangay: 'Brgy. Baldoza',
-        status: 'Active',
+        status: FisherfolkStatus.Deceased,
       },
     ],
   };
 
   return (
     <TableContainer component={Paper}>
-      <Table stickyHeader sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+      <Table
+        stickyHeader
+        sx={{ minWidth: 650 }}
+        size="small"
+        aria-label="a dense table"
+      >
         <TableHead>
           <TableRow>
             {columns.map((column) => (
-              <TableCell
-                key={column.id}
-                align={column.align}>
+              <TableCell key={column.id} align={column.align}>
                 <b>{column.label}</b>
               </TableCell>
             ))}
@@ -153,13 +168,28 @@ export function RecordsTable() {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((fisherfolk) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={fisherfolk.id}>
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={fisherfolk.id}
+                  >
                     {columns.map((column) => {
                       const value = fisherfolk[column.id];
-                      const formattedDate = new Date(fisherfolk[column.id]).toLocaleDateString();
+                      const formattedDate = new Date(
+                        fisherfolk[column.id]
+                      ).toLocaleDateString();
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.id === 'registrationDate' ? formattedDate : value}
+                          {column.id === 'status' ? (
+                            <FisherfolkStatusButton
+                              label={fisherfolk[column.id]}
+                            />
+                          ) : column.id == 'registrationDate' ? (
+                            formattedDate
+                          ) : (
+                            value
+                          )}
                         </TableCell>
                       );
                     })}
@@ -185,7 +215,9 @@ export function RecordsTable() {
                           'aria-labelledby': 'basic-button',
                         }}
                       >
-                        <MenuItem onClick={handleViewProfile(fisherfolk.id)}>View</MenuItem>
+                        <MenuItem onClick={handleViewProfile(fisherfolk.id)}>
+                          View
+                        </MenuItem>
                         <MenuItem>Edit</MenuItem>
                         <MenuItem>Archive</MenuItem>
                       </Menu>
