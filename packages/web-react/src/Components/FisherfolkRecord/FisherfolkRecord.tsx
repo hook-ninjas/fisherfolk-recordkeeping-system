@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Button, Grid, Paper } from '@mui/material';
 import AddMemberForm from '../Forms/AddMemberForm';
-import RecordsTable from '../Table/Table';
+import FisherfolkTable from '../Table/FisherfolkTable';
 
 const FisherfolkRecord = () => {
   const [addMemberBtn, setAddMemberBtn] = useState(false);
@@ -37,7 +37,7 @@ const FisherfolkRecord = () => {
           </Box>
           <Grid item>
             <Box m={1} display="flex" justifyContent="flex-end">
-              <RecordsTable />
+              <FisherfolkTable />
             </Box>
           </Grid>
         </Paper>

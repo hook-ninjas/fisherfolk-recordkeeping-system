@@ -43,7 +43,7 @@ const columns: readonly Column[] = [
   { id: 'status', label: 'Status', align: 'left' },
 ];
 
-export function RecordsTable() {
+export function FisherfolkTable() {
   // const { loading, error, data } = useQuery(SampleFisherfolkQueryDocument);
   const navigate = useNavigate();
   const [page, setPage] = React.useState(0);
@@ -240,4 +240,4 @@ export function RecordsTable() {
   );
 }
 
-export default RecordsTable;
+export default FisherfolkTable;
