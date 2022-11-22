@@ -118,6 +118,14 @@ interface FormInputRadioProps {
   errors: FieldValues;
 }
 
+// export const FormMultipleCheckbox = ({
+//   name,
+//   label,
+//   control,
+
+//  })
+
+
 export const FormInputRadio = ({
   name,
   label,

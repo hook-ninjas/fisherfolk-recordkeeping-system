@@ -267,7 +267,7 @@ export default function AddMemberForm({
     });
   };
   const { CaptureFishing, Aquaculture, FishVending, FishPrcoessing } = state;
-  const error = [CaptureFishing, Aquaculture, FishVending, FishPrcoessing].filter((v) => v).length !== 2;
+  // const error = [CaptureFishing, Aquaculture, FishVending, FishPrcoessing].filter((v) => v).length !== 2;
   const [complete, setComplete] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSubmitting = () => setIsSubmitting(true);
@@ -692,11 +692,11 @@ export default function AddMemberForm({
               />
 
             </Grid>
-            <Grid item sm={6}>    <Typography color="GrayText" mt={-4} mb={-1} ml={2}>
-              Other Fishing Activities
-            </Typography> </Grid>
+            <Typography variant="subtitle2" color="GrayText" mt={-4} mb={3} ml={2}>
+          Other Fishing Activities
+          </Typography>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+          <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
             <Grid item sm={6}>
               <FormInputText
                 name="mainGearUsed"
@@ -708,11 +708,12 @@ export default function AddMemberForm({
               />
             </Grid>
             <Grid item sm={6}>
+      
               <Box
                 sx={{
                   display: 'flex',
                   pl: 5,
-                  mt: -13,
+                  mt: -9,
                 }}
               >
                 <FormGroup>
