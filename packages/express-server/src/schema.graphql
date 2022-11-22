@@ -2,15 +2,21 @@
 ### Do not make changes to this file directly
 
 
+"""
+The `BigInt` scalar type represents non-fractional signed whole numeric values.
+"""
+scalar BigInt
+
 enum CivilStatus {
-  LEGALLY_SEPARATED
-  MARRIED
-  SINGLE
-  WIDOWED
+  LegallySeparated
+  Married
+  Single
+  Widowed
 }
 
 input CreateFisherfolkInput {
   age: Int!
+  appellation: String!
   barangay: String!
   cityMunicipality: String!
   civilStatus: CivilStatus!
@@ -20,34 +26,53 @@ input CreateFisherfolkInput {
   firstName: String!
   gender: Gender!
   lastName: String!
-  mainSrcGear: String!
-  mainSrcMethod: String!
-  mainSrcOfIncome: SourceOfIncome!
   middleName: String!
-  nationality: Nationality!
-  numOfChildren: Int
-  orgName: String
-  orgPosition: String
-  orgYearMember: Int
-  otherSrcGear: String
-  otherSrcMethod: String
-  otherSrcOfIncome: SourceOfIncome
+  nationality: String!
+  numOfChildren: Int!
   personToNotify: String!
   placeOfBirth: String!
   province: String!
   ptnAddress: String!
   ptnContactNum: String!
   ptnRelationship: String!
-  registrationNum: Int!
-  registrationType: RegistrationType!
+  registrationDate: DateTime!
   religion: String!
   residentYear: Int!
   salutation: Salutation!
+  status: FisherfolkStatus!
+}
+
+input CreateGearInput {
+  classification: GearClassification!
+  fisherfolkId: BigInt!
+  type: String!
 }
 
 input CreateUserInput {
   password: String!
   username: String!
+}
+
+input CreateVesselInput {
+  engineMake: String!
+  fisherfolkId: BigInt!
+  grossTonnage: Float!
+  homeport: String!
+  horsepower: Float!
+  material: Material!
+  mfvrNumber: String!
+  name: String!
+  netTonnage: Float!
+  placeBuilt: String!
+  registeredBreadth: Float!
+  registeredDepth: Float!
+  registeredLength: Float!
+  serialNumber: String!
+  tonnageBreadth: Float!
+  tonnageDepth: Float!
+  tonnageLength: Float!
+  type: String!
+  yearBuilt: Int!
 }
 
 """
@@ -56,99 +81,205 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 scalar DateTime
 
 enum EducationalBackground {
-  COLLEGE
-  ELEMENTARY
-  HIGH_SCHOOL
-  POST_GRADUATE
-  VOCATIONAL
+  College
+  Elementary
+  HighSchool
+  PostGraduate
+  Vocational
 }
 
 type Fisherfolk {
-  age: Int
-  barangay: String
-  cityMunicipality: String
-  civilStatus: CivilStatus
-  contactNum: String
-  dateOfBirth: DateTime
-  educationalBackground: EducationalBackground
-  firstName: String
-  fisherfolkStatus: FisherfolkStatus
-  fullName: String
-  gender: Gender
-  id: Int!
-  image: String
-  lastName: String
-  mainSrcGear: String
-  mainSrcMethod: String
-  mainSrcOfIncome: SourceOfIncome
-  middleName: String
-  nationality: Nationality
-  numOfChildren: Int
-  orgName: String
-  orgPosition: String
-  orgYearMember: Int
-  otherSrcGear: String
-  otherSrcMethod: String
-  otherSrcOfIncome: SourceOfIncome
-  personToNotify: String
-  placeOfBirth: String
-  province: String
-  ptnAddress: String
-  ptnContactNum: String
-  ptnRelationship: String
-  registrationDate: DateTime
-  registrationNum: Int
-  registrationType: RegistrationType
-  religion: String
-  residentYear: Int
-  salutation: Salutation
-  signature: String
+  age: Int!
+  appellation: String!
+  barangay: String!
+  cityMunicipality: String!
+  civilStatus: CivilStatus!
+  contactNum: String!
+  createdAt: DateTime!
+  dateOfBirth: DateTime!
+  educationalBackground: EducationalBackground!
+  firstName: String!
+  gears: [Gear]
+  gender: Gender!
+  governmentAid: [Queue]
+  id: BigInt!
+  images: [Image]
+  isArchive: Boolean!
+  lastName: String!
+  livelihoods: [Livelihood]
+  middleName: String!
+  nationality: String!
+  numOfChildren: Int!
+  organizations: [Organization]
+  permit: Permit
+  personToNotify: String!
+  placeOfBirth: String!
+  province: String!
+  ptnAddress: String!
+  ptnContactNum: String!
+  ptnRelationship: String!
+  registrationDate: DateTime!
+  religion: String!
+  residentYear: Int!
+  salutation: Salutation!
+  status: FisherfolkStatus!
+  updatedAt: DateTime!
+  vessels: [Vessel]
 }
 
 enum FisherfolkStatus {
-  ACTIVE
-  DECEASED
-  INACTIVE
+  Active
+  Deceased
+  Inactive
+}
+
+type Gear {
+  classification: GearClassification!
+  fisherfolk: Fisherfolk!
+  id: BigInt!
+  type: String!
+}
+
+enum GearClassification {
+  FallingGear
+  GillNets
+  HookAndLine
+  LiftNets
+  Miscellaneous
+  Others
+  PotsAndTraps
+  ScoopNets
+  SeineNets
 }
 
 enum Gender {
-  FEMALE
-  MALE
+  Female
+  Male
+}
+
+type GovernmentAid {
+  createdAt: DateTime!
+  endDate: DateTime!
+  id: Int!
+  slot: Int!
+  startDate: DateTime!
+  title: String!
+  updatedAt: DateTime!
+}
+
+type Image {
+  createdAt: DateTime!
+  fisherfolk: Fisherfolk
+  fisherfolkId: BigInt!
+  format: String!
+  id: String!
+  isArchive: Boolean!
+  name: String!
+  updatedAt: DateTime!
+  url: String!
+  version: String!
+}
+
+type Livelihood {
+  createdAt: DateTime!
+  description: String!
+  fisherfolk: Fisherfolk!
+  fisherfolkId: BigInt!
+  id: BigInt!
+  isArchive: Boolean!
+  isMain: Boolean!
+  type: SourceOfIncome!
+  updatedAt: DateTime!
+}
+
+enum Material {
+  Composite
+  Fiberglass
+  Wood
 }
 
 type Mutation {
-  createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk
-  createUser(data: CreateUserInput!): User
+  createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
+  createUser(data: CreateUserInput!): User!
+  createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
 }
 
-enum Nationality {
-  FILIPINO
+type Organization {
+  createdAt: DateTime!
+  fisherfolks: [Fisherfolk!]
+  id: BigInt!
+  name: String!
+  position: String!
+  updatedAt: DateTime!
+  yearJoined: Int!
+}
+
+type Permit {
+  certificateNumber: String!
+  expired: Boolean!
+  expiresOn: DateTime
+  fisherfolk: Fisherfolk
+  fisherfolkId: BigInt!
+  gears: [Gear]
+  registeredAt: DateTime!
+  renewedAt: DateTime!
+  vessels: [Vessel]
 }
 
 type Query {
   fisherfolks: [Fisherfolk!]!
 }
 
-enum RegistrationType {
-  NEW_REGISTRATION
-  RENEWAL
+type Queue {
+  createdAt: DateTime!
+  date: DateTime!
+  fisherfolk: Fisherfolk!
+  fisherfolkId: BigInt!
+  governmentAid: GovernmentAid!
+  governmentAidId: Int!
+  queueNumber: Int!
+  updatedAt: DateTime!
 }
 
 enum Salutation {
-  MR
-  MRS
-  MS
+  Mr
+  Mrs
+  Ms
 }
 
 enum SourceOfIncome {
-  AQUACULTURE
-  CAPTURE_FISHING
-  FISH_PROCESSING
-  FISH_VENDING
+  Aquaculture
+  CaptureFishing
+  FishProcessing
+  FishVending
+  Others
 }
 
 type User {
   id: Int!
   password: String!
   username: String!
+}
+
+type Vessel {
+  engineMake: String!
+  fisherfolk: Fisherfolk!
+  grossTonnage: Float!
+  homeport: String!
+  horsepower: Float!
+  id: BigInt!
+  material: Material!
+  mfvrNumber: String!
+  name: String!
+  netTonnage: Float!
+  placeBuilt: String!
+  registeredBreadth: Float!
+  registeredDepth: Float!
+  registeredLength: Float!
+  serialNumber: String!
+  tonnageBreadth: Float!
+  tonnageDepth: Float!
+  tonnageLength: Float!
+  type: String!
+  yearBuilt: Int!
 }

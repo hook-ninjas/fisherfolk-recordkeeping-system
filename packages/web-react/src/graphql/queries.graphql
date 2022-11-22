@@ -1,9 +1,12 @@
 # Write Graphql Queries here #
-query SampleFisherfolkQuery {
-  fisherfolks {
-    id
-    fullName
-    barangay
-    registrationDate
-  }
-}
+# query SampleFisherfolkQuery {
+#   fisherfolks {
+#     id
+#     fullName
+#     registrationDate
+#     contactNum
+#     mainSrcOfIncome
+#     barangay
+#     status
+#   }
+# }

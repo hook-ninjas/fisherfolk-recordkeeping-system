@@ -17,6 +17,7 @@
     "@apollo/client": "^3.7.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@faker-js/faker": "^7.6.0",
     "@hookform/resolvers": "^2.9.10",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.12",
@@ -31,7 +32,8 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.39.1",
     "react-router-dom": "^6.4.2",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "sweetalert2": "^11.6.7"
   },
   "eslintConfig": {
     "extends": [

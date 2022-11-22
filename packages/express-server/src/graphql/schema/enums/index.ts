@@ -1,69 +1,74 @@
 import { enumType } from 'nexus';
 
-export const RegistrationType = enumType({
-  name: 'RegistrationType',
-  members: ['RENEWAL', 'NEW_REGISTRATION'],
-});
-
 export const Salutation = enumType({
   name: 'Salutation',
-  members: ['MR', 'MRS', 'MS'],
+  members: ['Mr', 'Mrs', 'Ms'],
 });
 
 export const Gender = enumType({
   name: 'Gender',
-  members: ['MALE', 'FEMALE'],
+  members: ['Male', 'Female'],
 });
 
 export const CivilStatus = enumType({
   name: 'CivilStatus',
-  members: ['SINGLE', 'MARRIED', 'LEGALLY_SEPARATED', 'WIDOWED'],
-});
-
-export const Nationality = enumType({
-  name: 'Nationality',
-  members: ['FILIPINO']
+  members: ['Single', 'Married', 'LegallySeparated', 'Widowed'],
 });
 
 export const EducationalBackground = enumType({
   name: 'EducationalBackground',
   members: [
-    'ELEMENTARY',
-    'HIGH_SCHOOL',
-    'VOCATIONAL',
-    'COLLEGE',
-    'POST_GRADUATE',
-  ],
-});
-
-export const SourceOfIncome = enumType({
-  name: 'SourceOfIncome',
-  members: [
-    'CAPTURE_FISHING',
-    'AQUACULTURE',
-    'FISH_VENDING',
-    'FISH_PROCESSING',
+    'Elementary',
+    'HighSchool',
+    'Vocational',
+    'College',
+    'PostGraduate',
   ],
 });
 
 export const FisherfolkStatus = enumType({
   name: 'FisherfolkStatus',
-  members: ['ACTIVE', 'INACTIVE', 'DECEASED'],
+  members: ['Active', 'Inactive', 'Deceased'],
 });
 
-export const PermitStatus = enumType({
-  name: 'PermitStatus',
-  members: ['PENDING', 'ON_RELEASE'],
+export const SourceOfIncome = enumType({
+  name: 'SourceOfIncome',
+  members: [
+    'CaptureFishing',
+    'Aquaculture',
+    'FishVending',
+    'FishProcessing',
+    'Others',
+  ],
+});
+
+export const Material = enumType({
+  name: 'Material',
+  members: ['Wood', 'Fiberglass', 'Composite'],
+});
+
+export const GearClassification = enumType({
+  name: 'GearClassification',
+  members: [
+    'HookAndLine',
+    'GillNets',
+    'SeineNets',
+    'PotsAndTraps',
+    'LiftNets',
+    'FallingGear',
+    'ScoopNets',
+    'Miscellaneous',
+    'Others',
+  ],
 });
 
 export default [
   CivilStatus,
   EducationalBackground,
   FisherfolkStatus,
-  Nationality,
   Gender,
-  PermitStatus,
-  RegistrationType,
   Salutation,
   SourceOfIncome,
+  Material,
+  GearClassification,
 ];

@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Button, Grid, Paper } from '@mui/material';
-
 import AddMemberForm from '../Forms/AddMemberForm';
+import RecordsTable from '../Table/Table';
 
-function FisherfolkRecord() {
+const FisherfolkRecord = () => {
   const [addMemberBtn, setAddMemberBtn] = useState(false);
-
   const handleAddMemberOpen = () => setAddMemberBtn(true);
   const handleAddMemberClose = () => setAddMemberBtn(false);
 
@@ -36,10 +35,15 @@ function FisherfolkRecord() {
               />
             )}
           </Box>
+          <Grid item>
+            <Box m={1} display="flex" justifyContent="flex-end">
+              <RecordsTable />
+            </Box>
+          </Grid>
         </Paper>
       </Grid>
     </Grid>
   );
-}
+};
 
 export default FisherfolkRecord;
