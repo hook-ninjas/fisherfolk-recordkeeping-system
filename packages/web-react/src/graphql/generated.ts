@@ -580,6 +580,17 @@ export type Query = {
   vessels: Array<Vessel>;
 };
 
+export enum RegistrationType {
+  NewRegistration = 'NEW_REGISTRATION',
+  Renewal = 'RENEWAL'
+}
+export enum otherFishingActivity {
+  CaptureFishing = 'Capture_Fishing',
+  Aquaculture = 'Aquaculture',
+  FishVending = 'Fish_Vending',
+  FishPrcoessing = 'Fish_Prcoessing'
+}
+
 export type Queue = {
   __typename?: 'Queue';
   createdAt: Scalars['DateTime'];
