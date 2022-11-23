@@ -10,3 +10,31 @@
 #     status
 #   }
 # }
+
+query VesselQuery {
+  vessels {
+    id
+    name
+    serialNumber
+    type
+    yearBuilt
+    fisherfolk {
+      lastName
+      firstName
+      middleName
+    }
+  }
+}
+
+query GearsQuery {
+  gears {
+    id
+    classification
+    type
+    fisherfolk {
+      lastName
+      firstName
+      middleName
+    }
+  }
+}
