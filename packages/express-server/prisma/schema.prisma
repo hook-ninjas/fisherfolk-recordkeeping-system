@@ -105,11 +105,12 @@ model Queue {
 
 model Livelihood {
   id           BigInt         @id @default(autoincrement())
+  fisherfolk   Fisherfolk     @relation(fields: [fisherfolkId], references: [id])
+  fisherfolkId BigInt         @map("fisherfolk_id")
   type         SourceOfIncome
   description  String
   isMain       Boolean        @default(true) @map("is_main")
   isArchive    Boolean        @default(false) @map("is_archive")
-  fisherfolks  Fisherfolk[] 
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
