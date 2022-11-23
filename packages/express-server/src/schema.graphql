@@ -35,11 +35,9 @@ input CreateFisherfolkInput {
   ptnAddress: String!
   ptnContactNum: String!
   ptnRelationship: String!
-  registrationDate: DateTime!
   religion: String!
   residentYear: Int!
   salutation: Salutation!
-  status: FisherfolkStatus!
 }
 
 input CreateGearInput {

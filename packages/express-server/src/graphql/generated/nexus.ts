@@ -59,11 +59,9 @@ export interface NexusGenInputs {
     ptnAddress: string; // String!
     ptnContactNum: string; // String!
     ptnRelationship: string; // String!
-    registrationDate: NexusGenScalars['DateTime']; // DateTime!
     religion: string; // String!
     residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
-    status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
   }
   CreateGearInput: { // input type
     classification: NexusGenEnums['GearClassification']; // GearClassification!
