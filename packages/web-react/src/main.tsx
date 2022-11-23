@@ -7,6 +7,7 @@ import FisherfolkRecord from './Components/FisherfolkRecord/FisherfolkRecord';
 import PageNotFound from './Components/PageNotFound/PageNotFound';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import Login from './Components/Forms/LoginForm';
+import FisherfolkViewProfile from './Components/FisherfolkRecord/FisherfolkViewProfile';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
@@ -21,6 +22,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Route path="/" element={<App />}>
             <Route path="dashboard" index element={<Dashboard />} />
             <Route path="fisherfolk-record" element={<FisherfolkRecord />} />
+            <Route path="fisherfolk-profile/:id" element={<FisherfolkViewProfile />}/>
           </Route>
           <Route path="login" element={<Login />} />
           <Route path="*" element={<PageNotFound />} />
