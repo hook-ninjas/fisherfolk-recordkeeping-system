@@ -228,6 +228,8 @@ type Permit {
 
 type Query {
   fisherfolks: [Fisherfolk!]!
+  gears: [Gear!]!
+  vessels: [Vessel!]!
 }
 
 type Queue {

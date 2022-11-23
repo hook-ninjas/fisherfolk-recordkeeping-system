@@ -353,6 +353,8 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     fisherfolks: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
+    gears: NexusGenRootTypes['Gear'][]; // [Gear!]!
+    vessels: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
   }
   Queue: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -497,6 +499,8 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     fisherfolks: 'Fisherfolk'
+    gears: 'Gear'
+    vessels: 'Vessel'
   }
   Queue: { // field return type name
     createdAt: 'DateTime'
