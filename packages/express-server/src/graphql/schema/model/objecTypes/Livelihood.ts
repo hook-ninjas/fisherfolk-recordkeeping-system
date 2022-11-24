@@ -17,7 +17,7 @@ const Livelihood = objectType({
       type: Fisherfolk,
       resolve: ({ id }, _, context) => {
         return context.prisma.livelihood
-          .findUniqueOrThrow({ where: id })
+          .findUniqueOrThrow({ where: { id: id } })
           .fisherfolk();
       },
     });
