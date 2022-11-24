@@ -26,12 +26,12 @@ import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   CivilStatus,
-  CreateFisherfolkDocument,
+  // CreateFisherfolkDocument,
   EducationalBackground,
   FisherfolkStatus,
   Gender,
   MutationCreateFisherfolkArgs,
-  Nationality,
+  // Nationality,
   otherFishingActivity,
   RegistrationType,
   Salutation,
@@ -160,12 +160,11 @@ const salutations: RadioOptions[] = [
   },
 ];
 
-const nationality = [
+// const nationality = [
 
-  Nationality.Filipino,
+//   Nationality.Filipino,
 
-
-];
+// ];
 
 const addMemberSchema = object().shape({
   registrationType: string()
@@ -223,7 +222,6 @@ const addMemberSchema = object().shape({
   orgName: string(),
   orgMemberSince: string().matches(/^$|\d{4}$/, 'Please enter year.'),
   orgPosition: string(),
-
 });
 
 const showSuccessAlert = () =>
@@ -285,75 +283,75 @@ export default function AddMemberForm({
     marginLeft: 'auto',
   };
 
-  const [createFisherfolk] = useMutation(CreateFisherfolkDocument, {
-    onCompleted: () => {
-      handleClose();
-      handleComplete();
-      showSuccessAlert();
-    },
-    onError: () => {
-      handleClose();
-      handleComplete();
-      showFailAlert();
-    },
-  });
+  // const [createFisherfolk] = useMutation(CreateFisherfolkDocument, {
+  //   onCompleted: () => {
+  //     handleClose();
+  //     handleComplete();
+  //     showSuccessAlert();
+  //   },
+  //   onError: () => {
+  //     handleClose();
+  //     handleComplete();
+  //     showFailAlert();
+  //   },
+  // });
 
-  const onSubmit = handleSubmit(async (data) => {
-    handleSubmitting();
-    const createFisherfolkInput: MutationCreateFisherfolkArgs = {
-      data: {
-        age: parseInt(data.age),
-        barangay: data.barangay,
-        cityMunicipality: data.cityMunicipality,
-        civilStatus: data.civilStatus,
-        contactNum: data.contactNumber,
-        dateOfBirth: new Date(data.dateOfBirth).toISOString(),
-        educationalBackground: data.educationalBackground,
-        firstName: data.firstName,
-        gender: data.gender,
-        image: '',
-        lastName: data.lastName,
-        mainSrcGear: data.mainGearUsed,
-        mainSrcMethod: data.mainMethodUsed,
-        mainSrcOfIncome: data.mainSourceOfIncome,
-        middleName: data.middleName,
-        nationality: data.nationality,
-        personToNotify: data.personToNotify,
-        placeOfBirth: data.placeOfBirth,
-        province: data.province,
-        ptnAddress: data.ptnAddress,
-        ptnContactNum: data.ptnContactNum,
-        ptnRelationship: data.ptnRelationship,
-        registrationType: data.registrationType,
-        religion: data.religion,
-        residentYear: parseInt(data.residentYear),
-        salutation: data.salutation,
-        signature: '',
-        numOfChildren:
-          data.numberOfChildren === '' ? null : parseInt(data.numberOfChildren),
-        orgName: data.orgName,
-        orgPosition: data.orgPosition,
-        orgYearMember:
-          data.orgMemberSince === '' ? null : parseInt(data.orgMemberSince),
-        otherSrcGear: data.otherGearUsed,
-        otherSrcMethod: data.otherMethodUsed,
-        otherSrcOfIncome: data.otherSourceOfIncome ?? null,
-        status: FisherfolkStatus.Active
-      },
-    };
+  // const onSubmit = handleSubmit(async (data) => {
+  //   handleSubmitting();
+  //   const createFisherfolkInput: MutationCreateFisherfolkArgs = {
+  //     data: {
+  //       age: parseInt(data.age),
+  //       barangay: data.barangay,
+  //       cityMunicipality: data.cityMunicipality,
+  //       civilStatus: data.civilStatus,
+  //       contactNum: data.contactNumber,
+  //       dateOfBirth: new Date(data.dateOfBirth).toISOString(),
+  //       educationalBackground: data.educationalBackground,
+  //       firstName: data.firstName,
+  //       gender: data.gender,
+  //       image: '',
+  //       lastName: data.lastName,
+  //       mainSrcGear: data.mainGearUsed,
+  //       mainSrcMethod: data.mainMethodUsed,
+  //       mainSrcOfIncome: data.mainSourceOfIncome,
+  //       middleName: data.middleName,
+  //       nationality: data.nationality,
+  //       personToNotify: data.personToNotify,
+  //       placeOfBirth: data.placeOfBirth,
+  //       province: data.province,
+  //       ptnAddress: data.ptnAddress,
+  //       ptnContactNum: data.ptnContactNum,
+  //       ptnRelationship: data.ptnRelationship,
+  //       registrationType: data.registrationType,
+  //       religion: data.religion,
+  //       residentYear: parseInt(data.residentYear),
+  //       salutation: data.salutation,
+  //       signature: '',
+  //       numOfChildren:
+  //         data.numberOfChildren === '' ? null : parseInt(data.numberOfChildren),
+  //       orgName: data.orgName,
+  //       orgPosition: data.orgPosition,
+  //       orgYearMember:
+  //         data.orgMemberSince === '' ? null : parseInt(data.orgMemberSince),
+  //       otherSrcGear: data.otherGearUsed,
+  //       otherSrcMethod: data.otherMethodUsed,
+  //       otherSrcOfIncome: data.otherSourceOfIncome ?? null,
+  //       status: FisherfolkStatus.Active
+  //     },
+  //   };
 
-    await createFisherfolk({
-      variables: {
-        data: createFisherfolkInput.data,
-      },
-    });
-  });
+  //   await createFisherfolk({
+  //     variables: {
+  //       data: createFisherfolkInput.data,
+  //     },
+  //   });
+  // });
 
   const handleSubmitForm = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    onSubmit();
+    // onSubmit();
   };
 
   return (
@@ -380,7 +378,6 @@ export default function AddMemberForm({
               mt: -2,
             }}
           >
-
             <FormInputRadio
               name="registrationType"
               label="registrationType"
@@ -601,10 +598,9 @@ export default function AddMemberForm({
                 register={register}
                 errors={errors}
               />
-
             </Grid>
             <Grid item sm={6} sx={{ ml: 0, mt: 1 }}>
-              <FormInputSelect
+              {/* <FormInputSelect
                 name="nationality"
                 label="Nationality"
                 data={nationality}
@@ -612,8 +608,7 @@ export default function AddMemberForm({
                 control={control}
                 register={register}
                 errors={errors}
-              />
-
+              /> */}
             </Grid>
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 2, mt: 1 }}>
@@ -690,11 +685,16 @@ export default function AddMemberForm({
                 register={register}
                 errors={errors}
               />
-
             </Grid>
-            <Typography variant="subtitle2" color="GrayText" mt={-4} mb={3} ml={2}>
-          Other Fishing Activities
-          </Typography>
+            <Typography
+              variant="subtitle2"
+              color="GrayText"
+              mt={-4}
+              mb={3}
+              ml={2}
+            >
+              Other Fishing Activities
+            </Typography>
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
             <Grid item sm={6}>
@@ -708,7 +708,6 @@ export default function AddMemberForm({
               />
             </Grid>
             <Grid item sm={6}>
-      
               <Box
                 sx={{
                   display: 'flex',
@@ -719,25 +718,41 @@ export default function AddMemberForm({
                 <FormGroup>
                   <FormControlLabel
                     control={
-                      <Checkbox checked={CaptureFishing} onChange={handleChange} name="CaptureFishing" />
+                      <Checkbox
+                        checked={CaptureFishing}
+                        onChange={handleChange}
+                        name="CaptureFishing"
+                      />
                     }
                     label="Capture Fishing"
                   />
                   <FormControlLabel
                     control={
-                      <Checkbox checked={Aquaculture} onChange={handleChange} name="Aquaculture" />
+                      <Checkbox
+                        checked={Aquaculture}
+                        onChange={handleChange}
+                        name="Aquaculture"
+                      />
                     }
                     label="Aquaculture"
                   />
                   <FormControlLabel
                     control={
-                      <Checkbox checked={FishVending} onChange={handleChange} name="FishVending" />
+                      <Checkbox
+                        checked={FishVending}
+                        onChange={handleChange}
+                        name="FishVending"
+                      />
                     }
                     label="Fish Vending"
                   />
                   <FormControlLabel
                     control={
-                      <Checkbox checked={FishPrcoessing} onChange={handleChange} name="FishPrcoessing" />
+                      <Checkbox
+                        checked={FishPrcoessing}
+                        onChange={handleChange}
+                        name="FishPrcoessing"
+                      />
                     }
                     label="Fish Prcoessing"
                   />
