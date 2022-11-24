@@ -10,7 +10,7 @@ import {
 import Gear from './Gear';
 import Image from './Image';
 import Livelihood from './Livelihood';
-import Organization from './Organization';
+import Member from './Member';
 import Permit from './Permit';
 import Queue from './Queue';
 import Vessel from './Vessel';
@@ -53,49 +53,57 @@ const Fisherfolk = objectType({
       type: nullableList(Livelihood),
       resolve: ({ id }, _, context) => {
         return context.prisma.fisherfolk
-          .findUnique({ where: id })
+          .findUnique({ where: { id: id } })
           .livelihoods();
       },
     });
     t.field('organizations', {
-      type: nullableList(Organization),
+      type: nullableList(Member),
       resolve: ({ id }, _, context) => {
         return context.prisma.fisherfolk
-          .findUnique({ where: id })
+          .findUnique({ where: { id: id } })
           .organizations();
       },
     });
     t.field('permit', {
       type: nullable(Permit),
       resolve: ({ id }, _, context) => {
-        return context.prisma.fisherfolk.findUnique({ where: id }).permit();
+        return context.prisma.fisherfolk
+          .findUnique({ where: { id: id } })
+          .permit();
       },
     });
     t.field('governmentAid', {
       type: nullableList(Queue),
       resolve: ({ id }, _, context) => {
         return context.prisma.fisherfolk
-          .findUnique({ where: id })
+          .findUnique({ where: { id: id } })
           .governmentAid();
       },
     });
     t.field('images', {
       type: nullableList(Image),
       resolve: ({ id }, _, context) => {
-        return context.prisma.fisherfolk.findUnique({ where: id }).images();
+        return context.prisma.fisherfolk
+          .findUnique({ where: { id: id } })
+          .images();
       },
     });
 
     t.field('gears', {
       type: nullableList(Gear),
       resolve: ({ id }, _, context) => {
-        return context.prisma.fisherfolk.findUnique({ where: id }).gears();
+        return context.prisma.fisherfolk
+          .findUnique({ where: { id: id } })
+          .gears();
       },
     });
     t.field('vessels', {
       type: nullableList(Vessel),
       resolve: ({ id }, _, context) => {
-        return context.prisma.fisherfolk.findUnique({ where: id }).vessels();
+        return context.prisma.fisherfolk
+          .findUnique({ where: { id: id } })
+          .vessels();
       },
     });
     t.field('createdAt', { type: 'DateTime' });

@@ -1,21 +1,21 @@
 import { list, objectType } from 'nexus';
 import { Context } from '../../../../types/types';
+import { nullableList } from '../../../../utils/utils';
+import Member from './Member';
 
 const Organization = objectType({
   name: 'Organization',
   definition(t) {
-    t.field('id', { type: 'BigInt' });
+    t.bigInt('id');
     t.string('name');
-    t.int('yearJoined');
-    t.string('position');
-    t.nullable.field('fisherfolks', {
-      type: list('Fisherfolk'),
+    t.field('members', {
+      type: nullableList(Member),
       resolve: ({ id }, _, context: Context) => {
         return context.prisma.organization
           .findUnique({
             where: id,
           })
-          .fisherfolks();
+          .members();
       },
     });
     t.field('createdAt', { type: 'DateTime' });
