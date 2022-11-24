@@ -16,12 +16,70 @@ import {
   RadioGroup,
   Radio,
 } from '@mui/material';
-import { replaceUnderscore } from '../../utils/utils';
+import CreatableSelect from 'react-select/creatable';
+import { splitUpperCase } from '../../utils/utils';
+
+export interface Option {
+  label: string;
+  value: string;
+}
+
+const style = {
+  control: (css: any) => ({
+    ...css,
+    width: '232px',
+    height: '53px',
+  }),
+  menu: (css: any) => ({
+    ...css,
+    width: 'max-content',
+    minWidth: '20%',
+    zIndex: 999,
+  }),
+  option: (css: any) => ({ ...css, width: 230 }),
+  placeholder: (defaultStyles: any) => {
+    return {
+      ...defaultStyles,
+      fontSize: 15,
+    };
+  },
+};
 
 interface FormInputTextProps {
   name: string;
   label: string;
   placeholder: string;
+  control: Control<FieldValues, any>;
+  register: UseFormRegister<FieldValues>;
+  errors: FieldValues;
+}
+
+interface FormInputSelectProps {
+  name: string;
+  label: string;
+  onSavedValue: string;
+  data: string[];
+  control: Control<FieldValues, any>;
+  register: UseFormRegister<FieldValues>;
+  errors: FieldValues;
+}
+
+interface FormInputRadioProps {
+  name: string;
+  label: string;
+  control: Control<FieldValues, any>;
+  radioOptions: Option[];
+  register: UseFormRegister<FieldValues>;
+  errors: FieldValues;
+}
+
+interface FormCreatableSelectProps {
+  name: string,
+  label: string,
+  options: Option[],
+  isLoading: boolean,
+  isDisabled: boolean,
+  onCreateOption: ((input: string) => void),
   control: Control<FieldValues, any>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
@@ -53,16 +111,6 @@ export const FormInputText = ({
   />
 );
 
-interface FormInputSelectProps {
-  name: string;
-  label: string;
-  onSavedValue: string;
-  data: string[];
-  control: Control<FieldValues, any>;
-  register: UseFormRegister<FieldValues>;
-  errors: FieldValues;
-}
-
 export const FormInputSelect = ({
   name,
   label,
@@ -91,7 +139,7 @@ export const FormInputSelect = ({
           >
             {data?.map((item) => (
               <MenuItem value={item} key={item} {...register(name)}>
-                {replaceUnderscore(item)}
+                {splitUpperCase(item)}
               </MenuItem>
             ))}
           </Select>
@@ -103,28 +151,6 @@ export const FormInputSelect = ({
     />
   </FormControl>
 );
-
-export interface RadioOptions {
-  label: string;
-  value: string;
-}
-
-interface FormInputRadioProps {
-  name: string;
-  label: string;
-  control: Control<FieldValues, any>;
-  radioOptions: RadioOptions[];
-  register: UseFormRegister<FieldValues>;
-  errors: FieldValues;
-}
-
-// export const FormMultipleCheckbox = ({
-//   name,
-//   label,
-//   control,
-
-//  })
-
 
 export const FormInputRadio = ({
   name,
@@ -144,10 +170,10 @@ export const FormInputRadio = ({
           <>
             <RadioGroup row onChange={onChange} value={value}>
               {radioOptions.map((item) => (
-                // eslint-disable-next-line react/jsx-key
                 <FormControlLabel
+                  key={item.value}
                   value={item.value}
-                  label={replaceUnderscore(item.label)}
+                  label={splitUpperCase(item.label)}
                   control={<Radio />}
                   {...register(name)}
                 />
@@ -162,3 +188,39 @@ export const FormInputRadio = ({
     </FormControl>
   );
 };
+
+export const FormCreatableSelect = ({
+  name,
+  label,
+  options,
+  isLoading,
+  isDisabled,
+  onCreateOption,
+  // value,
+  control,
+  errors,
+  register
+}: FormCreatableSelectProps) => (
+  <FormControl error={!!errors[name]} aria-label={label}>
+    <Controller
+      name={name}
+      render={({ field: { onChange, value } }) => (
+        <CreatableSelect
+          isClearable
+          options={options}
+          isDisabled={isDisabled}
+          isLoading={isLoading}
+          onChange={(input) => onChange(input?.value)}
+          onCreateOption={onCreateOption}
+          value={options.find((c) => c.value === value)}
+          {...register}
+          styles={style}
+        />
+      )}
+      control={control}
+    />
+    <FormHelperText sx={{ color: '#d32f2f' }}>
+      {errors[name]?.message}
+    </FormHelperText>
+  </FormControl>
+);
