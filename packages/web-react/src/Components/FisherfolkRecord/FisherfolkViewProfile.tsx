@@ -15,6 +15,11 @@ import GearTable from '../Table/GearTable';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import { FisherfolkStatus } from '../../graphql/generated';
 import AddGearsForm from '../Forms/GearsForms';
+import { FisherfolkByIdDocument } from '../../graphql/generated';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import Loading from '../Loading/Loading';
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -102,9 +107,10 @@ function BasicTabs() {
     >
       Add Boat/Gear
     </Button>
-  </Box>
+  </Box>;
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue)
+    setValue(newValue);
   };
 
   return (
@@ -150,38 +156,92 @@ function BasicTabs() {
 }
 
 const FisherfolkViewProfile = () => {
+  const { id } = useParams();
+
+  const { loading, error, data } = useQuery(FisherfolkByIdDocument, {
+    variables: {
+      fisherfolkId: parseInt(id!),
+    },
+  });
+
+  if (error) {
+    console.log(error);
+    return <h1>Error Failed to Fetch!!!</h1>;
+  }
+
+  if (loading) {
+    <Loading />;
+  }
+
+  const {
+    age,
+    appellation,
+    barangay,
+    cityMunicipality,
+    civilStatus,
+    contactNum,
+    dateOfBirth,
+    educationalBackground,
+    firstName,
+    gender,
+    lastName,
+    middleName,
+    nationality,
+    numOfChildren,
+    personToNotify,
+    placeOfBirth,
+    province,
+    ptnAddress,
+    ptnContactNum,
+    ptnRelationship,
+    religion,
+    residentYear,
+    status,
+  } = data!.fisherfolk;
+
+  const name = `${lastName}, ${firstName}, ${middleName} ${appellation}`;
+  const address = `${barangay} ${cityMunicipality}, ${province}`;
+
   return (
     <Grid container spacing={0.8}>
       <Grid item xs={12} sm={5} md={2.8}>
         <Item>
           <Stack direction="row" spacing={1}>
-            <Typography variant='h6'>Lopez, Mar Fermin</Typography>
+            <Typography variant="h6">{name}</Typography>
           </Stack>
           <Stack direction="row" spacing={3}>
-            <Typography variant="body2" width={200}>2022-0001</Typography>
-            <FisherfolkStatusButton label={FisherfolkStatus.Active} />
+            <Typography variant="body2" width={200}>
+              {id}
+            </Typography>
+            <FisherfolkStatusButton label={status} />
           </Stack>
           <InfoTitle description="Personal Information" />
-          <Info title="Contact Number" description="09998018540" />
+          <Info title="Contact Number" description={contactNum} />
+          <Info title="Address" description={address} />
+          <Info title="Gender" description={gender} />
+          <Info title="Age" description={age.toString()} />
           <Info
-            title="Address"
-            description="Brgy. Bito-on Iloilo City, Iloilo"
+            title="Date of Birth"
+            description={new Date(dateOfBirth).toLocaleDateString()}
           />
-          <Info title="Gender" description="Male" />
-          <Info title="Age" description="55" />
-          <Info title="Date of Birth" description="Jan 17, 1977" />
-          <Info title="Place of Birth" description="Iloilo City, Iloilo" />
-          <Info title="Nationality" description="Filipino" />
-          <Info title="Civil Status" description="Married" />
-          <Info title="Religion" description="Catholic" />
-          <Info title="Educational Background" description="College" />
-          <Info title="Number of Children" description="2" />
-          <Info title="Resident Year" description="1987" />
+          <Info title="Place of Birth" description={placeOfBirth} />
+          <Info title="Nationality" description={nationality} />
+          <Info title="Civil Status" description={civilStatus} />
+          <Info title="Religion" description={religion} />
+          <Info
+            title="Educational Background"
+            description={educationalBackground}
+          />
+          <Info
+            title="Number of Children"
+            description={numOfChildren.toString()}
+          />
+          <Info title="Resident Year" description={residentYear.toString()} />
           <InfoTitle description="Person to Notify incase of Emergency" />
-          <Info title="Name" description="Maria Lopez" />
-          <Info title="Relationship" description="Spouse" />
-          <Info title="Contact Number" description="09991627182" />
-          <Info title="Address" description="Brgy. Bito-on Iloilo City" />
+          <Info title="Name" description={personToNotify} />
+          <Info title="Relationship" description={ptnRelationship} />
+          <Info title="Contact Number" description={ptnContactNum} />
+          <Info title="Address" description={ptnAddress} />
           <InfoTitle description="Livelihood" />
           <Info title="Main Fishing Activity" description="Capture Fishing" />
           <Info title="Other Fishing Activity" description="Fish Vending" />

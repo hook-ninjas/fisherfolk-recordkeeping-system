@@ -183,14 +183,20 @@ export interface NexusGenObjects {
     type: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
+  Member: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    organizationId: number; // Int!
+    position: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    yearJoined: number; // Int!
+  }
   Mutation: {};
   Organization: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: NexusGenScalars['BigInt']; // BigInt!
     name: string; // String!
-    position: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
-    yearJoined: number; // Int!
   }
   Permit: { // root type
     certificateNumber: string; // String!
@@ -270,7 +276,7 @@ export interface NexusGenFieldTypes {
     middleName: string; // String!
     nationality: string; // String!
     numOfChildren: number; // Int!
-    organizations: Array<NexusGenRootTypes['Organization'] | null> | null; // [Organization]
+    organizations: Array<NexusGenRootTypes['Member'] | null> | null; // [Member]
     permit: NexusGenRootTypes['Permit'] | null; // Permit
     personToNotify: string; // String!
     placeOfBirth: string; // String!
@@ -324,6 +330,16 @@ export interface NexusGenFieldTypes {
     type: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
+  Member: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    fisherfolks: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
+    organization: NexusGenRootTypes['Organization']; // Organization!
+    organizationId: number; // Int!
+    position: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    yearJoined: number; // Int!
+  }
   Mutation: { // field return type
     createFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     createUser: NexusGenRootTypes['User']; // User!
@@ -331,12 +347,10 @@ export interface NexusGenFieldTypes {
   }
   Organization: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    fisherfolks: NexusGenRootTypes['Fisherfolk'][] | null; // [Fisherfolk!]
     id: NexusGenScalars['BigInt']; // BigInt!
+    members: Array<NexusGenRootTypes['Member'] | null> | null; // [Member]
     name: string; // String!
-    position: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
-    yearJoined: number; // Int!
   }
   Permit: { // field return type
     certificateNumber: string; // String!
@@ -416,7 +430,7 @@ export interface NexusGenFieldTypeNames {
     middleName: 'String'
     nationality: 'String'
     numOfChildren: 'Int'
-    organizations: 'Organization'
+    organizations: 'Member'
     permit: 'Permit'
     personToNotify: 'String'
     placeOfBirth: 'String'
@@ -470,6 +484,16 @@ export interface NexusGenFieldTypeNames {
     type: 'SourceOfIncome'
     updatedAt: 'DateTime'
   }
+  Member: { // field return type name
+    createdAt: 'DateTime'
+    fisherfolkId: 'BigInt'
+    fisherfolks: 'Fisherfolk'
+    organization: 'Organization'
+    organizationId: 'Int'
+    position: 'String'
+    updatedAt: 'DateTime'
+    yearJoined: 'Int'
+  }
   Mutation: { // field return type name
     createFisherfolk: 'Fisherfolk'
     createUser: 'User'
@@ -477,12 +501,10 @@ export interface NexusGenFieldTypeNames {
   }
   Organization: { // field return type name
     createdAt: 'DateTime'
-    fisherfolks: 'Fisherfolk'
     id: 'BigInt'
+    members: 'Member'
     name: 'String'
-    position: 'String'
     updatedAt: 'DateTime'
-    yearJoined: 'Int'
   }
   Permit: { // field return type name
     certificateNumber: 'String'
