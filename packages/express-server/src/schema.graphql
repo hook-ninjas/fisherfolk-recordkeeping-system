@@ -225,10 +225,8 @@ type Permit {
 }
 
 type Query {
-  fisherfolk(id: BigInt!): Fisherfolk!
   fisherfolks: [Fisherfolk!]!
   gears: [Gear!]!
-  queryFisherfolkByRowCount(count: Int!): [Fisherfolk!]!
   vessels: [Vessel!]!
 }
 
