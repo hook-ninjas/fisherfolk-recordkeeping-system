@@ -8,6 +8,7 @@ import Queue from './objecTypes/Queue';
 import Permit from './objecTypes/Permit';
 import Gear from './objecTypes/Gear';
 import Vessel from './objecTypes/Vessel';
+import Member from './objecTypes/Member';
 
 const Models = [
   User,
@@ -20,6 +21,7 @@ const Models = [
   Permit,
   Vessel,
   Gear,
+  Member,
 ];
 
 export default Models;

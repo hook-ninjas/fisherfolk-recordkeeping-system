@@ -10,7 +10,7 @@ import {
 import Gear from './Gear';
 import Image from './Image';
 import Livelihood from './Livelihood';
-import Organization from './Organization';
+import Member from './Member';
 import Permit from './Permit';
 import Queue from './Queue';
 import Vessel from './Vessel';
@@ -58,7 +58,7 @@ const Fisherfolk = objectType({
       },
     });
     t.field('organizations', {
-      type: nullableList(Organization),
+      type: nullableList(Member),
       resolve: ({ id }, _, context) => {
         return context.prisma.fisherfolk
           .findUnique({ where: id })
