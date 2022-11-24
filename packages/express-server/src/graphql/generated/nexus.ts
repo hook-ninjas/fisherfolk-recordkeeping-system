@@ -59,11 +59,9 @@ export interface NexusGenInputs {
     ptnAddress: string; // String!
     ptnContactNum: string; // String!
     ptnRelationship: string; // String!
-    registrationDate: NexusGenScalars['DateTime']; // DateTime!
     religion: string; // String!
     residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
-    status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
   }
   CreateGearInput: { // input type
     classification: NexusGenEnums['GearClassification']; // GearClassification!
@@ -352,8 +350,10 @@ export interface NexusGenFieldTypes {
     vessels: Array<NexusGenRootTypes['Vessel'] | null> | null; // [Vessel]
   }
   Query: { // field return type
+    fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     fisherfolks: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     gears: NexusGenRootTypes['Gear'][]; // [Gear!]!
+    queryFisherfolkByRowCount: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     vessels: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
   }
   Queue: { // field return type
@@ -498,8 +498,10 @@ export interface NexusGenFieldTypeNames {
     vessels: 'Vessel'
   }
   Query: { // field return type name
+    fisherfolk: 'Fisherfolk'
     fisherfolks: 'Fisherfolk'
     gears: 'Gear'
+    queryFisherfolkByRowCount: 'Fisherfolk'
     vessels: 'Vessel'
   }
   Queue: { // field return type name
@@ -552,6 +554,14 @@ export interface NexusGenArgTypes {
     createVesselWithGear: { // args
       gears: NexusGenInputs['CreateGearInput'][]; // [CreateGearInput!]!
       vessel: NexusGenInputs['CreateVesselInput']; // CreateVesselInput!
+    }
+  }
+  Query: {
+    fisherfolk: { // args
+      id: NexusGenScalars['BigInt']; // BigInt!
+    }
+    queryFisherfolkByRowCount: { // args
+      count: number; // Int!
     }
   }
 }

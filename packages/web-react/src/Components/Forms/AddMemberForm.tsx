@@ -8,7 +8,6 @@ import {
   DialogTitle,
   FormControlLabel,
   FormGroup,
-  FormLabel,
   Grid,
   IconButton,
   Typography,
@@ -16,30 +15,32 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import {
-  RadioOptions,
   FormInputRadio,
   FormInputSelect,
   FormInputText,
+  FormCreatableSelect,
 } from './FormInputFields';
 import { useForm } from 'react-hook-form';
-import { object, string } from 'yup';
+import { object, string, mixed } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
-  CivilStatus,
-  // CreateFisherfolkDocument,
-  EducationalBackground,
-  FisherfolkStatus,
-  Gender,
+  CreateFisherfolkDocument,
   MutationCreateFisherfolkArgs,
-  // Nationality,
-  otherFishingActivity,
-  RegistrationType,
-  Salutation,
-  SourceOfIncome,
 } from '../../graphql/generated';
-import data from './iloilo-city-brgys.json';
 import { useMutation } from '@apollo/client';
-import Swal from 'sweetalert2';
+import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
+import {
+  nationalityOptions,
+  educationalBackgroundOptions,
+  createOption,
+  registrationTypes,
+  salutations,
+  barangays,
+  genders,
+  civilStatus,
+  sourcesOfIncome,
+} from './Enums';
+import { getValues } from '../../utils/utils';
 
 export interface FormContainerTitleProps {
   children?: React.ReactNode;
@@ -76,200 +77,16 @@ const FormContainer = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-interface AddMemberFormProps {
+interface AddFisherfolkFormProps {
   open: boolean;
   handleClose: () => void;
 }
 
-const civiStatuses = [
-  CivilStatus.Single,
-  CivilStatus.Married,
-  CivilStatus.LegallySeparated,
-  CivilStatus.Widowed,
-];
-
-const educationalBackgrounds = [
-  EducationalBackground.Elementary,
-  EducationalBackground.HighSchool,
-  EducationalBackground.College,
-  EducationalBackground.PostGraduate,
-  EducationalBackground.Vocational,
-];
-
-const sourcesOfIncome = [
-  SourceOfIncome.CaptureFishing,
-  SourceOfIncome.Aquaculture,
-  SourceOfIncome.FishVending,
-  SourceOfIncome.FishProcessing,
-];
-
-const barangays = data.barangays.sort();
-
-const genders: RadioOptions[] = [
-  {
-    label: Gender.Male,
-    value: Gender.Male,
-  },
-  {
-    label: Gender.Female,
-    value: Gender.Female,
-  },
-];
-
-const registrationTypes: RadioOptions[] = [
-  {
-    label: RegistrationType.NewRegistration,
-    value: RegistrationType.NewRegistration,
-  },
-  {
-    label: RegistrationType.Renewal,
-    value: RegistrationType.Renewal,
-  },
-];
-const otherFishingActivitys: RadioOptions[] = [
-  {
-    label: otherFishingActivity.CaptureFishing,
-    value: otherFishingActivity.CaptureFishing,
-  },
-  {
-    label: otherFishingActivity.Aquaculture,
-    value: otherFishingActivity.Aquaculture,
-  },
-  {
-    label: otherFishingActivity.FishVending,
-    value: otherFishingActivity.FishVending,
-  },
-  {
-    label: otherFishingActivity.FishPrcoessing,
-    value: otherFishingActivity.FishPrcoessing,
-  },
-];
-
-const salutations: RadioOptions[] = [
-  {
-    label: Salutation.Mr,
-    value: Salutation.Mr,
-  },
-  {
-    label: Salutation.Ms,
-    value: Salutation.Ms,
-  },
-  {
-    label: Salutation.Mrs,
-    value: Salutation.Mrs,
-  },
-];
-
-// const nationality = [
-
-//   Nationality.Filipino,
-
-// ];
-
-const addMemberSchema = object().shape({
-  registrationType: string()
-    .nullable()
-    .oneOf([RegistrationType.Renewal, RegistrationType.NewRegistration])
-    .required('Select an option for registration type.'),
-  lastName: string().required('Enter last name.'),
-  firstName: string().required('Enter first name.'),
-  middleName: string().required('Enter middle name.'),
-  salutation: string()
-    .nullable()
-    .oneOf([Salutation.Mr, Salutation.Ms, Salutation.Mrs])
-    .required('Select an option for salutation.'),
-  contactNumber: string()
-    .required('Enter contact number.')
-    .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
-  barangay: string().required('Select an option for barangay'),
-
-  appliation: string().required('Please Enter Appliation .'),
-  cityMunicipality: string().required('Enter city/municipality.'),
-  province: string().required('Enter province.'),
-  residentYear: string().matches(/^\d{4}$/, 'Please enter year.'),
-  gender: string()
-    .nullable()
-    .oneOf([Gender.Female, Gender.Male])
-    .required('Select an option for gender.'),
-  age: string()
-    .matches(/^$|\d{1,3}$/, 'Age must be a number.')
-    .required('Enter age.'),
-  dateOfBirth: string().nullable().required('Select date of birth.'),
-  placeOfBirth: string().required('Enter place of birth.'),
-  civilStatus: string().required('Select an option for civil status.'),
-  educationalBackground: string().required(
-    'Select an option for educational background.'
-  ),
-  religion: string(),
-  numberOfChildren: string().matches(/^$|\d{1,2}$/, 'Must be a number.'),
-  nationality: string().required('Select an option for Nationality.'),
-  personToNotify: string().required('Enter person to notify.'),
-  ptnRelationship: string().required(
-    'Enter relationship with person to notify.'
-  ),
-  ptnContactNum: string()
-    .required('Enter contact number of person to notify.')
-    .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
-  ptnAddress: string().required('Enter address of person to notify.'),
-  mainSourceOfIncome: string().required(
-    'Select an option for main source of income.'
-  ),
-  mainGearUsed: string(),
-  mainMethodUsed: string(),
-  otherSourceOfIncome: string().nullable(),
-  otherGearsUsed: string(),
-  otherMethodUsed: string(),
-  orgName: string(),
-  orgMemberSince: string().matches(/^$|\d{4}$/, 'Please enter year.'),
-  orgPosition: string(),
-});
-
-const showSuccessAlert = () =>
-  Swal.fire({
-    icon: 'success',
-    title: 'Data has been saved',
-    showConfirmButton: false,
-    timer: 4000,
-  });
-
-const showFailAlert = () =>
-  Swal.fire({
-    icon: 'error',
-    title: 'Data has not been saved',
-    showConfirmButton: false,
-    timer: 4000,
-  });
-
-export default function AddMemberForm({
+export default function AddFisherfolkForm({
   open,
   handleClose,
-}: AddMemberFormProps) {
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(addMemberSchema),
-  });
-  const [state, setState] = React.useState({
-    CaptureFishing: false,
-    Aquaculture: false,
-    FishVending: false,
-    FishPrcoessing: false,
-  });
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({
-      ...state,
-      [event.target.name]: event.target.checked,
-    });
-  };
-  const { CaptureFishing, Aquaculture, FishVending, FishPrcoessing } = state;
-  // const error = [CaptureFishing, Aquaculture, FishVending, FishPrcoessing].filter((v) => v).length !== 2;
+}: AddFisherfolkFormProps) {
   const [complete, setComplete] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const handleSubmitting = () => setIsSubmitting(true);
-  const handleComplete = () => setComplete(true);
 
   const buttonSx = {
     ...(complete && {
@@ -283,75 +100,170 @@ export default function AddMemberForm({
     marginLeft: 'auto',
   };
 
-  // const [createFisherfolk] = useMutation(CreateFisherfolkDocument, {
-  //   onCompleted: () => {
-  //     handleClose();
-  //     handleComplete();
-  //     showSuccessAlert();
-  //   },
-  //   onError: () => {
-  //     handleClose();
-  //     handleComplete();
-  //     showFailAlert();
-  //   },
-  // });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [nationalities, setNationalities] = useState(nationalityOptions);
+  const [educationalBackgrounds, setEducationalBackgrounds] = useState(
+    educationalBackgroundOptions
+  );
+  const [otherFishingActivities, setOtherFishingActivities] = React.useState({
+    CaptureFishing: false,
+    Aquaculture: false,
+    FishVending: false,
+    FishProcessing: false,
+  });
 
-  // const onSubmit = handleSubmit(async (data) => {
-  //   handleSubmitting();
-  //   const createFisherfolkInput: MutationCreateFisherfolkArgs = {
-  //     data: {
-  //       age: parseInt(data.age),
-  //       barangay: data.barangay,
-  //       cityMunicipality: data.cityMunicipality,
-  //       civilStatus: data.civilStatus,
-  //       contactNum: data.contactNumber,
-  //       dateOfBirth: new Date(data.dateOfBirth).toISOString(),
-  //       educationalBackground: data.educationalBackground,
-  //       firstName: data.firstName,
-  //       gender: data.gender,
-  //       image: '',
-  //       lastName: data.lastName,
-  //       mainSrcGear: data.mainGearUsed,
-  //       mainSrcMethod: data.mainMethodUsed,
-  //       mainSrcOfIncome: data.mainSourceOfIncome,
-  //       middleName: data.middleName,
-  //       nationality: data.nationality,
-  //       personToNotify: data.personToNotify,
-  //       placeOfBirth: data.placeOfBirth,
-  //       province: data.province,
-  //       ptnAddress: data.ptnAddress,
-  //       ptnContactNum: data.ptnContactNum,
-  //       ptnRelationship: data.ptnRelationship,
-  //       registrationType: data.registrationType,
-  //       religion: data.religion,
-  //       residentYear: parseInt(data.residentYear),
-  //       salutation: data.salutation,
-  //       signature: '',
-  //       numOfChildren:
-  //         data.numberOfChildren === '' ? null : parseInt(data.numberOfChildren),
-  //       orgName: data.orgName,
-  //       orgPosition: data.orgPosition,
-  //       orgYearMember:
-  //         data.orgMemberSince === '' ? null : parseInt(data.orgMemberSince),
-  //       otherSrcGear: data.otherGearUsed,
-  //       otherSrcMethod: data.otherMethodUsed,
-  //       otherSrcOfIncome: data.otherSourceOfIncome ?? null,
-  //       status: FisherfolkStatus.Active
-  //     },
-  //   };
+  const handleSubmitting = () => setIsSubmitting(true);
 
-  //   await createFisherfolk({
-  //     variables: {
-  //       data: createFisherfolkInput.data,
-  //     },
-  //   });
-  // });
+  const handleComplete = () => setComplete(true);
+  
+  const handleOtherFishingActivityChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setOtherFishingActivities({
+      ...otherFishingActivities,
+      [event.target.name]: event.target.checked,
+    });
+  };
+
+  const handleCreateNationality = (inputValue: string) => {
+    setIsLoading(true);
+    setTimeout(() => {
+      const newValue = createOption(inputValue);
+      setIsLoading(false);
+      setNationalities((prev) => [...prev, newValue]);
+    }, 1500);
+  };
+
+  const handleCreateEducationalBackground = (inputValue: string) => {
+    setIsLoading(true);
+    setTimeout(() => {
+      const newValue = createOption(inputValue);
+      setIsLoading(false);
+      setEducationalBackgrounds((prev) => [...prev, newValue]);
+    }, 1000);
+  };
+
+  const { CaptureFishing, Aquaculture, FishVending, FishProcessing } =
+    otherFishingActivities;
+
+  const addFisherfolkSchema = object().shape({
+    registrationType: string()
+      .nullable()
+      .oneOf(getValues(registrationTypes))
+      .required('Select an option for registration type.'),
+    lastName: string().required('Enter last name.'),
+    firstName: string().required('Enter first name.'),
+    middleName: string().required('Enter middle name.'),
+    salutation: string()
+      .nullable()
+      .oneOf(getValues(salutations))
+      .required('Select an option for salutation.'),
+    contactNumber: string()
+      .required('Enter contact number.')
+      .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
+    barangay: string().required('Select an option for barangay'),
+    cityMunicipality: string().required('Enter city/municipality.'),
+    province: string().required('Enter province.'),
+    residentYear: string().matches(/^\d{4}$/, 'Please enter year.'),
+    gender: string()
+      .nullable()
+      .oneOf(getValues(genders))
+      .required('Select an option for gender.'),
+    age: string()
+      .matches(/^$|\d{1,3}$/, 'Age must be a number.')
+      .required('Enter age.'),
+    dateOfBirth: string().nullable().required('Select date of birth.'),
+    placeOfBirth: string().required('Enter place of birth.'),
+    civilStatus: string().required('Select an option for civil status.'),
+    educationalBackground: mixed()
+      .nullable()
+      .oneOf(getValues(educationalBackgrounds))
+      .required('Enter or select educational background.'),
+    numberOfChildren: string().matches(/^$|\d{1,2}$/, 'Must be a number.'),
+    nationality: mixed()
+      .nullable()
+      .oneOf(getValues(nationalities))
+      .required('Enter or select nationality.'),
+    personToNotify: string().required('Enter person to notify.'),
+    ptnRelationship: string().required(
+      'Enter relationship with person to notify.'
+    ),
+    ptnContactNum: string()
+      .required('Enter contact number of person to notify.')
+      .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
+    ptnAddress: string().required('Enter address of person to notify.'),
+    mainFishingActivity: string().required(
+      'Select an option for main fishing activity.'
+    ),
+    orgMemberSince: string().matches(/^$|\d{4}$/, 'Please enter year.'),
+  });
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(addFisherfolkSchema),
+  });
+
+  const [createFisherfolk] = useMutation(CreateFisherfolkDocument, {
+    onCompleted: () => {
+      handleClose();
+      handleComplete();
+      showSuccessAlert();
+    },
+    onError: () => {
+      handleClose();
+      handleComplete();
+      showFailAlert();
+    },
+  });
+
+  const onSubmit = handleSubmit((data) => {
+    // handleSubmitting();
+    const createFisherfolkInput: MutationCreateFisherfolkArgs = {
+      data: {
+        age: parseInt(data.age),
+        appellation: data.appellation,
+        barangay: data.barangay,
+        cityMunicipality: data.cityMunicipality,
+        civilStatus: data.civilStatus,
+        contactNum: data.contactNumber,
+        dateOfBirth: new Date(data.dateOfBirth).toISOString(),
+        educationalBackground: data.educationalBackground,
+        firstName: data.firstName,
+        gender: data.gender,
+        lastName: data.lastName,
+        middleName: data.middleName,
+        nationality: data.nationality,
+        personToNotify: data.personToNotify,
+        placeOfBirth: data.placeOfBirth,
+        province: data.province,
+        ptnAddress: data.ptnAddress,
+        ptnContactNum: data.ptnContactNum,
+        ptnRelationship: data.ptnRelationship,
+        religion: data.religion,
+        residentYear: parseInt(data.residentYear),
+        salutation: data.salutation,
+        numOfChildren: parseInt(data.numberOfChildren),
+      },
+    };
+    console.log(createFisherfolkInput.data);
+
+    // await createFisherfolk({
+    //   variables: {
+    //     data: createFisherfolkInput.data,
+    //   },
+    // });
+  });
 
   const handleSubmitForm = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    // onSubmit();
+    onSubmit();
   };
 
   return (
@@ -365,10 +277,10 @@ export default function AddMemberForm({
           aria-labelledby="form-container-title"
           onClose={handleClose}
         >
-          Fisher Folk Registration
+          Fisherfolk Registration
         </FormContainerTitle>
         <DialogContent dividers>
-          <Typography variant="h6" color="GrayText" mt={2} mb={3} ml={2}>
+          <Typography variant="body1" color="GrayText" mb={2} ml={2}>
             Type of Registration
           </Typography>
           <Box
@@ -387,13 +299,12 @@ export default function AddMemberForm({
               radioOptions={registrationTypes}
             />
           </Box>
-          <Typography variant="h6" color="GrayText" mt={2} mb={-1} ml={2}>
+          <Typography variant="h6" color="GrayText" ml={2}>
             Personal Information
           </Typography>
           <Box
             sx={{
               display: 'flex',
-              mt: 2,
               pl: 2,
             }}
           >
@@ -428,7 +339,7 @@ export default function AddMemberForm({
               />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1 }}>
+          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
                 name="middleName"
@@ -441,17 +352,17 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="appliation"
+                name="apellation"
                 control={control}
-                label="Appliation"
+                label="Apellation"
                 placeholder="e.g. Sr. / Jr. / III"
                 register={register}
                 errors={errors}
               />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 2, mt: 1 }}>
-            <Grid item sm={6}>
+          <Grid container spacing={-2} sx={{ ml: 2 }}>
+            <Grid item sm={6} sx={{ mt: 2 }}>
               <FormInputSelect
                 name="barangay"
                 label="Select Barangay"
@@ -462,7 +373,7 @@ export default function AddMemberForm({
                 errors={errors}
               />
             </Grid>
-            <Grid item sm={6} sx={{ mt: -1, ml: -1 }}>
+            <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
               <FormInputText
                 name="cityMunicipality"
                 control={control}
@@ -473,7 +384,7 @@ export default function AddMemberForm({
               />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1 }}>
+          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
                 name="province"
@@ -488,14 +399,14 @@ export default function AddMemberForm({
               <FormInputText
                 name="residentYear"
                 control={control}
-                label="Resident of the Municipality since"
-                placeholder=""
+                label="Resident of Municipality since"
+                placeholder="e.g. 2015"
                 register={register}
                 errors={errors}
               />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1 }}>
+          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
                 name="age"
@@ -516,6 +427,8 @@ export default function AddMemberForm({
                 errors={errors}
               />
             </Grid>
+          </Grid>
+          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
                 name="dateOfBirth"
@@ -526,8 +439,6 @@ export default function AddMemberForm({
                 errors={errors}
               />
             </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1 }}>
             <Grid item sm={6}>
               <FormInputText
                 name="placeOfBirth"
@@ -538,6 +449,8 @@ export default function AddMemberForm({
                 errors={errors}
               />
             </Grid>
+          </Grid>
+          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
                 name="religion"
@@ -548,22 +461,20 @@ export default function AddMemberForm({
                 errors={errors}
               />
             </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 2, mt: 1 }}>
             <Grid item sm={6}>
               <Typography
                 variant="body2"
                 color="GrayText"
                 mt={0.5}
                 mb={-1}
-                ml={0.5}
+                ml={1}
               >
                 Gender
               </Typography>
               <Box
                 sx={{
                   display: 'flex',
-                  pl: 0.5,
+                  pl: 1,
                 }}
               >
                 <FormInputRadio
@@ -576,11 +487,27 @@ export default function AddMemberForm({
                 />
               </Box>
             </Grid>
-            <Grid item sm={6}>
+          </Grid>
+          <Grid container spacing={-2} sx={{ ml: 2 }}>
+            <Grid item sm={6} sx={{ mt: 2 }}>
+              <FormCreatableSelect
+                control={control}
+                errors={errors}
+                isLoading={isLoading}
+                isDisabled={isLoading}
+                label=""
+                name="nationality"
+                // onChange={(newValue) => setNationality(newValue)}
+                onCreateOption={handleCreateNationality}
+                options={nationalities}
+                register={register}
+              />
+            </Grid>
+            <Grid item sm={6} sx={{ mt: 2 }}>
               <FormInputSelect
                 name="civilStatus"
                 label="Select Civil Status"
-                data={civiStatuses}
+                data={civilStatus}
                 onSavedValue=""
                 control={control}
                 register={register}
@@ -588,37 +515,26 @@ export default function AddMemberForm({
               />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
-            <Grid item sm={6}>
+          <Grid container spacing={-2} sx={{ ml: 2, mt: 1 }}>
+            <Grid item sm={6} sx={{ mt: 2 }}>
+              <FormCreatableSelect
+                control={control}
+                errors={errors}
+                isLoading={isLoading}
+                isDisabled={isLoading}
+                label="Educational Background"
+                name="educationalBackground"
+                onCreateOption={handleCreateEducationalBackground}
+                options={educationalBackgrounds}
+                register={register}
+              />
+            </Grid>
+            <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
               <FormInputText
                 name="numberOfChildren"
                 control={control}
                 label="Number of Children"
                 placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6} sx={{ ml: 0, mt: 1 }}>
-              {/* <FormInputSelect
-                name="nationality"
-                label="Nationality"
-                data={nationality}
-                onSavedValue=""
-                control={control}
-                register={register}
-                errors={errors}
-              /> */}
-            </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 2, mt: 1 }}>
-            <Grid item sm={6}>
-              <FormInputSelect
-                name="educationalBackground"
-                label="Select Educational Background"
-                data={educationalBackgrounds}
-                onSavedValue=""
-                control={control}
                 register={register}
                 errors={errors}
               />
@@ -649,7 +565,7 @@ export default function AddMemberForm({
               />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1 }}>
+          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
                 name="ptnContactNum"
@@ -671,13 +587,13 @@ export default function AddMemberForm({
               />
             </Grid>
           </Grid>
-          <Typography variant="h6" color="GrayText" mt={2} mb={-1} ml={2}>
+          <Typography variant="h6" color="GrayText" mt={2} ml={2}>
             Fishing Activity
           </Typography>
-          <Grid container spacing={-2} sx={{ ml: 2, mt: 2 }}>
-            <Grid item sm={6}>
+          <Grid container spacing={-2} sx={{ ml: 2 }}>
+            <Grid item sm={6} sx={{ mt: 2 }}>
               <FormInputSelect
-                name="mainSourceOfIncome"
+                name="mainFishingActivity"
                 label="Main Fishing Activity "
                 data={sourcesOfIncome}
                 onSavedValue=""
@@ -686,81 +602,76 @@ export default function AddMemberForm({
                 errors={errors}
               />
             </Grid>
-            <Typography
-              variant="subtitle2"
-              color="GrayText"
-              mt={-4}
-              mb={3}
-              ml={2}
-            >
-              Other Fishing Activities
-            </Typography>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
-            <Grid item sm={6}>
+            <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
               <FormInputText
-                name="mainGearUsed"
+                name="otherSourceOfIncome"
                 control={control}
-                label="Otherr Source of Income "
-                placeholder=""
+                label="Other Source of Income"
+                placeholder="e.g. Carpentry/Driver"
                 register={register}
                 errors={errors}
               />
             </Grid>
-            <Grid item sm={6}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  pl: 5,
-                  mt: -9,
-                }}
-              >
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={CaptureFishing}
-                        onChange={handleChange}
-                        name="CaptureFishing"
-                      />
-                    }
-                    label="Capture Fishing"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={Aquaculture}
-                        onChange={handleChange}
-                        name="Aquaculture"
-                      />
-                    }
-                    label="Aquaculture"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={FishVending}
-                        onChange={handleChange}
-                        name="FishVending"
-                      />
-                    }
-                    label="Fish Vending"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={FishPrcoessing}
-                        onChange={handleChange}
-                        name="FishPrcoessing"
-                      />
-                    }
-                    label="Fish Prcoessing"
-                  />
-                </FormGroup>
-              </Box>
+            <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
+              <Grid item sm={6}>
+                <Typography variant="subtitle1" color="GrayText" mt={-2} mb={3}>
+                  Other Fishing Activities
+                </Typography>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    mt: -3,
+                    mb: 2,
+                    pl: 1,
+                  }}
+                >
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={CaptureFishing}
+                          onChange={handleOtherFishingActivityChange}
+                          name="CaptureFishing"
+                        />
+                      }
+                      label="Capture Fishing"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={Aquaculture}
+                          onChange={handleOtherFishingActivityChange}
+                          name="Aquaculture"
+                        />
+                      }
+                      label="Aquaculture"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={FishVending}
+                          onChange={handleOtherFishingActivityChange}
+                          name="FishVending"
+                        />
+                      }
+                      label="Fish Vending"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={FishProcessing}
+                          onChange={handleOtherFishingActivityChange}
+                          name="FishProcessing"
+                        />
+                      }
+                      label="Fish Processing"
+                    />
+                  </FormGroup>
+                </Box>
+              </Grid>
             </Grid>
           </Grid>
-          <Typography variant="h6" color="GrayText" mt={2} mb={-1} ml={2}>
+          <Typography variant="h6" color="GrayText" mb={-1} ml={2}>
             Organization
           </Typography>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
@@ -779,13 +690,13 @@ export default function AddMemberForm({
                 name="orgMemberSince"
                 control={control}
                 label="Member Since"
-                placeholder=""
+                placeholder="e.g. 2015"
                 register={register}
                 errors={errors}
               />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1 }}>
+          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
                 name="orgPosition"
@@ -800,7 +711,7 @@ export default function AddMemberForm({
           <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="orgName"
+                name="photo"
                 control={control}
                 label="Attach Photo"
                 placeholder=""
@@ -810,7 +721,7 @@ export default function AddMemberForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="orgMemberSince"
+                name="signature"
                 control={control}
                 label="Attach Signature "
                 placeholder=""
@@ -827,6 +738,7 @@ export default function AddMemberForm({
               onClick={(e) => {
                 handleSubmitForm(e);
               }}
+              // onClick={() => onSubmit}
               disabled={isSubmitting}
               sx={buttonSx}
             >

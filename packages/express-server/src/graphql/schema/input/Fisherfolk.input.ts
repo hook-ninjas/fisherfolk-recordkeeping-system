@@ -2,7 +2,6 @@ import { inputObjectType } from 'nexus';
 import {
   CivilStatus,
   EducationalBackground,
-  FisherfolkStatus,
   Gender,
   Salutation,
 } from '../enums/';
@@ -14,7 +13,6 @@ const CreateFisherfolkInput = inputObjectType({
     t.nonNull.string('firstName');
     t.nonNull.string('middleName');
     t.nonNull.string('appellation');
-    t.nonNull.field('registrationDate', { type: 'DateTime' });
     t.nonNull.int('age');
     t.nonNull.field('salutation', { type: Salutation });
     t.nonNull.string('barangay');
@@ -34,7 +32,6 @@ const CreateFisherfolkInput = inputObjectType({
     t.nonNull.string('ptnRelationship');
     t.nonNull.string('ptnAddress');
     t.nonNull.string('ptnContactNum');
-    t.nonNull.field('status', { type: FisherfolkStatus });
   },
 });
 
