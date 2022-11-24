@@ -16,7 +16,7 @@ import React from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Loading from '../Loading/Loading';
 import { useNavigate } from 'react-router-dom';
-import { FisherfolkQueryByRowCountDocument } from '../../graphql/generated';
+import { QueryFisherfolkByRangeDocument } from '../../graphql/generated';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import { splitUpperCase } from '../../utils/utils';
 
@@ -66,8 +66,9 @@ export function FisherfolkTable() {
     navigate(`/fisherfolk-profile/${id}`);
   };
 
-  const { loading, error, data } = useQuery(FisherfolkQueryByRowCountDocument, {
+  const { loading, error, data } = useQuery(QueryFisherfolkByRangeDocument, {
     variables: {
+      start: page  * rowsPerPage,
       count: rowsPerPage,
     },
   });
@@ -100,8 +101,7 @@ export function FisherfolkTable() {
         </TableHead>
         <TableBody>
           {data &&
-            data.queryFisherfolkByRowCount
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            data.fisherfolkByRange
               .map((fisherfolk) => {
                 const {
                   id,
@@ -130,7 +130,7 @@ export function FisherfolkTable() {
                     </TableCell>
                     <TableCell>{name}</TableCell>
                     <TableCell>{contactNum}</TableCell>
-                    <TableCell>{splitUpperCase(livelihood)}</TableCell>
+                    <TableCell>{splitUpperCase(livelihood!)}</TableCell>
                     <TableCell>{barangay}</TableCell>
                     <TableCell>
                       <FisherfolkStatusButton label={status} />
@@ -170,9 +170,9 @@ export function FisherfolkTable() {
         </TableBody>
       </Table>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 50]}
+        rowsPerPageOptions={[10, 25, 50, 100]}
         component="div"
-        count={10}
+        count={data === undefined ? 0 : data.totalFisherfolk}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
