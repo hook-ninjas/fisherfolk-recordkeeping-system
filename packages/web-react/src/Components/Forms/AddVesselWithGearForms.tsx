@@ -16,7 +16,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import {
   FormInputRadio,
-  FormInputSelect,
+  // FormInputSelect,
   FormInputText,
   FormCreatableSelect,
 } from './FormInputFields';
@@ -35,11 +35,11 @@ import {
   createOption,
   materialUsedOptions,
   registrationTypesGears,
-  salutations,
-  barangays,
-  genders,
-  civilStatus,
-  sourcesOfIncome,
+  // salutations,
+  // barangays,
+  // genders,
+  // civilStatus,
+  // sourcesOfIncome,
 } from './Enums';
 import { getValues } from '../../utils/utils';
 
