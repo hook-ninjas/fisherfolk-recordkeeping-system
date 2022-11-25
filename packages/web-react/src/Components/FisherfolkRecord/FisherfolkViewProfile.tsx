@@ -14,7 +14,7 @@ import VesselTable from '../Table/VesselTable';
 import GearTable from '../Table/GearTable';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import { FisherfolkStatus } from '../../graphql/generated';
-
+import AddGearsForm from '../Forms/GearsForms';
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -89,10 +89,22 @@ function a11yProps(index: number) {
 }
 
 function BasicTabs() {
+  const [addGearsBtn, setAddGearsBtn] = useState(false);
+  const handleAddMemberOpen = () => setAddGearsBtn(true);
+  const handleAddMemberClose = () => setAddGearsBtn(false);
   const [value, setValue] = useState(0);
-
+  <Box m={1}>
+    <Button
+      size="small"
+      variant="contained"
+      color="primary"
+      sx={{ height: 30, fontSize: 5, justifyContent: 'flex-end' }}
+    >
+      Add Boat/Gear
+    </Button>
+  </Box>
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setValue(newValue)
   };
 
   return (
@@ -112,13 +124,19 @@ function BasicTabs() {
         </Tabs>
         <Box m={1}>
           <Button
-            size="small"
             variant="contained"
             color="primary"
-            sx={{ height: 30, fontSize: 8, justifyContent: 'flex-end' }}
+            sx={{ height: 30 }}
+            onClick={handleAddMemberOpen}
           >
-            Add Boat/Gear
+            Add Boats and Gears
           </Button>
+          {addGearsBtn && (
+            <AddGearsForm
+              handleClose={handleAddMemberClose}
+              open={addGearsBtn}
+            />
+          )}
         </Box>
       </Grid>
       <TabPanel value={value} index={0}>
@@ -141,7 +159,7 @@ const FisherfolkViewProfile = () => {
           </Stack>
           <Stack direction="row" spacing={3}>
             <Typography variant="body2" width={200}>2022-0001</Typography>
-            <FisherfolkStatusButton label={FisherfolkStatus.Active}/>
+            <FisherfolkStatusButton label={FisherfolkStatus.Active} />
           </Stack>
           <InfoTitle description="Personal Information" />
           <Info title="Contact Number" description="09998018540" />
@@ -175,7 +193,7 @@ const FisherfolkViewProfile = () => {
         </Item>
       </Grid>
       <Grid item xs={12} sm={7} md={9.2}>
-        <Item sx={{p: 0}}>
+        <Item sx={{ p: 0 }}>
           <Grid container>
             <BasicTabs />
           </Grid>

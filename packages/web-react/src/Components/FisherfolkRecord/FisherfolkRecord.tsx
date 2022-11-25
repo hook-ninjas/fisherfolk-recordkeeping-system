@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Button, Grid, Paper } from '@mui/material';
-import AddMemberForm from '../Forms/AddMemberForm';
+import AddFisherfolkForm from '../Forms/AddMemberForm';
 import FisherfolkTable from '../Table/FisherfolkTable';
 
 const FisherfolkRecord = () => {
@@ -29,7 +29,7 @@ const FisherfolkRecord = () => {
               Add Member
             </Button>
             {addMemberBtn && (
-              <AddMemberForm
+              <AddFisherfolkForm
                 handleClose={handleAddMemberClose}
                 open={addMemberBtn}
               />

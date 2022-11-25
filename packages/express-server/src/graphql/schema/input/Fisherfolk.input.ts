@@ -36,6 +36,7 @@ const CreateFisherfolkInput = inputObjectType({
     t.string('ptnContactNum');
     t.field('livelihoods', { type: list(LivelihoodInput) });
     t.field('organization', { type: nullable(OrganizationInput) });
+
   },
 });
 
