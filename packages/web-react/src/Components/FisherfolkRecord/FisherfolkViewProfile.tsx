@@ -14,9 +14,7 @@ import VesselTable from '../Table/VesselTable';
 import GearTable from '../Table/GearTable';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import AddVesselWithGearForm from '../Forms/AddVesselWithGearForms';
-import {
-  FisherfolkByIdDocument,
-} from '../../graphql/generated';
+import { FisherfolkByIdDocument } from '../../graphql/generated';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import Loading from '../Loading/Loading';
@@ -219,7 +217,7 @@ const FisherfolkViewProfile = () => {
     fisherfolk?.organizations == null
       ? ''
       : handleUndefine(fisherfolk?.organizations[0]?.yearJoined.toString());
-      
+
   const position =
     fisherfolk?.organizations == null
       ? ''
