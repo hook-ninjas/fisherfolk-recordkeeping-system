@@ -16,7 +16,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import {
   FormInputRadio,
-  FormInputSelect,
+  // FormInputSelect,
   FormInputText,
   FormCreatableSelect,
 } from './FormInputFields';
@@ -35,11 +35,11 @@ import {
   createOption,
   materialUsedOptions,
   registrationTypesGears,
-  salutations,
-  barangays,
-  genders,
-  civilStatus,
-  sourcesOfIncome,
+  // salutations,
+  // barangays,
+  // genders,
+  // civilStatus,
+  // sourcesOfIncome,
 } from './Enums';
 import { getValues } from '../../utils/utils';
 
@@ -83,7 +83,7 @@ interface AddGearsFormProps {
   handleClose: () => void;
 }
 
-export default function AddGearsForm({
+export default function AddVesselWithGearForm({
   open,
   handleClose,
 }: AddGearsFormProps) {
@@ -138,19 +138,42 @@ export default function AddGearsForm({
     Spear: false,
     SquidLurkingDevice: false,
     GaffHook: false,
-    CastNet: false
-
+    CastNet: false,
   });
 
-
-  const { SimpleHandLine, MulipleHandLine, Bottomsetlongline, DriftlongLine,
-    TrollLine, Jig, SurfaceSetGill, DriftGillNet, BottomsetGillNet, Trammelnet,
-    EncirclinGillNet, CrabLiftNets, FishLiftNets, NewLook, ShrimpLiftNets, LeverNet,
-    CrabPots, SquidPots, FykeNet, FishCorrals, SetNet, BarrierNet, FishPots,
-    BeachSeine, FryDozerorGatherer, ManPushNets, ScoopNets, Spear, SquidLurkingDevice,
-    GaffHook, CastNet } =
-    hookandLine;
-
+  const {
+    SimpleHandLine,
+    MulipleHandLine,
+    Bottomsetlongline,
+    DriftlongLine,
+    TrollLine,
+    Jig,
+    SurfaceSetGill,
+    DriftGillNet,
+    BottomsetGillNet,
+    Trammelnet,
+    EncirclinGillNet,
+    CrabLiftNets,
+    FishLiftNets,
+    NewLook,
+    ShrimpLiftNets,
+    LeverNet,
+    CrabPots,
+    SquidPots,
+    FykeNet,
+    FishCorrals,
+    SetNet,
+    BarrierNet,
+    FishPots,
+    BeachSeine,
+    FryDozerorGatherer,
+    ManPushNets,
+    ScoopNets,
+    Spear,
+    SquidLurkingDevice,
+    GaffHook,
+    CastNet,
+  } = hookandLine;
 
   const handleComplete = () => setComplete(true);
 
@@ -171,10 +194,6 @@ export default function AddGearsForm({
       setNationalities((prev) => [...prev, newValue]);
     }, 1500);
   };
-
-
-
-
 
   const addFisherfolkSchema = object().shape({
     registrationType: string()
@@ -360,7 +379,6 @@ export default function AddGearsForm({
                 isDisabled={isLoading}
                 label=""
                 name="vesselType"
-
                 onCreateOption={handleCreateTypeVessel}
                 options={vesselTypeOptions}
                 register={register}
@@ -392,7 +410,7 @@ export default function AddGearsForm({
                 errors={errors}
               />
             </Grid>
-            <Grid item sm={6} sx={{ mt: 1, }}>
+            <Grid item sm={6} sx={{ mt: 1 }}>
               <FormInputText
                 name="yearBuilt"
                 control={control}
@@ -507,9 +525,7 @@ export default function AddGearsForm({
                 register={register}
                 errors={errors}
               />
-
             </Grid>
-
           </Grid>
           <Typography variant="h6" color="GrayText" mt={2} mb={-1} ml={2}>
             Classification of Fishing Gear
@@ -576,7 +592,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={SimpleHandLine}
                           onChange={handleOtherFishingActivityChange}
                           name="SimpleHandLine"
@@ -587,7 +603,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={MulipleHandLine}
                           onChange={handleOtherFishingActivityChange}
                           name="MulipleHandLine"
@@ -598,7 +614,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={Bottomsetlongline}
                           onChange={handleOtherFishingActivityChange}
                           name="Bottomsetlongline"
@@ -609,7 +625,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={DriftlongLine}
                           onChange={handleOtherFishingActivityChange}
                           name="DriftlongLine"
@@ -620,7 +636,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={TrollLine}
                           onChange={handleOtherFishingActivityChange}
                           name="TrollLine"
@@ -631,7 +647,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={Jig}
                           onChange={handleOtherFishingActivityChange}
                           name="Jig"
@@ -640,7 +656,6 @@ export default function AddGearsForm({
                       label="Jig"
                     />
                   </FormGroup>
-
                 </Box>
               </Grid>
               <Grid item sm={6}>
@@ -659,7 +674,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={SurfaceSetGill}
                           onChange={handleOtherFishingActivityChange}
                           name="SurfaceSetGill"
@@ -670,7 +685,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={DriftGillNet}
                           onChange={handleOtherFishingActivityChange}
                           name="DriftGillNet"
@@ -681,7 +696,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={BottomsetGillNet}
                           onChange={handleOtherFishingActivityChange}
                           name="BottomsetGillNet"
@@ -692,7 +707,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={Trammelnet}
                           onChange={handleOtherFishingActivityChange}
                           name="Trammelnet"
@@ -703,7 +718,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={EncirclinGillNet}
                           onChange={handleOtherFishingActivityChange}
                           name="EncirclinGillNet"
@@ -734,7 +749,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={CrabLiftNets}
                           onChange={handleOtherFishingActivityChange}
                           name="CrabLiftNets"
@@ -745,7 +760,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={FishLiftNets}
                           onChange={handleOtherFishingActivityChange}
                           name="FishLiftNets"
@@ -756,7 +771,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={NewLook}
                           onChange={handleOtherFishingActivityChange}
                           name="NewLook"
@@ -767,7 +782,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={ShrimpLiftNets}
                           onChange={handleOtherFishingActivityChange}
                           name="ShrimpLiftNets"
@@ -778,7 +793,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={LeverNet}
                           onChange={handleOtherFishingActivityChange}
                           name="LeverNet"
@@ -787,7 +802,6 @@ export default function AddGearsForm({
                       label="Lever Net"
                     />
                   </FormGroup>
-
                 </Box>
               </Grid>
               <Grid item sm={6}>
@@ -806,7 +820,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={CrabPots}
                           onChange={handleOtherFishingActivityChange}
                           name="CrabPots"
@@ -817,7 +831,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={SquidPots}
                           onChange={handleOtherFishingActivityChange}
                           name="SquidPots"
@@ -828,7 +842,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={FykeNet}
                           onChange={handleOtherFishingActivityChange}
                           name="FykeNet"
@@ -839,7 +853,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={FishCorrals}
                           onChange={handleOtherFishingActivityChange}
                           name="FishCorrals"
@@ -850,7 +864,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={SetNet}
                           onChange={handleOtherFishingActivityChange}
                           name="SetNet"
@@ -861,7 +875,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={BarrierNet}
                           onChange={handleOtherFishingActivityChange}
                           name="BarrierNet"
@@ -872,7 +886,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={FishPots}
                           onChange={handleOtherFishingActivityChange}
                           name="FishPots"
@@ -903,7 +917,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={BeachSeine}
                           onChange={handleOtherFishingActivityChange}
                           name="BeachSeine"
@@ -914,7 +928,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={FryDozerorGatherer}
                           onChange={handleOtherFishingActivityChange}
                           name="FryDozerorGatherer"
@@ -923,7 +937,6 @@ export default function AddGearsForm({
                       label="Fry Dozer or Gatherer"
                     />
                   </FormGroup>
-
                 </Box>
               </Grid>
 
@@ -943,7 +956,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={ManPushNets}
                           onChange={handleOtherFishingActivityChange}
                           name="ManPushNets"
@@ -954,7 +967,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={ScoopNets}
                           onChange={handleOtherFishingActivityChange}
                           name="ScoopNets"
@@ -962,7 +975,6 @@ export default function AddGearsForm({
                       }
                       label="Scoop Nets"
                     />
-
                   </FormGroup>
                 </Box>
               </Grid>
@@ -986,7 +998,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={Spear}
                           onChange={handleOtherFishingActivityChange}
                           name="Spear"
@@ -997,7 +1009,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={SquidLurkingDevice}
                           onChange={handleOtherFishingActivityChange}
                           name="SquidLurkingDevice"
@@ -1008,7 +1020,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={GaffHook}
                           onChange={handleOtherFishingActivityChange}
                           name="GaffHook"
@@ -1016,9 +1028,7 @@ export default function AddGearsForm({
                       }
                       label="Gaff Hook"
                     />
-
                   </FormGroup>
-
                 </Box>
               </Grid>
 
@@ -1038,7 +1048,7 @@ export default function AddGearsForm({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={CastNet}
                           onChange={handleOtherFishingActivityChange}
                           name="CastNet"
@@ -1046,8 +1056,6 @@ export default function AddGearsForm({
                       }
                       label="Cas tNet"
                     />
-
-
                   </FormGroup>
                 </Box>
               </Grid>
@@ -1065,7 +1073,6 @@ export default function AddGearsForm({
                 errors={errors}
               />
             </Grid>
-
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>

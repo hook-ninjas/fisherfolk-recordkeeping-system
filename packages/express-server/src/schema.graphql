@@ -242,8 +242,11 @@ type Permit {
 }
 
 type Query {
+  fisherfolk(id: BigInt!): Fisherfolk!
+  fisherfolkByRange(count: Int!, start: Int!): [Fisherfolk!]!
   fisherfolks: [Fisherfolk!]!
   gears: [Gear!]!
+  totalFisherfolk: Int!
   vessels: [Vessel!]!
 }
 

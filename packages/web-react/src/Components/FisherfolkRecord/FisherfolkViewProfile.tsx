@@ -13,8 +13,12 @@ import {
 import VesselTable from '../Table/VesselTable';
 import GearTable from '../Table/GearTable';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
-import { FisherfolkStatus } from '../../graphql/generated';
-import AddGearsForm from '../Forms/GearsForms';
+import AddVesselWithGearForm from '../Forms/AddVesselWithGearForms';
+import { FisherfolkByIdDocument } from '../../graphql/generated';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import Loading from '../Loading/Loading';
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -25,7 +29,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 interface InfoProps {
   title: string;
-  description: string;
+  description: string | undefined;
 }
 
 interface InfoTitleProps {
@@ -89,9 +93,9 @@ function a11yProps(index: number) {
 }
 
 function BasicTabs() {
-  const [addGearsBtn, setAddGearsBtn] = useState(false);
+  const [addVesselGearBtn, setAddGearsBtn] = useState(false);
   const handleAddMemberOpen = () => setAddGearsBtn(true);
-  const handleAddMemberClose = () => setAddGearsBtn(false);
+  const handleAddVesselGearClose = () => setAddGearsBtn(false);
   const [value, setValue] = useState(0);
   <Box m={1}>
     <Button
@@ -102,9 +106,10 @@ function BasicTabs() {
     >
       Add Boat/Gear
     </Button>
-  </Box>
+  </Box>;
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue)
+    setValue(newValue);
   };
 
   return (
@@ -129,12 +134,12 @@ function BasicTabs() {
             sx={{ height: 30 }}
             onClick={handleAddMemberOpen}
           >
-            Add Boats and Gears
+            Add Boat/Gear
           </Button>
-          {addGearsBtn && (
-            <AddGearsForm
-              handleClose={handleAddMemberClose}
-              open={addGearsBtn}
+          {addVesselGearBtn && (
+            <AddVesselWithGearForm
+              handleClose={handleAddVesselGearClose}
+              open={addVesselGearBtn}
             />
           )}
         </Box>
@@ -150,46 +155,173 @@ function BasicTabs() {
 }
 
 const FisherfolkViewProfile = () => {
+  const { id } = useParams();
+
+  if (id == undefined) {
+    throw 'Ffolk does not exist';
+  }
+
+  const {
+    loading,
+    error,
+    data: { fisherfolk } = {},
+  } = useQuery(FisherfolkByIdDocument, {
+    variables: {
+      fisherfolkId: parseInt(id),
+    },
+  });
+
+  if (error) {
+    console.log(error);
+    return <h1>Error Failed to Fetch!!!</h1>;
+  }
+
+  if (loading) {
+    <Loading />;
+  }
+
+  const handleUndefine = (str: string | undefined) =>
+    str == undefined ? '' : str;
+
+  const name = `${handleUndefine(fisherfolk?.lastName)}, ${handleUndefine(
+    fisherfolk?.firstName
+  )} ${handleUndefine(fisherfolk?.middleName)} ${handleUndefine(
+    fisherfolk?.appellation
+  )}`;
+
+  const address = `${handleUndefine(fisherfolk?.barangay)} ${handleUndefine(
+    fisherfolk?.cityMunicipality
+  )}, ${handleUndefine(fisherfolk?.province)}`;
+
+  const mainFishingActivity =
+    fisherfolk?.livelihoods == null
+      ? ''
+      : fisherfolk?.livelihoods.filter((a) => a?.isMain)[0]?.type;
+
+  const otherFishingActivity =
+    fisherfolk?.livelihoods == null
+      ? ''
+      : fisherfolk?.livelihoods.filter(
+          (a) => a?.isMain === false && a.type !== 'Others'
+        )[0]?.type;
+
+  const otherSourceOfIncome =
+    fisherfolk?.livelihoods == null
+      ? ''
+      : fisherfolk?.livelihoods.filter(
+          (a) => a?.isMain === false && a.type === 'Others'
+        )[0]?.description;
+
+  const orgName =
+    fisherfolk?.organizations == null
+      ? ''
+      : handleUndefine(fisherfolk?.organizations[0]?.organization.name);
+
+  const yearJoined =
+    fisherfolk?.organizations == null
+      ? ''
+      : handleUndefine(fisherfolk?.organizations[0]?.yearJoined.toString());
+
+  const position =
+    fisherfolk?.organizations == null
+      ? ''
+      : handleUndefine(fisherfolk?.organizations[0]?.position);
+
   return (
     <Grid container spacing={0.8}>
       <Grid item xs={12} sm={5} md={2.8}>
         <Item>
           <Stack direction="row" spacing={1}>
-            <Typography variant='h6'>Lopez, Mar Fermin</Typography>
+            <Typography variant="h6">{name}</Typography>
           </Stack>
           <Stack direction="row" spacing={3}>
-            <Typography variant="body2" width={200}>2022-0001</Typography>
-            <FisherfolkStatusButton label={FisherfolkStatus.Active} />
+            <Typography variant="body2" width={200}>
+              ID: {handleUndefine(id)}
+            </Typography>
+            <FisherfolkStatusButton label={fisherfolk?.status} />
           </Stack>
           <InfoTitle description="Personal Information" />
-          <Info title="Contact Number" description="09998018540" />
+          <Info
+            title="Contact Number"
+            description={handleUndefine(fisherfolk?.contactNum)}
+          />
+          <Info title="Address" description={handleUndefine(address)} />
+          <Info
+            title="Gender"
+            description={handleUndefine(fisherfolk?.gender)}
+          />
+          <Info
+            title="Age"
+            description={handleUndefine(fisherfolk?.age.toString())}
+          />
+          <Info
+            title="Date of Birth"
+            description={new Date(
+              handleUndefine(fisherfolk?.dateOfBirth)
+            ).toLocaleDateString()}
+          />
+          <Info
+            title="Place of Birth"
+            description={handleUndefine(fisherfolk?.placeOfBirth)}
+          />
+          <Info
+            title="Nationality"
+            description={handleUndefine(fisherfolk?.nationality)}
+          />
+          <Info
+            title="Civil Status"
+            description={handleUndefine(fisherfolk?.civilStatus)}
+          />
+          <Info
+            title="Religion"
+            description={handleUndefine(fisherfolk?.religion)}
+          />
+          <Info
+            title="Educational Background"
+            description={handleUndefine(fisherfolk?.educationalBackground)}
+          />
+          <Info
+            title="Number of Children"
+            description={handleUndefine(fisherfolk?.numOfChildren.toString())}
+          />
+          <Info
+            title="Resident Year"
+            description={handleUndefine(fisherfolk?.residentYear.toString())}
+          />
+          <InfoTitle description="Person to Notify incase of Emergency" />
+          <Info
+            title="Name"
+            description={handleUndefine(fisherfolk?.personToNotify)}
+          />
+          <Info
+            title="Relationship"
+            description={handleUndefine(fisherfolk?.ptnRelationship)}
+          />
+          <Info
+            title="Contact Number"
+            description={handleUndefine(fisherfolk?.ptnContactNum)}
+          />
           <Info
             title="Address"
-            description="Brgy. Bito-on Iloilo City, Iloilo"
+            description={handleUndefine(fisherfolk?.ptnAddress)}
           />
-          <Info title="Gender" description="Male" />
-          <Info title="Age" description="55" />
-          <Info title="Date of Birth" description="Jan 17, 1977" />
-          <Info title="Place of Birth" description="Iloilo City, Iloilo" />
-          <Info title="Nationality" description="Filipino" />
-          <Info title="Civil Status" description="Married" />
-          <Info title="Religion" description="Catholic" />
-          <Info title="Educational Background" description="College" />
-          <Info title="Number of Children" description="2" />
-          <Info title="Resident Year" description="1987" />
-          <InfoTitle description="Person to Notify incase of Emergency" />
-          <Info title="Name" description="Maria Lopez" />
-          <Info title="Relationship" description="Spouse" />
-          <Info title="Contact Number" description="09991627182" />
-          <Info title="Address" description="Brgy. Bito-on Iloilo City" />
           <InfoTitle description="Livelihood" />
-          <Info title="Main Fishing Activity" description="Capture Fishing" />
-          <Info title="Other Fishing Activity" description="Fish Vending" />
-          <Info title="Other Source of Income" description="None" />
+          <Info
+            title="Main Fishing Activity"
+            description={handleUndefine(mainFishingActivity)}
+          />
+          <Info
+            title="Other Fishing Activity"
+            description={handleUndefine(otherFishingActivity)}
+          />
+          <Info
+            title="Other Source of Income"
+            description={handleUndefine(otherSourceOfIncome)}
+          />
           <InfoTitle description="Organization" />
-          <Info title="Name" description="Small Fisherfolk Cooperatives" />
-          <Info title="Member since" description="2003" />
-          <Info title="Position" description="Member" />
+          <Info title="Name" description={orgName} />
+          <Info title="Member since" description={yearJoined} />
+          <Info title="Position" description={position} />
         </Item>
       </Grid>
       <Grid item xs={12} sm={7} md={9.2}>

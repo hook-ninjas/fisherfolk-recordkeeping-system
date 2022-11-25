@@ -376,8 +376,11 @@ export interface NexusGenFieldTypes {
     vessels: Array<NexusGenRootTypes['Vessel'] | null> | null; // [Vessel]
   }
   Query: { // field return type
+    fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
+    fisherfolkByRange: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     fisherfolks: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     gears: NexusGenRootTypes['Gear'][]; // [Gear!]!
+    totalFisherfolk: number; // Int!
     vessels: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
   }
   Queue: { // field return type
@@ -530,8 +533,11 @@ export interface NexusGenFieldTypeNames {
     vessels: 'Vessel'
   }
   Query: { // field return type name
+    fisherfolk: 'Fisherfolk'
+    fisherfolkByRange: 'Fisherfolk'
     fisherfolks: 'Fisherfolk'
     gears: 'Gear'
+    totalFisherfolk: 'Int'
     vessels: 'Vessel'
   }
   Queue: { // field return type name
@@ -584,6 +590,15 @@ export interface NexusGenArgTypes {
     createVesselWithGear: { // args
       gears: NexusGenInputs['CreateGearInput'][]; // [CreateGearInput!]!
       vessel: NexusGenInputs['CreateVesselInput']; // CreateVesselInput!
+    }
+  }
+  Query: {
+    fisherfolk: { // args
+      id: NexusGenScalars['BigInt']; // BigInt!
+    }
+    fisherfolkByRange: { // args
+      count: number; // Int!
+      start: number; // Int!
     }
   }
 }
