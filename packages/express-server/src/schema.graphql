@@ -108,7 +108,7 @@ type Fisherfolk {
   middleName: String!
   nationality: String!
   numOfChildren: Int!
-  organizations: [Organization]
+  organizations: [Member]
   permit: Permit
   personToNotify: String!
   placeOfBirth: String!
@@ -196,6 +196,17 @@ enum Material {
   Wood
 }
 
+type Member {
+  createdAt: DateTime!
+  fisherfolkId: BigInt!
+  fisherfolks: Fisherfolk!
+  organization: Organization!
+  organizationId: Int!
+  position: String!
+  updatedAt: DateTime!
+  yearJoined: Int!
+}
+
 type Mutation {
   createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
   createUser(data: CreateUserInput!): User!
@@ -204,12 +215,10 @@ type Mutation {
 
 type Organization {
   createdAt: DateTime!
-  fisherfolks: [Fisherfolk!]
   id: BigInt!
+  members: [Member]
   name: String!
-  position: String!
   updatedAt: DateTime!
-  yearJoined: Int!
 }
 
 type Permit {
@@ -225,8 +234,11 @@ type Permit {
 }
 
 type Query {
+  fisherfolk(id: BigInt!): Fisherfolk!
+  fisherfolkByRange(count: Int!, start: Int!): [Fisherfolk!]!
   fisherfolks: [Fisherfolk!]!
   gears: [Gear!]!
+  totalFisherfolk: Int!
   vessels: [Vessel!]!
 }
 
