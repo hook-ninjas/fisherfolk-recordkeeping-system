@@ -157,13 +157,17 @@ function BasicTabs() {
 const FisherfolkViewProfile = () => {
   const { id } = useParams();
 
+  if (id == undefined) {
+    throw 'Ffolk does not exist';
+  }
+
   const {
     loading,
     error,
     data: { fisherfolk } = {},
   } = useQuery(FisherfolkByIdDocument, {
     variables: {
-      fisherfolkId: parseInt(id!),
+      fisherfolkId: parseInt(id),
     },
   });
 
@@ -198,15 +202,15 @@ const FisherfolkViewProfile = () => {
     fisherfolk?.livelihoods == null
       ? ''
       : fisherfolk?.livelihoods.filter(
-        (a) => a?.isMain === false && a.type !== 'Others'
-      )[0]?.type;
+          (a) => a?.isMain === false && a.type !== 'Others'
+        )[0]?.type;
 
   const otherSourceOfIncome =
     fisherfolk?.livelihoods == null
       ? ''
       : fisherfolk?.livelihoods.filter(
-        (a) => a?.isMain === false && a.type === 'Others'
-      )[0]?.description;
+          (a) => a?.isMain === false && a.type === 'Others'
+        )[0]?.description;
 
   const orgName =
     fisherfolk?.organizations == null
