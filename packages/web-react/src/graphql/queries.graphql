@@ -19,6 +19,49 @@ query QueryFisherfolkByRange($start: Int!, $count: Int!) {
   totalFisherfolk
 }
 
+query FisherfolkById($fisherfolkId: BigInt!) {
+  fisherfolk(id: $fisherfolkId) {
+    age,
+    appellation,
+    barangay,
+    cityMunicipality,
+    civilStatus,
+    contactNum,
+    dateOfBirth,
+    educationalBackground,
+    firstName,
+    gender,
+    id,
+    lastName,
+    middleName,
+    nationality,
+    numOfChildren,
+    personToNotify,
+    placeOfBirth,
+    province,
+    ptnAddress,
+    ptnContactNum,
+    ptnRelationship,
+    registrationDate,
+    religion,
+    residentYear,
+    salutation,
+    status,
+    livelihoods { 
+      isMain
+      type
+      description
+    },
+    organizations {
+      organization {
+        name
+      }
+      yearJoined
+      position
+    }
+  }
+}
+
 query VesselQuery {
   vessels {
     id

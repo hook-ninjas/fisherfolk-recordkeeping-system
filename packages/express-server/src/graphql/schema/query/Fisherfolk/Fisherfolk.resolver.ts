@@ -13,3 +13,11 @@ export const queryByRange = (start: number, count: number, ctx: Context) => {
     },
   });
 };
+
+export const queryById = (id: bigint, ctx: Context) => {
+  return ctx.prisma.fisherfolk.findUniqueOrThrow({
+    where: {
+      id: id
+    }
+  });
+};

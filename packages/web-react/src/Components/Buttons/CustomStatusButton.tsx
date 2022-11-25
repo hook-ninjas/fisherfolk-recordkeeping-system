@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import { FisherfolkStatus } from '../../graphql/generated';
 
 interface FisherfolkStatusProps {
-  label: FisherfolkStatus;
+  label: FisherfolkStatus | undefined;
 }
 
 const fisherfolkStatusColor = {
@@ -26,11 +26,11 @@ export const FisherfolkStatusButton = (status: FisherfolkStatusProps) => {
       sx={{
         width: '100%',
         p: 0.125,
-        backgroundColor: fisherfolkStatusColor[status.label],
+        backgroundColor: fisherfolkStatusColor[status.label!],
         borderRadius: 2,
         fontSize: 12,
         fontWeight: 'medium',
-        color: textColor[status.label],
+        color: textColor[status.label!],
       }}
     >
       {status.label}

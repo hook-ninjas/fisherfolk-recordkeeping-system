@@ -12,7 +12,7 @@ import {
   TablePagination,
   TableRow,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Loading from '../Loading/Loading';
 import { useNavigate } from 'react-router-dom';
@@ -45,8 +45,8 @@ const columns: readonly Column[] = [
 
 export function FisherfolkTable() {
   const navigate = useNavigate();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event: unknown, newPage: number) =>
     setPage(newPage);
@@ -56,8 +56,9 @@ export function FisherfolkTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const [drop, setDropDown] = React.useState<null | HTMLElement>(null);
+  const [drop, setDropDown] = useState<null | HTMLElement>(null);
   const handleDismissDropdown = () => setDropDown(null);
+  const [fisherfolkId, setFisherfolkId] = useState();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
     setDropDown(event.currentTarget);
   const open = Boolean(drop);
@@ -68,7 +69,7 @@ export function FisherfolkTable() {
 
   const { loading, error, data } = useQuery(QueryFisherfolkByRangeDocument, {
     variables: {
-      start: page  * rowsPerPage,
+      start: page * rowsPerPage,
       count: rowsPerPage,
     },
   });
@@ -101,72 +102,66 @@ export function FisherfolkTable() {
         </TableHead>
         <TableBody>
           {data &&
-            data.fisherfolkByRange
-              .map((fisherfolk) => {
-                const {
-                  id,
-                  registrationDate,
-                  barangay,
-                  contactNum,
-                  status,
-                  firstName,
-                  lastName,
-                  middleName,
-                  appellation,
-                  livelihoods
-                } = fisherfolk;
-                const name = `${lastName}, ${firstName} ${middleName} ${appellation}`;
-                const livelihood = livelihoods == null ? '' : livelihoods[0]?.type;
-                return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={id}
-                  >
-                    <TableCell>{id}</TableCell>
-                    <TableCell>
-                      {new Date(registrationDate).toLocaleDateString()}
-                    </TableCell>
-                    <TableCell>{name}</TableCell>
-                    <TableCell>{contactNum}</TableCell>
-                    <TableCell>{splitUpperCase(livelihood!)}</TableCell>
-                    <TableCell>{barangay}</TableCell>
-                    <TableCell>
-                      <FisherfolkStatusButton label={status} />
-                    </TableCell>
-                    <TableCell align="right">
-                      <Button
-                        id="basic-button"
-                        aria-controls={open ? 'basic-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={(e) => {
-                          handleClick(e);
-                        }}
-                        style={{ color: '#808080' }}
-                      >
-                        <MoreVertIcon />
-                      </Button>{' '}
-                      <Menu
-                        id="dropdwown-menu"
-                        anchorEl={drop}
-                        open={open}
-                        onClose={handleDismissDropdown}
-                        MenuListProps={{
-                          'aria-labelledby': 'basic-button',
-                        }}
-                      >
-                        <MenuItem onClick={handleViewProfile(id)}>
-                          View
-                        </MenuItem>
-                        <MenuItem>Edit</MenuItem>
-                        <MenuItem>Archive</MenuItem>
-                      </Menu>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+            data.fisherfolkByRange.map((fisherfolk) => {
+              const {
+                id,
+                registrationDate,
+                barangay,
+                contactNum,
+                status,
+                firstName,
+                lastName,
+                middleName,
+                appellation,
+                livelihoods,
+              } = fisherfolk;
+              const name = `${lastName}, ${firstName} ${middleName} ${appellation}`;
+              const livelihood =
+                livelihoods == null ? '' : livelihoods[0]?.type;
+              return (
+                <TableRow hover role="checkbox" tabIndex={-1} key={id}>
+                  <TableCell>{id}</TableCell>
+                  <TableCell>
+                    {new Date(registrationDate).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>{name}</TableCell>
+                  <TableCell>{contactNum}</TableCell>
+                  <TableCell>{splitUpperCase(livelihood!)}</TableCell>
+                  <TableCell>{barangay}</TableCell>
+                  <TableCell>
+                    <FisherfolkStatusButton label={status} />
+                  </TableCell>
+                  <TableCell align="right">
+                    <Button
+                      id="basic-button"
+                      aria-controls={open ? 'basic-menu' : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? 'true' : undefined}
+                      onClick={(e) => {
+                        handleClick(e);
+                        setFisherfolkId(id);
+                      }}
+                      style={{ color: '#808080' }}
+                    >
+                      <MoreVertIcon />
+                    </Button>{' '}
+                    <Menu
+                      id="dropdwown-menu"
+                      anchorEl={drop}
+                      open={open}
+                      onClose={handleDismissDropdown}
+                      MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                      }}
+                    >
+                      <MenuItem onClick={handleViewProfile(fisherfolkId!)}>View</MenuItem>
+                      <MenuItem>Edit</MenuItem>
+                      <MenuItem>Archive</MenuItem>
+                    </Menu>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
         </TableBody>
       </Table>
       <TablePagination
