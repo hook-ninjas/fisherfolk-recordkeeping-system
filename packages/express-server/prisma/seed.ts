@@ -207,20 +207,6 @@ const connectMembers = async (x: number) => {
     const randomYear = getRandomInt(2022, minYear);
     const randomPosition = positions[getRandomInt(positions.length)];
 
-    // await db.fisherfolk.update({
-    //   where: {
-    //     id: randomFfolk,
-    //   },
-    //   data: {
-    //     organizations: {
-    //       create: {
-    //         yearJoined: randomYear,
-    //         position: randomPosition,
-    //         organizationId: randomOrg,
-    //       },
-    //     },
-    //   },
-    // });
     await db.member.create({
       data: {
         fisherfolkId: randomFfolk,
@@ -400,7 +386,7 @@ clearDb()
   .then(() => createSecondaryLivelihoods())
   .then(() => createOtherLivelihoods(200))
   .then(() => createOrgs(20))
-  .then(() => connectMembers(500))
+  .then(() => connectMembers(50))
   .then(() => createGear(300))
   .then(() => createVessel(300))
   .catch((err) => console.log(err));
