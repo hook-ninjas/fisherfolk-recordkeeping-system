@@ -50,9 +50,11 @@ export interface NexusGenInputs {
     firstName: string; // String!
     gender: NexusGenEnums['Gender']; // Gender!
     lastName: string; // String!
+    livelihoods: NexusGenInputs['livelihoodInput'][]; // [livelihoodInput!]!
     middleName: string; // String!
     nationality: string; // String!
     numOfChildren: number; // Int!
+    organization?: NexusGenInputs['OrganizationInput'] | null; // OrganizationInput
     personToNotify: string; // String!
     placeOfBirth: string; // String!
     province: string; // String!
@@ -92,6 +94,16 @@ export interface NexusGenInputs {
     tonnageLength: number; // Float!
     type: string; // String!
     yearBuilt: number; // Int!
+  }
+  OrganizationInput: { // input type
+    name: string; // String!
+    position: string; // String!
+    yearJoined: number; // Int!
+  }
+  livelihoodInput: { // input type
+    description: string; // String!
+    isMain: boolean; // Boolean!
+    type: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
   }
 }
 

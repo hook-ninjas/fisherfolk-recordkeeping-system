@@ -1,37 +1,42 @@
-import { inputObjectType } from 'nexus';
+import { nullable, list, inputObjectType } from 'nexus';
 import {
   CivilStatus,
   EducationalBackground,
   Gender,
   Salutation,
 } from '../enums/';
+import LivelihoodInput from './Livelihood.input';
+import OrganizationInput from './Organization.input';
 
 const CreateFisherfolkInput = inputObjectType({
   name: 'CreateFisherfolkInput',
   definition(t) {
-    t.nonNull.string('lastName');
-    t.nonNull.string('firstName');
-    t.nonNull.string('middleName');
-    t.nonNull.string('appellation');
-    t.nonNull.int('age');
-    t.nonNull.field('salutation', { type: Salutation });
-    t.nonNull.string('barangay');
-    t.nonNull.string('cityMunicipality');
-    t.nonNull.string('province');
-    t.nonNull.string('contactNum');
-    t.nonNull.int('residentYear');
-    t.nonNull.field('dateOfBirth', { type: 'DateTime' });
-    t.nonNull.string('placeOfBirth');
-    t.nonNull.string('religion');
-    t.nonNull.field('gender', { type: Gender });
-    t.nonNull.field('civilStatus', { type: CivilStatus });
-    t.nonNull.int('numOfChildren');
-    t.nonNull.string('nationality');
-    t.nonNull.field('educationalBackground', { type: EducationalBackground });
-    t.nonNull.string('personToNotify');
-    t.nonNull.string('ptnRelationship');
-    t.nonNull.string('ptnAddress');
-    t.nonNull.string('ptnContactNum');
+    t.string('lastName');
+    t.string('firstName');
+    t.string('middleName');
+    t.string('appellation');
+    t.int('age');
+    t.field('salutation', { type: Salutation });
+    t.string('barangay');
+    t.string('cityMunicipality');
+    t.string('province');
+    t.string('contactNum');
+    t.int('residentYear');
+    t.field('dateOfBirth', { type: 'DateTime' });
+    t.string('placeOfBirth');
+    t.string('religion');
+    t.field('gender', { type: Gender });
+    t.field('civilStatus', { type: CivilStatus });
+    t.int('numOfChildren');
+    t.string('nationality');
+    t.field('educationalBackground', { type: EducationalBackground });
+    t.string('personToNotify');
+    t.string('ptnRelationship');
+    t.string('ptnAddress');
+    t.string('ptnContactNum');
+    t.field('livelihoods', { type: list(LivelihoodInput) });
+    t.field('organization', { type: nullable(OrganizationInput) });
+
   },
 });
 
