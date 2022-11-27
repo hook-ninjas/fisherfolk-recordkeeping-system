@@ -162,8 +162,10 @@ export interface NexusGenObjects {
   }
   Gear: { // root type
     classification: NexusGenEnums['GearClassification']; // GearClassification!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: NexusGenScalars['BigInt']; // BigInt!
     type: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   GovernmentAid: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -233,6 +235,7 @@ export interface NexusGenObjects {
     username: string; // String!
   }
   Vessel: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     engineMake: string; // String!
     grossTonnage: number; // Float!
     homeport: string; // String!
@@ -251,6 +254,7 @@ export interface NexusGenObjects {
     tonnageDepth: number; // Float!
     tonnageLength: number; // Float!
     type: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
     yearBuilt: number; // Int!
   }
 }
@@ -306,9 +310,11 @@ export interface NexusGenFieldTypes {
   }
   Gear: { // field return type
     classification: NexusGenEnums['GearClassification']; // GearClassification!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     id: NexusGenScalars['BigInt']; // BigInt!
     type: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   GovernmentAid: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -378,9 +384,13 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     fisherfolkByRange: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
+    fisherfolkGears: NexusGenRootTypes['Gear'][]; // [Gear!]!
+    fisherfolkVessels: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
     fisherfolks: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     gears: NexusGenRootTypes['Gear'][]; // [Gear!]!
     totalFisherfolk: number; // Int!
+    totalGears: number; // Int!
+    totalVessels: number; // Int!
     vessels: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
   }
   Queue: { // field return type
@@ -399,6 +409,7 @@ export interface NexusGenFieldTypes {
     username: string; // String!
   }
   Vessel: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     engineMake: string; // String!
     fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     grossTonnage: number; // Float!
@@ -418,6 +429,7 @@ export interface NexusGenFieldTypes {
     tonnageDepth: number; // Float!
     tonnageLength: number; // Float!
     type: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
     yearBuilt: number; // Int!
   }
 }
@@ -463,9 +475,11 @@ export interface NexusGenFieldTypeNames {
   }
   Gear: { // field return type name
     classification: 'GearClassification'
+    createdAt: 'DateTime'
     fisherfolk: 'Fisherfolk'
     id: 'BigInt'
     type: 'String'
+    updatedAt: 'DateTime'
   }
   GovernmentAid: { // field return type name
     createdAt: 'DateTime'
@@ -535,9 +549,13 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     fisherfolk: 'Fisherfolk'
     fisherfolkByRange: 'Fisherfolk'
+    fisherfolkGears: 'Gear'
+    fisherfolkVessels: 'Vessel'
     fisherfolks: 'Fisherfolk'
     gears: 'Gear'
     totalFisherfolk: 'Int'
+    totalGears: 'Int'
+    totalVessels: 'Int'
     vessels: 'Vessel'
   }
   Queue: { // field return type name
@@ -556,6 +574,7 @@ export interface NexusGenFieldTypeNames {
     username: 'String'
   }
   Vessel: { // field return type name
+    createdAt: 'DateTime'
     engineMake: 'String'
     fisherfolk: 'Fisherfolk'
     grossTonnage: 'Float'
@@ -575,6 +594,7 @@ export interface NexusGenFieldTypeNames {
     tonnageDepth: 'Float'
     tonnageLength: 'Float'
     type: 'String'
+    updatedAt: 'DateTime'
     yearBuilt: 'Int'
   }
 }
@@ -599,6 +619,22 @@ export interface NexusGenArgTypes {
     fisherfolkByRange: { // args
       count: number; // Int!
       start: number; // Int!
+    }
+    fisherfolkGears: { // args
+      count: number; // Int!
+      fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+      start: number; // Int!
+    }
+    fisherfolkVessels: { // args
+      count: number; // Int!
+      fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+      start: number; // Int!
+    }
+    totalGears: { // args
+      fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    }
+    totalVessels: { // args
+      fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
     }
   }
 }

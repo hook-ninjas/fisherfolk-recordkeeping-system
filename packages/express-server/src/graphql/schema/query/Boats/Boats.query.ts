@@ -1,5 +1,4 @@
-import { list, nonNull, queryField } from 'nexus';
-
+import { arg, intArg, list, nonNull, queryField } from 'nexus';
 
 const Vessels = queryField('vessels', {
   type: nonNull(list(nonNull('Vessel'))),
@@ -12,6 +11,40 @@ const Vessels = queryField('vessels', {
   })
 });
 
+const QueryFisherfolkVessels = queryField('fisherfolkVessels', {
+  type: nonNull(list(nonNull('Vessel'))),
+  args: {
+    fisherfolkId: nonNull(arg({
+      type: 'BigInt',
+    })),
+    start: nonNull(intArg()),
+    count: nonNull(intArg())
+  },
+  resolve: (_parent, args, ctx) => ctx.prisma.vessel.findMany({
+    skip: args.start,
+    take: args.count,
+    where: {
+      fisherfolkId: args.fisherfolkId
+    }
+  }) 
+});
+
+const QueryAllFisherfolkVessels = queryField('totalVessels', {
+  type: 'Int',
+  args: {
+    fisherfolkId: nonNull(arg({
+      type: 'BigInt',
+    })),
+  },
+  resolve: (_, args, ctx) => ctx.prisma.vessel.count({
+    where: {
+      fisherfolkId: args.fisherfolkId
+    }
+  })
+});
+
 export default [
-  Vessels
+  Vessels,
+  QueryFisherfolkVessels,
+  QueryAllFisherfolkVessels
 ];
