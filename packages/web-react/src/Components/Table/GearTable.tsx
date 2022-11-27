@@ -10,6 +10,7 @@ import {
   TableBody,
   TableHead,
   TablePagination,
+  Typography,
 } from '@mui/material';
 import React from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -27,10 +28,10 @@ interface GearColumn {
 
 const gearColumns: readonly GearColumn[] = [
   { id: 'id', label: 'Id' },
-  { id: 'registrationDate', label: 'Date Registered', },
-  { id: 'classification', label: 'Classification', },
-  { id: 'name', label: 'Name', },
-  { id: 'status', label: 'Status', },
+  { id: 'registrationDate', label: 'Date Registered' },
+  { id: 'classification', label: 'Classification' },
+  { id: 'name', label: 'Name' },
+  { id: 'status', label: 'Status' },
 ];
 
 export default function GearTable() {
@@ -70,6 +71,35 @@ export default function GearTable() {
     <Loading />;
   }
 
+  if (data && data?.totalGears === 0) {
+    return (
+      <TableContainer component={Paper}>
+        <Table stickyHeader size="small" aria-label="gear-table">
+          <TableHead>
+            <TableRow>
+              {gearColumns.map((gear) => (
+                <TableCell key={gear.id} align={gear.align}>
+                  <b>{gear.label}</b>
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableRow
+            sx={{
+              height: 415,
+              width: '100%',
+              color: 'grey',
+            }}
+          >
+            <TableCell align="center" colSpan={5}>
+              <Typography variant="h6">No data recorded.</Typography>
+            </TableCell>
+          </TableRow>
+        </Table>
+      </TableContainer>
+    );
+  }
+
   return (
     <TableContainer component={Paper}>
       <Table stickyHeader size="small" aria-label="gear-table">
@@ -82,7 +112,7 @@ export default function GearTable() {
             ))}
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody sx={{ height: 325 }}>
           {data &&
             data.fisherfolkGears.map((gear) => {
               const { classification, createdAt, id, type } = gear;

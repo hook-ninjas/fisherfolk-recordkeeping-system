@@ -10,6 +10,7 @@ import {
   TableBody,
   TableHead,
   TablePagination,
+  Typography,
 } from '@mui/material';
 import React from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -42,13 +43,13 @@ interface VesselColumn {
     | 'serialNum'
     | 'horsepower';
   label: string;
-  align?: 'right';
+  align?: 'right' | 'left';
 }
 
 const vesselColumns: readonly VesselColumn[] = [
   { id: 'id', label: 'Id' },
-  { id: 'mfvrNum', label: 'MFVR Number', align: 'right' },
-  { id: 'registrationDate', label: 'Date Registered', align: 'right' },
+  { id: 'mfvrNum', label: 'MFVR Number', align: 'left' },
+  { id: 'registrationDate', label: 'Date Registered', align: 'left' },
   { id: 'homeport', label: 'Homeport', align: 'right' },
   { id: 'name', label: 'Name', align: 'right' },
   { id: 'status', label: 'Status', align: 'right' },
@@ -105,6 +106,36 @@ export default function VesselTable() {
   if (loading) {
     <Loading />;
   }
+
+  if (data && data?.totalVessels === 0) {
+    return (
+      <TableContainer component={Paper}>
+        <Table stickyHeader size="small" aria-label="vessel-table">
+          <TableHead>
+            <TableRow>
+              {vesselColumns.map((vessel) => (
+                <TableCell key={vessel.id} align={vessel.align}>
+                  <b>{vessel.label}</b>
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableRow
+            sx={{
+              height: 380,
+              width: '100%',
+              color: 'grey',
+            }}
+          >
+            <TableCell align="center" colSpan={10}>
+              <Typography variant="h6">No data recorded.</Typography>
+            </TableCell>
+          </TableRow>
+        </Table>
+      </TableContainer>
+    );
+  }
+
   return (
     <TableContainer component={Paper}>
       <Table stickyHeader size="small" aria-label="vessel-table">
@@ -114,7 +145,7 @@ export default function VesselTable() {
               <TableCell
                 key={vessel.id}
                 align={vessel.align}
-                sx={{ minWidth: 100 }}
+                sx={{ minWidth: 130 }}
               >
                 <b>{vessel.label}</b>
               </TableCell>
@@ -149,29 +180,29 @@ export default function VesselTable() {
             } = vessel;
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={vessel.id}>
-                <TableCell sx={{minWidth: 100}}>{id}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{mfvrNumber}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>
+                <TableCell sx={{minWidth: 130}}>{id}</TableCell>
+                <TableCell align='left' sx={{minWidth: 130}}>{mfvrNumber}</TableCell>
+                <TableCell align='left' sx={{minWidth: 130}}>
                   {new Date(createdAt).toLocaleDateString()}
                 </TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{homeport}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{name}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}></TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{type}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{placeBuilt}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{yearBuilt}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{material}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{registeredLength}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{registeredDepth}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{registeredBreadth}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{tonnageLength}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{tonnageDepth}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{tonnageBreadth}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{grossTonnage}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{netTonnage}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{engineMake}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{serialNumber}</TableCell>
-                <TableCell align='right' sx={{minWidth: 100}}>{horsepower}</TableCell>
+                <TableCell align='right' sx={{minWidth: 130}}>{homeport}</TableCell>
+                <TableCell align='right' sx={{minWidth: 130}}>{name}</TableCell>
+                <TableCell align='right' sx={{minWidth: 130}}></TableCell>
+                <TableCell align='right' sx={{minWidth: 130}}>{type}</TableCell>
+                <TableCell align='right' sx={{minWidth: 130}}>{placeBuilt}</TableCell>
+                <TableCell align='center' sx={{minWidth: 130}}>{yearBuilt}</TableCell>
+                <TableCell align='center' sx={{minWidth: 130}}>{material}</TableCell>
+                <TableCell align='center' sx={{minWidth: 130}}>{registeredLength}</TableCell>
+                <TableCell align='center' sx={{minWidth: 130}}>{registeredDepth}</TableCell>
+                <TableCell align='center' sx={{minWidth: 130}}>{registeredBreadth}</TableCell>
+                <TableCell align='center' sx={{minWidth: 130}}>{tonnageLength}</TableCell>
+                <TableCell align='center' sx={{minWidth: 130}}>{tonnageDepth}</TableCell>
+                <TableCell align='center' sx={{minWidth: 130}}>{tonnageBreadth}</TableCell>
+                <TableCell align='center' sx={{minWidth: 130}}>{grossTonnage}</TableCell>
+                <TableCell align='center' sx={{minWidth: 130}}>{netTonnage}</TableCell>
+                <TableCell align='center' sx={{minWidth: 130}}>{engineMake}</TableCell>
+                <TableCell align='center' sx={{minWidth: 130}}>{serialNumber}</TableCell>
+                <TableCell align='center' sx={{minWidth: 130}}>{horsepower}</TableCell>
                 <TableCell align="right">
                   <Button
                     id="basic-button"
