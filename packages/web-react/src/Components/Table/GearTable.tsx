@@ -112,7 +112,7 @@ export default function GearTable() {
             ))}
           </TableRow>
         </TableHead>
-        <TableBody sx={{ height: 325 }}>
+        <TableBody>
           {data &&
             data.fisherfolkGears.map((gear) => {
               const { classification, createdAt, id, type } = gear;
