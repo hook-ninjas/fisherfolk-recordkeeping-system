@@ -4,4 +4,10 @@
     createFisherfolk(data: $data) {
         id
     }
+  }
+
+  mutation CreateVessselWithGear($vessel: CreateVesselInput!, $gears: [CreateGearInput!]!) {
+  createVesselWithGear(vessel: $vessel, gears: $gears) {
+    id
+  }
 }

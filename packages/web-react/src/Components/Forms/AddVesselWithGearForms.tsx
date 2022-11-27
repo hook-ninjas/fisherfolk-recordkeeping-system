@@ -16,32 +16,29 @@ import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import {
   FormInputRadio,
-  // FormInputSelect,
   FormInputText,
   FormCreatableSelect,
+  FormInputSelect,
 } from './FormInputFields';
 import { useForm } from 'react-hook-form';
-import { object, string, mixed } from 'yup';
+import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
-  CreateFisherfolkDocument,
-  MutationCreateFisherfolkArgs,
+  CreateGearInput,
+  CreateVessselWithGearDocument,
+  GearClassification,
+  MutationCreateVesselWithGearArgs,
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
 import {
-  vesselTypeOptions,
-  educationalBackgroundOptions,
   createOption,
-  materialUsedOptions,
-  registrationTypesGears,
-  // salutations,
-  // barangays,
-  // genders,
-  // civilStatus,
-  // sourcesOfIncome,
+  registrationTypeForBoatsAndGears,
+  gears,
+  vesselTypeOptions,
+  materials,
 } from './Enums';
-import { getValues } from '../../utils/utils';
+import { useParams } from 'react-router-dom';
 
 export interface FormContainerTitleProps {
   children?: React.ReactNode;
@@ -78,7 +75,7 @@ const FormContainer = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-interface AddGearsFormProps {
+interface AddVesselWithGearFormProps {
   open: boolean;
   handleClose: () => void;
 }
@@ -86,7 +83,9 @@ interface AddGearsFormProps {
 export default function AddVesselWithGearForm({
   open,
   handleClose,
-}: AddGearsFormProps) {
+}: AddVesselWithGearFormProps) {
+  const { id } = useParams();
+
   const [complete, setComplete] = useState(false);
 
   const buttonSx = {
@@ -103,85 +102,85 @@ export default function AddVesselWithGearForm({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [nationalities, setNationalities] = useState(vesselTypeOptions);
-  const [educationalBackgrounds, setEducationalBackgrounds] = useState(
-    educationalBackgroundOptions
-  );
-  const [hookandLine, setOtherFishingActivities] = React.useState({
+  const [vesselTypes, setVesselTypes] = useState(vesselTypeOptions);
+
+  const [gearTypes, setGearTypes] = useState({
     SimpleHandLine: false,
-    MulipleHandLine: false,
-    Bottomsetlongline: false,
-    DriftlongLine: false,
+    MultipleHandLine: false,
+    BottomSetLongLine: false,
+    DriftLongLine: false,
     TrollLine: false,
     Jig: false,
-    SurfaceSetGill: false,
+    SurfaceSetGillNet: false,
     DriftGillNet: false,
-    BottomsetGillNet: false,
-    Trammelnet: false,
-    EncirclinGillNet: false,
-    CrabLiftNets: false,
-    FishLiftNets: false,
-    NewLook: false,
+    BottomSetGillNet: false,
+    TrammelNet: false,
+    EncirclingGillNet: false,
+    CrabLiftNetsOrBintol: false,
+    FishLiftNetsOrBagnet: false,
+    NewLookOrZapara: false,
     ShrimpLiftNets: false,
     LeverNet: false,
     CrabPots: false,
     SquidPots: false,
-    FykeNet: false,
-    FishCorrals: false,
-    SetNet: false,
-    BarrierNet: false,
+    FykeNetsOrFilterNets: false,
+    FishCorralsOrBaklad: false,
+    SetNetOrLambaklad: false,
+    BarrierNetOrLikus: false,
     FishPots: false,
     BeachSeine: false,
-    FryDozerorGatherer: false,
+    FryDozerOrGatherer: false,
     ManPushNets: false,
     ScoopNets: false,
     Spear: false,
-    SquidLurkingDevice: false,
+    OctopusOrSquidLuringDevice: false,
     GaffHook: false,
     CastNet: false,
   });
 
   const {
     SimpleHandLine,
-    MulipleHandLine,
-    Bottomsetlongline,
-    DriftlongLine,
+    MultipleHandLine,
+    BottomSetLongLine,
+    DriftLongLine,
     TrollLine,
     Jig,
-    SurfaceSetGill,
+    SurfaceSetGillNet,
     DriftGillNet,
-    BottomsetGillNet,
-    Trammelnet,
-    EncirclinGillNet,
-    CrabLiftNets,
-    FishLiftNets,
-    NewLook,
+    BottomSetGillNet,
+    TrammelNet,
+    EncirclingGillNet,
+    CrabLiftNetsOrBintol,
+    FishLiftNetsOrBagnet,
+    NewLookOrZapara,
     ShrimpLiftNets,
     LeverNet,
     CrabPots,
     SquidPots,
-    FykeNet,
-    FishCorrals,
-    SetNet,
-    BarrierNet,
+    FykeNetsOrFilterNets,
+    FishCorralsOrBaklad,
+    SetNetOrLambaklad,
+    BarrierNetOrLikus,
     FishPots,
     BeachSeine,
-    FryDozerorGatherer,
+    FryDozerOrGatherer,
     ManPushNets,
     ScoopNets,
     Spear,
-    SquidLurkingDevice,
+    OctopusOrSquidLuringDevice,
     GaffHook,
     CastNet,
-  } = hookandLine;
+  } = gearTypes;
+
+  const handleSubmitting = () => setIsSubmitting(true);
 
   const handleComplete = () => setComplete(true);
 
   const handleOtherFishingActivityChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setOtherFishingActivities({
-      ...hookandLine,
+    setGearTypes({
+      ...gearTypes,
       [event.target.name]: event.target.checked,
     });
   };
@@ -191,61 +190,59 @@ export default function AddVesselWithGearForm({
     setTimeout(() => {
       const newValue = createOption(inputValue);
       setIsLoading(false);
-      setNationalities((prev) => [...prev, newValue]);
+      setVesselTypes((prev) => [...prev, newValue]);
     }, 1500);
   };
 
-  const addFisherfolkSchema = object().shape({
-    registrationType: string()
-      .nullable()
-      .oneOf(getValues(registrationTypesGears))
-      .required('Select an option for registration type.'),
-    // lastName: string().required('Enter last name.'),
-    // firstName: string().required('Enter first name.'),
-    // middleName: string().required('Enter middle name.'),
-    // salutation: string()
-    //   .nullable()
-    //   .oneOf(getValues(salutations))
-    //   .required('Select an option for salutation.'),
-    // contactNumber: string()
-    //   .required('Enter contact number.')
-    //   .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
-    // barangay: string().required('Select an option for barangay'),
-    // cityMunicipality: string().required('Enter city/municipality.'),
-    // province: string().required('Enter province.'),
-    // residentYear: string().matches(/^\d{4}$/, 'Please enter year.'),
-    // gender: string()
-    //   .nullable()
-    //   .oneOf(getValues(genders))
-    //   .required('Select an option for gender.'),
-    // age: string()
-    //   .matches(/^$|\d{1,3}$/, 'Age must be a number.')
-    //   .required('Enter age.'),
-    // dateOfBirth: string().nullable().required('Select date of birth.'),
-    // placeOfBirth: string().required('Enter place of birth.'),
-    // civilStatus: string().required('Select an option for civil status.'),
-    // educationalBackground: mixed()
-    //   .nullable()
-    //   .oneOf(getValues(educationalBackgrounds))
-    //   .required('Enter or select educational background.'),
-    // numberOfChildren: string().matches(/^$|\d{1,2}$/, 'Must be a number.'),
-    // nationality: mixed()
-    //   .nullable()
-    //   .oneOf(getValues(nationalities))
-    //   .required('Enter or select nationality.'),
-    // personToNotify: string().required('Enter person to notify.'),
-    // ptnRelationship: string().required(
-    //   'Enter relationship with person to notify.'
-    // ),
-    // ptnContactNum: string()
-    //   .required('Enter contact number of person to notify.')
-    //   .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
-    // ptnAddress: string().required('Enter address of person to notify.'),
-    // mainFishingActivity: string().required(
-    //   'Select an option for main fishing activity.'
-    // ),
-    // orgMemberSince: string().matches(/^$|\d{4}$/, 'Please enter year.'),
+  const addVesselWithGearSchema = object().shape({
+    vessel: object().shape({
+      engineMake: string(),
+      grossTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+      homeport: string(),
+      horsepower: string(),
+      material: string().nullable().oneOf(materials),
+      name: string(),
+      netTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+      placeBuilt: string(),
+      registeredBreadth: string().matches(
+        /^[0-9]\d*(\.\d+)?$/,
+        'Enter a number.'
+      ),
+      registeredDepth: string().matches(
+        /^[0-9]\d*(\.\d+)?$/,
+        'Enter a number.'
+      ),
+      registeredLength: string().matches(
+        /^[0-9]\d*(\.\d+)?$/,
+        'Enter a number.'
+      ),
+      serialNumber: string(),
+      tonnageBreadth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+      tonnageDepth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+      tonnageLength: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+      type: string(),
+      yearBuilt: string().matches(/^$|\d{4}$/, 'Enter year.'),
+    }),
   });
+
+  const keys = Object.keys(gears) as GearClassification[];
+
+  const getClassification = (value: string) => {
+    return keys.filter((r) => (gears[r].includes(value) ? r : ''))[0];
+  };
+
+  const createGears = (gears: { [x: string]: boolean }) =>
+    Object.keys(gears)
+      .filter((k) => {
+        return gears[k] === true;
+      })
+      .map((type) => ({
+        classification: getClassification(type),
+        type: type,
+        fisherfolkId: parseInt(id!),
+      }));
+
+  const gearData: CreateGearInput[] = createGears(gearTypes);
 
   const {
     register,
@@ -253,56 +250,57 @@ export default function AddVesselWithGearForm({
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(addFisherfolkSchema),
+    resolver: yupResolver(addVesselWithGearSchema),
   });
 
-  const [createFisherfolk] = useMutation(CreateFisherfolkDocument, {
+  const [createVesselWithGear] = useMutation(CreateVessselWithGearDocument, {
     onCompleted: () => {
       handleClose();
       handleComplete();
       showSuccessAlert();
     },
-    onError: () => {
+    onError: (err) => {
+      console.log(err);
       handleClose();
       handleComplete();
       showFailAlert();
     },
   });
 
-  const onSubmit = handleSubmit((data) => {
-    // handleSubmitting();
-    const createFisherfolkInput: MutationCreateFisherfolkArgs = {
-      data: {
-        age: parseInt(data.age),
-        appellation: data.appellation,
-        barangay: data.barangay,
-        cityMunicipality: data.cityMunicipality,
-        civilStatus: data.civilStatus,
-        contactNum: data.contactNumber,
-        dateOfBirth: new Date(data.dateOfBirth).toISOString(),
-        educationalBackground: data.educationalBackground,
-        firstName: data.firstName,
-        gender: data.gender,
-        lastName: data.lastName,
-        middleName: data.middleName,
-        nationality: data.nationality,
-        personToNotify: data.personToNotify,
-        placeOfBirth: data.placeOfBirth,
-        province: data.province,
-        ptnAddress: data.ptnAddress,
-        ptnContactNum: data.ptnContactNum,
-        ptnRelationship: data.ptnRelationship,
-        religion: data.religion,
-        residentYear: parseInt(data.residentYear),
-        salutation: data.salutation,
-        numOfChildren: parseInt(data.numberOfChildren),
+  const onSubmit = handleSubmit(async (data) => {
+    handleSubmitting();
+    const createVesselWithGearInput: MutationCreateVesselWithGearArgs = {
+      vessel: {
+        engineMake: data.engineMake,
+        fisherfolkId: parseInt(id!),
+        grossTonnage: parseFloat(data.grossTonnage),
+        homeport: data.homeport,
+        horsepower: parseInt(data.horsepower),
+        material: data.material === undefined ? null : data.material,
+        mfvrNumber: 'ILO-0001', // should be auto-generated
+        name: data.name,
+        netTonnage: parseFloat(data.netTonnage),
+        placeBuilt: data.placeBuilt,
+        registeredBreadth: parseFloat(data.registeredBreadth),
+        registeredDepth: parseFloat(data.registeredDepth),
+        registeredLength: parseFloat(data.registeredLength),
+        serialNumber: data.serialNumber,
+        tonnageBreadth: parseFloat(data.tonnageBreadth),
+        tonnageDepth: parseFloat(data.tonnageDepth),
+        tonnageLength: parseFloat(data.tonnageLength),
+        type: data.type == undefined ? '' : data.type,
+        yearBuilt: parseInt(data.yearBuilt),
       },
+      gears: gearData,
     };
-    console.log(createFisherfolkInput.data);
 
-    // await createFisherfolk({
+    console.log(createVesselWithGearInput);
+
+    // currently not working
+    // await createVesselWithGear({
     //   variables: {
-    //     data: createFisherfolkInput.data,
+    //     gears: createVesselWithGearInput.gears,
+    //     vessel: createVesselWithGearInput.vessel,
     //   },
     // });
   });
@@ -344,14 +342,14 @@ export default function AddVesselWithGearForm({
               control={control}
               register={register}
               errors={errors}
-              radioOptions={registrationTypesGears}
+              radioOptions={registrationTypeForBoatsAndGears}
             />
           </Box>
 
           <Grid container spacing={-2} sx={{ ml: 1, mr: 1 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="Homeport"
+                name="homeport"
                 control={control}
                 label="Homeport"
                 placeholder=""
@@ -361,7 +359,7 @@ export default function AddVesselWithGearForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="NameofFishingVessel"
+                name="name"
                 control={control}
                 label="Name of Fishing Vessel"
                 placeholder=""
@@ -372,16 +370,14 @@ export default function AddVesselWithGearForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 2 }}>
             <Grid item sm={6} sx={{ mt: 2 }}>
-              <FormCreatableSelect
+              <FormInputSelect
+                name="material"
+                label="Select Material Used"
+                data={materials}
+                onSavedValue=""
                 control={control}
-                errors={errors}
-                isLoading={isLoading}
-                isDisabled={isLoading}
-                label=""
-                name="vesselType"
-                onCreateOption={handleCreateTypeVessel}
-                options={vesselTypeOptions}
                 register={register}
+                errors={errors}
               />
             </Grid>
             <Grid item sm={6} sx={{ mt: 2 }}>
@@ -391,16 +387,15 @@ export default function AddVesselWithGearForm({
                 isLoading={isLoading}
                 isDisabled={isLoading}
                 label=""
-                name="materialUsed"
-                // onChange={(newValue) => setNationality(newValue)}
+                name="type"
                 onCreateOption={handleCreateTypeVessel}
-                options={materialUsedOptions}
+                options={vesselTypes}
                 register={register}
               />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 2 }}>
-            <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
+          <Grid container spacing={-2} sx={{ ml: 1 }}>
+            <Grid item sm={6} sx={{ mt: 1 }}>
               <FormInputText
                 name="placeBuilt"
                 control={control}
@@ -410,7 +405,7 @@ export default function AddVesselWithGearForm({
                 errors={errors}
               />
             </Grid>
-            <Grid item sm={6} sx={{ mt: 1 }}>
+            <Grid item sm={6} sx={{ mt: 1, ml: 0 }}>
               <FormInputText
                 name="yearBuilt"
                 control={control}
@@ -427,9 +422,9 @@ export default function AddVesselWithGearForm({
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="registeredLength "
+                name="registeredLength"
                 control={control}
-                label="Registered Length "
+                label="Registered Length"
                 placeholder=""
                 register={register}
                 errors={errors}
@@ -437,31 +432,9 @@ export default function AddVesselWithGearForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="registeredBreadth "
+                name="registeredDepth"
                 control={control}
-                label="Registered Breadth "
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-            <Grid item sm={6}>
-              <FormInputText
-                name="Registeredepth "
-                control={control}
-                label="Registered Depth "
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6}>
-              <FormInputText
-                name="tonnageDepth "
-                control={control}
-                label="Tonnage Depth "
+                label="Registered Depth"
                 placeholder=""
                 register={register}
                 errors={errors}
@@ -471,9 +444,9 @@ export default function AddVesselWithGearForm({
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
-                name="grossTonnage "
+                name="registeredBreadth"
                 control={control}
-                label="Gross Tonnage "
+                label="Registered Breadth"
                 placeholder=""
                 register={register}
                 errors={errors}
@@ -481,7 +454,51 @@ export default function AddVesselWithGearForm({
             </Grid>
             <Grid item sm={6}>
               <FormInputText
-                name="netTonnage "
+                name="tonnageLength"
+                control={control}
+                label="Tonnage Length"
+                placeholder=""
+                register={register}
+                errors={errors}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+            <Grid item sm={6}>
+              <FormInputText
+                name="tonnageDepth"
+                control={control}
+                label="Tonnage Depth"
+                placeholder=""
+                register={register}
+                errors={errors}
+              />
+            </Grid>
+            <Grid item sm={6}>
+              <FormInputText
+                name="tonnageBreadth"
+                control={control}
+                label="Tonnage Breadth"
+                placeholder=""
+                register={register}
+                errors={errors}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+            <Grid item sm={6}>
+              <FormInputText
+                name="grossTonnage"
+                control={control}
+                label="Gross Tonnage"
+                placeholder=""
+                register={register}
+                errors={errors}
+              />
+            </Grid>
+            <Grid item sm={6}>
+              <FormInputText
+                name="netTonnage"
                 control={control}
                 label="Net Tonnage"
                 placeholder=""
@@ -496,9 +513,9 @@ export default function AddVesselWithGearForm({
           <Grid container spacing={-2} sx={{ ml: 1 }}>
             <Grid item sm={6} sx={{ mt: 2 }}>
               <FormInputText
-                name="engineMake  "
+                name="engineMake"
                 control={control}
-                label="Engine Make "
+                label="Engine Make"
                 placeholder=""
                 register={register}
                 errors={errors}
@@ -527,58 +544,14 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
           </Grid>
-          <Typography variant="h6" color="GrayText" mt={2} mb={-1} ml={2}>
+          <Typography variant="h6" color="GrayText" mt={2} mb={2} ml={2}>
             Classification of Fishing Gear
           </Typography>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
-            <Grid item sm={6}>
-              <FormInputText
-                name="personToNotify"
-                control={control}
-                label="Person to Notify"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6}>
-              <FormInputText
-                name="ptnRelationship"
-                control={control}
-                label="Relationship"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-            <Grid item sm={6}>
-              <FormInputText
-                name="ptnContactNum"
-                control={control}
-                label="Contact Number"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6}>
-              <FormInputText
-                name="ptnAddress"
-                control={control}
-                label="Address"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
           <Grid container spacing={-2} sx={{ ml: 2 }}>
             <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
               <Grid item sm={6}>
                 <Typography variant="subtitle1" color="GrayText" mt={-2} mb={3}>
-                  Hook and line
+                  Hook and Line
                 </Typography>
                 <Box
                   sx={{
@@ -598,15 +571,15 @@ export default function AddVesselWithGearForm({
                           name="SimpleHandLine"
                         />
                       }
-                      label="Simple-hand line"
+                      label="Simple-Hand Line"
                     />
                     <FormControlLabel
                       control={
                         <Checkbox
                           size="small"
-                          checked={MulipleHandLine}
+                          checked={MultipleHandLine}
                           onChange={handleOtherFishingActivityChange}
-                          name="MulipleHandLine"
+                          name="MultipleHandLine"
                         />
                       }
                       label="Multiple-Hand Line"
@@ -615,23 +588,23 @@ export default function AddVesselWithGearForm({
                       control={
                         <Checkbox
                           size="small"
-                          checked={Bottomsetlongline}
+                          checked={BottomSetLongLine}
                           onChange={handleOtherFishingActivityChange}
-                          name="Bottomsetlongline"
+                          name="BottomSetLongLine"
                         />
                       }
-                      label="Bottom set long line"
+                      label="Bottom Set Long Line"
                     />
                     <FormControlLabel
                       control={
                         <Checkbox
                           size="small"
-                          checked={DriftlongLine}
+                          checked={DriftLongLine}
                           onChange={handleOtherFishingActivityChange}
-                          name="DriftlongLine"
+                          name="DriftLongLine"
                         />
                       }
-                      label="Drift long Line"
+                      label="Drift Long Line"
                     />
                     <FormControlLabel
                       control={
@@ -675,12 +648,12 @@ export default function AddVesselWithGearForm({
                       control={
                         <Checkbox
                           size="small"
-                          checked={SurfaceSetGill}
+                          checked={SurfaceSetGillNet}
                           onChange={handleOtherFishingActivityChange}
-                          name="SurfaceSetGill"
+                          name="SurfaceSetGillNet"
                         />
                       }
-                      label="Surface Set Gill"
+                      label="Surface Set Gill Net"
                     />
                     <FormControlLabel
                       control={
@@ -697,31 +670,31 @@ export default function AddVesselWithGearForm({
                       control={
                         <Checkbox
                           size="small"
-                          checked={BottomsetGillNet}
+                          checked={BottomSetGillNet}
                           onChange={handleOtherFishingActivityChange}
-                          name="BottomsetGillNet"
+                          name="BottomSetGillNet"
                         />
                       }
-                      label="Bottom set Gill Net"
+                      label="Bottom Set Gill Net"
                     />
                     <FormControlLabel
                       control={
                         <Checkbox
                           size="small"
-                          checked={Trammelnet}
+                          checked={TrammelNet}
                           onChange={handleOtherFishingActivityChange}
-                          name="Trammelnet"
+                          name="TrammelNet"
                         />
                       }
-                      label="Trammel net"
+                      label="Trammel Net"
                     />
                     <FormControlLabel
                       control={
                         <Checkbox
                           size="small"
-                          checked={EncirclinGillNet}
+                          checked={EncirclingGillNet}
                           onChange={handleOtherFishingActivityChange}
-                          name="EncirclinGillNet"
+                          name="EncirclingGillNet"
                         />
                       }
                       label="Encircling Gill Net"
@@ -750,34 +723,34 @@ export default function AddVesselWithGearForm({
                       control={
                         <Checkbox
                           size="small"
-                          checked={CrabLiftNets}
+                          checked={CrabLiftNetsOrBintol}
                           onChange={handleOtherFishingActivityChange}
-                          name="CrabLiftNets"
+                          name="CrabLiftNetsOrBintol"
                         />
                       }
-                      label="Crab Lift Nets"
+                      label="Crab Lift Nets (Bimtol)"
                     />
                     <FormControlLabel
                       control={
                         <Checkbox
                           size="small"
-                          checked={FishLiftNets}
+                          checked={FishLiftNetsOrBagnet}
                           onChange={handleOtherFishingActivityChange}
-                          name="FishLiftNets"
+                          name="FishLiftNetsOrBagnet"
                         />
                       }
-                      label="Fish lift nets (basnig) / Bagnet"
+                      label="Fish Lift Nets (Basnig) / Bagnet"
                     />
                     <FormControlLabel
                       control={
                         <Checkbox
                           size="small"
-                          checked={NewLook}
+                          checked={NewLookOrZapara}
                           onChange={handleOtherFishingActivityChange}
-                          name="NewLook"
+                          name="NewLookOrZapara"
                         />
                       }
-                      label="“New look” or “Zapra”"
+                      label="“New Look” or “Zapra”"
                     />
                     <FormControlLabel
                       control={
@@ -806,7 +779,7 @@ export default function AddVesselWithGearForm({
               </Grid>
               <Grid item sm={6}>
                 <Typography variant="subtitle1" color="GrayText" mt={-2} mb={3}>
-                  Ports and Traps
+                  Pots and Traps
                 </Typography>
                 <Box
                   sx={{
@@ -843,45 +816,45 @@ export default function AddVesselWithGearForm({
                       control={
                         <Checkbox
                           size="small"
-                          checked={FykeNet}
+                          checked={FykeNetsOrFilterNets}
                           onChange={handleOtherFishingActivityChange}
-                          name="FykeNet"
+                          name="FykeNetsOrFilterNets"
                         />
                       }
-                      label="Fyke nets/filter nest"
+                      label="Fyke Nets/Filter Nets"
                     />
                     <FormControlLabel
                       control={
                         <Checkbox
                           size="small"
-                          checked={FishCorrals}
+                          checked={FishCorralsOrBaklad}
                           onChange={handleOtherFishingActivityChange}
-                          name="FishCorrals"
+                          name="FishCorralsOrBaklad"
                         />
                       }
-                      label="Fish corrals (Baklad)"
+                      label="Fish Corrals (Baklad)"
                     />
                     <FormControlLabel
                       control={
                         <Checkbox
                           size="small"
-                          checked={SetNet}
+                          checked={SetNetOrLambaklad}
                           onChange={handleOtherFishingActivityChange}
-                          name="SetNet"
+                          name="SetNetOrLambaklad"
                         />
                       }
-                      label="Set net (Lambaklad)"
+                      label="Set Net (Lambaklad)"
                     />
                     <FormControlLabel
                       control={
                         <Checkbox
                           size="small"
-                          checked={BarrierNet}
+                          checked={BarrierNetOrLikus}
                           onChange={handleOtherFishingActivityChange}
-                          name="BarrierNet"
+                          name="BarrierNetOrLikus"
                         />
                       }
-                      label="Barrier net (Likus)"
+                      label="Barrier Net (Likus)"
                     />
                     <FormControlLabel
                       control={
@@ -929,9 +902,9 @@ export default function AddVesselWithGearForm({
                       control={
                         <Checkbox
                           size="small"
-                          checked={FryDozerorGatherer}
+                          checked={FryDozerOrGatherer}
                           onChange={handleOtherFishingActivityChange}
-                          name="FryDozerorGatherer"
+                          name="FryDozerOrGatherer"
                         />
                       }
                       label="Fry Dozer or Gatherer"
@@ -1010,12 +983,12 @@ export default function AddVesselWithGearForm({
                       control={
                         <Checkbox
                           size="small"
-                          checked={SquidLurkingDevice}
+                          checked={OctopusOrSquidLuringDevice}
                           onChange={handleOtherFishingActivityChange}
-                          name="SquidLurkingDevice"
+                          name="OctopusOrSquidLuringDevice"
                         />
                       }
-                      label="Octopus/Squid Lurking Device"
+                      label="Octopus/Squid Luring Device"
                     />
                     <FormControlLabel
                       control={
@@ -1054,7 +1027,7 @@ export default function AddVesselWithGearForm({
                           name="CastNet"
                         />
                       }
-                      label="Cas tNet"
+                      label="Cast tNet"
                     />
                   </FormGroup>
                 </Box>
@@ -1094,7 +1067,6 @@ export default function AddVesselWithGearForm({
               onClick={(e) => {
                 handleSubmitForm(e);
               }}
-              // onClick={() => onSubmit}
               disabled={isSubmitting}
               sx={buttonSx}
             >
