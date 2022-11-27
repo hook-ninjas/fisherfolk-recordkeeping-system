@@ -90,9 +90,9 @@ export default function AddFisherfolkForm({
 
   const buttonSx = {
     ...(complete && {
-      bgcolor: '#336CFB',
+      bgcolor: '#22cd4c',
       '&:hover': {
-        bgcolor: '#336CFB',
+        bgcolor: '#22cd4c',
       },
     }),
     display: 'block',
@@ -116,7 +116,7 @@ export default function AddFisherfolkForm({
   const handleSubmitting = () => setIsSubmitting(true);
 
   const handleComplete = () => setComplete(true);
-  
+
   const handleOtherFishingActivityChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -248,6 +248,7 @@ export default function AddFisherfolkForm({
         residentYear: parseInt(data.residentYear),
         salutation: data.salutation,
         numOfChildren: parseInt(data.numberOfChildren),
+        livelihoods: []
       },
     };
     console.log(createFisherfolkInput.data);
