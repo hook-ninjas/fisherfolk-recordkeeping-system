@@ -87,7 +87,7 @@ export function FisherfolkTable() {
     <TableContainer component={Paper}>
       <Table
         stickyHeader
-        sx={{ minWidth: 650, p: 2.5, }}
+        sx={{ minWidth: 650, p: 2, }}
         size="small"
         aria-label="a dense table"
       >
