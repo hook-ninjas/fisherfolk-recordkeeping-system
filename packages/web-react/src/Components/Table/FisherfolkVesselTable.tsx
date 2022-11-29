@@ -94,7 +94,7 @@ export default function FisherfolkVesselTable() {
           data.vessels.map((vessel) => {
             const { createdAt, id, mfvrNumber, name, type, fisherfolk } =
               vessel;
-            const operator = `${fisherfolk.firstName} ${fisherfolk.middleName} ${fisherfolk.lastName} ${fisherfolk.appellation}`;
+            const operator = `${fisherfolk.lastName}, ${fisherfolk.firstName} ${fisherfolk.middleName} ${fisherfolk.appellation}`;
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={id}>
                 <TableCell>{id}</TableCell>

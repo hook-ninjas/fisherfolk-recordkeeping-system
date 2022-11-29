@@ -89,7 +89,7 @@ export default function FisherfolkGearTable() {
           {data &&
             data.gears.map((gear) => {
               const { classification, createdAt, id, type, fisherfolk } = gear;
-              const operator = `${fisherfolk.firstName} ${fisherfolk.middleName} ${fisherfolk.lastName} ${fisherfolk.appellation}`;
+              const operator = `${fisherfolk.lastName}, ${fisherfolk.firstName} ${fisherfolk.middleName} ${fisherfolk.appellation}`;
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={id}>
                   <TableCell>{id}</TableCell>
