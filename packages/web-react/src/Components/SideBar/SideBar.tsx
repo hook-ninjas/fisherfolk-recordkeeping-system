@@ -25,7 +25,7 @@ const SidebarItemList = (
     <Link to="/dashboard" className="nav-link">
       <ListItemButton>
         <ListItemIcon>
-          <GridViewOutlinedIcon />
+          <GridViewOutlinedIcon sx={{color: 'white'}}/>
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
       </ListItemButton>
@@ -33,7 +33,7 @@ const SidebarItemList = (
     <Link to="/fisherfolk-record" className="nav-link">
       <ListItemButton>
         <ListItemIcon>
-          <FolderCopyOutlinedIcon />
+          <FolderCopyOutlinedIcon sx={{ color: 'white' }} />
         </ListItemIcon>
         <ListItemText primary="Fisherfolk Record" />
       </ListItemButton>
@@ -49,6 +49,9 @@ const Drawer = styled(MuiDrawer, {
   '& .MuiDrawer-paper': {
     position: 'relative',
     width: drawerWidth,
+    background:
+      'radial-gradient(circle, rgba(40,193,129,.8) 40%, rgba(209,221,85,.7) 100%)',
+    color: 'white',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -90,7 +93,7 @@ function Sidebar() {
         }}
       >
         <IconButton onClick={toggleDrawer}>
-          <ChevronLeftIcon />
+          <ChevronLeftIcon sx={{ color: 'white' }} />
         </IconButton>
       </Toolbar>
       <Divider />
@@ -102,6 +105,7 @@ function Sidebar() {
             width: openDrawer ? 100 : 40,
             marginLeft: openDrawer ? 5 : 1.22,
             marginTop: 2,
+            borderRadius: 15
           }}
           src={OfficeLogo}
         />
@@ -111,10 +115,10 @@ function Sidebar() {
       </List>
       <ListItemButton
         onClick={handleClickOpen}
-        sx={{ position: 'absolute', bottom: 3 }}
+        sx={{ position: 'absolute', bottom: 3, width: '100%' }}
       >
         <ListItemIcon>
-          <LogoutIcon />
+          <LogoutIcon sx={{ color: 'white' }} />
         </ListItemIcon>
         <ListItemText primary="Logout" />
       </ListItemButton>

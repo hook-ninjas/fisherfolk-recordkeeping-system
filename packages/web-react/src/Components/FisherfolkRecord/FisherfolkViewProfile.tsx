@@ -17,7 +17,7 @@ import AddVesselWithGearForm from '../Forms/AddVesselWithGearForms';
 import { FisherfolkByIdDocument } from '../../graphql/generated';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import Loading from '../Loading/Loading';
+import { splitUpperCase } from '../../utils/utils';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -29,7 +29,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 interface InfoProps {
   title: string;
-  description: string | undefined;
+  description: string | number | undefined;
 }
 
 interface InfoTitleProps {
@@ -39,8 +39,8 @@ interface InfoTitleProps {
 function Info(input: InfoProps) {
   return (
     <Stack direction="row" spacing={0.3}>
-      <Typography variant="caption" color="#347fed">
-        {input.title}:
+      <Typography variant="caption" color="grey">
+        <b>{input.title}</b>:
       </Typography>
       <Typography variant="caption" justifyContent="flex-start">
         {input.description}
@@ -52,7 +52,7 @@ function Info(input: InfoProps) {
 function InfoTitle(input: InfoTitleProps) {
   return (
     <Stack direction="row">
-      <Typography variant="caption" marginTop={1}>
+      <Typography variant="caption" marginTop={1} color="rgb(22,181,61)">
         <b>{input.description}</b>
       </Typography>
     </Stack>
@@ -97,20 +97,8 @@ function BasicTabs() {
   const handleAddMemberOpen = () => setAddGearsBtn(true);
   const handleAddVesselGearClose = () => setAddGearsBtn(false);
   const [value, setValue] = useState(0);
-  <Box m={1}>
-    <Button
-      size="small"
-      variant="contained"
-      color="primary"
-      sx={{ height: 30, fontSize: 5, justifyContent: 'flex-end' }}
-    >
-      Add Boat/Gear
-    </Button>
-  </Box>;
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => setValue(newValue);
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -130,8 +118,7 @@ function BasicTabs() {
         <Box m={1}>
           <Button
             variant="contained"
-            color="primary"
-            sx={{ height: 30 }}
+            sx={{ height: 30, background: '#28c181' }}
             onClick={handleAddMemberOpen}
           >
             Add Boat/Gear
@@ -177,146 +164,165 @@ const FisherfolkViewProfile = () => {
   }
 
   if (loading) {
-    <Loading />;
+    return (
+      <Grid container spacing={0.8}>
+        <Grid item xs={12} sm={5} md={2.8}>
+          <Item>
+            <Stack direction="row" spacing={1}>
+              <Typography variant="h6"></Typography>
+            </Stack>
+            <Stack direction="row" spacing={3}>
+              <Typography variant="body2" width={200}>
+                ID:
+              </Typography>
+            </Stack>
+            <InfoTitle description="Personal Information" />
+            <Info title="Contact Number" description="" />
+            <Info title="Address" description="" />
+            <Info title="Gender" description="" />
+            <Info title="Age" description="" />
+            <Info title="Date of Birth" description="" />
+            <Info title="Place of Birth" description="" />
+            <Info title="Nationality" description="" />
+            <Info title="Civil Status" description="" />
+            <Info title="Religion" description="" />
+            <Info title="Educational Background" description="" />
+            <Info title="Number of Children" description="" />
+            <Info title="Resident Year" description="" />
+            <InfoTitle description="Person to Notify incase of Emergency" />
+            <Info title="Name" description="" />
+            <Info title="Relationship" description="" />
+            <Info title="Contact Number" description="" />
+            <Info title="Address" description="" />
+            <InfoTitle description="Livelihood" />
+            <Info title="Main Fishing Activity" description="" />
+            <Info title="Other Fishing Activity" description="" />
+            <Info title="Other Source of Income" description="" />
+            <InfoTitle description="Organization" />
+            <Info title="Name" description="" />
+            <Info title="Member since" description="" />
+            <Info title="Position" description="" />
+          </Item>
+        </Grid>
+        <Grid item xs={12} sm={7} md={9.2}>
+          <Item sx={{ p: 0 }}>
+            <Grid container>
+              <BasicTabs />
+            </Grid>
+          </Item>
+        </Grid>
+      </Grid>
+    );
   }
 
-  const handleUndefine = (str: string | undefined) =>
-    str == undefined ? '' : str;
+  const name = `${fisherfolk?.lastName}, ${fisherfolk?.firstName} ${fisherfolk?.middleName} ${fisherfolk?.appellation}`;
 
-  const name = `${handleUndefine(fisherfolk?.lastName)}, ${handleUndefine(
-    fisherfolk?.firstName
-  )} ${handleUndefine(fisherfolk?.middleName)} ${handleUndefine(
-    fisherfolk?.appellation
-  )}`;
-
-  const address = `${handleUndefine(fisherfolk?.barangay)} ${handleUndefine(
-    fisherfolk?.cityMunicipality
-  )}, ${handleUndefine(fisherfolk?.province)}`;
+  const address = `${fisherfolk?.barangay} ${fisherfolk?.cityMunicipality}, ${fisherfolk?.province}`;
 
   const mainFishingActivity =
     fisherfolk?.livelihoods == null
       ? ''
-      : fisherfolk?.livelihoods.filter((a) => a?.isMain)[0]?.type;
+      : splitUpperCase(
+        fisherfolk?.livelihoods.filter((a) => a?.isMain)[0]?.type
+      );
 
   const otherFishingActivity =
     fisherfolk?.livelihoods == null
       ? ''
-      : fisherfolk?.livelihoods.filter(
+      : splitUpperCase(
+        fisherfolk?.livelihoods.filter(
           (a) => a?.isMain === false && a.type !== 'Others'
-        )[0]?.type;
+        )[0]?.type
+      );
 
   const otherSourceOfIncome =
     fisherfolk?.livelihoods == null
       ? ''
-      : fisherfolk?.livelihoods.filter(
+      : splitUpperCase(
+        fisherfolk?.livelihoods.filter(
           (a) => a?.isMain === false && a.type === 'Others'
-        )[0]?.description;
+        )[0]?.description
+      );
 
   const orgName =
     fisherfolk?.organizations == null
       ? ''
-      : handleUndefine(fisherfolk?.organizations[0]?.organization.name);
+      : fisherfolk?.organizations[0]?.organization.name;
 
   const yearJoined =
     fisherfolk?.organizations == null
       ? ''
-      : handleUndefine(fisherfolk?.organizations[0]?.yearJoined.toString());
+      : fisherfolk?.organizations[0]?.yearJoined.toString();
 
   const position =
     fisherfolk?.organizations == null
       ? ''
-      : handleUndefine(fisherfolk?.organizations[0]?.position);
+      : fisherfolk?.organizations[0]?.position;
 
   return (
     <Grid container spacing={0.8}>
       <Grid item xs={12} sm={5} md={2.8}>
         <Item>
-          <Stack direction="row" spacing={1}>
-            <Typography variant="h6">{name}</Typography>
+          <Stack direction="row" spacing={1} mb={0.5}>
+            <Typography variant="body1">{name}</Typography>
           </Stack>
-          <Stack direction="row" spacing={3}>
+          <Stack direction="row" spacing={3} mb={1.5}>
             <Typography variant="body2" width={200}>
-              ID: {handleUndefine(id)}
+              ID: {id}
             </Typography>
             <FisherfolkStatusButton label={fisherfolk?.status} />
           </Stack>
           <InfoTitle description="Personal Information" />
-          <Info
-            title="Contact Number"
-            description={handleUndefine(fisherfolk?.contactNum)}
-          />
-          <Info title="Address" description={handleUndefine(address)} />
-          <Info
-            title="Gender"
-            description={handleUndefine(fisherfolk?.gender)}
-          />
-          <Info
-            title="Age"
-            description={handleUndefine(fisherfolk?.age.toString())}
-          />
+          <Info title="Contact Number" description={fisherfolk?.contactNum} />
+          <Info title="Address" description={address} />
+          <Info title="Gender" description={fisherfolk?.gender} />
+          <Info title="Age" description={fisherfolk?.age} />
           <Info
             title="Date of Birth"
-            description={new Date(
-              handleUndefine(fisherfolk?.dateOfBirth)
-            ).toLocaleDateString()}
+            description={new Date(fisherfolk?.dateOfBirth).toLocaleDateString()}
           />
-          <Info
-            title="Place of Birth"
-            description={handleUndefine(fisherfolk?.placeOfBirth)}
-          />
-          <Info
-            title="Nationality"
-            description={handleUndefine(fisherfolk?.nationality)}
-          />
+          <Info title="Place of Birth" description={fisherfolk?.placeOfBirth} />
+          <Info title="Nationality" description={fisherfolk?.nationality} />
           <Info
             title="Civil Status"
-            description={handleUndefine(fisherfolk?.civilStatus)}
+            description={splitUpperCase(fisherfolk?.civilStatus)}
           />
-          <Info
-            title="Religion"
-            description={handleUndefine(fisherfolk?.religion)}
-          />
+          <Info title="Religion" description={fisherfolk?.religion} />
           <Info
             title="Educational Background"
-            description={handleUndefine(fisherfolk?.educationalBackground)}
+            description={splitUpperCase(fisherfolk?.educationalBackground)}
           />
           <Info
             title="Number of Children"
-            description={handleUndefine(fisherfolk?.numOfChildren.toString())}
+            description={fisherfolk?.numOfChildren}
           />
           <Info
             title="Resident Year"
-            description={handleUndefine(fisherfolk?.residentYear.toString())}
+            description={fisherfolk?.residentYear}
           />
           <InfoTitle description="Person to Notify incase of Emergency" />
-          <Info
-            title="Name"
-            description={handleUndefine(fisherfolk?.personToNotify)}
-          />
+          <Info title="Name" description={fisherfolk?.personToNotify} />
           <Info
             title="Relationship"
-            description={handleUndefine(fisherfolk?.ptnRelationship)}
+            description={fisherfolk?.ptnRelationship}
           />
           <Info
             title="Contact Number"
-            description={handleUndefine(fisherfolk?.ptnContactNum)}
+            description={fisherfolk?.ptnContactNum}
           />
-          <Info
-            title="Address"
-            description={handleUndefine(fisherfolk?.ptnAddress)}
-          />
+          <Info title="Address" description={fisherfolk?.ptnAddress} />
           <InfoTitle description="Livelihood" />
           <Info
             title="Main Fishing Activity"
-            description={handleUndefine(mainFishingActivity)}
+            description={mainFishingActivity}
           />
           <Info
             title="Other Fishing Activity"
-            description={handleUndefine(otherFishingActivity)}
+            description={otherFishingActivity}
           />
           <Info
             title="Other Source of Income"
-            description={handleUndefine(otherSourceOfIncome)}
+            description={otherSourceOfIncome}
           />
           <InfoTitle description="Organization" />
           <Info title="Name" description={orgName} />

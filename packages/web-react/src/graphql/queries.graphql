@@ -62,6 +62,42 @@ query FisherfolkById($fisherfolkId: BigInt!) {
   }
 }
 
+query FisherfolkVessels($fisherfolkId: BigInt!, $start: Int!, $count: Int!) {
+  fisherfolkVessels(fisherfolkId: $fisherfolkId, start: $start, count: $count) {
+    createdAt
+    engineMake
+    grossTonnage
+    homeport
+    horsepower
+    id
+    material
+    mfvrNumber
+    name
+    netTonnage
+    placeBuilt
+    registeredBreadth
+    registeredDepth
+    registeredLength
+    serialNumber
+    tonnageBreadth
+    tonnageDepth
+    tonnageLength
+    type
+    yearBuilt
+  },
+  totalVessels(fisherfolkId: $fisherfolkId)
+}
+
+query FisherfolkGears($fisherfolkId: BigInt!, $start: Int!, $count: Int!) {
+  fisherfolkGears(fisherfolkId: $fisherfolkId, start: $start, count: $count) {
+    classification
+    createdAt
+    id
+    type
+  },
+  totalGears(fisherfolkId: $fisherfolkId)
+}
+
 query VesselQuery {
   vessels {
     id

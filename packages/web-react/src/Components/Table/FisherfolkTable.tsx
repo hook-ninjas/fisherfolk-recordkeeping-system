@@ -87,14 +87,17 @@ export function FisherfolkTable() {
     <TableContainer component={Paper}>
       <Table
         stickyHeader
-        sx={{ minWidth: 650 }}
+        sx={{ minWidth: 650, p: 2.5, }}
         size="small"
         aria-label="a dense table"
       >
         <TableHead>
           <TableRow>
             {columns.map((column) => (
-              <TableCell key={column.id} align={column.align}>
+              <TableCell
+                key={column.id}
+                align={column.align}
+              >
                 <b>{column.label}</b>
               </TableCell>
             ))}
@@ -154,7 +157,9 @@ export function FisherfolkTable() {
                         'aria-labelledby': 'basic-button',
                       }}
                     >
-                      <MenuItem onClick={handleViewProfile(fisherfolkId!)}>View</MenuItem>
+                      <MenuItem onClick={handleViewProfile(fisherfolkId!)}>
+                        View
+                      </MenuItem>
                       <MenuItem>Edit</MenuItem>
                       <MenuItem>Archive</MenuItem>
                     </Menu>
