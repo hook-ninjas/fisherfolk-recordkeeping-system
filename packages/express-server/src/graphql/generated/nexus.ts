@@ -389,6 +389,8 @@ export interface NexusGenFieldTypes {
     fisherfolks: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     gears: NexusGenRootTypes['Gear'][]; // [Gear!]!
     totalFisherfolk: number; // Int!
+    totalFisherfolkGears: number; // Int!
+    totalFisherfolkVessels: number; // Int!
     totalGears: number; // Int!
     totalVessels: number; // Int!
     vessels: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
@@ -554,6 +556,8 @@ export interface NexusGenFieldTypeNames {
     fisherfolks: 'Fisherfolk'
     gears: 'Gear'
     totalFisherfolk: 'Int'
+    totalFisherfolkGears: 'Int'
+    totalFisherfolkVessels: 'Int'
     totalGears: 'Int'
     totalVessels: 'Int'
     vessels: 'Vessel'
@@ -630,11 +634,19 @@ export interface NexusGenArgTypes {
       fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
       start: number; // Int!
     }
-    totalGears: { // args
+    gears: { // args
+      count: number; // Int!
+      start: number; // Int!
+    }
+    totalFisherfolkGears: { // args
       fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
     }
-    totalVessels: { // args
+    totalFisherfolkVessels: { // args
       fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    }
+    vessels: { // args
+      count: number; // Int!
+      start: number; // Int!
     }
   }
 }
