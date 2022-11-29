@@ -31,7 +31,9 @@ jobs:
         uses: olivernybroe/action-conflict-finder@v4.0
 
       - name: Install Dependencies & Bootstrap
-        run: npm install
+        run: |
+              npm ci
+              npx lerna bootstrap
 
       - name: Format express-server package
         run: npm run format:express-server
