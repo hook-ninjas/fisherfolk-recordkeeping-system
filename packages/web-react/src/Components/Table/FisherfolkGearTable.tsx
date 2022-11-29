@@ -10,18 +10,22 @@ import {
   TableBody,
   TableHead,
   TablePagination,
-  Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useQuery } from '@apollo/client';
-import { FisherfolkGearsDocument } from '../../graphql/generated';
-import { useParams } from 'react-router-dom';
+import { GearsQueryDocument } from '../../graphql/generated';
 import Loading from '../Loading/Loading';
 import { splitUpperCase } from '../../utils/utils';
 
 interface GearColumn {
-  id: 'id' | 'registrationDate' | 'classification' | 'name' | 'status';
+  id:
+    | 'id'
+    | 'registrationDate'
+    | 'classification'
+    | 'operator'
+    | 'name'
+    | 'status';
   label: string;
   align?: 'left';
 }
@@ -29,16 +33,15 @@ interface GearColumn {
 const gearColumns: readonly GearColumn[] = [
   { id: 'id', label: 'Id' },
   { id: 'registrationDate', label: 'Date Registered' },
+  { id: 'operator', label: 'Operator' },
   { id: 'classification', label: 'Classification' },
   { id: 'name', label: 'Name' },
   { id: 'status', label: 'Status' },
 ];
 
-export default function GearTable() {
-  const { id } = useParams();
-
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+export default function FisherfolkGearTable() {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event: unknown, newPage: number) =>
     setPage(newPage);
@@ -54,9 +57,8 @@ export default function GearTable() {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
     setDropDown(event.currentTarget);
 
-  const { loading, error, data } = useQuery(FisherfolkGearsDocument, {
+  const { loading, error, data } = useQuery(GearsQueryDocument, {
     variables: {
-      fisherfolkId: id,
       start: page * rowsPerPage,
       count: rowsPerPage,
     },
@@ -71,38 +73,9 @@ export default function GearTable() {
     <Loading />;
   }
 
-  if (data && data?.totalFisherfolkGears === 0) {
-    return (
-      <TableContainer component={Paper}>
-        <Table stickyHeader size="small" aria-label="gear-table">
-          <TableHead>
-            <TableRow>
-              {gearColumns.map((gear) => (
-                <TableCell key={gear.id} align={gear.align}>
-                  <b>{gear.label}</b>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableRow
-            sx={{
-              height: 415,
-              width: '100%',
-              color: 'grey',
-            }}
-          >
-            <TableCell align="center" colSpan={5}>
-              <Typography variant="h6">No data recorded.</Typography>
-            </TableCell>
-          </TableRow>
-        </Table>
-      </TableContainer>
-    );
-  }
-
   return (
     <TableContainer component={Paper}>
-      <Table stickyHeader size="small" aria-label="gear-table">
+      <Table stickyHeader size="small" aria-label="gear-table" sx={{ p: 2 }}>
         <TableHead>
           <TableRow>
             {gearColumns.map((gear) => (
@@ -114,14 +87,16 @@ export default function GearTable() {
         </TableHead>
         <TableBody>
           {data &&
-            data.fisherfolkGears.map((gear) => {
-              const { classification, createdAt, id, type } = gear;
+            data.gears.map((gear) => {
+              const { classification, createdAt, id, type, fisherfolk } = gear;
+              const operator = `${fisherfolk.firstName} ${fisherfolk.middleName} ${fisherfolk.lastName} ${fisherfolk.appellation}`;
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={id}>
                   <TableCell>{id}</TableCell>
                   <TableCell>
                     {new Date(createdAt).toLocaleDateString()}
                   </TableCell>
+                  <TableCell>{operator}</TableCell>
                   <TableCell>{splitUpperCase(classification)}</TableCell>
                   <TableCell>{type}</TableCell>
                   <TableCell></TableCell>
@@ -159,7 +134,7 @@ export default function GearTable() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 50, 100]}
         component="div"
-        count={data === undefined ? 0 : data.totalFisherfolkGears}
+        count={data === undefined ? 0 : data.totalGears}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
