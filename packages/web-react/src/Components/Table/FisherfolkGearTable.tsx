@@ -1,50 +1,45 @@
-import { useQuery } from '@apollo/client';
 import {
+  Paper,
+  TableRow,
+  TableCell,
+  TableContainer,
   Button,
   Menu,
   MenuItem,
-  Paper,
   Table,
   TableBody,
-  TableCell,
-  TableContainer,
   TableHead,
   TablePagination,
-  TableRow,
 } from '@mui/material';
 import React, { useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useQuery } from '@apollo/client';
+import { GearsQueryDocument } from '../../graphql/generated';
 import Loading from '../Loading/Loading';
-import { useNavigate } from 'react-router-dom';
-import { QueryFisherfolkByRangeDocument } from '../../graphql/generated';
-import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import { splitUpperCase } from '../../utils/utils';
 
-interface Column {
+interface GearColumn {
   id:
     | 'id'
     | 'registrationDate'
+    | 'classification'
+    | 'operator'
     | 'name'
-    | 'contactNum'
-    | 'livelihood'
-    | 'barangay'
     | 'status';
   label: string;
-  align?: 'right' | 'left';
+  align?: 'left';
 }
 
-const columns: readonly Column[] = [
+const gearColumns: readonly GearColumn[] = [
   { id: 'id', label: 'Id' },
-  { id: 'registrationDate', label: 'Date Registered', align: 'left' },
-  { id: 'name', label: 'Name', align: 'left' },
-  { id: 'contactNum', label: 'Contact Number', align: 'left' },
-  { id: 'livelihood', label: 'Livelihood', align: 'left' },
-  { id: 'barangay', label: 'Barangay', align: 'left' },
-  { id: 'status', label: 'Status', align: 'left' },
+  { id: 'registrationDate', label: 'Date Registered' },
+  { id: 'operator', label: 'Operator' },
+  { id: 'classification', label: 'Classification' },
+  { id: 'name', label: 'Name' },
+  { id: 'status', label: 'Status' },
 ];
 
-export function FisherfolkTable() {
-  const navigate = useNavigate();
+export default function FisherfolkGearTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -56,18 +51,13 @@ export function FisherfolkTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const [drop, setDropDown] = useState<null | HTMLElement>(null);
+  const [drop, setDropDown] = React.useState<null | HTMLElement>(null);
   const handleDismissDropdown = () => setDropDown(null);
-  const [fisherfolkId, setFisherfolkId] = useState();
+  const open = Boolean(drop);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
     setDropDown(event.currentTarget);
-  const open = Boolean(drop);
 
-  const handleViewProfile = (id: string) => () => {
-    navigate(`/fisherfolk-profile/${id}`);
-  };
-
-  const { loading, error, data } = useQuery(QueryFisherfolkByRangeDocument, {
+  const { loading, error, data } = useQuery(GearsQueryDocument, {
     variables: {
       start: page * rowsPerPage,
       count: rowsPerPage,
@@ -85,55 +75,31 @@ export function FisherfolkTable() {
 
   return (
     <TableContainer component={Paper}>
-      <Table
-        stickyHeader
-        sx={{ minWidth: 650, p: 2, }}
-        size="small"
-        aria-label="a dense table"
-      >
+      <Table stickyHeader size="small" aria-label="gear-table" sx={{ p: 2 }}>
         <TableHead>
           <TableRow>
-            {columns.map((column) => (
-              <TableCell
-                key={column.id}
-                align={column.align}
-              >
-                <b>{column.label}</b>
+            {gearColumns.map((gear) => (
+              <TableCell key={gear.id} align={gear.align}>
+                <b>{gear.label}</b>
               </TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
           {data &&
-            data.fisherfolkByRange.map((fisherfolk) => {
-              const {
-                id,
-                registrationDate,
-                barangay,
-                contactNum,
-                status,
-                firstName,
-                lastName,
-                middleName,
-                appellation,
-                livelihoods,
-              } = fisherfolk;
-              const name = `${lastName}, ${firstName} ${middleName} ${appellation}`;
-              const livelihood =
-                livelihoods == null ? '' : livelihoods[0]?.type;
+            data.gears.map((gear) => {
+              const { classification, createdAt, id, type, fisherfolk } = gear;
+              const operator = `${fisherfolk.lastName}, ${fisherfolk.firstName} ${fisherfolk.middleName} ${fisherfolk.appellation}`;
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={id}>
                   <TableCell>{id}</TableCell>
                   <TableCell>
-                    {new Date(registrationDate).toLocaleDateString()}
+                    {new Date(createdAt).toLocaleDateString()}
                   </TableCell>
-                  <TableCell>{name}</TableCell>
-                  <TableCell>{contactNum}</TableCell>
-                  <TableCell>{splitUpperCase(livelihood!)}</TableCell>
-                  <TableCell>{barangay}</TableCell>
-                  <TableCell>
-                    <FisherfolkStatusButton label={status} />
-                  </TableCell>
+                  <TableCell>{operator}</TableCell>
+                  <TableCell>{splitUpperCase(classification)}</TableCell>
+                  <TableCell>{type}</TableCell>
+                  <TableCell></TableCell>
                   <TableCell align="right">
                     <Button
                       id="basic-button"
@@ -142,7 +108,6 @@ export function FisherfolkTable() {
                       aria-expanded={open ? 'true' : undefined}
                       onClick={(e) => {
                         handleClick(e);
-                        setFisherfolkId(id);
                       }}
                       style={{ color: '#808080' }}
                     >
@@ -157,9 +122,6 @@ export function FisherfolkTable() {
                         'aria-labelledby': 'basic-button',
                       }}
                     >
-                      <MenuItem onClick={handleViewProfile(fisherfolkId!)}>
-                        View
-                      </MenuItem>
                       <MenuItem>Edit</MenuItem>
                       <MenuItem>Archive</MenuItem>
                     </Menu>
@@ -172,7 +134,7 @@ export function FisherfolkTable() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 50, 100]}
         component="div"
-        count={data === undefined ? 0 : data.totalFisherfolk}
+        count={data === undefined ? 0 : data.totalGears}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -181,5 +143,3 @@ export function FisherfolkTable() {
     </TableContainer>
   );
 }
-
-export default FisherfolkTable;

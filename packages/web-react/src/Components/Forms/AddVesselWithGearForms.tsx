@@ -1027,7 +1027,7 @@ export default function AddVesselWithGearForm({
                           name="CastNet"
                         />
                       }
-                      label="Cast tNet"
+                      label="Cast Net"
                     />
                   </FormGroup>
                 </Box>
