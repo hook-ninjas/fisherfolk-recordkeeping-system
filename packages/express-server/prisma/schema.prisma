@@ -175,19 +175,19 @@ model Vessel {
   name              String
   type              String
   placeBuilt        String     @map("place_built")
-  yearBuilt         Int        @map("year_built")
-  material          Material
-  registeredLength  Float      @map("registered_length")
-  registeredBreadth Float      @map("registered_breadth")
-  registeredDepth   Float      @map("registered_depth")
-  tonnageLength     Float      @map("tonnage_length")
-  tonnageBreadth    Float      @map("tonnage_breadth")
-  tonnageDepth      Float      @map("tonnage_depth")
-  grossTonnage      Float      @map("gross_tonnage")
-  netTonnage        Float      @map("net_tonnage")
+  yearBuilt         Int?       @map("year_built")
+  material          Material?
+  registeredLength  Float?     @map("registered_length")
+  registeredBreadth Float?     @map("registered_breadth")
+  registeredDepth   Float?     @map("registered_depth")
+  tonnageLength     Float?     @map("tonnage_length")
+  tonnageBreadth    Float?     @map("tonnage_breadth")
+  tonnageDepth      Float?     @map("tonnage_depth")
+  grossTonnage      Float?     @map("gross_tonnage")
+  netTonnage        Float?     @map("net_tonnage")
   engineMake        String     @map("engine_make")
   serialNumber      String     @map("serial_number")
-  horsepower        Float
+  horsepower        Float?
   images            Image[]
 
   createdAt DateTime @default(now()) @map("created_at")
