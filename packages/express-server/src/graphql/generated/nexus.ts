@@ -234,24 +234,24 @@ export interface NexusGenObjects {
   }
   Vessel: { // root type
     engineMake: string; // String!
-    grossTonnage: number; // Float!
+    grossTonnage?: number | null; // Float
     homeport: string; // String!
-    horsepower: number; // Float!
+    horsepower?: number | null; // Float
     id: NexusGenScalars['BigInt']; // BigInt!
-    material: NexusGenEnums['Material']; // Material!
+    material?: NexusGenEnums['Material'] | null; // Material
     mfvrNumber: string; // String!
     name: string; // String!
-    netTonnage: number; // Float!
+    netTonnage?: number | null; // Float
     placeBuilt: string; // String!
-    registeredBreadth: number; // Float!
-    registeredDepth: number; // Float!
-    registeredLength: number; // Float!
+    registeredBreadth?: number | null; // Float
+    registeredDepth?: number | null; // Float
+    registeredLength?: number | null; // Float
     serialNumber: string; // String!
-    tonnageBreadth: number; // Float!
-    tonnageDepth: number; // Float!
-    tonnageLength: number; // Float!
+    tonnageBreadth?: number | null; // Float
+    tonnageDepth?: number | null; // Float
+    tonnageLength?: number | null; // Float
     type: string; // String!
-    yearBuilt: number; // Int!
+    yearBuilt?: number | null; // Int
   }
 }
 
@@ -401,24 +401,24 @@ export interface NexusGenFieldTypes {
   Vessel: { // field return type
     engineMake: string; // String!
     fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
-    grossTonnage: number; // Float!
+    grossTonnage: number | null; // Float
     homeport: string; // String!
-    horsepower: number; // Float!
+    horsepower: number | null; // Float
     id: NexusGenScalars['BigInt']; // BigInt!
-    material: NexusGenEnums['Material']; // Material!
+    material: NexusGenEnums['Material'] | null; // Material
     mfvrNumber: string; // String!
     name: string; // String!
-    netTonnage: number; // Float!
+    netTonnage: number | null; // Float
     placeBuilt: string; // String!
-    registeredBreadth: number; // Float!
-    registeredDepth: number; // Float!
-    registeredLength: number; // Float!
+    registeredBreadth: number | null; // Float
+    registeredDepth: number | null; // Float
+    registeredLength: number | null; // Float
     serialNumber: string; // String!
-    tonnageBreadth: number; // Float!
-    tonnageDepth: number; // Float!
-    tonnageLength: number; // Float!
+    tonnageBreadth: number | null; // Float
+    tonnageDepth: number | null; // Float
+    tonnageLength: number | null; // Float
     type: string; // String!
-    yearBuilt: number; // Int!
+    yearBuilt: number | null; // Int
   }
 }
 
