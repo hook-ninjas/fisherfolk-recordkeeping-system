@@ -56,23 +56,23 @@ input CreateUserInput {
 input CreateVesselInput {
   engineMake: String!
   fisherfolkId: BigInt!
-  grossTonnage: Float!
+  grossTonnage: Float
   homeport: String!
-  horsepower: Float!
-  material: Material!
+  horsepower: Float
+  material: Material
   mfvrNumber: String!
   name: String!
-  netTonnage: Float!
+  netTonnage: Float
   placeBuilt: String!
-  registeredBreadth: Float!
-  registeredDepth: Float!
-  registeredLength: Float!
+  registeredBreadth: Float
+  registeredDepth: Float
+  registeredLength: Float
   serialNumber: String!
-  tonnageBreadth: Float!
-  tonnageDepth: Float!
-  tonnageLength: Float!
+  tonnageBreadth: Float
+  tonnageDepth: Float
+  tonnageLength: Float
   type: String!
-  yearBuilt: Int!
+  yearBuilt: Int
 }
 
 """
@@ -213,7 +213,9 @@ type Member {
 
 type Mutation {
   createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
+  createGears(gears: [CreateGearInput!]!): [Gear!]!
   createUser(data: CreateUserInput!): User!
+  createVessel(vessel: CreateVesselInput!): Vessel!
   createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
 }
 
@@ -310,8 +312,8 @@ type Vessel {
   tonnageDepth: Float
   tonnageLength: Float
   type: String!
-  yearBuilt: Int
   updatedAt: DateTime!
+  yearBuilt: Int
 }
 
 input livelihoodInput {
