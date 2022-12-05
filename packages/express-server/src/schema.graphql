@@ -293,25 +293,25 @@ type Vessel {
   createdAt: DateTime!
   engineMake: String!
   fisherfolk: Fisherfolk!
-  grossTonnage: Float!
+  grossTonnage: Float
   homeport: String!
-  horsepower: Float!
+  horsepower: Float
   id: BigInt!
-  material: Material!
+  material: Material
   mfvrNumber: String!
   name: String!
-  netTonnage: Float!
+  netTonnage: Float
   placeBuilt: String!
-  registeredBreadth: Float!
-  registeredDepth: Float!
-  registeredLength: Float!
+  registeredBreadth: Float
+  registeredDepth: Float
+  registeredLength: Float
   serialNumber: String!
-  tonnageBreadth: Float!
-  tonnageDepth: Float!
-  tonnageLength: Float!
+  tonnageBreadth: Float
+  tonnageDepth: Float
+  tonnageLength: Float
   type: String!
+  yearBuilt: Int
   updatedAt: DateTime!
-  yearBuilt: Int!
 }
 
 input livelihoodInput {

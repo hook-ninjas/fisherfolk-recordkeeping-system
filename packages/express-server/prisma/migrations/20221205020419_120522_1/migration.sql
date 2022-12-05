@@ -70,12 +70,22 @@ CREATE TABLE "fisherfolks" (
 CREATE TABLE "organizations" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "organizations_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "members" (
+    "fisherfolk_id" BIGINT NOT NULL,
+    "organization_id" INTEGER NOT NULL,
     "year_joined" INTEGER NOT NULL,
     "position" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "organizations_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "members_pkey" PRIMARY KEY ("fisherfolk_id","organization_id")
 );
 
 -- CreateTable
@@ -155,19 +165,19 @@ CREATE TABLE "vessels" (
     "name" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "place_built" TEXT NOT NULL,
-    "year_built" INTEGER NOT NULL,
-    "material" "material" NOT NULL,
-    "registered_length" DOUBLE PRECISION NOT NULL,
-    "registered_breadth" DOUBLE PRECISION NOT NULL,
-    "registered_depth" DOUBLE PRECISION NOT NULL,
-    "tonnage_length" DOUBLE PRECISION NOT NULL,
-    "tonnage_breadth" DOUBLE PRECISION NOT NULL,
-    "tonnage_depth" DOUBLE PRECISION NOT NULL,
-    "gross_tonnage" DOUBLE PRECISION NOT NULL,
-    "net_tonnage" DOUBLE PRECISION NOT NULL,
+    "year_built" INTEGER,
+    "material" "material",
+    "registered_length" DOUBLE PRECISION,
+    "registered_breadth" DOUBLE PRECISION,
+    "registered_depth" DOUBLE PRECISION,
+    "tonnage_length" DOUBLE PRECISION,
+    "tonnage_breadth" DOUBLE PRECISION,
+    "tonnage_depth" DOUBLE PRECISION,
+    "gross_tonnage" DOUBLE PRECISION,
+    "net_tonnage" DOUBLE PRECISION,
     "engine_make" TEXT NOT NULL,
     "serial_number" TEXT NOT NULL,
-    "horsepower" DOUBLE PRECISION NOT NULL,
+    "horsepower" DOUBLE PRECISION,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -207,23 +217,20 @@ CREATE TABLE "image" (
     CONSTRAINT "image_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "_FisherfolkToOrganization" (
-    "A" BIGINT NOT NULL,
-    "B" INTEGER NOT NULL
-);
-
 -- CreateIndex
 CREATE UNIQUE INDEX "users_username_key" ON "users"("username");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "organizations_name_key" ON "organizations"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "permits_fisherfolk_id_key" ON "permits"("fisherfolk_id");
 
--- CreateIndex
-CREATE UNIQUE INDEX "_FisherfolkToOrganization_AB_unique" ON "_FisherfolkToOrganization"("A", "B");
+-- AddForeignKey
+ALTER TABLE "members" ADD CONSTRAINT "members_fisherfolk_id_fkey" FOREIGN KEY ("fisherfolk_id") REFERENCES "fisherfolks"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
--- CreateIndex
-CREATE INDEX "_FisherfolkToOrganization_B_index" ON "_FisherfolkToOrganization"("B");
+-- AddForeignKey
+ALTER TABLE "members" ADD CONSTRAINT "members_organization_id_fkey" FOREIGN KEY ("organization_id") REFERENCES "organizations"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "queue" ADD CONSTRAINT "queue_fisherfolk_id_fkey" FOREIGN KEY ("fisherfolk_id") REFERENCES "fisherfolks"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -260,9 +267,3 @@ ALTER TABLE "image" ADD CONSTRAINT "image_gear_id_fkey" FOREIGN KEY ("gear_id") 
 
 -- AddForeignKey
 ALTER TABLE "image" ADD CONSTRAINT "image_vessel_id_fkey" FOREIGN KEY ("vessel_id") REFERENCES "vessels"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_FisherfolkToOrganization" ADD CONSTRAINT "_FisherfolkToOrganization_A_fkey" FOREIGN KEY ("A") REFERENCES "fisherfolks"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_FisherfolkToOrganization" ADD CONSTRAINT "_FisherfolkToOrganization_B_fkey" FOREIGN KEY ("B") REFERENCES "organizations"("id") ON DELETE CASCADE ON UPDATE CASCADE;
