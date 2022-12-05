@@ -24,7 +24,8 @@ import { useForm } from 'react-hook-form';
 import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
-  CreateGearInput,
+  CreateGearsDocument,
+  CreateVesselDocument,
   CreateVessselWithGearDocument,
   GearClassification,
   MutationCreateVesselWithGearArgs,
@@ -200,6 +201,7 @@ export default function AddVesselWithGearForm({
       grossTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
       homeport: string(),
       horsepower: string(),
+      mfvrNumber: string(),
       material: string().nullable().oneOf(materials),
       name: string(),
       netTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
@@ -231,7 +233,7 @@ export default function AddVesselWithGearForm({
     return keys.filter((r) => (gears[r].includes(value) ? r : ''))[0];
   };
 
-  const createGears = (gears: { [x: string]: boolean }) =>
+  const generateGears = (gears: { [x: string]: boolean }) =>
     Object.keys(gears)
       .filter((k) => {
         return gears[k] === true;
@@ -241,8 +243,6 @@ export default function AddVesselWithGearForm({
         type: type,
         fisherfolkId: parseInt(id!),
       }));
-
-  const gearData: CreateGearInput[] = createGears(gearTypes);
 
   const {
     register,
@@ -277,7 +277,7 @@ export default function AddVesselWithGearForm({
         homeport: data.homeport,
         horsepower: parseInt(data.horsepower),
         material: data.material === undefined ? null : data.material,
-        mfvrNumber: 'ILO-0001', // should be auto-generated
+        mfvrNumber: data.mfvrNumber,
         name: data.name,
         netTonnage: parseFloat(data.netTonnage),
         placeBuilt: data.placeBuilt,
@@ -291,7 +291,7 @@ export default function AddVesselWithGearForm({
         type: data.type == undefined ? '' : data.type,
         yearBuilt: parseInt(data.yearBuilt),
       },
-      gears: gearData,
+      gears: generateGears(gearTypes),
     };
 
     console.log(createVesselWithGearInput);
@@ -345,8 +345,20 @@ export default function AddVesselWithGearForm({
               radioOptions={registrationTypeForBoatsAndGears}
             />
           </Box>
-
-          <Grid container spacing={-2} sx={{ ml: 1, mr: 1 }}>
+          
+          <Grid container spacing={-2} sx={{ ml: 1, mr: 1, mt: 1 }}>
+            <Grid item sm={6}>
+              <FormInputText
+                name="mfvrNumber"
+                control={control}
+                label="MFVR Number"
+                placeholder=""
+                register={register}
+                errors={errors}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={-2} sx={{ ml: 1, mr: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
                 name="homeport"
@@ -394,7 +406,7 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1 }}>
+          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6} sx={{ mt: 1 }}>
               <FormInputText
                 name="placeBuilt"
@@ -416,7 +428,7 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
           </Grid>
-          <Typography variant="body1" color="GrayText" mb={2} ml={2}>
+          <Typography variant="body1" color="GrayText" mb={2} ml={2} mt={2}>
             Fishing Vessel Dimensions and Tonnages (Meters)
           </Typography>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
@@ -507,11 +519,11 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
           </Grid>
-          <Typography variant="body1" color="GrayText" mb={1} ml={2} mt={2}>
+          <Typography variant="body1" color="GrayText" ml={2} mt={2} mb={2}>
             Particulars of Propulsion System
           </Typography>
           <Grid container spacing={-2} sx={{ ml: 1 }}>
-            <Grid item sm={6} sx={{ mt: 2 }}>
+            <Grid item sm={6}>
               <FormInputText
                 name="engineMake"
                 control={control}
@@ -521,7 +533,7 @@ export default function AddVesselWithGearForm({
                 errors={errors}
               />
             </Grid>
-            <Grid item sm={6} sx={{ mt: 2 }}>
+            <Grid item sm={6}>
               <FormInputText
                 name="serialNumber"
                 control={control}
@@ -728,7 +740,7 @@ export default function AddVesselWithGearForm({
                           name="CrabLiftNetsOrBintol"
                         />
                       }
-                      label="Crab Lift Nets (Bimtol)"
+                      label="Crab Lift Nets (Bintol)"
                     />
                     <FormControlLabel
                       control={
