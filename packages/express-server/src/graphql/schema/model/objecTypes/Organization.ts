@@ -1,4 +1,4 @@
-import { list, objectType } from 'nexus';
+import { objectType } from 'nexus';
 import { Context } from '../../../../types/types';
 import { nullableList } from '../../../../utils/utils';
 import Member from './Member';

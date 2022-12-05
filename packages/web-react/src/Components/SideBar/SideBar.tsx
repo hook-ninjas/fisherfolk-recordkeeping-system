@@ -18,6 +18,8 @@ import MuiDrawer from '@mui/material/Drawer';
 import CustomizedDialogs from '../ConfirmationDialog/ConfirmationDialog';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import LogoutIcon from '@mui/icons-material/Logout';
+import SailingOutlinedIcon from '@mui/icons-material/SailingOutlined';
+import PhishingRoundedIcon from '@mui/icons-material/PhishingRounded';
 import OfficeLogo from '../../Assets/city-agri-logo.jpg';
 
 const SidebarItemList = (
@@ -25,7 +27,7 @@ const SidebarItemList = (
     <Link to="/dashboard" className="nav-link">
       <ListItemButton>
         <ListItemIcon>
-          <GridViewOutlinedIcon />
+          <GridViewOutlinedIcon sx={{color: 'white'}}/>
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
       </ListItemButton>
@@ -33,9 +35,25 @@ const SidebarItemList = (
     <Link to="/fisherfolk-record" className="nav-link">
       <ListItemButton>
         <ListItemIcon>
-          <FolderCopyOutlinedIcon />
+          <FolderCopyOutlinedIcon sx={{ color: 'white' }} />
         </ListItemIcon>
         <ListItemText primary="Fisherfolk Record" />
+      </ListItemButton>
+    </Link>
+    <Link to="/fisherfolk-boats" className="nav-link">
+      <ListItemButton>
+        <ListItemIcon>
+          <SailingOutlinedIcon sx={{ color: 'white' }} />
+        </ListItemIcon>
+        <ListItemText primary="Boat Record" />
+      </ListItemButton>
+    </Link>
+    <Link to="/fisherfolk-gears" className="nav-link">
+      <ListItemButton>
+        <ListItemIcon>
+          <PhishingRoundedIcon sx={{ color: 'white' }} />
+        </ListItemIcon>
+        <ListItemText primary="Gear Record" />
       </ListItemButton>
     </Link>
   </>
@@ -49,6 +67,9 @@ const Drawer = styled(MuiDrawer, {
   '& .MuiDrawer-paper': {
     position: 'relative',
     width: drawerWidth,
+    background:
+      'radial-gradient(circle, rgba(40,193,129,.8) 40%, rgba(209,221,85,.7) 100%)',
+    color: 'white',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -90,7 +111,7 @@ function Sidebar() {
         }}
       >
         <IconButton onClick={toggleDrawer}>
-          <ChevronLeftIcon />
+          <ChevronLeftIcon sx={{ color: 'white' }} />
         </IconButton>
       </Toolbar>
       <Divider />
@@ -102,6 +123,7 @@ function Sidebar() {
             width: openDrawer ? 100 : 40,
             marginLeft: openDrawer ? 5 : 1.22,
             marginTop: 2,
+            borderRadius: 15
           }}
           src={OfficeLogo}
         />
@@ -111,10 +133,10 @@ function Sidebar() {
       </List>
       <ListItemButton
         onClick={handleClickOpen}
-        sx={{ position: 'absolute', bottom: 3 }}
+        sx={{ position: 'absolute', bottom: 3, width: '100%' }}
       >
         <ListItemIcon>
-          <LogoutIcon />
+          <LogoutIcon sx={{ color: 'white' }} />
         </ListItemIcon>
         <ListItemText primary="Logout" />
       </ListItemButton>

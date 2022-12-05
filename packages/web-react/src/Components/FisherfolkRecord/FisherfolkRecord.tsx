@@ -1,37 +1,43 @@
 import React, { useState } from 'react';
-import { Box, Button, Grid, Paper } from '@mui/material';
+import { Box, Button, Grid, Paper, Typography } from '@mui/material';
 import AddFisherfolkForm from '../Forms/AddMemberForm';
 import FisherfolkTable from '../Table/FisherfolkTable';
 
 const FisherfolkRecord = () => {
-  const [addMemberBtn, setAddMemberBtn] = useState(false);
-  const handleAddMemberOpen = () => setAddMemberBtn(true);
-  const handleAddMemberClose = () => setAddMemberBtn(false);
+  const [addFisherfolkBtn, setFisherfolkBtn] = useState(false);
+  const handleAddFisherfolkOpen = () => setFisherfolkBtn(true);
+  const handleAddFisherfolkClose = () => setFisherfolkBtn(false);
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Paper
           sx={{
-            p: 0,
+            p: 2,
             display: 'flex',
             flexDirection: 'column',
             boxShadow: 2,
           }}
         >
-          <Box m={1} display="flex" justifyContent="flex-end">
+          <Box m={1} display="flex" justifyContent="space-between">
+            <Typography variant="h5">Fisherfolk Record</Typography>
             <Button
               variant="contained"
-              color="primary"
-              sx={{ height: 30 }}
-              onClick={handleAddMemberOpen}
+              sx={{
+                height: 30,
+                background: '#28c181',
+                fontSize: 12,
+                fontWeight: '600',
+                color: 'whitesmoke'
+              }}
+              onClick={handleAddFisherfolkOpen}
             >
-              Add Member
+              Add Fisherfolk
             </Button>
-            {addMemberBtn && (
+            {addFisherfolkBtn && (
               <AddFisherfolkForm
-                handleClose={handleAddMemberClose}
-                open={addMemberBtn}
+                handleClose={handleAddFisherfolkClose}
+                open={addFisherfolkBtn}
               />
             )}
           </Box>

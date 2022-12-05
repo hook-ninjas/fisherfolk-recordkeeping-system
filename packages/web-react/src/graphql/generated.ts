@@ -98,6 +98,7 @@ export type ResolversTypes = {
   Member: ResolverTypeWrapper<Member>;
   Mutation: ResolverTypeWrapper<{}>;
   Organization: ResolverTypeWrapper<Organization>;
+  OrganizationInput: OrganizationInput;
   Permit: ResolverTypeWrapper<Permit>;
   Query: ResolverTypeWrapper<{}>;
   Queue: ResolverTypeWrapper<Queue>;
@@ -106,6 +107,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   User: ResolverTypeWrapper<User>;
   Vessel: ResolverTypeWrapper<Vessel>;
+  livelihoodInput: LivelihoodInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -127,12 +129,14 @@ export type ResolversParentTypes = {
   Member: Member;
   Mutation: {};
   Organization: Organization;
+  OrganizationInput: OrganizationInput;
   Permit: Permit;
   Query: {};
   Queue: Queue;
   String: Scalars['String'];
   User: User;
   Vessel: Vessel;
+  livelihoodInput: LivelihoodInput;
 };
 
 export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
@@ -185,9 +189,11 @@ export type FisherfolkResolvers<ContextType = any, ParentType extends ResolversP
 
 export type GearResolvers<ContextType = any, ParentType extends ResolversParentTypes['Gear'] = ResolversParentTypes['Gear']> = {
   classification?: Resolver<ResolversTypes['GearClassification'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   fisherfolk?: Resolver<ResolversTypes['Fisherfolk'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -272,10 +278,16 @@ export type PermitResolvers<ContextType = any, ParentType extends ResolversParen
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   fisherfolk?: Resolver<ResolversTypes['Fisherfolk'], ParentType, ContextType, RequireFields<QueryFisherfolkArgs, 'id'>>;
   fisherfolkByRange?: Resolver<Array<ResolversTypes['Fisherfolk']>, ParentType, ContextType, RequireFields<QueryFisherfolkByRangeArgs, 'count' | 'start'>>;
+  fisherfolkGears?: Resolver<Array<ResolversTypes['Gear']>, ParentType, ContextType, RequireFields<QueryFisherfolkGearsArgs, 'count' | 'fisherfolkId' | 'start'>>;
+  fisherfolkVessels?: Resolver<Array<ResolversTypes['Vessel']>, ParentType, ContextType, RequireFields<QueryFisherfolkVesselsArgs, 'count' | 'fisherfolkId' | 'start'>>;
   fisherfolks?: Resolver<Array<ResolversTypes['Fisherfolk']>, ParentType, ContextType>;
-  gears?: Resolver<Array<ResolversTypes['Gear']>, ParentType, ContextType>;
+  gears?: Resolver<Array<ResolversTypes['Gear']>, ParentType, ContextType, RequireFields<QueryGearsArgs, 'count' | 'start'>>;
   totalFisherfolk?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  vessels?: Resolver<Array<ResolversTypes['Vessel']>, ParentType, ContextType>;
+  totalFisherfolkGears?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<QueryTotalFisherfolkGearsArgs, 'fisherfolkId'>>;
+  totalFisherfolkVessels?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<QueryTotalFisherfolkVesselsArgs, 'fisherfolkId'>>;
+  totalGears?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalVessels?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  vessels?: Resolver<Array<ResolversTypes['Vessel']>, ParentType, ContextType, RequireFields<QueryVesselsArgs, 'count' | 'start'>>;
 };
 
 export type QueueResolvers<ContextType = any, ParentType extends ResolversParentTypes['Queue'] = ResolversParentTypes['Queue']> = {
@@ -298,6 +310,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type VesselResolvers<ContextType = any, ParentType extends ResolversParentTypes['Vessel'] = ResolversParentTypes['Vessel']> = {
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   engineMake?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   fisherfolk?: Resolver<ResolversTypes['Fisherfolk'], ParentType, ContextType>;
   grossTonnage?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
@@ -317,6 +330,7 @@ export type VesselResolvers<ContextType = any, ParentType extends ResolversParen
   tonnageDepth?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   tonnageLength?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   yearBuilt?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -370,9 +384,11 @@ export type CreateFisherfolkInput = {
   firstName: Scalars['String'];
   gender: Gender;
   lastName: Scalars['String'];
+  livelihoods: Array<LivelihoodInput>;
   middleName: Scalars['String'];
   nationality: Scalars['String'];
   numOfChildren: Scalars['Int'];
+  organization?: InputMaybe<OrganizationInput>;
   personToNotify: Scalars['String'];
   placeOfBirth: Scalars['String'];
   province: Scalars['String'];
@@ -474,9 +490,11 @@ export enum FisherfolkStatus {
 export type Gear = {
   __typename?: 'Gear';
   classification: GearClassification;
+  createdAt: Scalars['DateTime'];
   fisherfolk: Fisherfolk;
   id: Scalars['BigInt'];
   type: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export enum GearClassification {
@@ -584,6 +602,12 @@ export type Organization = {
   updatedAt: Scalars['DateTime'];
 };
 
+export type OrganizationInput = {
+  name: Scalars['String'];
+  position: Scalars['String'];
+  yearJoined: Scalars['Int'];
+};
+
 export type Permit = {
   __typename?: 'Permit';
   certificateNumber: Scalars['String'];
@@ -601,9 +625,15 @@ export type Query = {
   __typename?: 'Query';
   fisherfolk: Fisherfolk;
   fisherfolkByRange: Array<Fisherfolk>;
+  fisherfolkGears: Array<Gear>;
+  fisherfolkVessels: Array<Vessel>;
   fisherfolks: Array<Fisherfolk>;
   gears: Array<Gear>;
   totalFisherfolk: Scalars['Int'];
+  totalFisherfolkGears: Scalars['Int'];
+  totalFisherfolkVessels: Scalars['Int'];
+  totalGears: Scalars['Int'];
+  totalVessels: Scalars['Int'];
   vessels: Array<Vessel>;
 };
 
@@ -614,6 +644,42 @@ export type QueryFisherfolkArgs = {
 
 
 export type QueryFisherfolkByRangeArgs = {
+  count: Scalars['Int'];
+  start: Scalars['Int'];
+};
+
+
+export type QueryFisherfolkGearsArgs = {
+  count: Scalars['Int'];
+  fisherfolkId: Scalars['BigInt'];
+  start: Scalars['Int'];
+};
+
+
+export type QueryFisherfolkVesselsArgs = {
+  count: Scalars['Int'];
+  fisherfolkId: Scalars['BigInt'];
+  start: Scalars['Int'];
+};
+
+
+export type QueryGearsArgs = {
+  count: Scalars['Int'];
+  start: Scalars['Int'];
+};
+
+
+export type QueryTotalFisherfolkGearsArgs = {
+  fisherfolkId: Scalars['BigInt'];
+};
+
+
+export type QueryTotalFisherfolkVesselsArgs = {
+  fisherfolkId: Scalars['BigInt'];
+};
+
+
+export type QueryVesselsArgs = {
   count: Scalars['Int'];
   start: Scalars['Int'];
 };
@@ -653,6 +719,7 @@ export type User = {
 
 export type Vessel = {
   __typename?: 'Vessel';
+  createdAt: Scalars['DateTime'];
   engineMake: Scalars['String'];
   fisherfolk: Fisherfolk;
   grossTonnage: Scalars['Float'];
@@ -672,7 +739,14 @@ export type Vessel = {
   tonnageDepth: Scalars['Float'];
   tonnageLength: Scalars['Float'];
   type: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
   yearBuilt: Scalars['Int'];
+};
+
+export type LivelihoodInput = {
+  description: Scalars['String'];
+  isMain: Scalars['Boolean'];
+  type: SourceOfIncome;
 };
 
 export type CreateFisherfolkMutationVariables = Exact<{
@@ -705,20 +779,46 @@ export type FisherfolkByIdQueryVariables = Exact<{
 
 export type FisherfolkByIdQuery = { __typename?: 'Query', fisherfolk: { __typename?: 'Fisherfolk', age: number, appellation: string, barangay: string, cityMunicipality: string, civilStatus: CivilStatus, contactNum: string, dateOfBirth: any, educationalBackground: EducationalBackground, firstName: string, gender: Gender, id: any, lastName: string, middleName: string, nationality: string, numOfChildren: number, personToNotify: string, placeOfBirth: string, province: string, ptnAddress: string, ptnContactNum: string, ptnRelationship: string, registrationDate: any, religion: string, residentYear: number, salutation: Salutation, status: FisherfolkStatus, livelihoods?: Array<{ __typename?: 'Livelihood', isMain: boolean, type: SourceOfIncome, description: string } | null> | null, organizations?: Array<{ __typename?: 'Member', yearJoined: number, position: string, organization: { __typename?: 'Organization', name: string } } | null> | null } };
 
-export type VesselQueryQueryVariables = Exact<{ [key: string]: never; }>;
+export type FisherfolkVesselsQueryVariables = Exact<{
+  fisherfolkId: Scalars['BigInt'];
+  start: Scalars['Int'];
+  count: Scalars['Int'];
+}>;
 
 
-export type VesselQueryQuery = { __typename?: 'Query', vessels: Array<{ __typename?: 'Vessel', id: any, name: string, serialNumber: string, type: string, yearBuilt: number, fisherfolk: { __typename?: 'Fisherfolk', lastName: string, firstName: string, middleName: string } }> };
+export type FisherfolkVesselsQuery = { __typename?: 'Query', totalFisherfolkVessels: number, fisherfolkVessels: Array<{ __typename?: 'Vessel', createdAt: any, engineMake: string, grossTonnage: number, homeport: string, horsepower: number, id: any, material: Material, mfvrNumber: string, name: string, netTonnage: number, placeBuilt: string, registeredBreadth: number, registeredDepth: number, registeredLength: number, serialNumber: string, tonnageBreadth: number, tonnageDepth: number, tonnageLength: number, type: string, yearBuilt: number }> };
 
-export type GearsQueryQueryVariables = Exact<{ [key: string]: never; }>;
+export type FisherfolkGearsQueryVariables = Exact<{
+  fisherfolkId: Scalars['BigInt'];
+  start: Scalars['Int'];
+  count: Scalars['Int'];
+}>;
 
 
-export type GearsQueryQuery = { __typename?: 'Query', gears: Array<{ __typename?: 'Gear', id: any, classification: GearClassification, type: string, fisherfolk: { __typename?: 'Fisherfolk', lastName: string, firstName: string, middleName: string } }> };
+export type FisherfolkGearsQuery = { __typename?: 'Query', totalFisherfolkGears: number, fisherfolkGears: Array<{ __typename?: 'Gear', classification: GearClassification, createdAt: any, id: any, type: string }> };
+
+export type VesselQueryQueryVariables = Exact<{
+  start: Scalars['Int'];
+  count: Scalars['Int'];
+}>;
+
+
+export type VesselQueryQuery = { __typename?: 'Query', totalVessels: number, vessels: Array<{ __typename?: 'Vessel', id: any, mfvrNumber: string, createdAt: any, name: string, type: string, fisherfolk: { __typename?: 'Fisherfolk', lastName: string, firstName: string, middleName: string, appellation: string } }> };
+
+export type GearsQueryQueryVariables = Exact<{
+  start: Scalars['Int'];
+  count: Scalars['Int'];
+}>;
+
+
+export type GearsQueryQuery = { __typename?: 'Query', totalGears: number, gears: Array<{ __typename?: 'Gear', id: any, classification: GearClassification, createdAt: any, type: string, fisherfolk: { __typename?: 'Fisherfolk', lastName: string, firstName: string, middleName: string, appellation: string } }> };
 
 
 export const CreateFisherfolkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateFisherfolk"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateFisherfolkInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createFisherfolk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateFisherfolkMutation, CreateFisherfolkMutationVariables>;
 export const CreateVessselWithGearDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateVessselWithGear"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"vessel"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateVesselInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"gears"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateGearInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createVesselWithGear"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"vessel"},"value":{"kind":"Variable","name":{"kind":"Name","value":"vessel"}}},{"kind":"Argument","name":{"kind":"Name","value":"gears"},"value":{"kind":"Variable","name":{"kind":"Name","value":"gears"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateVessselWithGearMutation, CreateVessselWithGearMutationVariables>;
 export const QueryFisherfolkByRangeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QueryFisherfolkByRange"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"start"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"count"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fisherfolkByRange"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"start"},"value":{"kind":"Variable","name":{"kind":"Name","value":"start"}}},{"kind":"Argument","name":{"kind":"Name","value":"count"},"value":{"kind":"Variable","name":{"kind":"Name","value":"count"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"registrationDate"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"middleName"}},{"kind":"Field","name":{"kind":"Name","value":"appellation"}},{"kind":"Field","name":{"kind":"Name","value":"contactNum"}},{"kind":"Field","name":{"kind":"Name","value":"livelihoods"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isMain"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}},{"kind":"Field","name":{"kind":"Name","value":"barangay"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalFisherfolk"}}]}}]} as unknown as DocumentNode<QueryFisherfolkByRangeQuery, QueryFisherfolkByRangeQueryVariables>;
 export const FisherfolkByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FisherfolkById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fisherfolkId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BigInt"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fisherfolk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fisherfolkId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"age"}},{"kind":"Field","name":{"kind":"Name","value":"appellation"}},{"kind":"Field","name":{"kind":"Name","value":"barangay"}},{"kind":"Field","name":{"kind":"Name","value":"cityMunicipality"}},{"kind":"Field","name":{"kind":"Name","value":"civilStatus"}},{"kind":"Field","name":{"kind":"Name","value":"contactNum"}},{"kind":"Field","name":{"kind":"Name","value":"dateOfBirth"}},{"kind":"Field","name":{"kind":"Name","value":"educationalBackground"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"middleName"}},{"kind":"Field","name":{"kind":"Name","value":"nationality"}},{"kind":"Field","name":{"kind":"Name","value":"numOfChildren"}},{"kind":"Field","name":{"kind":"Name","value":"personToNotify"}},{"kind":"Field","name":{"kind":"Name","value":"placeOfBirth"}},{"kind":"Field","name":{"kind":"Name","value":"province"}},{"kind":"Field","name":{"kind":"Name","value":"ptnAddress"}},{"kind":"Field","name":{"kind":"Name","value":"ptnContactNum"}},{"kind":"Field","name":{"kind":"Name","value":"ptnRelationship"}},{"kind":"Field","name":{"kind":"Name","value":"registrationDate"}},{"kind":"Field","name":{"kind":"Name","value":"religion"}},{"kind":"Field","name":{"kind":"Name","value":"residentYear"}},{"kind":"Field","name":{"kind":"Name","value":"salutation"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"livelihoods"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isMain"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}},{"kind":"Field","name":{"kind":"Name","value":"organizations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"yearJoined"}},{"kind":"Field","name":{"kind":"Name","value":"position"}}]}}]}}]}}]} as unknown as DocumentNode<FisherfolkByIdQuery, FisherfolkByIdQueryVariables>;
-export const VesselQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"VesselQuery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"vessels"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"serialNumber"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"yearBuilt"}},{"kind":"Field","name":{"kind":"Name","value":"fisherfolk"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"middleName"}}]}}]}}]}}]} as unknown as DocumentNode<VesselQueryQuery, VesselQueryQueryVariables>;
-export const GearsQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GearsQuery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gears"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"classification"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"fisherfolk"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"middleName"}}]}}]}}]}}]} as unknown as DocumentNode<GearsQueryQuery, GearsQueryQueryVariables>;
+export const FisherfolkVesselsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FisherfolkVessels"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fisherfolkId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BigInt"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"start"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"count"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fisherfolkVessels"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fisherfolkId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fisherfolkId"}}},{"kind":"Argument","name":{"kind":"Name","value":"start"},"value":{"kind":"Variable","name":{"kind":"Name","value":"start"}}},{"kind":"Argument","name":{"kind":"Name","value":"count"},"value":{"kind":"Variable","name":{"kind":"Name","value":"count"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"engineMake"}},{"kind":"Field","name":{"kind":"Name","value":"grossTonnage"}},{"kind":"Field","name":{"kind":"Name","value":"homeport"}},{"kind":"Field","name":{"kind":"Name","value":"horsepower"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"material"}},{"kind":"Field","name":{"kind":"Name","value":"mfvrNumber"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"netTonnage"}},{"kind":"Field","name":{"kind":"Name","value":"placeBuilt"}},{"kind":"Field","name":{"kind":"Name","value":"registeredBreadth"}},{"kind":"Field","name":{"kind":"Name","value":"registeredDepth"}},{"kind":"Field","name":{"kind":"Name","value":"registeredLength"}},{"kind":"Field","name":{"kind":"Name","value":"serialNumber"}},{"kind":"Field","name":{"kind":"Name","value":"tonnageBreadth"}},{"kind":"Field","name":{"kind":"Name","value":"tonnageDepth"}},{"kind":"Field","name":{"kind":"Name","value":"tonnageLength"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"yearBuilt"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalFisherfolkVessels"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fisherfolkId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fisherfolkId"}}}]}]}}]} as unknown as DocumentNode<FisherfolkVesselsQuery, FisherfolkVesselsQueryVariables>;
+export const FisherfolkGearsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FisherfolkGears"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fisherfolkId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BigInt"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"start"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"count"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fisherfolkGears"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fisherfolkId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fisherfolkId"}}},{"kind":"Argument","name":{"kind":"Name","value":"start"},"value":{"kind":"Variable","name":{"kind":"Name","value":"start"}}},{"kind":"Argument","name":{"kind":"Name","value":"count"},"value":{"kind":"Variable","name":{"kind":"Name","value":"count"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"classification"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalFisherfolkGears"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fisherfolkId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fisherfolkId"}}}]}]}}]} as unknown as DocumentNode<FisherfolkGearsQuery, FisherfolkGearsQueryVariables>;
+export const VesselQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"VesselQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"start"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"count"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"vessels"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"start"},"value":{"kind":"Variable","name":{"kind":"Name","value":"start"}}},{"kind":"Argument","name":{"kind":"Name","value":"count"},"value":{"kind":"Variable","name":{"kind":"Name","value":"count"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"mfvrNumber"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"fisherfolk"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"middleName"}},{"kind":"Field","name":{"kind":"Name","value":"appellation"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalVessels"}}]}}]} as unknown as DocumentNode<VesselQueryQuery, VesselQueryQueryVariables>;
+export const GearsQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GearsQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"start"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"count"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gears"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"start"},"value":{"kind":"Variable","name":{"kind":"Name","value":"start"}}},{"kind":"Argument","name":{"kind":"Name","value":"count"},"value":{"kind":"Variable","name":{"kind":"Name","value":"count"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"classification"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"fisherfolk"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"middleName"}},{"kind":"Field","name":{"kind":"Name","value":"appellation"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalGears"}}]}}]} as unknown as DocumentNode<GearsQueryQuery, GearsQueryQueryVariables>;

@@ -135,9 +135,11 @@ enum FisherfolkStatus {
 
 type Gear {
   classification: GearClassification!
+  createdAt: DateTime!
   fisherfolk: Fisherfolk!
   id: BigInt!
   type: String!
+  updatedAt: DateTime!
 }
 
 enum GearClassification {
@@ -244,10 +246,16 @@ type Permit {
 type Query {
   fisherfolk(id: BigInt!): Fisherfolk!
   fisherfolkByRange(count: Int!, start: Int!): [Fisherfolk!]!
+  fisherfolkGears(count: Int!, fisherfolkId: BigInt!, start: Int!): [Gear!]!
+  fisherfolkVessels(count: Int!, fisherfolkId: BigInt!, start: Int!): [Vessel!]!
   fisherfolks: [Fisherfolk!]!
-  gears: [Gear!]!
+  gears(count: Int!, start: Int!): [Gear!]!
   totalFisherfolk: Int!
-  vessels: [Vessel!]!
+  totalFisherfolkGears(fisherfolkId: BigInt!): Int!
+  totalFisherfolkVessels(fisherfolkId: BigInt!): Int!
+  totalGears: Int!
+  totalVessels: Int!
+  vessels(count: Int!, start: Int!): [Vessel!]!
 }
 
 type Queue {
@@ -282,6 +290,7 @@ type User {
 }
 
 type Vessel {
+  createdAt: DateTime!
   engineMake: String!
   fisherfolk: Fisherfolk!
   grossTonnage: Float
@@ -302,6 +311,7 @@ type Vessel {
   tonnageLength: Float
   type: String!
   yearBuilt: Int
+  updatedAt: DateTime!
 }
 
 input livelihoodInput {
