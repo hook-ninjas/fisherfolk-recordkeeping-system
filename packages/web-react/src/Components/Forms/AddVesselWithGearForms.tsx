@@ -259,8 +259,33 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showSuccessAlert();
     },
-    onError: (err) => {
-      console.log(err);
+    onError: () => {
+      handleClose();
+      handleComplete();
+      showFailAlert();
+    },
+  });
+
+  const [createVessel] = useMutation(CreateVesselDocument, {
+    onCompleted: () => {
+      handleClose();
+      handleComplete();
+      showSuccessAlert();
+    },
+    onError: () => {
+      handleClose();
+      handleComplete();
+      showFailAlert();
+    },
+  });
+
+  const [createGears] = useMutation(CreateGearsDocument, {
+    onCompleted: () => {
+      handleClose();
+      handleComplete();
+      showSuccessAlert();
+    },
+    onError: () => {
       handleClose();
       handleComplete();
       showFailAlert();
@@ -294,15 +319,36 @@ export default function AddVesselWithGearForm({
       gears: generateGears(gearTypes),
     };
 
-    console.log(createVesselWithGearInput);
+    // create vessel only
+    if (createVesselWithGearInput.gears.length == 0) {
+      await createVessel({
+        variables: {
+          vessel: createVesselWithGearInput.vessel,
+        },
+      });
+    }
 
-    // currently not working
-    // await createVesselWithGear({
-    //   variables: {
-    //     gears: createVesselWithGearInput.gears,
-    //     vessel: createVesselWithGearInput.vessel,
-    //   },
-    // });
+    // create gears only
+    if (createVesselWithGearInput.vessel.mfvrNumber == '') {
+      await createGears({
+        variables: {
+          gears: createVesselWithGearInput.gears,
+        },
+      });
+    }
+
+    // create both boat and gears
+    if (
+      createVesselWithGearInput.gears.length != 0 &&
+      createVesselWithGearInput.vessel.mfvrNumber != ''
+    ) {
+      await createVesselWithGear({
+        variables: {
+          gears: createVesselWithGearInput.gears,
+          vessel: createVesselWithGearInput.vessel,
+        },
+      });
+    }
   });
 
   const handleSubmitForm = (
@@ -877,7 +923,7 @@ export default function AddVesselWithGearForm({
                           name="FishPots"
                         />
                       }
-                      label="FishPots"
+                      label="Fish Pots"
                     />
                   </FormGroup>
                 </Box>
