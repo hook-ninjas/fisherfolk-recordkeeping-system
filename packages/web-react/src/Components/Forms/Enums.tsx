@@ -63,14 +63,14 @@ export const gears = {
     'TrammelNet',
     'EncirclingGillNet',
   ],
-  [GearClassification.PotsAndTraps]: [
+  [GearClassification.LiftNets]: [
     'CrabLiftNetsOrBintol',
     'FishLiftNetsOrBagnet',
     'NewLookOrZapara',
     'ShrimpLiftNets',
     'LeverNet',
   ],
-  [GearClassification.LiftNets]: [
+  [GearClassification.PotsAndTraps]: [
     'CrabPots',
     'SquidPots',
     'FykeNetsOrFilterNets',
