@@ -98,7 +98,7 @@ export default function FisherfolkGearTable() {
                   </TableCell>
                   <TableCell>{operator}</TableCell>
                   <TableCell>{splitUpperCase(classification)}</TableCell>
-                  <TableCell>{type}</TableCell>
+                  <TableCell>{splitUpperCase(type)}</TableCell>
                   <TableCell></TableCell>
                   <TableCell align="right">
                     <Button
