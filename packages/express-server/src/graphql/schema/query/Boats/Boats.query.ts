@@ -2,13 +2,7 @@ import { arg, intArg, list, nonNull, queryField } from 'nexus';
 
 const Vessels = queryField('vessels', {
   type: nonNull(list(nonNull('Vessel'))),
-  args: {
-    start: nonNull(intArg()),
-    count: nonNull(intArg())
-  },
-  resolve: (_parent, args, ctx) => ctx.prisma.vessel.findMany({
-    skip: args.start,
-    take: args.count,
+  resolve: (_parent, _args, ctx) => ctx.prisma.vessel.findMany({
     orderBy: [
       {
         id: 'desc'
