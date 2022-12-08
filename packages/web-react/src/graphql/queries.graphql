@@ -98,13 +98,12 @@ query FisherfolkGears($fisherfolkId: BigInt!, $start: Int!, $count: Int!) {
   totalFisherfolkGears(fisherfolkId: $fisherfolkId)
 }
 
-query VesselQuery($start: Int!, $count: Int!) {
-  vessels(start: $start, count: $count) {
+query VesselQuery {
+  vessels {
     id
     mfvrNumber
     createdAt
     name
-    type
     fisherfolk {
       lastName
       firstName
@@ -112,11 +111,10 @@ query VesselQuery($start: Int!, $count: Int!) {
       appellation
     }
   }
-  totalVessels
 }
 
-query GearsQuery($start: Int!, $count: Int!) {
-  gears(start: $start, count: $count) {
+query GearsQuery {
+  gears {
     id
     classification
     createdAt
@@ -128,5 +126,4 @@ query GearsQuery($start: Int!, $count: Int!) {
       appellation
     }
   }
-  totalGears
 }
