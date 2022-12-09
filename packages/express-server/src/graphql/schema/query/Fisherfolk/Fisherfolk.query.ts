@@ -6,6 +6,9 @@ const Fisherfolks = queryField('fisherfolks', {
   resolve: (_parent, _args, ctx) => ctx.prisma.fisherfolk.findMany({
     orderBy: [
       {
+        status: 'asc'
+      },
+      {
         registrationDate: 'desc'
       }
     ]
