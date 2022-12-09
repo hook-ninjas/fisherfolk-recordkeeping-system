@@ -40,8 +40,7 @@ export const registrationTypes = ['NewRegistration', 'Renewal'].map((a) =>
 
 export const registrationTypeForBoatsAndGears = [
   'Initial Registration',
-  'Issuance of New Certificate of Number(CN)',
-  'Re-Issuance of Certificate of Number',
+  'Renewal',
 ].map((a) => createOption(a));
 
 export const salutations = Object.values(Salutation).map((a) =>
@@ -64,14 +63,14 @@ export const gears = {
     'TrammelNet',
     'EncirclingGillNet',
   ],
-  [GearClassification.PotsAndTraps]: [
+  [GearClassification.LiftNets]: [
     'CrabLiftNetsOrBintol',
     'FishLiftNetsOrBagnet',
     'NewLookOrZapara',
     'ShrimpLiftNets',
     'LeverNet',
   ],
-  [GearClassification.LiftNets]: [
+  [GearClassification.PotsAndTraps]: [
     'CrabPots',
     'SquidPots',
     'FykeNetsOrFilterNets',
