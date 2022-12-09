@@ -13,7 +13,7 @@ const FisherfolkRecord = () => {
       <Grid item xs={12}>
         <Paper
           sx={{
-            p: 2,
+            p: 0.5,
             display: 'flex',
             flexDirection: 'column',
             boxShadow: 2,
