@@ -644,19 +644,11 @@ export interface NexusGenArgTypes {
       fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
       start: number; // Int!
     }
-    gears: { // args
-      count: number; // Int!
-      start: number; // Int!
-    }
     totalFisherfolkGears: { // args
       fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
     }
     totalFisherfolkVessels: { // args
       fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
-    }
-    vessels: { // args
-      count: number; // Int!
-      start: number; // Int!
     }
   }
 }

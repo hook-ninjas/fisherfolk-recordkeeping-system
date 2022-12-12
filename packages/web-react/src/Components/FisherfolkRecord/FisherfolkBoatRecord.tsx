@@ -8,14 +8,14 @@ const FisherfolkBoatRecord = () => {
       <Grid item xs={12}>
         <Paper
           sx={{
-            p: 2,
+            p: .5,
             display: 'flex',
             flexDirection: 'column',
             boxShadow: 2,
           }}
         >
           <Box m={1}>
-            <Typography variant="h5">Fisherfolk Boat Record</Typography>
+            <Typography variant="h6">Fisherfolk Boat Record</Typography>
           </Box>
           <Grid item>
             <Box m={1}>

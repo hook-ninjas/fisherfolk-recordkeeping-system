@@ -251,13 +251,13 @@ type Query {
   fisherfolkGears(count: Int!, fisherfolkId: BigInt!, start: Int!): [Gear!]!
   fisherfolkVessels(count: Int!, fisherfolkId: BigInt!, start: Int!): [Vessel!]!
   fisherfolks: [Fisherfolk!]!
-  gears(count: Int!, start: Int!): [Gear!]!
+  gears: [Gear!]!
   totalFisherfolk: Int!
   totalFisherfolkGears(fisherfolkId: BigInt!): Int!
   totalFisherfolkVessels(fisherfolkId: BigInt!): Int!
   totalGears: Int!
   totalVessels: Int!
-  vessels(count: Int!, start: Int!): [Vessel!]!
+  vessels: [Vessel!]!
 }
 
 type Queue {
