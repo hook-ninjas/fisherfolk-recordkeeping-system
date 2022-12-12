@@ -1,7 +1,7 @@
 # Write Graphql Queries here #
 
-query QueryFisherfolkByRange($start: Int!, $count: Int!) {
-  fisherfolkByRange(start: $start, count: $count) {
+  query QueryFisherfolks {
+  fisherfolks {
     id
     registrationDate
     firstName
@@ -18,7 +18,6 @@ query QueryFisherfolkByRange($start: Int!, $count: Int!) {
   }
   totalFisherfolk
 }
-
 query FisherfolkById($fisherfolkId: BigInt!) {
   fisherfolk(id: $fisherfolkId) {
     age,
