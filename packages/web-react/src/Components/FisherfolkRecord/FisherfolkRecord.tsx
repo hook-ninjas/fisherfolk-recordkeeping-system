@@ -20,7 +20,7 @@ const FisherfolkRecord = () => {
           }}
         >
           <Box m={1} display="flex" justifyContent="space-between">
-            <Typography variant="h5">Fisherfolk Record</Typography>
+            <Typography variant="h6">Fisherfolk Record</Typography>
             <Button
               variant="contained"
               sx={{
