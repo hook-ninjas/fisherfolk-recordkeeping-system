@@ -32,6 +32,7 @@ const renderMoreActions = (id: number) => {
         aria-controls={open ? 'fisherfolk-action-btn' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
+        aria-label="fisherfolk-action-btn"
         disableElevation
         onClick={handleClick}
         style={{ color: '#808080' }}
