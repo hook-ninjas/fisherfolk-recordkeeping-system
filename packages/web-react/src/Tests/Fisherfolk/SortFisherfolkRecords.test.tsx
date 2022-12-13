@@ -83,8 +83,7 @@ describe('Sort Fisherfolk Records', () => {
       hidden: true,
     });
 
-    userEvent.click(sortBtn);
-    userEvent.click(sortBtn);
+    userEvent.dblClick(sortBtn);
 
     const records = await within(
       await screen.findByRole('grid', { name: /fisherfolk-table/i })
@@ -154,8 +153,7 @@ describe('Sort Fisherfolk Records', () => {
       hidden: true,
     });
 
-    userEvent.click(sortBtn);
-    userEvent.click(sortBtn);
+    userEvent.dblClick(sortBtn);
 
     const records = await within(
       await screen.findByRole('grid', { name: /fisherfolk-table/i })
@@ -225,8 +223,7 @@ describe('Sort Fisherfolk Records', () => {
       hidden: true,
     });
 
-    userEvent.click(sortBtn);
-    userEvent.click(sortBtn);
+    userEvent.dblClick(sortBtn);
 
     const records = await within(
       await screen.findByRole('grid', { name: /fisherfolk-table/i })
@@ -296,8 +293,7 @@ describe('Sort Fisherfolk Records', () => {
       hidden: true,
     });
 
-    userEvent.click(sortBtn);
-    userEvent.click(sortBtn);
+    userEvent.dblClick(sortBtn);
 
     const records = await within(
       await screen.findByRole('grid', { name: /fisherfolk-table/i })
@@ -367,8 +363,7 @@ describe('Sort Fisherfolk Records', () => {
       hidden: true,
     });
 
-    userEvent.click(sortBtn);
-    userEvent.click(sortBtn);
+    userEvent.dblClick(sortBtn);
 
     const records = await within(
       await screen.findByRole('grid', { name: /fisherfolk-table/i })
@@ -438,8 +433,7 @@ describe('Sort Fisherfolk Records', () => {
       hidden: true,
     });
 
-    userEvent.click(sortBtn);
-    userEvent.click(sortBtn);
+    userEvent.dblClick(sortBtn);
 
     const records = await within(
       await screen.findByRole('grid', { name: /fisherfolk-table/i })
