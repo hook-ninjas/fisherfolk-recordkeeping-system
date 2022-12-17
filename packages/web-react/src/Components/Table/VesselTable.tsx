@@ -104,7 +104,7 @@ export default function VesselTable() {
   }
 
   if (loading) {
-    <Loading />;
+    return <Loading />;
   }
 
   if (data && data?.totalFisherfolkVessels === 0) {

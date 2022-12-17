@@ -68,7 +68,7 @@ export default function GearTable() {
   }
 
   if (loading) {
-    <Loading />;
+    return <Loading />;
   }
 
   if (data && data?.totalFisherfolkGears === 0) {
