@@ -1,7 +1,13 @@
 # Write Graphql Mutations here #
 
-# mutation CreateFisherfolk($data: CreateFisherfolkInput!) {
-#   createFisherfolk(data: $data) {
-#     id
-#   }
-# }
+  mutation CreateFisherfolk($data: CreateFisherfolkInput!) {
+    createFisherfolk(data: $data) {
+        id
+    }
+  }
+
+  mutation CreateVessselWithGear($vessel: CreateVesselInput!, $gears: [CreateGearInput!]!) {
+  createVesselWithGear(vessel: $vessel, gears: $gears) {
+    id
+  }
+}

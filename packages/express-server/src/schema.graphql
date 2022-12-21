@@ -26,9 +26,11 @@ input CreateFisherfolkInput {
   firstName: String!
   gender: Gender!
   lastName: String!
+  livelihoods: [livelihoodInput!]!
   middleName: String!
   nationality: String!
   numOfChildren: Int!
+  organization: OrganizationInput
   personToNotify: String!
   placeOfBirth: String!
   province: String!
@@ -108,7 +110,7 @@ type Fisherfolk {
   middleName: String!
   nationality: String!
   numOfChildren: Int!
-  organizations: [Organization]
+  organizations: [Member]
   permit: Permit
   personToNotify: String!
   placeOfBirth: String!
@@ -133,9 +135,11 @@ enum FisherfolkStatus {
 
 type Gear {
   classification: GearClassification!
+  createdAt: DateTime!
   fisherfolk: Fisherfolk!
   id: BigInt!
   type: String!
+  updatedAt: DateTime!
 }
 
 enum GearClassification {
@@ -196,6 +200,17 @@ enum Material {
   Wood
 }
 
+type Member {
+  createdAt: DateTime!
+  fisherfolkId: BigInt!
+  fisherfolks: Fisherfolk!
+  organization: Organization!
+  organizationId: Int!
+  position: String!
+  updatedAt: DateTime!
+  yearJoined: Int!
+}
+
 type Mutation {
   createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
   createUser(data: CreateUserInput!): User!
@@ -204,11 +219,15 @@ type Mutation {
 
 type Organization {
   createdAt: DateTime!
-  fisherfolks: [Fisherfolk!]
   id: BigInt!
+  members: [Member]
+  name: String!
+  updatedAt: DateTime!
+}
+
+input OrganizationInput {
   name: String!
   position: String!
-  updatedAt: DateTime!
   yearJoined: Int!
 }
 
@@ -225,8 +244,20 @@ type Permit {
 }
 
 type Query {
+<<<<<<< HEAD
   fisherfolks: [Fisherfolk!]!
   gears: [Gear!]!
+=======
+  fisherfolk(id: BigInt!): Fisherfolk!
+  fisherfolkByRange(count: Int!, start: Int!): [Fisherfolk!]!
+  fisherfolkGears(count: Int!, fisherfolkId: BigInt!, start: Int!): [Gear!]!
+  fisherfolkVessels(count: Int!, fisherfolkId: BigInt!, start: Int!): [Vessel!]!
+  fisherfolks: [Fisherfolk!]!
+  gears: [Gear!]!
+  totalFisherfolk: Int!
+  totalGears(fisherfolkId: BigInt!): Int!
+  totalVessels(fisherfolkId: BigInt!): Int!
+>>>>>>> cdf00331882cbbd318420b2eeae76f7a26ea2d40
   vessels: [Vessel!]!
 }
 
@@ -262,6 +293,7 @@ type User {
 }
 
 type Vessel {
+  createdAt: DateTime!
   engineMake: String!
   fisherfolk: Fisherfolk!
   grossTonnage: Float!
@@ -281,5 +313,12 @@ type Vessel {
   tonnageDepth: Float!
   tonnageLength: Float!
   type: String!
+  updatedAt: DateTime!
   yearBuilt: Int!
+}
+
+input livelihoodInput {
+  description: String!
+  isMain: Boolean!
+  type: SourceOfIncome!
 }

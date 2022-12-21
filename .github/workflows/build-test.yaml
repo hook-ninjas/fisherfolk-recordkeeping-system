@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    name: build-test
     runs-on: ubuntu-latest
 
     strategy:
@@ -17,16 +18,22 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }} and Cache
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-
+          cache: 'npm'
+          cache-dependency-path: |
+            packages/express-server/package-lock.json
+            packages/web-react/package-lock.json
+          
       - name: Merge Conflict finder
         uses: olivernybroe/action-conflict-finder@v4.0
 
-      - name: Install Dependencies
-        run: npm install
+      - name: Install Dependencies & Bootstrap
+        run: |
+              npm ci
+              npx lerna bootstrap
 
       - name: Format express-server package
         run: npm run format:express-server

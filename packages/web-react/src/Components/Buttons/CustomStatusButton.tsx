@@ -3,19 +3,13 @@ import { Box } from '@mui/material';
 import { FisherfolkStatus } from '../../graphql/generated';
 
 interface FisherfolkStatusProps {
-  label: FisherfolkStatus;
+  label: FisherfolkStatus | undefined;
 }
 
 const fisherfolkStatusColor = {
-  [FisherfolkStatus.Active]: 'rgba(83, 247, 137, .20)',
-  [FisherfolkStatus.Inactive]: 'rgba(228, 45, 45, .20)',
-  [FisherfolkStatus.Deceased]: 'rgba(122, 116, 116, .20)',
-};
-
-const textColor = {
-  [FisherfolkStatus.Active]: '#0EAC28',
-  [FisherfolkStatus.Inactive]: '#E91818',
-  [FisherfolkStatus.Deceased]: '#7D7777',
+  [FisherfolkStatus.Active]: 'radial-gradient(circle, rgba(40,193,129,.8) 28%, rgba(85,221,105,.4) 100%)',
+  [FisherfolkStatus.Inactive]: 'radial-gradient(circle, rgba(232,12,54,.65) 28%, rgba(233,173,109,.5) 100%)',
+  [FisherfolkStatus.Deceased]: 'radial-gradient(circle, rgba(97,85,85,0.7) 0%, rgba(171,171,164,0.6) 85%)',
 };
 
 export const FisherfolkStatusButton = (status: FisherfolkStatusProps) => {
@@ -26,11 +20,11 @@ export const FisherfolkStatusButton = (status: FisherfolkStatusProps) => {
       sx={{
         width: '100%',
         p: 0.125,
-        backgroundColor: fisherfolkStatusColor[status.label],
+        background: fisherfolkStatusColor[status.label!],
         borderRadius: 2,
         fontSize: 12,
         fontWeight: 'medium',
-        color: textColor[status.label],
+        color:'white',
       }}
     >
       {status.label}

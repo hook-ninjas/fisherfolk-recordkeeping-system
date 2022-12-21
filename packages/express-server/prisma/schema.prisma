@@ -51,7 +51,7 @@ model Fisherfolk {
   fishponds             Fishpond[]
   permit                Permit?
   livelihoods           Livelihood[]
-  organizations         Organization[]
+  organizations         Member[]
   governmentAid         Queue[]
   images                Image[]
 
@@ -62,16 +62,28 @@ model Fisherfolk {
 }
 
 model Organization {
-  id          Int          @id @default(autoincrement())
-  name        String
-  yearJoined  Int          @map("year_joined")
-  position    String
-  fisherfolks Fisherfolk[]
-
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  members   Member[]
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("organizations")
+}
+
+model Member {
+  fisherfolk     Fisherfolk   @relation(fields: [fisherfolkId], references: [id])
+  fisherfolkId   BigInt       @map("fisherfolk_id")
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int          @map("organization_id")
+  yearJoined     Int          @map("year_joined")
+  position       String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@id(fields: [fisherfolkId, organizationId], name: "id")
+  @@map("members")
 }
 
 model GovernmentAid {
