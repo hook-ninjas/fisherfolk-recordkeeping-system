@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Grid, Paper } from '@mui/material';
+import { Box, Button, Grid, Paper, Typography } from '@mui/material';
 import AddFisherfolkForm from '../Forms/AddMemberForm';
 import FisherfolkTable from '../Table/FisherfolkTable';
 
@@ -13,13 +13,14 @@ const FisherfolkRecord = () => {
       <Grid item xs={12}>
         <Paper
           sx={{
-            p: .5,
+            p: 0.5,
             display: 'flex',
             flexDirection: 'column',
             boxShadow: 2,
           }}
         >
-          <Box m={1} display="flex" justifyContent="flex-end">
+          <Box m={1} display="flex" justifyContent="space-between">
+            <Typography variant="h6">Fisherfolk Record</Typography>
             <Button
               variant="contained"
               sx={{

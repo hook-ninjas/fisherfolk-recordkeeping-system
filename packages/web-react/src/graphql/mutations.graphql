@@ -2,12 +2,25 @@
 
   mutation CreateFisherfolk($data: CreateFisherfolkInput!) {
     createFisherfolk(data: $data) {
-        id
+      id
     }
   }
 
   mutation CreateVessselWithGear($vessel: CreateVesselInput!, $gears: [CreateGearInput!]!) {
-  createVesselWithGear(vessel: $vessel, gears: $gears) {
-    id
+    createVesselWithGear(vessel: $vessel, gears: $gears) {
+      id
+    }
   }
-}
+
+  mutation CreateVessel($vessel: CreateVesselInput!) {
+    createVessel(vessel: $vessel) {
+      id
+    }
+  }
+
+  mutation CreateGears($gears: [CreateGearInput!]!) {
+    createGears(gears: $gears) {
+      id
+    }
+  }
+

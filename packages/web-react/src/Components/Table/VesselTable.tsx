@@ -43,31 +43,31 @@ interface VesselColumn {
     | 'serialNum'
     | 'horsepower';
   label: string;
-  align?: 'right' | 'left';
+  align?: 'left';
 }
 
 const vesselColumns: readonly VesselColumn[] = [
   { id: 'id', label: 'Id' },
-  { id: 'mfvrNum', label: 'MFVR Number', align: 'left' },
-  { id: 'registrationDate', label: 'Date Registered', align: 'left' },
-  { id: 'homeport', label: 'Homeport', align: 'right' },
-  { id: 'name', label: 'Name', align: 'right' },
-  { id: 'status', label: 'Status', align: 'right' },
-  { id: 'type', label: 'Type', align: 'right' },
-  { id: 'placeBuilt', label: 'Place Built', align: 'right' },
-  { id: 'yearBuilt', label: 'Year Built', align: 'right' },
-  { id: 'material', label: 'Material', align: 'right' },
-  { id: 'length', label: 'Length', align: 'right' },
-  { id: 'breadth', label: 'Breadth', align: 'right' },
-  { id: 'depth', label: 'Depth', align: 'right' },
-  { id: 'tonLength', label: 'Ton Length', align: 'right' },
-  { id: 'tonBreadth', label: 'Ton Breadth', align: 'right' },
-  { id: 'tonDepth', label: 'Ton Depth', align: 'right' },
-  { id: 'grossTon', label: 'Gross Ton', align: 'right' },
-  { id: 'netTon', label: 'Net Ton', align: 'right' },
-  { id: 'engineMake', label: 'Engine Make', align: 'right' },
-  { id: 'serialNum', label: 'Serial Number', align: 'right' },
-  { id: 'horsepower', label: 'Horsepower', align: 'right' },
+  { id: 'mfvrNum', label: 'MFVR Number' },
+  { id: 'registrationDate', label: 'Date Registered' },
+  { id: 'homeport', label: 'Homeport' },
+  { id: 'name', label: 'Name' },
+  { id: 'status', label: 'Status' },
+  { id: 'type', label: 'Type' },
+  { id: 'placeBuilt', label: 'Place Built' },
+  { id: 'yearBuilt', label: 'Year Built' },
+  { id: 'material', label: 'Material' },
+  { id: 'length', label: 'Length' },
+  { id: 'breadth', label: 'Breadth' },
+  { id: 'depth', label: 'Depth' },
+  { id: 'tonLength', label: 'Ton Length' },
+  { id: 'tonBreadth', label: 'Ton Breadth' },
+  { id: 'tonDepth', label: 'Ton Depth' },
+  { id: 'grossTon', label: 'Gross Ton' },
+  { id: 'netTon', label: 'Net Ton' },
+  { id: 'engineMake', label: 'Engine Make' },
+  { id: 'serialNum', label: 'Serial Number' },
+  { id: 'horsepower', label: 'Horsepower' },
 ];
 
 export default function VesselTable() {
@@ -104,10 +104,10 @@ export default function VesselTable() {
   }
 
   if (loading) {
-    <Loading />;
+    return <Loading />;
   }
 
-  if (data && data?.totalVessels === 0) {
+  if (data && data?.totalFisherfolkVessels === 0) {
     return (
       <TableContainer component={Paper}>
         <Table stickyHeader size="small" aria-label="vessel-table">
@@ -152,91 +152,91 @@ export default function VesselTable() {
             ))}
           </TableRow>
         </TableHead>
+        <TableBody>
+          {data &&
+            data.fisherfolkVessels.map((vessel) => {
+              const {
+                createdAt,
+                engineMake,
+                grossTonnage,
+                homeport,
+                horsepower,
+                id,
+                material,
+                mfvrNumber,
+                name,
+                netTonnage,
+                placeBuilt,
+                registeredBreadth,
+                registeredDepth,
+                registeredLength,
+                serialNumber,
+                tonnageBreadth,
+                tonnageDepth,
+                tonnageLength,
+                type,
+                yearBuilt,
+              } = vessel;
+              return (
+                <TableRow hover role="checkbox" tabIndex={-1} key={vessel.id}>
+                  <TableCell>{id}</TableCell>
+                  <TableCell>{mfvrNumber}</TableCell>
+                  <TableCell>
+                    {new Date(createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>{homeport}</TableCell>
+                  <TableCell>{name}</TableCell>
+                  <TableCell></TableCell>
+                  <TableCell>{type}</TableCell>
+                  <TableCell>{placeBuilt}</TableCell>
+                  <TableCell>{yearBuilt}</TableCell>
+                  <TableCell>{material}</TableCell>
+                  <TableCell>{registeredLength}</TableCell>
+                  <TableCell>{registeredDepth}</TableCell>
+                  <TableCell>{registeredBreadth}</TableCell>
+                  <TableCell>{tonnageLength}</TableCell>
+                  <TableCell>{tonnageDepth}</TableCell>
+                  <TableCell>{tonnageBreadth}</TableCell>
+                  <TableCell>{grossTonnage}</TableCell>
+                  <TableCell>{netTonnage}</TableCell>
+                  <TableCell>{engineMake}</TableCell>
+                  <TableCell>{serialNumber}</TableCell>
+                  <TableCell>{horsepower}</TableCell>
+                  <TableCell align="right">
+                    <Button
+                      id="basic-button"
+                      aria-controls={open ? 'basic-menu' : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? 'true' : undefined}
+                      onClick={(e) => {
+                        handleClick(e);
+                      }}
+                      style={{ color: '#808080' }}
+                    >
+                      <MoreVertIcon />
+                    </Button>{' '}
+                    <Menu
+                      id="dropdwown-menu"
+                      anchorEl={drop}
+                      open={open}
+                      onClose={handleDismissDropdown}
+                      MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                      }}
+                    >
+                      <MenuItem>Edit</MenuItem>
+                      <MenuItem>Archive</MenuItem>
+                    </Menu>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+        </TableBody>
       </Table>
-      <TableBody>
-        {data &&
-          data.fisherfolkVessels.map((vessel) => {
-            const {
-              createdAt,
-              engineMake,
-              grossTonnage,
-              homeport,
-              horsepower,
-              id,
-              material,
-              mfvrNumber,
-              name,
-              netTonnage,
-              placeBuilt,
-              registeredBreadth,
-              registeredDepth,
-              registeredLength,
-              serialNumber,
-              tonnageBreadth,
-              tonnageDepth,
-              tonnageLength,
-              type,
-              yearBuilt,
-            } = vessel;
-            return (
-              <TableRow hover role="checkbox" tabIndex={-1} key={vessel.id}>
-                <TableCell sx={{minWidth: 130}}>{id}</TableCell>
-                <TableCell align='left' sx={{minWidth: 130}}>{mfvrNumber}</TableCell>
-                <TableCell align='left' sx={{minWidth: 130}}>
-                  {new Date(createdAt).toLocaleDateString()}
-                </TableCell>
-                <TableCell align='right' sx={{minWidth: 130}}>{homeport}</TableCell>
-                <TableCell align='right' sx={{minWidth: 130}}>{name}</TableCell>
-                <TableCell align='right' sx={{minWidth: 130}}></TableCell>
-                <TableCell align='right' sx={{minWidth: 130}}>{type}</TableCell>
-                <TableCell align='right' sx={{minWidth: 130}}>{placeBuilt}</TableCell>
-                <TableCell align='center' sx={{minWidth: 130}}>{yearBuilt}</TableCell>
-                <TableCell align='center' sx={{minWidth: 130}}>{material}</TableCell>
-                <TableCell align='center' sx={{minWidth: 130}}>{registeredLength}</TableCell>
-                <TableCell align='center' sx={{minWidth: 130}}>{registeredDepth}</TableCell>
-                <TableCell align='center' sx={{minWidth: 130}}>{registeredBreadth}</TableCell>
-                <TableCell align='center' sx={{minWidth: 130}}>{tonnageLength}</TableCell>
-                <TableCell align='center' sx={{minWidth: 130}}>{tonnageDepth}</TableCell>
-                <TableCell align='center' sx={{minWidth: 130}}>{tonnageBreadth}</TableCell>
-                <TableCell align='center' sx={{minWidth: 130}}>{grossTonnage}</TableCell>
-                <TableCell align='center' sx={{minWidth: 130}}>{netTonnage}</TableCell>
-                <TableCell align='center' sx={{minWidth: 130}}>{engineMake}</TableCell>
-                <TableCell align='center' sx={{minWidth: 130}}>{serialNumber}</TableCell>
-                <TableCell align='center' sx={{minWidth: 130}}>{horsepower}</TableCell>
-                <TableCell align="right">
-                  <Button
-                    id="basic-button"
-                    aria-controls={open ? 'basic-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={(e) => {
-                      handleClick(e);
-                    }}
-                    style={{ color: '#808080' }}
-                  >
-                    <MoreVertIcon />
-                  </Button>{' '}
-                  <Menu
-                    id="dropdwown-menu"
-                    anchorEl={drop}
-                    open={open}
-                    onClose={handleDismissDropdown}
-                    MenuListProps={{
-                      'aria-labelledby': 'basic-button',
-                    }}
-                  >
-                    <MenuItem>Edit</MenuItem>
-                    <MenuItem>Archive</MenuItem>
-                  </Menu>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-      </TableBody>
       <TablePagination
         rowsPerPageOptions={[10, 25, 50, 100]}
         component="div"
-        count={data === undefined ? 0 : data.totalVessels}
+        count={data === undefined ? 0 : data.totalFisherfolkVessels}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

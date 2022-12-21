@@ -18,6 +18,8 @@ import MuiDrawer from '@mui/material/Drawer';
 import CustomizedDialogs from '../ConfirmationDialog/ConfirmationDialog';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import LogoutIcon from '@mui/icons-material/Logout';
+import SailingOutlinedIcon from '@mui/icons-material/SailingOutlined';
+import PhishingRoundedIcon from '@mui/icons-material/PhishingRounded';
 import OfficeLogo from '../../Assets/city-agri-logo.jpg';
 
 const SidebarItemList = (
@@ -36,6 +38,22 @@ const SidebarItemList = (
           <FolderCopyOutlinedIcon sx={{ color: 'white' }} />
         </ListItemIcon>
         <ListItemText primary="Fisherfolk Record" />
+      </ListItemButton>
+    </Link>
+    <Link to="/fisherfolk-boats" className="nav-link">
+      <ListItemButton>
+        <ListItemIcon>
+          <SailingOutlinedIcon sx={{ color: 'white' }} />
+        </ListItemIcon>
+        <ListItemText primary="Boat Record" />
+      </ListItemButton>
+    </Link>
+    <Link to="/fisherfolk-gears" className="nav-link">
+      <ListItemButton>
+        <ListItemIcon>
+          <PhishingRoundedIcon sx={{ color: 'white' }} />
+        </ListItemIcon>
+        <ListItemText primary="Gear Record" />
       </ListItemButton>
     </Link>
   </>

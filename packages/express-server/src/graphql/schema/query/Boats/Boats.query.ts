@@ -29,7 +29,7 @@ const QueryFisherfolkVessels = queryField('fisherfolkVessels', {
   }) 
 });
 
-const QueryAllFisherfolkVessels = queryField('totalVessels', {
+const QueryAllFisherfolkVessels = queryField('totalFisherfolkVessels', {
   type: 'Int',
   args: {
     fisherfolkId: nonNull(arg({
@@ -43,8 +43,14 @@ const QueryAllFisherfolkVessels = queryField('totalVessels', {
   })
 });
 
+const QueryAllVessels = queryField('totalVessels', {
+  type: 'Int',
+  resolve: (_, _args, ctx) => ctx.prisma.vessel.count()
+});
+
 export default [
   Vessels,
   QueryFisherfolkVessels,
-  QueryAllFisherfolkVessels
+  QueryAllFisherfolkVessels,
+  QueryAllVessels
 ];

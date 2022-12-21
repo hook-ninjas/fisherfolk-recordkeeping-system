@@ -2,7 +2,7 @@ import { nonNull, queryField, list, intArg, arg } from 'nexus';
 
 const Gears = queryField('gears', {
   type: nonNull(list(nonNull('Gear'))),
-  resolve: (_parent, _args, ctx) => ctx.prisma.gear.findMany({
+  resolve: (_parent, args, ctx) => ctx.prisma.gear.findMany({
     orderBy: [
       {
         id: 'desc'
@@ -29,7 +29,7 @@ const QueryFisherfolkGears = queryField('fisherfolkGears',  {
   })
 });
 
-const QueryAllFisherfolkGears = queryField('totalGears', {
+const QueryAllFisherfolkGears = queryField('totalFisherfolkGears', {
   type: 'Int',
   args: {
     fisherfolkId: nonNull(arg({
@@ -43,8 +43,14 @@ const QueryAllFisherfolkGears = queryField('totalGears', {
   })
 });
 
+const QueryAllGears = queryField('totalGears', {
+  type: 'Int',
+  resolve: (_, _args, ctx) => ctx.prisma.gear.count()
+});
+
 export default [
   Gears,
   QueryFisherfolkGears,
-  QueryAllFisherfolkGears
+  QueryAllFisherfolkGears,
+  QueryAllGears
 ];

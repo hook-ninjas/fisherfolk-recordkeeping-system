@@ -56,23 +56,23 @@ input CreateUserInput {
 input CreateVesselInput {
   engineMake: String!
   fisherfolkId: BigInt!
-  grossTonnage: Float!
+  grossTonnage: Float
   homeport: String!
-  horsepower: Float!
-  material: Material!
+  horsepower: Float
+  material: Material
   mfvrNumber: String!
   name: String!
-  netTonnage: Float!
+  netTonnage: Float
   placeBuilt: String!
-  registeredBreadth: Float!
-  registeredDepth: Float!
-  registeredLength: Float!
+  registeredBreadth: Float
+  registeredDepth: Float
+  registeredLength: Float
   serialNumber: String!
-  tonnageBreadth: Float!
-  tonnageDepth: Float!
-  tonnageLength: Float!
+  tonnageBreadth: Float
+  tonnageDepth: Float
+  tonnageLength: Float
   type: String!
-  yearBuilt: Int!
+  yearBuilt: Int
 }
 
 """
@@ -213,7 +213,9 @@ type Member {
 
 type Mutation {
   createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
+  createGears(gears: [CreateGearInput!]!): [Gear!]!
   createUser(data: CreateUserInput!): User!
+  createVessel(vessel: CreateVesselInput!): Vessel!
   createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
 }
 
@@ -255,9 +257,10 @@ type Query {
   fisherfolks: [Fisherfolk!]!
   gears: [Gear!]!
   totalFisherfolk: Int!
-  totalGears(fisherfolkId: BigInt!): Int!
-  totalVessels(fisherfolkId: BigInt!): Int!
->>>>>>> cdf00331882cbbd318420b2eeae76f7a26ea2d40
+  totalFisherfolkGears(fisherfolkId: BigInt!): Int!
+  totalFisherfolkVessels(fisherfolkId: BigInt!): Int!
+  totalGears: Int!
+  totalVessels: Int!
   vessels: [Vessel!]!
 }
 
@@ -296,25 +299,25 @@ type Vessel {
   createdAt: DateTime!
   engineMake: String!
   fisherfolk: Fisherfolk!
-  grossTonnage: Float!
+  grossTonnage: Float
   homeport: String!
-  horsepower: Float!
+  horsepower: Float
   id: BigInt!
-  material: Material!
+  material: Material
   mfvrNumber: String!
   name: String!
-  netTonnage: Float!
+  netTonnage: Float
   placeBuilt: String!
-  registeredBreadth: Float!
-  registeredDepth: Float!
-  registeredLength: Float!
+  registeredBreadth: Float
+  registeredDepth: Float
+  registeredLength: Float
   serialNumber: String!
-  tonnageBreadth: Float!
-  tonnageDepth: Float!
-  tonnageLength: Float!
+  tonnageBreadth: Float
+  tonnageDepth: Float
+  tonnageLength: Float
   type: String!
   updatedAt: DateTime!
-  yearBuilt: Int!
+  yearBuilt: Int
 }
 
 input livelihoodInput {

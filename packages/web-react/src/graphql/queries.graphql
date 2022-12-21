@@ -1,7 +1,7 @@
 # Write Graphql Queries here #
 
-query QueryFisherfolkByRange($start: Int!, $count: Int!) {
-  fisherfolkByRange(start: $start, count: $count) {
+  query QueryFisherfolks {
+  fisherfolks {
     id
     registrationDate
     firstName
@@ -18,7 +18,6 @@ query QueryFisherfolkByRange($start: Int!, $count: Int!) {
   }
   totalFisherfolk
 }
-
 query FisherfolkById($fisherfolkId: BigInt!) {
   fisherfolk(id: $fisherfolkId) {
     age,
@@ -85,7 +84,7 @@ query FisherfolkVessels($fisherfolkId: BigInt!, $start: Int!, $count: Int!) {
     type
     yearBuilt
   },
-  totalVessels(fisherfolkId: $fisherfolkId)
+  totalFisherfolkVessels(fisherfolkId: $fisherfolkId)
 }
 
 query FisherfolkGears($fisherfolkId: BigInt!, $start: Int!, $count: Int!) {
@@ -95,20 +94,20 @@ query FisherfolkGears($fisherfolkId: BigInt!, $start: Int!, $count: Int!) {
     id
     type
   },
-  totalGears(fisherfolkId: $fisherfolkId)
+  totalFisherfolkGears(fisherfolkId: $fisherfolkId)
 }
 
 query VesselQuery {
   vessels {
     id
+    mfvrNumber
+    createdAt
     name
-    serialNumber
-    type
-    yearBuilt
     fisherfolk {
       lastName
       firstName
       middleName
+      appellation
     }
   }
 }
@@ -117,11 +116,13 @@ query GearsQuery {
   gears {
     id
     classification
+    createdAt
     type
     fisherfolk {
       lastName
       firstName
       middleName
+      appellation
     }
   }
 }
