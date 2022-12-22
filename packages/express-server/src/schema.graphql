@@ -246,10 +246,6 @@ type Permit {
 }
 
 type Query {
-<<<<<<< HEAD
-  fisherfolks: [Fisherfolk!]!
-  gears: [Gear!]!
-=======
   fisherfolk(id: BigInt!): Fisherfolk!
   fisherfolkByRange(count: Int!, start: Int!): [Fisherfolk!]!
   fisherfolkGears(count: Int!, fisherfolkId: BigInt!, start: Int!): [Gear!]!
