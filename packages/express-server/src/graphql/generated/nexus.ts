@@ -56,6 +56,7 @@ export interface NexusGenInputs {
     numOfChildren: number; // Int!
     organization?: NexusGenInputs['OrganizationInput'] | null; // OrganizationInput
     personToNotify: string; // String!
+    photo: string; // String!
     placeOfBirth: string; // String!
     province: string; // String!
     ptnAddress: string; // String!
@@ -64,6 +65,7 @@ export interface NexusGenInputs {
     religion: string; // String!
     residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
+    signature: string; // String!
   }
   CreateGearInput: { // input type
     classification: NexusGenEnums['GearClassification']; // GearClassification!
