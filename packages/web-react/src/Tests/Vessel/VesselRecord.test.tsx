@@ -40,7 +40,7 @@ describe('Vessel Record Page', () => {
     });
 
     const date = await within(firstRecord).findByRole('cell', {
-      name: '7/20/2021',
+      name: '20/07/2021',
     });
 
     const mfvrNum = await within(firstRecord).findByRole('cell', {

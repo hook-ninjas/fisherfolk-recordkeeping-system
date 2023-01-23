@@ -39,7 +39,7 @@ describe('Gear Record Page', () => {
     });
 
     const date = await within(firstRecord).findByRole('cell', {
-      name: '10/21/2021',
+      name: '21/10/2021',
     });
 
     const classification = await within(firstRecord).findByRole('cell', {
