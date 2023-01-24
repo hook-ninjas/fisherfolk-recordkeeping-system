@@ -391,7 +391,7 @@ export default function AddVesselWithGearForm({
               radioOptions={registrationTypeForBoatsAndGears}
             />
           </Box>
-          
+
           <Grid container spacing={-2} sx={{ ml: 1, mr: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
@@ -444,7 +444,6 @@ export default function AddVesselWithGearForm({
                 errors={errors}
                 isLoading={isLoading}
                 isDisabled={isLoading}
-                label=""
                 name="type"
                 placeholder="Select Type"
                 onCreateOption={handleCreateTypeVessel}

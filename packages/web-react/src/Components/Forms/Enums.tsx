@@ -34,7 +34,7 @@ export const civilStatusOptions = Object.values(CivilStatus);
 
 export const sourceOfIncomeOptions = Object.values(SourceOfIncome).slice(0, -1);
 
-export const barangayOptions = data.barangays.sort();
+export const barangayOptions = data.barangays.sort().map((a) => createOption(a));
 
 export const genderOptions = Object.values(Gender).map((a) => createOption(a));
 

@@ -109,6 +109,7 @@ export default function AddFisherfolkForm({
   const [educationalBackgrounds, setEducationalBackgrounds] = useState(
     educationalBackgroundOptions
   );
+  const [barangays, setBarangays] = useState(barangayOptions);
   const [otherFishingActivities, setOtherFishingActivities] = React.useState({
     CaptureFishing: false,
     Aquaculture: false,
@@ -147,6 +148,15 @@ export default function AddFisherfolkForm({
     }, 1000);
   };
 
+  const handleCreateBarangay = (inputValue: string) => {
+    setIsLoading(true);
+    setTimeout(() => {
+      const newValue = createOption(inputValue);
+      setIsLoading(false);
+      setBarangays((prev) => [...prev, newValue]);
+    }, 1000);
+  };
+
   const { CaptureFishing, Aquaculture, FishVending, FishProcessing } =
     otherFishingActivities;
 
@@ -154,36 +164,36 @@ export default function AddFisherfolkForm({
     registrationType: string()
       .nullable()
       .oneOf(getValues(registrationTypes))
-      .required('Select an option for registration type.'),
+      .required('Select registration type.'),
     lastName: string().required('Enter last name.'),
     firstName: string().required('Enter first name.'),
     middleName: string().required('Enter middle name.'),
     salutation: string()
       .nullable()
       .oneOf(getValues(salutationOptions))
-      .required('Select an option for salutation.'),
+      .required('Select salutation.'),
     contactNumber: string()
       .required('Enter contact number.')
       .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
-    barangay: string().required('Select an option for barangay'),
+    barangay: string().required('Enter or select barangay.'),
     cityMunicipality: string().required('Enter city/municipality.'),
     province: string().required('Enter province.'),
-    residentYear: string().matches(/^\d{4}$/, 'Please enter year.'),
+    residentYear: string().matches(/^\d{4}$/, 'Enter year of residency.'),
     gender: string()
       .nullable()
       .oneOf(getValues(genderOptions))
-      .required('Select an option for gender.'),
+      .required('Select gender.'),
     age: string()
       .matches(/^$|\d{1,3}$/, 'Age must be a number.')
       .required('Enter age.'),
-    dateOfBirth: string().nullable().required('Select date of birth.'),
+    dateOfBirth: string().nullable().required('Enter date of birth.'),
     placeOfBirth: string().required('Enter place of birth.'),
-    civilStatus: string().required('Select an option for civil status.'),
+    civilStatus: string().required('Select civil status.'),
     educationalBackground: mixed()
       .nullable()
       .oneOf(getValues(educationalBackgrounds))
       .required('Enter or select educational background.'),
-    numberOfChildren: string().matches(/^$|\d{1,2}$/, 'Must be a number.'),
+    numOfChildren: string().matches(/^$|\d{1,2}$/, 'Enter a number.'),
     nationality: mixed()
       .nullable()
       .oneOf(getValues(nationalities))
@@ -196,9 +206,7 @@ export default function AddFisherfolkForm({
       .required('Enter contact number of person to notify.')
       .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
     ptnAddress: string().required('Enter address of person to notify.'),
-    mainFishingActivity: string().required(
-      'Select an option for main fishing activity.'
-    ),
+    mainFishingActivity: string().required('Select main fishing activity.'),
     orgMemberSince: string().matches(/^$|\d{4}$/, 'Please enter year.'),
   });
 
@@ -250,8 +258,8 @@ export default function AddFisherfolkForm({
         religion: data.religion,
         residentYear: parseInt(data.residentYear),
         salutation: data.salutation,
-        numOfChildren: parseInt(data.numberOfChildren),
-        livelihoods: []
+        numOfChildren: parseInt(data.numOfChildren),
+        livelihoods: [],
       },
     };
     console.log(createFisherfolkInput.data);
@@ -284,7 +292,7 @@ export default function AddFisherfolkForm({
           Fisherfolk Registration
         </FormContainerTitle>
         <DialogContent dividers>
-          <Typography variant="body1" color="GrayText" mb={2} ml={2}>
+          <Typography variant="inherit" color="GrayText" mb={2} ml={2}>
             Type of Registration
           </Typography>
           <Box
@@ -303,7 +311,7 @@ export default function AddFisherfolkForm({
               radioOptions={registrationTypes}
             />
           </Box>
-          <Typography variant="h6" color="GrayText" ml={2}>
+          <Typography variant="h6" color="GrayText" ml={2} mt={2}>
             Personal Information
           </Typography>
           <Box
@@ -367,11 +375,13 @@ export default function AddFisherfolkForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 2 }}>
             <Grid item sm={6} sx={{ mt: 2 }}>
-              <FormInputSelect
+              <FormCreatableSelect
                 name="barangay"
-                label="Select Barangay"
-                data={barangayOptions}
-                onSavedValue=""
+                placeholder="Select Barangay"
+                isLoading={isLoading}
+                isDisabled={isLoading}
+                onCreateOption={handleCreateBarangay}
+                options={barangays}
                 control={control}
                 register={register}
                 errors={errors}
@@ -501,10 +511,8 @@ export default function AddFisherfolkForm({
                 errors={errors}
                 isLoading={isLoading}
                 isDisabled={isLoading}
-                label=""
                 name="nationality"
                 placeholder="Select Nationality"
-                // onChange={(newValue) => setNationality(newValue)}
                 onCreateOption={handleCreateNationality}
                 options={nationalities}
                 register={register}
@@ -529,7 +537,6 @@ export default function AddFisherfolkForm({
                 errors={errors}
                 isLoading={isLoading}
                 isDisabled={isLoading}
-                label="Educational Background"
                 name="educationalBackground"
                 placeholder="Select Educational Background"
                 onCreateOption={handleCreateEducationalBackground}
@@ -539,7 +546,7 @@ export default function AddFisherfolkForm({
             </Grid>
             <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
               <FormInputText
-                name="numberOfChildren"
+                name="numOfChildren"
                 control={control}
                 label="Number of Children"
                 placeholder=""
@@ -548,7 +555,7 @@ export default function AddFisherfolkForm({
               />
             </Grid>
           </Grid>
-          <Typography variant="h6" color="GrayText" mt={2} mb={-1} ml={2}>
+          <Typography variant="h6" color="GrayText" mt={3} mb={-1} ml={2}>
             Person to Notify Incase of Emergency
           </Typography>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
@@ -620,63 +627,53 @@ export default function AddFisherfolkForm({
                 errors={errors}
               />
             </Grid>
-            <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
-              <Grid item sm={6}>
-                <Typography variant="subtitle1" color="GrayText" mt={-2} mb={3}>
-                  Other Fishing Activities
-                </Typography>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    mt: -3,
-                    mb: 2,
-                    pl: 1,
-                  }}
-                >
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={CaptureFishing}
-                          onChange={handleOtherFishingActivityChange}
-                          name="CaptureFishing"
-                        />
-                      }
-                      label="Capture Fishing"
+            <Typography variant="subtitle1" color="GrayText">
+              Other Fishing Activities
+            </Typography>
+            <Grid container spacing={-2} sx={{ ml: 1}}>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={CaptureFishing}
+                      onChange={handleOtherFishingActivityChange}
+                      name="CaptureFishing"
                     />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={Aquaculture}
-                          onChange={handleOtherFishingActivityChange}
-                          name="Aquaculture"
-                        />
-                      }
-                      label="Aquaculture"
+                  }
+                  label="Capture Fishing"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={Aquaculture}
+                      onChange={handleOtherFishingActivityChange}
+                      name="Aquaculture"
                     />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={FishVending}
-                          onChange={handleOtherFishingActivityChange}
-                          name="FishVending"
-                        />
-                      }
-                      label="Fish Vending"
+                  }
+                  label="Aquaculture"
+                />
+
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={FishVending}
+                      onChange={handleOtherFishingActivityChange}
+                      name="FishVending"
                     />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={FishProcessing}
-                          onChange={handleOtherFishingActivityChange}
-                          name="FishProcessing"
-                        />
-                      }
-                      label="Fish Processing"
+                  }
+                  label="Fish Vending"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={FishProcessing}
+                      onChange={handleOtherFishingActivityChange}
+                      name="FishProcessing"
                     />
-                  </FormGroup>
-                </Box>
-              </Grid>
+                  }
+                  label="Fish Processing"
+                />
+              </FormGroup>
             </Grid>
           </Grid>
           <Typography variant="h6" color="GrayText" mb={-1} ml={2}>

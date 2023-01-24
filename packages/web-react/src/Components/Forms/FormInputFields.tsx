@@ -50,7 +50,7 @@ interface FormInputTextProps {
   name: string;
   label: string;
   placeholder: string;
-  control: Control<FieldValues, any>;
+  control: Control<FieldValues, unknown>;
   options?: Option[];
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
@@ -61,7 +61,7 @@ interface FormInputSelectProps {
   label: string;
   onSavedValue: string;
   data: string[];
-  control: Control<FieldValues, any>;
+  control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
 }
@@ -69,7 +69,7 @@ interface FormInputSelectProps {
 interface FormInputRadioProps {
   name: string;
   label: string;
-  control: Control<FieldValues, any>;
+  control: Control<FieldValues, unknown>;
   radioOptions: Option[];
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
@@ -77,13 +77,12 @@ interface FormInputRadioProps {
 
 interface FormCreatableSelectProps {
   name: string;
-  label: string;
   options: Option[];
   isLoading: boolean;
   isDisabled: boolean;
   placeholder: string;
   onCreateOption: (input: string) => void;
-  control: Control<FieldValues, any>;
+  control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
 }
@@ -229,7 +228,6 @@ export const FormInputRadio = ({
 
 export const FormCreatableSelect = ({
   name,
-  label,
   options,
   isLoading,
   isDisabled,
@@ -239,7 +237,7 @@ export const FormCreatableSelect = ({
   errors,
   register,
 }: FormCreatableSelectProps) => (
-  <FormControl error={!!errors[name]} aria-label={label}>
+  <FormControl error={!!errors[name]}>
     <Controller
       name={name}
       render={({ field: { onChange, value } }) => (
