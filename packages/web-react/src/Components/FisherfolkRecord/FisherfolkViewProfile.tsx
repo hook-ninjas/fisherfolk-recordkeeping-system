@@ -1,15 +1,6 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import {
-  Box,
-  Button,
-  Grid,
-  Paper,
-  Stack,
-  Typography,
-  Tab,
-  Tabs,
-} from '@mui/material';
+import { Box, Grid, Paper, Stack, Typography, Tab, Tabs } from '@mui/material';
 import VesselTable from '../Table/VesselTable';
 import GearTable from '../Table/GearTable';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
@@ -18,6 +9,8 @@ import { FisherfolkByIdDocument } from '../../graphql/generated';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { splitUpperCase } from '../../utils/utils';
+import { CustomAddButton, CustomBtnText } from '../Buttons/CustomAddButton';
+import AddIcon from '@mui/icons-material/Add';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -98,7 +91,8 @@ function BasicTabs() {
   const handleAddVesselGearClose = () => setAddGearsBtn(false);
   const [value, setValue] = useState(0);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => setValue(newValue);
+  const handleChange = (event: React.SyntheticEvent, newValue: number) =>
+    setValue(newValue);
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -116,13 +110,13 @@ function BasicTabs() {
           <Tab label="Gears" {...a11yProps(1)} />
         </Tabs>
         <Box m={1}>
-          <Button
+          <CustomAddButton
             variant="contained"
-            sx={{ height: 30, background: '#28c181' }}
+            endIcon={<AddIcon />}
             onClick={handleAddMemberOpen}
           >
-            Add Boat/Gear
-          </Button>
+            <CustomBtnText> Add Boat/Gear</CustomBtnText>
+          </CustomAddButton>
           {addVesselGearBtn && (
             <AddVesselWithGearForm
               handleClose={handleAddVesselGearClose}
@@ -296,10 +290,7 @@ const FisherfolkViewProfile = () => {
             title="Number of Children"
             description={fisherfolk?.numOfChildren}
           />
-          <Info
-            title="Resident Year"
-            description={fisherfolk?.residentYear}
-          />
+          <Info title="Resident Year" description={fisherfolk?.residentYear} />
           <InfoTitle description="Person to Notify incase of Emergency" />
           <Info title="Name" description={fisherfolk?.personToNotify} />
           <Info
