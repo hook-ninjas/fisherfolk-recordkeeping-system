@@ -56,7 +56,6 @@ export interface NexusGenInputs {
     numOfChildren: number; // Int!
     organization?: NexusGenInputs['OrganizationInput'] | null; // OrganizationInput
     personToNotify: string; // String!
-    photo: string; // String!
     placeOfBirth: string; // String!
     province: string; // String!
     ptnAddress: string; // String!
@@ -65,12 +64,23 @@ export interface NexusGenInputs {
     religion: string; // String!
     residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
-    signature: string; // String!
   }
   CreateGearInput: { // input type
     classification: NexusGenEnums['GearClassification']; // GearClassification!
     fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    photo?: string | null; // String
     type: string; // String!
+  }
+  CreateImageInput: { // input type
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    format: string; // String!
+    gear_id: NexusGenScalars['BigInt']; // BigInt!
+    name: string; // String!
+    text: string; // String!
+    updated_at: NexusGenScalars['DateTime']; // DateTime!
+    url: string; // String!
+    version: string; // String!
+    vessel_id: NexusGenScalars['BigInt']; // BigInt!
   }
   CreateUserInput: { // input type
     password: string; // String!
@@ -86,6 +96,7 @@ export interface NexusGenInputs {
     mfvrNumber: string; // String!
     name: string; // String!
     netTonnage?: number | null; // Float
+    photo?: string | null; // String
     placeBuilt: string; // String!
     registeredBreadth?: number | null; // Float
     registeredDepth?: number | null; // Float
@@ -247,6 +258,7 @@ export interface NexusGenObjects {
     mfvrNumber: string; // String!
     name: string; // String!
     netTonnage?: number | null; // Float
+    photo?: string | null; // String
     placeBuilt: string; // String!
     registeredBreadth?: number | null; // Float
     registeredDepth?: number | null; // Float
@@ -363,6 +375,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     createGears: NexusGenRootTypes['Gear'][]; // [Gear!]!
+    createImage: NexusGenRootTypes['Image']; // Image!
     createUser: NexusGenRootTypes['User']; // User!
     createVessel: NexusGenRootTypes['Vessel']; // Vessel!
     createVesselWithGear: NexusGenRootTypes['Vessel']; // Vessel!
@@ -426,6 +439,7 @@ export interface NexusGenFieldTypes {
     mfvrNumber: string; // String!
     name: string; // String!
     netTonnage: number | null; // Float
+    photo: string | null; // String
     placeBuilt: string; // String!
     registeredBreadth: number | null; // Float
     registeredDepth: number | null; // Float
@@ -532,6 +546,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createFisherfolk: 'Fisherfolk'
     createGears: 'Gear'
+    createImage: 'Image'
     createUser: 'User'
     createVessel: 'Vessel'
     createVesselWithGear: 'Vessel'
@@ -595,6 +610,7 @@ export interface NexusGenFieldTypeNames {
     mfvrNumber: 'String'
     name: 'String'
     netTonnage: 'Float'
+    photo: 'String'
     placeBuilt: 'String'
     registeredBreadth: 'Float'
     registeredDepth: 'Float'
@@ -616,6 +632,9 @@ export interface NexusGenArgTypes {
     }
     createGears: { // args
       gears: NexusGenInputs['CreateGearInput'][]; // [CreateGearInput!]!
+    }
+    createImage: { // args
+      data: NexusGenInputs['CreateImageInput']; // CreateImageInput!
     }
     createUser: { // args
       data: NexusGenInputs['CreateUserInput']; // CreateUserInput!

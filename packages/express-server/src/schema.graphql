@@ -32,7 +32,6 @@ input CreateFisherfolkInput {
   numOfChildren: Int!
   organization: OrganizationInput
   personToNotify: String!
-  photo: String!
   placeOfBirth: String!
   province: String!
   ptnAddress: String!
@@ -41,13 +40,25 @@ input CreateFisherfolkInput {
   religion: String!
   residentYear: Int!
   salutation: Salutation!
-  signature: String!
 }
 
 input CreateGearInput {
   classification: GearClassification!
   fisherfolkId: BigInt!
+  photo: String
   type: String!
+}
+
+input CreateImageInput {
+  fisherfolkId: BigInt!
+  format: String!
+  gear_id: BigInt!
+  name: String!
+  text: String!
+  updated_at: DateTime!
+  url: String!
+  version: String!
+  vessel_id: BigInt!
 }
 
 input CreateUserInput {
@@ -65,6 +76,7 @@ input CreateVesselInput {
   mfvrNumber: String!
   name: String!
   netTonnage: Float
+  photo: String
   placeBuilt: String!
   registeredBreadth: Float
   registeredDepth: Float
@@ -216,6 +228,7 @@ type Member {
 type Mutation {
   createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
   createGears(gears: [CreateGearInput!]!): [Gear!]!
+  createImage(data: CreateImageInput!): Image!
   createUser(data: CreateUserInput!): User!
   createVessel(vessel: CreateVesselInput!): Vessel!
   createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
@@ -305,6 +318,7 @@ type Vessel {
   mfvrNumber: String!
   name: String!
   netTonnage: Float
+  photo: String
   placeBuilt: String!
   registeredBreadth: Float
   registeredDepth: Float

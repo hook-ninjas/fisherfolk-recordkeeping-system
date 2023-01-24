@@ -192,6 +192,7 @@ export type GearResolvers<ContextType = any, ParentType extends ResolversParentT
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   fisherfolk?: Resolver<ResolversTypes['Fisherfolk'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  photo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -323,6 +324,7 @@ export type VesselResolvers<ContextType = any, ParentType extends ResolversParen
   mfvrNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   netTonnage?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  photo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   placeBuilt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   registeredBreadth?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   registeredDepth?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
@@ -405,6 +407,7 @@ export type CreateFisherfolkInput = {
 export type CreateGearInput = {
   classification: GearClassification;
   fisherfolkId: Scalars['BigInt'];
+  photo?: InputMaybe<Scalars['String']>;
   type: Scalars['String'];
 };
 
@@ -423,6 +426,7 @@ export type CreateVesselInput = {
   mfvrNumber: Scalars['String'];
   name: Scalars['String'];
   netTonnage?: InputMaybe<Scalars['Float']>;
+  photo?: InputMaybe<Scalars['String']>;
   placeBuilt: Scalars['String'];
   registeredBreadth?: InputMaybe<Scalars['Float']>;
   registeredDepth?: InputMaybe<Scalars['Float']>;
@@ -495,6 +499,7 @@ export type Gear = {
   createdAt: Scalars['DateTime'];
   fisherfolk: Fisherfolk;
   id: Scalars['BigInt'];
+  photo?: Maybe<Scalars['String']>;
   type: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
@@ -732,6 +737,7 @@ export type Vessel = {
   mfvrNumber: Scalars['String'];
   name: Scalars['String'];
   netTonnage?: Maybe<Scalars['Float']>;
+  photo?: Maybe<Scalars['String']>;
   placeBuilt: Scalars['String'];
   registeredBreadth?: Maybe<Scalars['Float']>;
   registeredDepth?: Maybe<Scalars['Float']>;
