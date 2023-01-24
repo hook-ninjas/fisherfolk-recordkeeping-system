@@ -446,6 +446,7 @@ export default function AddVesselWithGearForm({
                 isDisabled={isLoading}
                 label=""
                 name="type"
+                placeholder="Select Type"
                 onCreateOption={handleCreateTypeVessel}
                 options={vesselTypes}
                 register={register}

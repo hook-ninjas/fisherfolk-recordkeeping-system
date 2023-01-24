@@ -498,6 +498,7 @@ export default function AddFisherfolkForm({
                 isDisabled={isLoading}
                 label=""
                 name="nationality"
+                placeholder="Select Nationality"
                 // onChange={(newValue) => setNationality(newValue)}
                 onCreateOption={handleCreateNationality}
                 options={nationalities}
@@ -525,6 +526,7 @@ export default function AddFisherfolkForm({
                 isDisabled={isLoading}
                 label="Educational Background"
                 name="educationalBackground"
+                placeholder="Select Educational Background"
                 onCreateOption={handleCreateEducationalBackground}
                 options={educationalBackgrounds}
                 register={register}

@@ -74,12 +74,13 @@ interface FormInputRadioProps {
 }
 
 interface FormCreatableSelectProps {
-  name: string,
-  label: string,
-  options: Option[],
-  isLoading: boolean,
-  isDisabled: boolean,
-  onCreateOption: ((input: string) => void),
+  name: string;
+  label: string;
+  options: Option[];
+  isLoading: boolean;
+  isDisabled: boolean;
+  placeholder: string;
+  onCreateOption: (input: string) => void;
   control: Control<FieldValues, any>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
@@ -196,10 +197,10 @@ export const FormCreatableSelect = ({
   isLoading,
   isDisabled,
   onCreateOption,
-  // value,
+  placeholder,
   control,
   errors,
-  register
+  register,
 }: FormCreatableSelectProps) => (
   <FormControl error={!!errors[name]} aria-label={label}>
     <Controller
@@ -213,6 +214,7 @@ export const FormCreatableSelect = ({
           onChange={(input) => onChange(input?.value)}
           onCreateOption={onCreateOption}
           value={options.find((c) => c.value === value)}
+          placeholder={placeholder}
           {...register}
           styles={style}
         />
