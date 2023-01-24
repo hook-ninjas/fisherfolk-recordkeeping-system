@@ -14,25 +14,29 @@ export const createOption = (label: string) => ({
   value: label,
 });
 
+export const cityMunicipalityOptions = [createOption('Iloilo City')];
+
+export const provinceOptions = [createOption('Iloilo')];
+
 export const nationalityOptions = [createOption('Filipino')];
 
 export const vesselTypeOptions = ['Non-Motorized', 'Motorized'].map((a) =>
   createOption(a)
 );
 
-export const materials = Object.values(Material);
+export const materialOptions = Object.values(Material);
 
 export const educationalBackgroundOptions = Object.values(
   EducationalBackground
 ).map((a) => createOption(a));
 
-export const civilStatus = Object.values(CivilStatus);
+export const civilStatusOptions = Object.values(CivilStatus);
 
-export const sourcesOfIncome = Object.values(SourceOfIncome).slice(0, -1);
+export const sourceOfIncomeOptions = Object.values(SourceOfIncome).slice(0, -1);
 
-export const barangays = data.barangays.sort();
+export const barangayOptions = data.barangays.sort();
 
-export const genders = Object.values(Gender).map((a) => createOption(a));
+export const genderOptions = Object.values(Gender).map((a) => createOption(a));
 
 export const registrationTypes = ['NewRegistration', 'Renewal'].map((a) =>
   createOption(a)
@@ -43,7 +47,7 @@ export const registrationTypeForBoatsAndGears = [
   'Renewal',
 ].map((a) => createOption(a));
 
-export const salutations = Object.values(Salutation).map((a) =>
+export const salutationOptions = Object.values(Salutation).map((a) =>
   createOption(a)
 );
 

@@ -19,6 +19,7 @@ import {
   FormInputSelect,
   FormInputText,
   FormCreatableSelect,
+  FormInputAutoText,
 } from './FormInputFields';
 import { useForm } from 'react-hook-form';
 import { object, string, mixed } from 'yup';
@@ -34,11 +35,13 @@ import {
   educationalBackgroundOptions,
   createOption,
   registrationTypes,
-  salutations,
-  barangays,
-  genders,
-  civilStatus,
-  sourcesOfIncome,
+  salutationOptions,
+  barangayOptions,
+  genderOptions,
+  civilStatusOptions,
+  sourceOfIncomeOptions,
+  cityMunicipalityOptions,
+  provinceOptions,
 } from './Enums';
 import { getValues } from '../../utils/utils';
 
@@ -157,7 +160,7 @@ export default function AddFisherfolkForm({
     middleName: string().required('Enter middle name.'),
     salutation: string()
       .nullable()
-      .oneOf(getValues(salutations))
+      .oneOf(getValues(salutationOptions))
       .required('Select an option for salutation.'),
     contactNumber: string()
       .required('Enter contact number.')
@@ -168,7 +171,7 @@ export default function AddFisherfolkForm({
     residentYear: string().matches(/^\d{4}$/, 'Please enter year.'),
     gender: string()
       .nullable()
-      .oneOf(getValues(genders))
+      .oneOf(getValues(genderOptions))
       .required('Select an option for gender.'),
     age: string()
       .matches(/^$|\d{1,3}$/, 'Age must be a number.')
@@ -315,7 +318,7 @@ export default function AddFisherfolkForm({
               control={control}
               register={register}
               errors={errors}
-              radioOptions={salutations}
+              radioOptions={salutationOptions}
             />
           </Box>
           <Grid container spacing={-2} sx={{ ml: 1, mr: 1 }}>
@@ -367,7 +370,7 @@ export default function AddFisherfolkForm({
               <FormInputSelect
                 name="barangay"
                 label="Select Barangay"
-                data={barangays}
+                data={barangayOptions}
                 onSavedValue=""
                 control={control}
                 register={register}
@@ -375,11 +378,12 @@ export default function AddFisherfolkForm({
               />
             </Grid>
             <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
-              <FormInputText
+              <FormInputAutoText
                 name="cityMunicipality"
                 control={control}
                 label="City/Municipality"
                 placeholder=""
+                options={cityMunicipalityOptions}
                 register={register}
                 errors={errors}
               />
@@ -387,11 +391,12 @@ export default function AddFisherfolkForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputAutoText
                 name="province"
                 control={control}
                 label="Province"
                 placeholder=""
+                options={provinceOptions}
                 register={register}
                 errors={errors}
               />
@@ -484,7 +489,7 @@ export default function AddFisherfolkForm({
                   register={register}
                   errors={errors}
                   control={control}
-                  radioOptions={genders}
+                  radioOptions={genderOptions}
                 />
               </Box>
             </Grid>
@@ -509,7 +514,7 @@ export default function AddFisherfolkForm({
               <FormInputSelect
                 name="civilStatus"
                 label="Select Civil Status"
-                data={civilStatus}
+                data={civilStatusOptions}
                 onSavedValue=""
                 control={control}
                 register={register}
@@ -598,7 +603,7 @@ export default function AddFisherfolkForm({
               <FormInputSelect
                 name="mainFishingActivity"
                 label="Main Fishing Activity "
-                data={sourcesOfIncome}
+                data={sourceOfIncomeOptions}
                 onSavedValue=""
                 control={control}
                 register={register}

@@ -37,7 +37,7 @@ import {
   registrationTypeForBoatsAndGears,
   gears,
   vesselTypeOptions,
-  materials,
+  materialOptions,
 } from './Enums';
 import { useParams } from 'react-router-dom';
 
@@ -202,7 +202,7 @@ export default function AddVesselWithGearForm({
       homeport: string(),
       horsepower: string(),
       mfvrNumber: string(),
-      material: string().nullable().oneOf(materials),
+      material: string().nullable().oneOf(materialOptions),
       name: string(),
       netTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
       placeBuilt: string(),
@@ -431,7 +431,7 @@ export default function AddVesselWithGearForm({
               <FormInputSelect
                 name="material"
                 label="Select Material Used"
-                data={materials}
+                data={materialOptions}
                 onSavedValue=""
                 control={control}
                 register={register}
