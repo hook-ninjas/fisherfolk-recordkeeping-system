@@ -10,6 +10,7 @@ import Login from './Components/Forms/LoginForm';
 import FisherfolkViewProfile from './Components/FisherfolkRecord/FisherfolkViewProfile';
 import FisherfolkBoatRecord from './Components/FisherfolkRecord/FisherfolkBoatRecord';
 import FisherfolkGearRecord from './Components/FisherfolkRecord/FisherfolkGearRecord';
+import CreateAccount from './Components/Forms/CreateAccountForm';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
@@ -29,6 +30,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             <Route path="fisherfolk-gears" element={<FisherfolkGearRecord />} />
           </Route>
           <Route path="login" element={<Login />} />
+          <Route path="create-account" element={<CreateAccount />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </ApolloProvider>
