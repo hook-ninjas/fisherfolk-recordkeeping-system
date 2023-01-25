@@ -16,8 +16,24 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { object, string } from 'yup';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { MutationCreateUserArgs } from '../../graphql/generated';
 
 const theme = createTheme();
+
+const createAccountSchema = object().shape({
+  username: string()
+    .required('Enter username.')
+    .min(6, 'Username must be atleast 6 characters.'),
+  password: string()
+    .required('Enter password.')
+    .matches(
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*?[0-9])(?=.*[#?!@$%^&*_-]).{8,}$/,
+      'Password must contain atleast 8 characters, one uppercase, one lowercase, one number and one special character.'
+    ),
+});
 
 function CreateAccount() {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,6 +42,31 @@ function CreateAccount() {
   const navigate = useNavigate();
   const handleLogin = () => {
     navigate('/login');
+  };
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(createAccountSchema),
+  });
+
+  const onSubmit = handleSubmit(async (data) => {
+    const createRegisterUserInput: MutationCreateUserArgs = {
+      data: {
+        username: data.username,
+        password: data.password,
+      },
+    };
+  });
+
+  const handleSubmitCreateAccountForm = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    onSubmit();
   };
 
   return (
@@ -44,30 +85,50 @@ function CreateAccount() {
             Create Account
           </Typography>
           <Box component="form" sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              fullWidth
-              id="username"
-              label="Username"
+            <Controller
+              name="username"
+              control={control}
+              render={({ field: { value } }) => (
+                <TextField
+                  margin="normal"
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  value={value}
+                  {...register('username')}
+                  helperText={errors['username']?.message?.toString()}
+                  error={!!errors['username']}
+                />
+              )}
             />
-            <TextField
-              margin="normal"
-              fullWidth
-              label="Password"
-              id="password"
-              type={showPassword ? 'text' : 'password'}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="pwd-visibility"
-                      onClick={handleClickShowPassword}
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
+            <Controller
+              name="password"
+              control={control}
+              render={({ field: { value } }) => (
+                <TextField
+                  margin="normal"
+                  fullWidth
+                  label="Password"
+                  id="password"
+                  value={value}
+                  type={showPassword ? 'text' : 'password'}
+                  {...register('password')}
+                  helperText={errors['password']?.message?.toString()}
+                  error={!!errors['password']}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="pwd-visibility"
+                          onClick={handleClickShowPassword}
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              )}
             />
             <Button
               type="submit"
@@ -80,6 +141,9 @@ function CreateAccount() {
                 fontSize: 12,
                 fontWeight: '600',
                 color: 'whitesmoke',
+              }}
+              onClick={(e) => {
+                handleSubmitCreateAccountForm(e);
               }}
             >
               Create account
