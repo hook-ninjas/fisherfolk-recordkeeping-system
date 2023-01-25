@@ -76,7 +76,6 @@ input CreateVesselInput {
   mfvrNumber: String!
   name: String!
   netTonnage: Float
-  photo: String
   placeBuilt: String!
   registeredBreadth: Float
   registeredDepth: Float
@@ -318,7 +317,6 @@ type Vessel {
   mfvrNumber: String!
   name: String!
   netTonnage: Float
-  photo: String
   placeBuilt: String!
   registeredBreadth: Float
   registeredDepth: Float

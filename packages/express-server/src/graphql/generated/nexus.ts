@@ -96,7 +96,6 @@ export interface NexusGenInputs {
     mfvrNumber: string; // String!
     name: string; // String!
     netTonnage?: number | null; // Float
-    photo?: string | null; // String
     placeBuilt: string; // String!
     registeredBreadth?: number | null; // Float
     registeredDepth?: number | null; // Float
@@ -258,7 +257,6 @@ export interface NexusGenObjects {
     mfvrNumber: string; // String!
     name: string; // String!
     netTonnage?: number | null; // Float
-    photo?: string | null; // String
     placeBuilt: string; // String!
     registeredBreadth?: number | null; // Float
     registeredDepth?: number | null; // Float
@@ -439,7 +437,6 @@ export interface NexusGenFieldTypes {
     mfvrNumber: string; // String!
     name: string; // String!
     netTonnage: number | null; // Float
-    photo: string | null; // String
     placeBuilt: string; // String!
     registeredBreadth: number | null; // Float
     registeredDepth: number | null; // Float
@@ -610,7 +607,6 @@ export interface NexusGenFieldTypeNames {
     mfvrNumber: 'String'
     name: 'String'
     netTonnage: 'Float'
-    photo: 'String'
     placeBuilt: 'String'
     registeredBreadth: 'Float'
     registeredDepth: 'Float'
