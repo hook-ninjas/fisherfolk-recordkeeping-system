@@ -24,6 +24,7 @@ import {
   MutationCreateUserArgs,
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
+import { showFailAlert } from '../ConfirmationDialog/Alerts';
 
 const theme = createTheme();
 
@@ -51,6 +52,9 @@ function CreateAccount() {
   const [createUser] = useMutation(CreateUserDocument, {
     onCompleted: () => {
       handleLogin();
+    },
+    onError: (err) => {
+      showFailAlert(err.message);
     },
   });
 

@@ -259,10 +259,10 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showSuccessAlert();
     },
-    onError: () => {
+    onError: (err) => {
       handleClose();
       handleComplete();
-      showFailAlert();
+      showFailAlert(err.message);
     },
   });
 
@@ -272,10 +272,10 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showSuccessAlert();
     },
-    onError: () => {
+    onError: (err) => {
       handleClose();
       handleComplete();
-      showFailAlert();
+      showFailAlert(err.message);
     },
   });
 
@@ -285,10 +285,10 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showSuccessAlert();
     },
-    onError: () => {
+    onError: (err) => {
       handleClose();
       handleComplete();
-      showFailAlert();
+      showFailAlert(err.message);
     },
   });
 
