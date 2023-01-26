@@ -80,6 +80,7 @@ export type ResolversTypes = {
   CivilStatus: CivilStatus;
   CreateFisherfolkInput: CreateFisherfolkInput;
   CreateGearInput: CreateGearInput;
+  CreateImageInput: CreateImageInput;
   CreateUserInput: CreateUserInput;
   CreateVesselInput: CreateVesselInput;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
@@ -116,6 +117,7 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   CreateFisherfolkInput: CreateFisherfolkInput;
   CreateGearInput: CreateGearInput;
+  CreateImageInput: CreateImageInput;
   CreateUserInput: CreateUserInput;
   CreateVesselInput: CreateVesselInput;
   DateTime: Scalars['DateTime'];
@@ -192,7 +194,6 @@ export type GearResolvers<ContextType = any, ParentType extends ResolversParentT
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   fisherfolk?: Resolver<ResolversTypes['Fisherfolk'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  photo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -213,13 +214,11 @@ export type ImageResolvers<ContextType = any, ParentType extends ResolversParent
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   fisherfolk?: Resolver<Maybe<ResolversTypes['Fisherfolk']>, ParentType, ContextType>;
   fisherfolkId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  format?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isArchive?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  version?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -251,6 +250,7 @@ export type MemberResolvers<ContextType = any, ParentType extends ResolversParen
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createFisherfolk?: Resolver<ResolversTypes['Fisherfolk'], ParentType, ContextType, RequireFields<MutationCreateFisherfolkArgs, 'data'>>;
   createGears?: Resolver<Array<ResolversTypes['Gear']>, ParentType, ContextType, RequireFields<MutationCreateGearsArgs, 'gears'>>;
+  createImage?: Resolver<ResolversTypes['Image'], ParentType, ContextType, RequireFields<MutationCreateImageArgs, 'data'>>;
   createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'data'>>;
   createVessel?: Resolver<ResolversTypes['Vessel'], ParentType, ContextType, RequireFields<MutationCreateVesselArgs, 'vessel'>>;
   createVesselWithGear?: Resolver<ResolversTypes['Vessel'], ParentType, ContextType, RequireFields<MutationCreateVesselWithGearArgs, 'gears' | 'vessel'>>;
@@ -324,7 +324,6 @@ export type VesselResolvers<ContextType = any, ParentType extends ResolversParen
   mfvrNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   netTonnage?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  photo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   placeBuilt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   registeredBreadth?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   registeredDepth?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
@@ -411,6 +410,16 @@ export type CreateGearInput = {
   type: Scalars['String'];
 };
 
+export type CreateImageInput = {
+  fisherfolkId: Scalars['BigInt'];
+  gear_id: Scalars['BigInt'];
+  name: Scalars['String'];
+  text: Scalars['String'];
+  updated_at: Scalars['DateTime'];
+  url: Scalars['String'];
+  vessel_id: Scalars['BigInt'];
+};
+
 export type CreateUserInput = {
   password: Scalars['String'];
   username: Scalars['String'];
@@ -426,7 +435,6 @@ export type CreateVesselInput = {
   mfvrNumber: Scalars['String'];
   name: Scalars['String'];
   netTonnage?: InputMaybe<Scalars['Float']>;
-  photo?: InputMaybe<Scalars['String']>;
   placeBuilt: Scalars['String'];
   registeredBreadth?: InputMaybe<Scalars['Float']>;
   registeredDepth?: InputMaybe<Scalars['Float']>;
@@ -499,7 +507,6 @@ export type Gear = {
   createdAt: Scalars['DateTime'];
   fisherfolk: Fisherfolk;
   id: Scalars['BigInt'];
-  photo?: Maybe<Scalars['String']>;
   type: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
@@ -537,13 +544,11 @@ export type Image = {
   createdAt: Scalars['DateTime'];
   fisherfolk?: Maybe<Fisherfolk>;
   fisherfolkId: Scalars['BigInt'];
-  format: Scalars['String'];
   id: Scalars['String'];
   isArchive: Scalars['Boolean'];
   name: Scalars['String'];
   updatedAt: Scalars['DateTime'];
   url: Scalars['String'];
-  version: Scalars['String'];
 };
 
 export type Livelihood = {
@@ -581,6 +586,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createFisherfolk: Fisherfolk;
   createGears: Array<Gear>;
+  createImage: Image;
   createUser: User;
   createVessel: Vessel;
   createVesselWithGear: Vessel;
@@ -594,6 +600,11 @@ export type MutationCreateFisherfolkArgs = {
 
 export type MutationCreateGearsArgs = {
   gears: Array<CreateGearInput>;
+};
+
+
+export type MutationCreateImageArgs = {
+  data: CreateImageInput;
 };
 
 
@@ -737,7 +748,6 @@ export type Vessel = {
   mfvrNumber: Scalars['String'];
   name: Scalars['String'];
   netTonnage?: Maybe<Scalars['Float']>;
-  photo?: Maybe<Scalars['String']>;
   placeBuilt: Scalars['String'];
   registeredBreadth?: Maybe<Scalars['Float']>;
   registeredDepth?: Maybe<Scalars['Float']>;
