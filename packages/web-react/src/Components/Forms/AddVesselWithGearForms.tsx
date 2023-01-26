@@ -29,6 +29,8 @@ import {
   CreateVessselWithGearDocument,
   GearClassification,
   MutationCreateVesselWithGearArgs,
+  MutationCreateImageArgs,
+  CreateImageDocument
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
@@ -306,6 +308,18 @@ export default function AddVesselWithGearForm({
     },
   });
 
+  const [createImage] = useMutation(CreateImageDocument, {
+    onCompleted: () => {
+      handleClose();
+      handleComplete();
+
+    },
+    onError: () => {
+      handleClose();
+      handleComplete();
+    },
+  });
+
   const onSubmit = handleSubmit(async (data) => {
     handleSubmitting();
     const createVesselWithGearInput: MutationCreateVesselWithGearArgs = {
@@ -333,12 +347,30 @@ export default function AddVesselWithGearForm({
       gears: generateGears(gearTypes),
     };
 
+    const createImageInput: MutationCreateImageArgs = {
+      data: {
+        fisherfolkId: parseInt(id!),
+        url: image!.toString(),
+        gear_id: null,
+        vessel_id: null,
+        text: 'none',
+        name: '',
+        updated_at: new Date(),
+      }
+    };
+
     // create vessel only
     if (createVesselWithGearInput.gears.length == 0) {
       await createVessel({
         variables: {
           vessel: createVesselWithGearInput.vessel,
         },
+      });
+
+      await createImage({
+        variables: {
+          data: createImageInput.data,
+        }
       });
     }
 
@@ -348,6 +380,12 @@ export default function AddVesselWithGearForm({
         variables: {
           gears: createVesselWithGearInput.gears,
         },
+      });
+
+      await createImage({
+        variables: {
+          data: createImageInput.data,
+        }
       });
     }
 
@@ -362,7 +400,15 @@ export default function AddVesselWithGearForm({
           vessel: createVesselWithGearInput.vessel,
         },
       });
+
+      await createImage({
+        variables: {
+          data: createImageInput.data,
+        }
+      });
     }
+
+    console.log(image);
   });
 
   const handleSubmitForm = (
