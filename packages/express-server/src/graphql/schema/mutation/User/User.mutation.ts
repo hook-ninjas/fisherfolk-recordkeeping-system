@@ -1,26 +1,17 @@
-import { arg, mutationField, nonNull } from 'nexus';
-import { isValidPassword, isValidUserName } from '../../../../utils/utils';
+import { mutationField } from 'nexus';
 import { createUser } from './User.resolver';
+import { ApolloError } from 'apollo-server-core';
+import { nonNullArg } from '../../../../utils/utils';
+import CreateUserInput from '../../input/User.input';
+import User from '../../model/objecTypes/User';
 
 export const CreateUser = mutationField('createUser', {
-  type: 'User',
+  type: User,
   args: {
-    data: nonNull(
-      arg({
-        type: 'CreateUserInput',
-      })
-    )
+    data: nonNullArg(CreateUserInput),
   },
   validate: async (_, args, context) => {
-    const { username, password } = args.data;
-
-    if (!isValidPassword(password)) {
-      throw new Error('Password must have a digit and be atleast 8 characters long.');
-    }
-
-    if (!isValidUserName(username)) {
-      throw new Error('Username can contain but can not start with (_ .) or digits and must be atleast 6 charaters long.');
-    }
+    const { username } = args.data;
 
     // check if username already exist
     const existingUser = await context.prisma.user.findFirst({
@@ -28,8 +19,10 @@ export const CreateUser = mutationField('createUser', {
         username: username
       }
     });
+
+    // throw error if user exists;
     if (existingUser) {
-      throw new Error('Username is already taken.');
+      throw new ApolloError('Username is already taken.');
     }
   },
   resolve: (_, args, context) => createUser(args.data, context),

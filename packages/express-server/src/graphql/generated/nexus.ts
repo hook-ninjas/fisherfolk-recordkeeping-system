@@ -384,6 +384,7 @@ export interface NexusGenFieldTypes {
     vessels: Array<NexusGenRootTypes['Vessel'] | null> | null; // [Vessel]
   }
   Query: { // field return type
+    existingUser: NexusGenRootTypes['User'] | null; // User
     fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     fisherfolkByRange: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     fisherfolkGears: NexusGenRootTypes['Gear'][]; // [Gear!]!
@@ -553,6 +554,7 @@ export interface NexusGenFieldTypeNames {
     vessels: 'Vessel'
   }
   Query: { // field return type name
+    existingUser: 'User'
     fisherfolk: 'Fisherfolk'
     fisherfolkByRange: 'Fisherfolk'
     fisherfolkGears: 'Gear'
@@ -627,6 +629,9 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    existingUser: { // args
+      username: string; // String!
+    }
     fisherfolk: { // args
       id: NexusGenScalars['BigInt']; // BigInt!
     }
