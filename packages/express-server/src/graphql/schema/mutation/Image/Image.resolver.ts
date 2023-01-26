@@ -17,7 +17,7 @@ export async function uploadImage(
   });
   
 
-  const result = await cloudinary.v2.uploader.upload(image.url);
+  const result = await cloudinary.v2.uploader.upload(image.url, {folder: 'fisherfolk-recordkeeping-system'});
   console.log(result.url); //checks cloudinary url
 
   return await ctx.prisma.image.create({
