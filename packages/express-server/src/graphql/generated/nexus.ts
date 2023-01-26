@@ -73,12 +73,12 @@ export interface NexusGenInputs {
   }
   CreateImageInput: { // input type
     fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
-    gear_id: NexusGenScalars['BigInt']; // BigInt!
+    gear_id?: NexusGenScalars['BigInt'] | null; // BigInt
     name: string; // String!
     text: string; // String!
     updated_at: NexusGenScalars['DateTime']; // DateTime!
     url: string; // String!
-    vessel_id: NexusGenScalars['BigInt']; // BigInt!
+    vessel_id?: NexusGenScalars['BigInt'] | null; // BigInt
   }
   CreateUserInput: { // input type
     password: string; // String!

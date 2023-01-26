@@ -51,12 +51,12 @@ input CreateGearInput {
 
 input CreateImageInput {
   fisherfolkId: BigInt!
-  gear_id: BigInt!
+  gear_id: BigInt
   name: String!
   text: String!
   updated_at: DateTime!
   url: String!
-  vessel_id: BigInt!
+  vessel_id: BigInt
 }
 
 input CreateUserInput {
