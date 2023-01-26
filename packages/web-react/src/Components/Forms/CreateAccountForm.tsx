@@ -19,21 +19,13 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { object, string } from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { MutationCreateUserArgs } from '../../graphql/generated';
+import {
+  CreateUserDocument,
+  MutationCreateUserArgs,
+} from '../../graphql/generated';
+import { useMutation } from '@apollo/client';
 
 const theme = createTheme();
-
-const createAccountSchema = object().shape({
-  username: string()
-    .required('Enter username.')
-    .min(6, 'Username must be atleast 6 characters.'),
-  password: string()
-    .required('Enter password.')
-    .matches(
-      /^(?=.*[A-Z])(?=.*[a-z])(?=.*?[0-9])(?=.*[#?!@$%^&*_-]).{8,}$/,
-      'Password must contain atleast 8 characters, one uppercase, one lowercase, one number and one special character.'
-    ),
-});
 
 function CreateAccount() {
   const [showPassword, setShowPassword] = useState(false);
@@ -43,6 +35,24 @@ function CreateAccount() {
   const handleLogin = () => {
     navigate('/login');
   };
+
+  const createAccountSchema = object().shape({
+    username: string()
+      .required('Enter username.')
+      .min(6, 'Username must be atleast 6 characters.'),
+    password: string()
+      .required('Enter password.')
+      .matches(
+        /^(?=.*[A-Z])(?=.*[a-z])(?=.*?[0-9])(?=.*[#?!@$%^&*_-]).{8,}$/,
+        'Password must contain atleast 8 characters, one uppercase, one lowercase, one number and one special character.'
+      ),
+  });
+
+  const [createUser] = useMutation(CreateUserDocument, {
+    onCompleted: () => {
+      handleLogin();
+    },
+  });
 
   const {
     register,
@@ -54,12 +64,18 @@ function CreateAccount() {
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    const createRegisterUserInput: MutationCreateUserArgs = {
+    const createUserInput: MutationCreateUserArgs = {
       data: {
         username: data.username,
         password: data.password,
       },
     };
+
+    await createUser({
+      variables: {
+        data: createUserInput.data,
+      },
+    });
   });
 
   const handleSubmitCreateAccountForm = (
