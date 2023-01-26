@@ -1,4 +1,4 @@
-import { Context } from '../../../context';
+import { context, Context } from '../../../context';
 import { NexusGenInputs } from '../../../generated/nexus';
 import cloudinary from 'cloudinary';
 import 'dotenv/config';
@@ -6,26 +6,9 @@ import 'dotenv/config';
 
 type CreateImageInput = NexusGenInputs['CreateImageInput'];
 
-export async function createImage(
+export async function uploadImage(
   image: CreateImageInput,
   ctx: Context) {
-
-  return await ctx.prisma.image.create({
-    data: {
-      fisherfolkId: image.fisherfolkId,
-      gearId: image.gear_id,
-      vesselId: image.vessel_id,
-      name: image.name,
-      url: image.url,
-      format: image.format,
-      version: image.version,
-      updatedAt: image.updated_at
-    }
-  });
-}
-
-export async function uploadImage(
-  image: CreateImageInput ) {
   
   cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_NAME,
@@ -33,11 +16,18 @@ export async function uploadImage(
     api_secret: process.env.CLOUDINARY_API_SECRET
   });
   
-  try {
-    const result = await cloudinary.v2.uploader.upload(image.url);
-    return result.url;
-  } catch {
-    return 'Failed to upload an image to cloudinary';
-  } 
-  
+
+  const result = await cloudinary.v2.uploader.upload(image.url);
+  console.log(result.url); //checks cloudinary url
+
+  return await ctx.prisma.image.create({
+    data: {
+      fisherfolkId: image.fisherfolkId,
+      gearId: image.gear_id,
+      vesselId: image.vessel_id,
+      name: result.signature,
+      url: result.url,
+      updatedAt: result.created_at,
+    }
+  });   
 }

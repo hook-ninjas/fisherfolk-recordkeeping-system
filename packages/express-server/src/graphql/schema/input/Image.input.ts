@@ -7,10 +7,8 @@ const CreateImageInput = inputObjectType({
     t.field('fisherfolkId', { type: 'BigInt' });
     t.field('gear_id', { type: 'BigInt' });
     t.field('vessel_id', { type: 'BigInt' });
-    t.string('version');
     t.string('name');
     t.string('url');
-    t.string('format');
     t.field('updated_at', { type: 'DateTime' });
   }
 });

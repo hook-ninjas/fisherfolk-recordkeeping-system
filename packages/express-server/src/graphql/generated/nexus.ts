@@ -73,13 +73,11 @@ export interface NexusGenInputs {
   }
   CreateImageInput: { // input type
     fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
-    format: string; // String!
     gear_id: NexusGenScalars['BigInt']; // BigInt!
     name: string; // String!
     text: string; // String!
     updated_at: NexusGenScalars['DateTime']; // DateTime!
     url: string; // String!
-    version: string; // String!
     vessel_id: NexusGenScalars['BigInt']; // BigInt!
   }
   CreateUserInput: { // input type
@@ -191,13 +189,11 @@ export interface NexusGenObjects {
   Image: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
-    format: string; // String!
     id: string; // String!
     isArchive: boolean; // Boolean!
     name: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     url: string; // String!
-    version: string; // String!
   }
   Livelihood: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -341,13 +337,11 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     fisherfolk: NexusGenRootTypes['Fisherfolk'] | null; // Fisherfolk
     fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
-    format: string; // String!
     id: string; // String!
     isArchive: boolean; // Boolean!
     name: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     url: string; // String!
-    version: string; // String!
   }
   Livelihood: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -511,13 +505,11 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'DateTime'
     fisherfolk: 'Fisherfolk'
     fisherfolkId: 'BigInt'
-    format: 'String'
     id: 'String'
     isArchive: 'Boolean'
     name: 'String'
     updatedAt: 'DateTime'
     url: 'String'
-    version: 'String'
   }
   Livelihood: { // field return type name
     createdAt: 'DateTime'
