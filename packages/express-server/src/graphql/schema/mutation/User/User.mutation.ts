@@ -1,12 +1,11 @@
 import { mutationField } from 'nexus';
-import { createUser } from './User.resolver';
+import { createUser, loginUser } from './User.resolver';
 import { ApolloError } from 'apollo-server-core';
 import { nonNullArg } from '../../../../utils/utils';
 import CreateUserInput from '../../input/User.input';
-import User from '../../model/objecTypes/User';
 
 export const CreateUser = mutationField('createUser', {
-  type: User,
+  type: 'AuthPayload',
   args: {
     data: nonNullArg(CreateUserInput),
   },
@@ -26,4 +25,12 @@ export const CreateUser = mutationField('createUser', {
     }
   },
   resolve: (_, args, context) => createUser(args.data, context),
+});
+
+export const LoginUser = mutationField('loginUser', {
+  type: 'AuthPayload',
+  args: {
+    data: nonNullArg(CreateUserInput),
+  },
+  resolve: (_, args, context) => loginUser(args.data, context),
 });
