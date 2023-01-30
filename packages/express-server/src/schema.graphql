@@ -2,6 +2,11 @@
 ### Do not make changes to this file directly
 
 
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
 """
 The `BigInt` scalar type represents non-fractional signed whole numeric values.
 """
@@ -214,9 +219,10 @@ type Member {
 type Mutation {
   createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
   createGears(gears: [CreateGearInput!]!): [Gear!]!
-  createUser(data: CreateUserInput!): User!
+  createUser(data: CreateUserInput!): AuthPayload!
   createVessel(vessel: CreateVesselInput!): Vessel!
   createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
+  loginUser(data: CreateUserInput!): AuthPayload!
 }
 
 type Organization {
@@ -257,6 +263,7 @@ type Query {
   totalFisherfolkVessels(fisherfolkId: BigInt!): Int!
   totalGears: Int!
   totalVessels: Int!
+  user: User
   vessels: [Vessel!]!
 }
 
