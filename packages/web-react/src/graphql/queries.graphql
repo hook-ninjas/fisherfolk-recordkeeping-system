@@ -126,3 +126,9 @@ query GearsQuery {
     }
   }
 }
+
+query AuthUser {
+  user {
+     id
+  }
+}
