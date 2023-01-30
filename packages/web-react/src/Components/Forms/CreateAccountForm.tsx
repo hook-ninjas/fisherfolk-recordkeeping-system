@@ -11,11 +11,13 @@ import {
   Link,
   IconButton,
   InputAdornment,
+  Snackbar,
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Alert from '@mui/material/Alert';
 import { object, string } from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -24,16 +26,40 @@ import {
   MutationCreateUserArgs,
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
-import { showFailAlert } from '../ConfirmationDialog/Alerts';
 
 const theme = createTheme();
 
 function CreateAccount() {
+  const [open, setOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
-
+  const handleSubmitting = () => setIsSubmitting(true);
   const navigate = useNavigate();
-  const handleLogin = () => {
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const wait = (time: number) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, time);
+    });
+  };
+
+  const handleLogin = async () => {
+    await wait(2500);
     navigate('/login');
   };
 
@@ -51,10 +77,12 @@ function CreateAccount() {
 
   const [createUser] = useMutation(CreateUserDocument, {
     onCompleted: () => {
+      handleOpen();
       handleLogin();
     },
     onError: (err) => {
-      showFailAlert(err.message);
+      setError(err.message);
+      setIsSubmitting(false);
     },
   });
 
@@ -68,6 +96,7 @@ function CreateAccount() {
   });
 
   const onSubmit = handleSubmit(async (data) => {
+    handleSubmitting();
     const createUserInput: MutationCreateUserArgs = {
       data: {
         username: data.username,
@@ -75,11 +104,17 @@ function CreateAccount() {
       },
     };
 
-    await createUser({
+    const result = await createUser({
       variables: {
         data: createUserInput.data,
       },
     });
+
+    //set token to local storage
+    localStorage.setItem(
+      'token',
+      result.data ? result.data.createUser.token : ''
+    );
   });
 
   const handleSubmitCreateAccountForm = (
@@ -150,6 +185,7 @@ function CreateAccount() {
                 />
               )}
             />
+            {error && <Alert severity="error">{error}</Alert>}
             <Button
               type="submit"
               fullWidth
@@ -165,9 +201,19 @@ function CreateAccount() {
               onClick={(e) => {
                 handleSubmitCreateAccountForm(e);
               }}
+              disabled={isSubmitting}
             >
               Create account
             </Button>
+            <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+              <Alert
+                onClose={handleClose}
+                severity="success"
+                sx={{ width: '100%', background: '#98FB98' }}
+              >
+                Success! Your account has been created.
+              </Alert>
+            </Snackbar>
             <Grid container></Grid>
           </Box>
           <Stack direction="row" spacing={0.5}>
