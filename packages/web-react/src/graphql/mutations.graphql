@@ -24,9 +24,25 @@
     }
   }
 
-  mutation CreateUser($data: CreateUserInput!) {
-  createUser(data: $data) {
-    id
+  mutation CreateUser($data: CreateUserInput!){
+    createUser(data: $data) {
+      token,
+      user {
+        id
+        username
+        password
+      }
+    }
   }
-}
+
+  mutation LoginUser($data: CreateUserInput!) {
+    loginUser(data: $data) {
+      token,
+      user {
+        id
+        username
+        password
+      }
+    }
+  }
 
