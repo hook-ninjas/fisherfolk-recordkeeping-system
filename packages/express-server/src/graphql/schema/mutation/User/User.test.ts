@@ -19,16 +19,16 @@ describe('Create Account', () => {
       username: 'admin_jc',
       password: 'Admin_2023',
     };
-  
+
     mockCtx.prisma.user.create.mockResolvedValue(user);
-  
+
     const input = {
       username: 'admin_jc',
       password: 'Admin_2023',
     };
-  
+
     const payload = createUser(input, ctx);
-  
+
     await expect(payload).resolves.toEqual({
       token: (await payload).token,
       user: (await payload).user,
@@ -43,19 +43,19 @@ describe('Login', () => {
       username: 'admin_jc',
       password: await bcrypt.hash('Admin_2023', 10),
     };
-  
+
     mockCtx.prisma.user.findUnique.mockResolvedValue(user);
-  
+
     const input = {
       username: 'admin_jc',
       password: 'Admin_2023',
     };
-  
+
     const loginUserPayload = loginUser(input, ctx);
-  
+
     await expect(loginUserPayload).resolves.toEqual({
-      token:  (await loginUserPayload).token,
-      user: (await loginUserPayload).user
+      token: (await loginUserPayload).token,
+      user: (await loginUserPayload).user,
     });
   });
 
@@ -65,17 +65,19 @@ describe('Login', () => {
       username: 'admin_jc',
       password: 'Admin_2023',
     };
-  
+
     mockCtx.prisma.user.create.mockResolvedValue(user);
-  
+
     const input = {
       username: 'admin_lj',
       password: 'Admin_2023',
     };
-  
+
     const loginUserPayload = loginUser(input, ctx);
 
-    await expect(loginUserPayload).rejects.toThrowError('Sorry, could not find your account.');
+    await expect(loginUserPayload).rejects.toThrowError(
+      'Sorry, could not find your account.'
+    );
   });
 
   it('should throw incorrect password error', async () => {
@@ -84,17 +86,16 @@ describe('Login', () => {
       username: 'admin_jc',
       password: await bcrypt.hash('Admin_2023', 10),
     };
-  
+
     mockCtx.prisma.user.findUnique.mockResolvedValue(user);
-  
+
     const input = {
       username: 'admin_jc',
       password: 'Admin_2022',
     };
-  
+
     const loginUserPayload = loginUser(input, ctx);
 
     await expect(loginUserPayload).rejects.toThrowError('Incorrect password');
   });
-
 });

@@ -22,11 +22,11 @@ function getUserId(context: Context, authToken: string) {
       if (authHeader) {
         try {
           const token = authHeader.replace('Bearer ', '');
-  
+
           if (!token) {
             throw new ApolloError('No token found.');
           }
-  
+
           const verifiedToken = getTokenPayload(token);
 
           return verifiedToken && verifiedToken.userId;
@@ -36,12 +36,15 @@ function getUserId(context: Context, authToken: string) {
       }
     } else if (authToken) {
       const verifiedToken = getTokenPayload(authToken);
-  
+
       return verifiedToken && verifiedToken.userId;
     }
   } catch {
-    throw new ApolloError('You don\'t have access on this site.','NOT_AUTHENTICATED');
-  } 
+    throw new ApolloError(
+      'You don\'t have access on this site.',
+      'NOT_AUTHENTICATED'
+    );
+  }
 }
 
 export { getUserId };
