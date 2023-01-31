@@ -7,6 +7,7 @@ import { FisherfolksQueryMock } from './query.mocks';
 import { MockedProvider } from '@apollo/client/testing';
 import { vi } from 'vitest';
 import { act } from 'react-dom/test-utils';
+import moment from 'moment';
 
 const mockUsedNavigate = vi.fn();
 
@@ -127,8 +128,8 @@ describe('Sort Fisherfolk Records', () => {
     const firstRecord = within(records[1]).getAllByRole('cell');
     const secondRecord = within(records[2]).getAllByRole('cell');
 
-    expect(within(firstRecord[1]).getByText('17/03/2021')).toBeTruthy();
-    expect(within(secondRecord[1]).getByText('15/04/2021')).toBeTruthy();
+    expect(within(firstRecord[1]).getByText(moment('03/17/2021').format('MM/DD/YYYY'))).toBeTruthy();
+    expect(within(secondRecord[1]).getByText(moment('04/15/2021').format('MM/DD/YYYY'))).toBeTruthy();
   });
 
   it('sort fisherfolk records by dates in descending order', async () => {
@@ -162,8 +163,8 @@ describe('Sort Fisherfolk Records', () => {
     const firstRecord = within(records[1]).getAllByRole('cell');
     const secondRecord = within(records[2]).getAllByRole('cell');
 
-    expect(within(firstRecord[1]).getByText('15/04/2021')).toBeTruthy();
-    expect(within(secondRecord[1]).getByText('17/03/2021')).toBeTruthy();
+    expect(within(firstRecord[1]).getByText(moment('04/15/2021').format('MM/DD/YYYY'))).toBeTruthy();
+    expect(within(secondRecord[1]).getByText(moment('03/17/2021').format('MM/DD/YYYY'))).toBeTruthy();
   });
 
   it('sort fisherfolk records by names in ascending order', async () => {

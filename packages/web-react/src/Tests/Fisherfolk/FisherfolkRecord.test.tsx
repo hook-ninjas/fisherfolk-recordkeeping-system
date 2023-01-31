@@ -56,7 +56,7 @@ describe('Fisherfolk Record Page', () => {
     });
 
     const date = await within(firstRecord).findByRole('cell', {
-      name: '15/04/2021',
+      name: '04/15/2021',
     });
 
     const name = await within(firstRecord).findByRole('cell', {
@@ -98,9 +98,9 @@ describe('Fisherfolk Record Page', () => {
     const firstRecord = within(records[1]).getAllByRole('cell');
     const secondRecord = within(records[2]).getAllByRole('cell');
 
-    expect(within(firstRecord[1]).getByText('15/04/2021')).toBeTruthy();
+    expect(within(firstRecord[1]).getByText('04/15/2021')).toBeTruthy();
     expect(within(firstRecord[6]).getByText(/active/i)).toBeTruthy();
-    expect(within(secondRecord[1]).getByText('17/03/2021')).toBeTruthy();
+    expect(within(secondRecord[1]).getByText('03/17/2021')).toBeTruthy();
     expect(within(secondRecord[6]).getByText(/inactive/i)).toBeTruthy();
   });
 
