@@ -41,7 +41,7 @@ function getUserId(context: Context, authToken: string) {
     }
   } catch {
     throw new ApolloError(
-      'You don\'t have access on this site.',
+      'You do not have access on this site.',
       'NOT_AUTHENTICATED'
     );
   }

@@ -59,7 +59,7 @@ describe('Login', () => {
     });
   });
 
-  it('should throw can\'t find account error', async () => {
+  it('should throw can not find account error', async () => {
     const user: User = {
       id: 1,
       username: 'admin_jc',
