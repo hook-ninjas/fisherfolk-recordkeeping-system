@@ -25,6 +25,7 @@ import {
   LoginUserDocument,
   MutationLoginUserArgs,
 } from '../../graphql/generated';
+import OfficeLogo from '../../Assets/city-agri-logo.png';
 
 const theme = createTheme();
 
@@ -95,13 +96,21 @@ function Login() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 16,
+            marginTop: 10,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Typography component="h1" variant="h5">
+          <Box
+            component="img"
+            sx={{
+              height: 100,
+              width: 100,
+            }}
+            src={OfficeLogo}
+          />
+          <Typography component="h1" variant="h5" mt={2}>
             Welcome
           </Typography>
           <Typography component="h1" variant="body2" mt={1}>
@@ -176,7 +185,7 @@ function Login() {
           </Box>
           <Stack direction="row" spacing={0.5}>
             <Typography variant="subtitle2">
-              {'Don\'t have an account?'}
+              {'Do not have an account?'}
             </Typography>
             <Link
               component="button"

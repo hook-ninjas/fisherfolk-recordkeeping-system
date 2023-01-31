@@ -26,6 +26,7 @@ import {
   MutationCreateUserArgs,
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
+import OfficeLogo from '../../Assets/city-agri-logo.png';
 
 const theme = createTheme();
 
@@ -130,13 +131,21 @@ function CreateAccount() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 18,
+            marginTop: 12,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Typography component="h1" variant="h5">
+          <Box
+            component="img"
+            sx={{
+              height: 100,
+              width: 100,
+            }}
+            src={OfficeLogo}
+          />
+          <Typography component="h1" variant="h5" mt={2}>
             Create Account
           </Typography>
           <Box component="form" sx={{ mt: 1 }}>
@@ -226,7 +235,7 @@ function CreateAccount() {
               color="#28c181"
               fontWeight={600}
               underline="none"
-              onClick={handleLogin}
+              onClick={() => navigate('/login')}
               textTransform="none"
             >
               Login
