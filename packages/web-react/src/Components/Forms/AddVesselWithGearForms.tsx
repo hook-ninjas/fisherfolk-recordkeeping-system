@@ -30,7 +30,7 @@ import {
   GearClassification,
   MutationCreateVesselWithGearArgs,
   MutationCreateImageArgs,
-  CreateImageDocument
+  CreateImageDocument,
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
@@ -90,19 +90,21 @@ export default function AddVesselWithGearForm({
   const { id } = useParams();
 
   const [complete, setComplete] = useState(false);
-  const [image, setImage] = React.useState<string | undefined | ArrayBuffer | null>();
+  const [image, setImage] = React.useState<
+    string | undefined | ArrayBuffer | null
+  >();
 
   const previewImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     if (event.target.files instanceof FileList) {
       reader.readAsDataURL(event.target.files[0]);
-      
+
       reader.onloadend = () => {
         setImage(reader.result);
       };
     } else {
       return 'handle exception';
-    };
+    }
   };
 
   const buttonSx = {
@@ -312,7 +314,6 @@ export default function AddVesselWithGearForm({
     onCompleted: () => {
       handleClose();
       handleComplete();
-
     },
     onError: () => {
       handleClose();
@@ -356,7 +357,7 @@ export default function AddVesselWithGearForm({
         text: 'none',
         name: '',
         updated_at: new Date(),
-      }
+      },
     };
 
     // create vessel only
@@ -370,7 +371,7 @@ export default function AddVesselWithGearForm({
       await createImage({
         variables: {
           data: createImageInput.data,
-        }
+        },
       });
     }
 
@@ -385,7 +386,7 @@ export default function AddVesselWithGearForm({
       await createImage({
         variables: {
           data: createImageInput.data,
-        }
+        },
       });
     }
 
@@ -404,7 +405,7 @@ export default function AddVesselWithGearForm({
       await createImage({
         variables: {
           data: createImageInput.data,
-        }
+        },
       });
     }
 
@@ -1183,36 +1184,22 @@ export default function AddVesselWithGearForm({
               </Grid>
             </Grid>
           </Grid>
-
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
-            <Grid item sm={6}>
-              <FormInputText
-                name="Others"
-                control={control}
-                label="Others"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <Button
-                variant="contained"
-                component="label"
-              >
+              <Button variant="contained" component="label" sx={{ width: 210 }}>
                 <input
                   type="file"
-                  onChange={(e) => { previewImage(e); }}
+                  onChange={(e) => {
+                    previewImage(e);
+                  }}
                 />
               </Button>
-              <Box>
-                <img src={image?.toString()} />
+              <Box sx={{ width: 150, height: 150 }} mt={2}>
+                <img src={image?.toString()} width={150} height={150} />
               </Box>
             </Grid>
           </Grid>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Button
               type="submit"
               variant="contained"
