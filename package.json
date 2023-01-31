@@ -31,7 +31,13 @@
     "packages/*"
   ],
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.11.5",
+    "@mui/styled-engine-sc": "^5.11.0",
+    "@mui/x-data-grid": "^5.17.20",
     "date-fns": "^2.29.3",
-    "formik": "^2.2.9"
+    "formik": "^2.2.9",
+    "styled-components": "^5.3.6"
   }
 }

@@ -1,13 +1,18 @@
-import { Context } from '../../../context';
+import { context, Context } from '../../../context';
 import { NexusGenInputs } from '../../../generated/nexus';
+import cloudinary from 'cloudinary';
+import 'dotenv/config';
 
 type CreateFisherfolkInput = NexusGenInputs['CreateFisherfolkInput'];
 
 const createFisherfolk = (input: CreateFisherfolkInput, ctx: Context) => {
   const { organization, livelihoods } = input;
 
+
   if (organization != null || organization != undefined) {
     const { yearJoined, position, name } = organization;
+
+
     return ctx.prisma.fisherfolk.create({
       data: {
         ...input,

@@ -29,6 +29,8 @@ import {
   CreateVessselWithGearDocument,
   GearClassification,
   MutationCreateVesselWithGearArgs,
+  MutationCreateImageArgs,
+  CreateImageDocument
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
@@ -88,6 +90,20 @@ export default function AddVesselWithGearForm({
   const { id } = useParams();
 
   const [complete, setComplete] = useState(false);
+  const [image, setImage] = React.useState<string | undefined | ArrayBuffer | null>();
+
+  const previewImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    if (event.target.files instanceof FileList) {
+      reader.readAsDataURL(event.target.files[0]);
+      
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+    } else {
+      return 'handle exception';
+    };
+  };
 
   const buttonSx = {
     ...(complete && {
@@ -292,6 +308,18 @@ export default function AddVesselWithGearForm({
     },
   });
 
+  const [createImage] = useMutation(CreateImageDocument, {
+    onCompleted: () => {
+      handleClose();
+      handleComplete();
+
+    },
+    onError: () => {
+      handleClose();
+      handleComplete();
+    },
+  });
+
   const onSubmit = handleSubmit(async (data) => {
     handleSubmitting();
     const createVesselWithGearInput: MutationCreateVesselWithGearArgs = {
@@ -319,12 +347,30 @@ export default function AddVesselWithGearForm({
       gears: generateGears(gearTypes),
     };
 
+    const createImageInput: MutationCreateImageArgs = {
+      data: {
+        fisherfolkId: parseInt(id!),
+        url: image!.toString(),
+        gear_id: null,
+        vessel_id: null,
+        text: 'none',
+        name: '',
+        updated_at: new Date(),
+      }
+    };
+
     // create vessel only
     if (createVesselWithGearInput.gears.length == 0) {
       await createVessel({
         variables: {
           vessel: createVesselWithGearInput.vessel,
         },
+      });
+
+      await createImage({
+        variables: {
+          data: createImageInput.data,
+        }
       });
     }
 
@@ -334,6 +380,12 @@ export default function AddVesselWithGearForm({
         variables: {
           gears: createVesselWithGearInput.gears,
         },
+      });
+
+      await createImage({
+        variables: {
+          data: createImageInput.data,
+        }
       });
     }
 
@@ -348,7 +400,15 @@ export default function AddVesselWithGearForm({
           vessel: createVesselWithGearInput.vessel,
         },
       });
+
+      await createImage({
+        variables: {
+          data: createImageInput.data,
+        }
+      });
     }
+
+    console.log(image);
   });
 
   const handleSubmitForm = (
@@ -1138,14 +1198,18 @@ export default function AddVesselWithGearForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
-                name="AttachSignature"
-                control={control}
-                label="Attach Signature"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
+              <Button
+                variant="contained"
+                component="label"
+              >
+                <input
+                  type="file"
+                  onChange={(e) => { previewImage(e); }}
+                />
+              </Button>
+              <Box>
+                <img src={image?.toString()} />
+              </Box>
             </Grid>
           </Grid>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>

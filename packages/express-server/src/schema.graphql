@@ -50,7 +50,18 @@ input CreateFisherfolkInput {
 input CreateGearInput {
   classification: GearClassification!
   fisherfolkId: BigInt!
+  photo: String
   type: String!
+}
+
+input CreateImageInput {
+  fisherfolkId: BigInt!
+  gear_id: BigInt
+  name: String!
+  text: String!
+  updated_at: DateTime!
+  url: String!
+  vessel_id: BigInt
 }
 
 input CreateUserInput {
@@ -178,13 +189,11 @@ type Image {
   createdAt: DateTime!
   fisherfolk: Fisherfolk
   fisherfolkId: BigInt!
-  format: String!
   id: String!
   isArchive: Boolean!
   name: String!
   updatedAt: DateTime!
   url: String!
-  version: String!
 }
 
 type Livelihood {
@@ -219,6 +228,7 @@ type Member {
 type Mutation {
   createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
   createGears(gears: [CreateGearInput!]!): [Gear!]!
+  createImage(data: CreateImageInput!): Image!
   createUser(data: CreateUserInput!): AuthPayload!
   createVessel(vessel: CreateVesselInput!): Vessel!
   createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
