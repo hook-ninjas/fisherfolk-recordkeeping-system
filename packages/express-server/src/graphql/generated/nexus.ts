@@ -549,7 +549,8 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createFisherfolk: 'Fisherfolk'
     createGears: 'Gear'
-    createUser: 'User'
+    createImage: 'Image'
+    createUser: 'AuthPayload'
     createVessel: 'Vessel'
     createVesselWithGear: 'Vessel'
     loginUser: 'AuthPayload'
