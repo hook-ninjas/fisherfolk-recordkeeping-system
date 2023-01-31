@@ -7,6 +7,7 @@ const CreateGearInput = inputObjectType({
     t.field('fisherfolkId', {type: 'BigInt'});
     t.field('classification', {type: GearClassification});
     t.string('type');
+    t.nullable.string('photo');
   },
 });
 

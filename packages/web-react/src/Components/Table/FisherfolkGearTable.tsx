@@ -8,6 +8,7 @@ import { Button, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
+import moment from 'moment';
 
 const renderMoreActions = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -59,6 +60,8 @@ const columns: GridColumns = [
     type: 'date',
     disableColumnMenu: true,
     minWidth: 150,
+    valueFormatter: params =>
+      moment(params?.value).format('MM/DD/YYYY'),
   },
   {
     field: 'classification',

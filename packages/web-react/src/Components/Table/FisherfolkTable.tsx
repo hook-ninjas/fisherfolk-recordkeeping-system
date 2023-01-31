@@ -11,6 +11,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
+import moment from 'moment';
 
 const renderMoreActions = (id: number) => {
   const navigate = useNavigate();
@@ -70,6 +71,8 @@ const columns: GridColumns = [
     type: 'date',
     minWidth: 130,
     disableColumnMenu: true,
+    valueFormatter: params =>
+      moment(params?.value).format('MM/DD/YYYY'),
   },
   {
     field: 'name',
