@@ -41,6 +41,7 @@ import {
   sourcesOfIncome,
 } from './Enums';
 import { getValues } from '../../utils/utils';
+import PhotoUpload from '../Input/PhotoUpload';
 
 export interface FormContainerTitleProps {
   children?: React.ReactNode;
@@ -248,7 +249,7 @@ export default function AddFisherfolkForm({
         residentYear: parseInt(data.residentYear),
         salutation: data.salutation,
         numOfChildren: parseInt(data.numberOfChildren),
-        livelihoods: []
+        livelihoods: [],
       },
     };
     console.log(createFisherfolkInput.data);
@@ -282,7 +283,7 @@ export default function AddFisherfolkForm({
         </FormContainerTitle>
         <DialogContent dividers>
           <Typography variant="body1" color="GrayText" mb={2} ml={2}>
-            Type of Registration
+            Upload Profile Picture
           </Typography>
           <Box
             sx={{
@@ -291,13 +292,20 @@ export default function AddFisherfolkForm({
               mt: -2,
             }}
           >
-            <FormInputRadio
+            {/* <FormInputRadio
               name="registrationType"
               label="registrationType"
               control={control}
               register={register}
               errors={errors}
               radioOptions={registrationTypes}
+            /> */}
+            <PhotoUpload
+              sx={{
+                m: 1,
+                p: 1,
+                maxWidth: '200px',
+              }}
             />
           </Box>
           <Typography variant="h6" color="GrayText" ml={2}>
