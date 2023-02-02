@@ -1,9 +1,28 @@
-import React, { useState } from 'react';
-import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
-import { VesselQueryDocument } from '../../graphql/generated';
-import { useQuery } from '@apollo/client';
+import React, { useCallback, useRef, useState } from 'react';
+import {
+  DataGrid,
+  GridColumns,
+  GridRowModel,
+  GridRowsProp,
+} from '@mui/x-data-grid';
+import {
+  UpdateMfvrDocument,
+  VesselQueryDocument,
+} from '../../graphql/generated';
+import { useMutation, useQuery } from '@apollo/client';
 import Loading from '../Loading/Loading';
-import { Button, Menu, MenuItem } from '@mui/material';
+import {
+  Alert,
+  AlertProps,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Menu,
+  MenuItem,
+  Snackbar,
+} from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
@@ -59,8 +78,7 @@ const columns: GridColumns = [
     type: 'date',
     minWidth: 150,
     disableColumnMenu: true,
-    valueFormatter: params =>
-      moment(params?.value).format('MM/DD/YYYY'),
+    valueFormatter: (params) => moment(params?.value).format('MM/DD/YYYY'),
   },
   {
     field: 'mfvrNum',
@@ -96,16 +114,119 @@ const columns: GridColumns = [
   },
 ];
 
+const computeMutation = (newRow: GridRowModel, oldRow: GridRowModel) => {
+  if (newRow.mfvrNum !== oldRow.mfvrNum) {
+    return `MFVR number from ${oldRow.mfvrNum} to ${newRow.mfvrNum}`;
+  }
+  return null;
+};
+
 export default function FisherfolkVesselTable() {
+  const [updateMfvr] = useMutation(UpdateMfvrDocument, {
+    refetchQueries: [
+      {
+        query: VesselQueryDocument,
+      },
+    ],
+  });
+
+  const noButtonRef = useRef<HTMLButtonElement>(null);
+  const [promiseArguments, setPromiseArguments] = useState<any>(null);
+
+  const [snackbar, setSnackbar] = React.useState<Pick<
+    AlertProps,
+    'children' | 'severity'
+  > | null>(null);
+
+  const handleCloseSnackbar = () => setSnackbar(null);
+
+  const handleEntered = () => {
+    return 0;
+  };
+
+  const handleNo = () => {
+    const { oldRow, resolve } = promiseArguments;
+    resolve(oldRow); // Resolve with the old row to not update the internal state
+    setPromiseArguments(null);
+  };
+
+  const handleYes = async () => {
+    const { newRow, oldRow, reject, resolve } = promiseArguments;
+
+    try {
+      const response = await updateMfvr({
+        variables: {
+          id: newRow['id'],
+          mfvrNum: newRow['mfvrNum'],
+        },
+      });
+      setSnackbar({
+        children: 'Successfully changed MFVR number.',
+        severity: 'success',
+      });
+      resolve(response);
+      setPromiseArguments(null);
+    } catch (error) {
+      setSnackbar({ children: 'Name can not be empty', severity: 'error' });
+      reject(oldRow);
+      setPromiseArguments(null);
+    }
+  };
+
+  const processRowUpdate = useCallback(
+    (newRow: GridRowModel, oldRow: GridRowModel) =>
+      new Promise<GridRowModel>((resolve, reject) => {
+        const mutation = computeMutation(newRow, oldRow);
+        if (mutation) {
+          // Save the arguments to resolve or reject the promise later
+          setPromiseArguments({ resolve, reject, newRow, oldRow });
+        } else {
+          resolve(oldRow); // Nothing was changed
+        }
+      }),
+    []
+  );
+
+  const renderConfirmDialog = () => {
+    if (!promiseArguments) {
+      return null;
+    }
+
+    const { newRow, oldRow } = promiseArguments;
+    const mutation = computeMutation(newRow, oldRow);
+
+    return (
+      <Dialog
+        maxWidth="xs"
+        TransitionProps={{ onEntered: handleEntered }}
+        open={!!promiseArguments}
+      >
+        <DialogTitle>Are you sure?</DialogTitle>
+        <DialogContent dividers>
+          {`Pressing YES will change ${mutation}.`}
+        </DialogContent>
+        <DialogActions>
+          <Button ref={noButtonRef} onClick={handleNo}>
+            No
+          </Button>
+          <Button onClick={handleYes}>Yes</Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
 
   const { loading, error, data } = useQuery(VesselQueryDocument);
+  
   let rows: GridRowsProp = [];
 
   if (error) {
-    console.log(error);
-    return <h1>Error Failed to Fetch!!!</h1>;
+    return (
+      <Alert severity="error">
+        {`Something went wrong. ${error.message} `}
+      </Alert>
+    );
   }
-
+  
   if (loading) {
     return <Loading />;
   }
@@ -125,13 +246,20 @@ export default function FisherfolkVesselTable() {
 
   return (
     <div style={{ height: '85vh', width: '100%' }}>
+      {renderConfirmDialog()}
       <DataGrid
         rows={rows}
         columns={columns}
         experimentalFeatures={{ newEditingApi: true }}
         disableVirtualization={true}
+        processRowUpdate={processRowUpdate}
         aria-label="vessel-table"
       />
+      {!!snackbar && (
+        <Snackbar open onClose={handleCloseSnackbar} autoHideDuration={6000}>
+          <Alert {...snackbar} onClose={handleCloseSnackbar} />
+        </Snackbar>
+      )}
     </div>
   );
 }
