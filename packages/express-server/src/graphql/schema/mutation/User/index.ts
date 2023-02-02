@@ -1,5 +1,5 @@
-import { CreateUser } from './User.mutation';
+import { CreateUser, LoginUser } from './User.mutation';
 
-const Mutations = [CreateUser];
+const Mutations = [CreateUser, LoginUser];
 
 export default Mutations;

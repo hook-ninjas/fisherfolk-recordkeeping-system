@@ -1,3 +1,4 @@
+import AuthPayload from './objecTypes/AuthPayload';
 import User from './objecTypes/User';
 import Fisherfolk from './objecTypes/Fisherfolk';
 import Livelihood from './objecTypes/Livelihood';
@@ -11,6 +12,7 @@ import Vessel from './objecTypes/Vessel';
 import Member from './objecTypes/Member';
 
 const Models = [
+  AuthPayload,
   User,
   Fisherfolk,
   Livelihood,

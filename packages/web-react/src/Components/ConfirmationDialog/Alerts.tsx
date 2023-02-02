@@ -8,10 +8,11 @@ export const showSuccessAlert = () =>
     timer: 4000,
   });
 
-export const showFailAlert = () =>
+export const showFailAlert = (msg: string) =>
   Swal.fire({
     icon: 'error',
     title: 'Data has not been saved',
+    text: msg,
     showConfirmButton: false,
     timer: 4000,
   });

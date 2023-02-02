@@ -30,7 +30,7 @@ import {
   GearClassification,
   MutationCreateVesselWithGearArgs,
   MutationCreateImageArgs,
-  CreateImageDocument
+  CreateImageDocument,
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
@@ -39,7 +39,7 @@ import {
   registrationTypeForBoatsAndGears,
   gears,
   vesselTypeOptions,
-  materials,
+  materialOptions,
 } from './Enums';
 import { useParams } from 'react-router-dom';
 
@@ -90,19 +90,21 @@ export default function AddVesselWithGearForm({
   const { id } = useParams();
 
   const [complete, setComplete] = useState(false);
-  const [image, setImage] = React.useState<string | undefined | ArrayBuffer | null>();
+  const [image, setImage] = React.useState<
+    string | undefined | ArrayBuffer | null
+  >();
 
   const previewImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     if (event.target.files instanceof FileList) {
       reader.readAsDataURL(event.target.files[0]);
-      
+
       reader.onloadend = () => {
         setImage(reader.result);
       };
     } else {
       return 'handle exception';
-    };
+    }
   };
 
   const buttonSx = {
@@ -218,7 +220,7 @@ export default function AddVesselWithGearForm({
       homeport: string(),
       horsepower: string(),
       mfvrNumber: string(),
-      material: string().nullable().oneOf(materials),
+      material: string().nullable().oneOf(materialOptions),
       name: string(),
       netTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
       placeBuilt: string(),
@@ -275,10 +277,10 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showSuccessAlert();
     },
-    onError: () => {
+    onError: (err) => {
       handleClose();
       handleComplete();
-      showFailAlert();
+      showFailAlert(err.message);
     },
   });
 
@@ -288,10 +290,10 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showSuccessAlert();
     },
-    onError: () => {
+    onError: (err) => {
       handleClose();
       handleComplete();
-      showFailAlert();
+      showFailAlert(err.message);
     },
   });
 
@@ -301,10 +303,10 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showSuccessAlert();
     },
-    onError: () => {
+    onError: (err) => {
       handleClose();
       handleComplete();
-      showFailAlert();
+      showFailAlert(err.message);
     },
   });
 
@@ -312,7 +314,6 @@ export default function AddVesselWithGearForm({
     onCompleted: () => {
       handleClose();
       handleComplete();
-
     },
     onError: () => {
       handleClose();
@@ -356,7 +357,7 @@ export default function AddVesselWithGearForm({
         text: 'none',
         name: '',
         updated_at: new Date(),
-      }
+      },
     };
 
     // create vessel only
@@ -370,7 +371,7 @@ export default function AddVesselWithGearForm({
       await createImage({
         variables: {
           data: createImageInput.data,
-        }
+        },
       });
     }
 
@@ -385,7 +386,7 @@ export default function AddVesselWithGearForm({
       await createImage({
         variables: {
           data: createImageInput.data,
-        }
+        },
       });
     }
 
@@ -404,7 +405,7 @@ export default function AddVesselWithGearForm({
       await createImage({
         variables: {
           data: createImageInput.data,
-        }
+        },
       });
     }
 
@@ -451,7 +452,7 @@ export default function AddVesselWithGearForm({
               radioOptions={registrationTypeForBoatsAndGears}
             />
           </Box>
-          
+
           <Grid container spacing={-2} sx={{ ml: 1, mr: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
@@ -491,7 +492,7 @@ export default function AddVesselWithGearForm({
               <FormInputSelect
                 name="material"
                 label="Select Material Used"
-                data={materials}
+                data={materialOptions}
                 onSavedValue=""
                 control={control}
                 register={register}
@@ -504,8 +505,8 @@ export default function AddVesselWithGearForm({
                 errors={errors}
                 isLoading={isLoading}
                 isDisabled={isLoading}
-                label=""
                 name="type"
+                placeholder="Select Type"
                 onCreateOption={handleCreateTypeVessel}
                 options={vesselTypes}
                 register={register}
@@ -687,6 +688,7 @@ export default function AddVesselWithGearForm({
                           checked={SimpleHandLine}
                           onChange={handleOtherFishingActivityChange}
                           name="SimpleHandLine"
+                          value="SimpleHandLine"
                         />
                       }
                       label="Simple-Hand Line"
@@ -698,6 +700,7 @@ export default function AddVesselWithGearForm({
                           checked={MultipleHandLine}
                           onChange={handleOtherFishingActivityChange}
                           name="MultipleHandLine"
+                          value="MultipleHandLine"
                         />
                       }
                       label="Multiple-Hand Line"
@@ -709,6 +712,7 @@ export default function AddVesselWithGearForm({
                           checked={BottomSetLongLine}
                           onChange={handleOtherFishingActivityChange}
                           name="BottomSetLongLine"
+                          value="BottomSetLongLine"
                         />
                       }
                       label="Bottom Set Long Line"
@@ -720,6 +724,7 @@ export default function AddVesselWithGearForm({
                           checked={DriftLongLine}
                           onChange={handleOtherFishingActivityChange}
                           name="DriftLongLine"
+                          value="DriftLongLine"
                         />
                       }
                       label="Drift Long Line"
@@ -731,6 +736,7 @@ export default function AddVesselWithGearForm({
                           checked={TrollLine}
                           onChange={handleOtherFishingActivityChange}
                           name="TrollLine"
+                          value="TrollLine"
                         />
                       }
                       label="Troll line"
@@ -742,6 +748,7 @@ export default function AddVesselWithGearForm({
                           checked={Jig}
                           onChange={handleOtherFishingActivityChange}
                           name="Jig"
+                          value="Jig"
                         />
                       }
                       label="Jig"
@@ -769,6 +776,7 @@ export default function AddVesselWithGearForm({
                           checked={SurfaceSetGillNet}
                           onChange={handleOtherFishingActivityChange}
                           name="SurfaceSetGillNet"
+                          value="SurfaceSetGillNet"
                         />
                       }
                       label="Surface Set Gill Net"
@@ -780,6 +788,7 @@ export default function AddVesselWithGearForm({
                           checked={DriftGillNet}
                           onChange={handleOtherFishingActivityChange}
                           name="DriftGillNet"
+                          value="DriftGillNet"
                         />
                       }
                       label="Drift Gill Net"
@@ -791,6 +800,7 @@ export default function AddVesselWithGearForm({
                           checked={BottomSetGillNet}
                           onChange={handleOtherFishingActivityChange}
                           name="BottomSetGillNet"
+                          value="BottomSetGillNet"
                         />
                       }
                       label="Bottom Set Gill Net"
@@ -802,6 +812,7 @@ export default function AddVesselWithGearForm({
                           checked={TrammelNet}
                           onChange={handleOtherFishingActivityChange}
                           name="TrammelNet"
+                          value="TrammelNet"
                         />
                       }
                       label="Trammel Net"
@@ -813,6 +824,7 @@ export default function AddVesselWithGearForm({
                           checked={EncirclingGillNet}
                           onChange={handleOtherFishingActivityChange}
                           name="EncirclingGillNet"
+                          value="EncirclingGillNet"
                         />
                       }
                       label="Encircling Gill Net"
@@ -844,6 +856,7 @@ export default function AddVesselWithGearForm({
                           checked={CrabLiftNetsOrBintol}
                           onChange={handleOtherFishingActivityChange}
                           name="CrabLiftNetsOrBintol"
+                          value="CrabLiftNetsOrBintol"
                         />
                       }
                       label="Crab Lift Nets (Bintol)"
@@ -855,6 +868,7 @@ export default function AddVesselWithGearForm({
                           checked={FishLiftNetsOrBagnet}
                           onChange={handleOtherFishingActivityChange}
                           name="FishLiftNetsOrBagnet"
+                          value="FishLiftNetsOrBagnet"
                         />
                       }
                       label="Fish Lift Nets (Basnig) / Bagnet"
@@ -866,6 +880,7 @@ export default function AddVesselWithGearForm({
                           checked={NewLookOrZapara}
                           onChange={handleOtherFishingActivityChange}
                           name="NewLookOrZapara"
+                          value="NewLookOrZapara"
                         />
                       }
                       label="“New Look” or “Zapra”"
@@ -877,6 +892,7 @@ export default function AddVesselWithGearForm({
                           checked={ShrimpLiftNets}
                           onChange={handleOtherFishingActivityChange}
                           name="ShrimpLiftNets"
+                          value="ShrimpLiftNets"
                         />
                       }
                       label="Shrimp Lift Nets"
@@ -888,6 +904,7 @@ export default function AddVesselWithGearForm({
                           checked={LeverNet}
                           onChange={handleOtherFishingActivityChange}
                           name="LeverNet"
+                          value="LeverNet"
                         />
                       }
                       label="Lever Net"
@@ -915,6 +932,7 @@ export default function AddVesselWithGearForm({
                           checked={CrabPots}
                           onChange={handleOtherFishingActivityChange}
                           name="CrabPots"
+                          value="CrabPots"
                         />
                       }
                       label="Crab Pots"
@@ -926,6 +944,7 @@ export default function AddVesselWithGearForm({
                           checked={SquidPots}
                           onChange={handleOtherFishingActivityChange}
                           name="SquidPots"
+                          value="SquidPots"
                         />
                       }
                       label="Squid Pots"
@@ -937,6 +956,7 @@ export default function AddVesselWithGearForm({
                           checked={FykeNetsOrFilterNets}
                           onChange={handleOtherFishingActivityChange}
                           name="FykeNetsOrFilterNets"
+                          value="FykeNetsOrFilterNets"
                         />
                       }
                       label="Fyke Nets/Filter Nets"
@@ -948,6 +968,7 @@ export default function AddVesselWithGearForm({
                           checked={FishCorralsOrBaklad}
                           onChange={handleOtherFishingActivityChange}
                           name="FishCorralsOrBaklad"
+                          value="FishCorralsOrBaklad"
                         />
                       }
                       label="Fish Corrals (Baklad)"
@@ -959,6 +980,7 @@ export default function AddVesselWithGearForm({
                           checked={SetNetOrLambaklad}
                           onChange={handleOtherFishingActivityChange}
                           name="SetNetOrLambaklad"
+                          value="SetNetOrLambaklad"
                         />
                       }
                       label="Set Net (Lambaklad)"
@@ -970,6 +992,7 @@ export default function AddVesselWithGearForm({
                           checked={BarrierNetOrLikus}
                           onChange={handleOtherFishingActivityChange}
                           name="BarrierNetOrLikus"
+                          value="BarrierNetOrLikus"
                         />
                       }
                       label="Barrier Net (Likus)"
@@ -981,6 +1004,7 @@ export default function AddVesselWithGearForm({
                           checked={FishPots}
                           onChange={handleOtherFishingActivityChange}
                           name="FishPots"
+                          value="FishPots"
                         />
                       }
                       label="Fish Pots"
@@ -1012,6 +1036,7 @@ export default function AddVesselWithGearForm({
                           checked={BeachSeine}
                           onChange={handleOtherFishingActivityChange}
                           name="BeachSeine"
+                          value="BeachSeine"
                         />
                       }
                       label="Beach Seine"
@@ -1023,6 +1048,7 @@ export default function AddVesselWithGearForm({
                           checked={FryDozerOrGatherer}
                           onChange={handleOtherFishingActivityChange}
                           name="FryDozerOrGatherer"
+                          value="FryDozerOrGatherer"
                         />
                       }
                       label="Fry Dozer or Gatherer"
@@ -1051,6 +1077,7 @@ export default function AddVesselWithGearForm({
                           checked={ManPushNets}
                           onChange={handleOtherFishingActivityChange}
                           name="ManPushNets"
+                          value="ManPushNets"
                         />
                       }
                       label="Man Push Nets"
@@ -1062,6 +1089,7 @@ export default function AddVesselWithGearForm({
                           checked={ScoopNets}
                           onChange={handleOtherFishingActivityChange}
                           name="ScoopNets"
+                          value="ScoopNets"
                         />
                       }
                       label="Scoop Nets"
@@ -1093,6 +1121,7 @@ export default function AddVesselWithGearForm({
                           checked={Spear}
                           onChange={handleOtherFishingActivityChange}
                           name="Spear"
+                          value="Spear"
                         />
                       }
                       label="Spear"
@@ -1104,6 +1133,7 @@ export default function AddVesselWithGearForm({
                           checked={OctopusOrSquidLuringDevice}
                           onChange={handleOtherFishingActivityChange}
                           name="OctopusOrSquidLuringDevice"
+                          value="OctopusOrSquidLuringDevice"
                         />
                       }
                       label="Octopus/Squid Luring Device"
@@ -1115,6 +1145,7 @@ export default function AddVesselWithGearForm({
                           checked={GaffHook}
                           onChange={handleOtherFishingActivityChange}
                           name="GaffHook"
+                          value="GaffHook"
                         />
                       }
                       label="Gaff Hook"
@@ -1143,6 +1174,7 @@ export default function AddVesselWithGearForm({
                           checked={CastNet}
                           onChange={handleOtherFishingActivityChange}
                           name="CastNet"
+                          value="CastNet"
                         />
                       }
                       label="Cast Net"
@@ -1152,36 +1184,22 @@ export default function AddVesselWithGearForm({
               </Grid>
             </Grid>
           </Grid>
-
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
-            <Grid item sm={6}>
-              <FormInputText
-                name="Others"
-                control={control}
-                label="Others"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <Button
-                variant="contained"
-                component="label"
-              >
+              <Button variant="contained" component="label" sx={{ width: 210 }}>
                 <input
                   type="file"
-                  onChange={(e) => { previewImage(e); }}
+                  onChange={(e) => {
+                    previewImage(e);
+                  }}
                 />
               </Button>
-              <Box>
-                <img src={image?.toString()} />
+              <Box sx={{ width: 150, height: 150 }} mt={2}>
+                <img src={image?.toString()} width={150} height={150} />
               </Box>
             </Grid>
           </Grid>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Button
               type="submit"
               variant="contained"

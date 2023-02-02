@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
   Divider,
@@ -86,6 +86,7 @@ const Drawer = styled(MuiDrawer, {
 
 function Sidebar() {
   const [openDrawer, setOpenDrawer] = useState(true);
+  const navigate = useNavigate();
 
   const toggleDrawer = () => {
     setOpenDrawer(!openDrawer);
@@ -98,6 +99,11 @@ function Sidebar() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
   };
 
   return (
@@ -143,6 +149,7 @@ function Sidebar() {
       <CustomizedDialogs
         open={open}
         handleClose={handleClose}
+        handleLogout={handleLogout}
         title="Logout"
         message="Are you sure you want to logout?"
         leftBtnMsg="Cancel"

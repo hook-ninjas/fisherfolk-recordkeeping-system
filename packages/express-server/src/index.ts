@@ -8,7 +8,7 @@ import {
 import http from 'http';
 import express, { Express, json, Request, Response } from 'express';
 import cors from 'cors';
-import { context } from './graphql/context';
+import { context, createContext } from './graphql/context';
 import { schema } from './graphql/schema';
 import { Context } from './types/types';
 import { NexusGraphQLSchema } from 'nexus/dist/core';
@@ -61,7 +61,7 @@ const startServer = async (
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
     schema,
-    context,
+    context: createContext,
     csrfPrevention: true,
     cache: 'bounded',
     plugins: [
