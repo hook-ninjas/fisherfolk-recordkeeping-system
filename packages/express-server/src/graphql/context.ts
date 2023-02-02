@@ -20,4 +20,11 @@ const context: Context = {
   req: {},
 };
 
-export { Context, context, createMockContext };
+const createContext = (request: any) => {
+  return {
+    ...request,
+    prisma,
+  };
+};
+
+export { Context, context, createMockContext, createContext };

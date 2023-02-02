@@ -139,6 +139,10 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  AuthPayload: { // root type
+    token: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Fisherfolk: { // root type
     age: number; // Int!
     appellation: string; // String!
@@ -278,6 +282,10 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  AuthPayload: { // field return type
+    token: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Fisherfolk: { // field return type
     age: number; // Int!
     appellation: string; // String!
@@ -368,9 +376,10 @@ export interface NexusGenFieldTypes {
     createFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     createGears: NexusGenRootTypes['Gear'][]; // [Gear!]!
     createImage: NexusGenRootTypes['Image']; // Image!
-    createUser: NexusGenRootTypes['User']; // User!
+    createUser: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     createVessel: NexusGenRootTypes['Vessel']; // Vessel!
     createVesselWithGear: NexusGenRootTypes['Vessel']; // Vessel!
+    loginUser: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
   Organization: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -402,6 +411,7 @@ export interface NexusGenFieldTypes {
     totalFisherfolkVessels: number; // Int!
     totalGears: number; // Int!
     totalVessels: number; // Int!
+    user: NexusGenRootTypes['User'] | null; // User
     vessels: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
   }
   Queue: { // field return type
@@ -446,6 +456,10 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthPayload: { // field return type name
+    token: 'String'
+    user: 'User'
+  }
   Fisherfolk: { // field return type name
     age: 'Int'
     appellation: 'String'
@@ -536,9 +550,10 @@ export interface NexusGenFieldTypeNames {
     createFisherfolk: 'Fisherfolk'
     createGears: 'Gear'
     createImage: 'Image'
-    createUser: 'User'
+    createUser: 'AuthPayload'
     createVessel: 'Vessel'
     createVesselWithGear: 'Vessel'
+    loginUser: 'AuthPayload'
   }
   Organization: { // field return type name
     createdAt: 'DateTime'
@@ -570,6 +585,7 @@ export interface NexusGenFieldTypeNames {
     totalFisherfolkVessels: 'Int'
     totalGears: 'Int'
     totalVessels: 'Int'
+    user: 'User'
     vessels: 'Vessel'
   }
   Queue: { // field return type name
@@ -633,6 +649,9 @@ export interface NexusGenArgTypes {
     createVesselWithGear: { // args
       gears: NexusGenInputs['CreateGearInput'][]; // [CreateGearInput!]!
       vessel: NexusGenInputs['CreateVesselInput']; // CreateVesselInput!
+    }
+    loginUser: { // args
+      data: NexusGenInputs['CreateUserInput']; // CreateUserInput!
     }
   }
   Query: {

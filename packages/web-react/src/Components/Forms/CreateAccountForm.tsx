@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Alert,
   Button,
   CssBaseline,
   TextField,
@@ -12,42 +11,75 @@ import {
   Link,
   IconButton,
   InputAdornment,
+  Snackbar,
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Alert from '@mui/material/Alert';
 import { object, string } from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useMutation } from '@apollo/client';
 import {
-  LoginUserDocument,
-  MutationLoginUserArgs,
+  CreateUserDocument,
+  MutationCreateUserArgs,
 } from '../../graphql/generated';
+import { useMutation } from '@apollo/client';
 import OfficeLogo from '../../Assets/city-agri-logo.png';
 
 const theme = createTheme();
 
-function Login() {
+function CreateAccount() {
+  const [open, setOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleSubmitting = () => setIsSubmitting(true);
   const navigate = useNavigate();
-  const handleCreateAccount = () => {
-    navigate('/create-account');
+
+  const handleOpen = () => {
+    setOpen(true);
   };
 
-  const loginSchema = object().shape({
-    username: string().required('Enter username.'),
-    password: string().required('Enter password.'),
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const wait = (time: number) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, time);
+    });
+  };
+
+  const handleLogin = async () => {
+    await wait(2500);
+    navigate('/login');
+  };
+
+  const createAccountSchema = object().shape({
+    username: string()
+      .required('Enter username.')
+      .min(6, 'Username must be atleast 6 characters.'),
+    password: string()
+      .required('Enter password.')
+      .matches(
+        /^(?=.*[A-Z])(?=.*[a-z])(?=.*?[0-9])(?=.*[#?!@$%^&*_-]).{8,}$/,
+        'Password must contain atleast 8 characters, one uppercase, one lowercase, one number and one special character.'
+      ),
   });
 
-  const [loginUser] = useMutation(LoginUserDocument, {
+  const [createUser] = useMutation(CreateUserDocument, {
     onCompleted: () => {
-      navigate('/dashboard', { replace: true });
+      handleOpen();
+      handleLogin();
     },
     onError: (err) => {
       setError(err.message);
@@ -61,29 +93,32 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(createAccountSchema),
   });
 
-  const onSubmit = handleSubmit(async (input) => {
+  const onSubmit = handleSubmit(async (data) => {
     handleSubmitting();
-    const createUserInput: MutationLoginUserArgs = {
+    const createUserInput: MutationCreateUserArgs = {
       data: {
-        username: input.username,
-        password: input.password,
+        username: data.username,
+        password: data.password,
       },
     };
 
-    const resut = await loginUser({
+    const result = await createUser({
       variables: {
         data: createUserInput.data,
       },
     });
 
     //set token to local storage
-    localStorage.setItem('token', resut.data ? resut.data.loginUser.token : '');
+    localStorage.setItem(
+      'token',
+      result.data ? result.data.createUser.token : ''
+    );
   });
 
-  const handleSubmitLoginForm = (
+  const handleSubmitCreateAccountForm = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
@@ -96,7 +131,7 @@ function Login() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 10,
+            marginTop: 12,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -111,10 +146,7 @@ function Login() {
             src={OfficeLogo}
           />
           <Typography component="h1" variant="h5" mt={2}>
-            Welcome
-          </Typography>
-          <Typography component="h1" variant="body2" mt={1}>
-            Please login to continue
+            Create Account
           </Typography>
           <Box component="form" sx={{ mt: 1 }}>
             <Controller
@@ -176,16 +208,26 @@ function Login() {
                 color: 'whitesmoke',
               }}
               onClick={(e) => {
-                handleSubmitLoginForm(e);
+                handleSubmitCreateAccountForm(e);
               }}
+              disabled={isSubmitting}
             >
-              Continue
+              Create account
             </Button>
+            <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+              <Alert
+                onClose={handleClose}
+                severity="success"
+                sx={{ width: '100%', background: '#98FB98' }}
+              >
+                Success! Your account has been created.
+              </Alert>
+            </Snackbar>
             <Grid container></Grid>
           </Box>
           <Stack direction="row" spacing={0.5}>
             <Typography variant="subtitle2">
-              {'Do not have an account?'}
+              Already have an account?
             </Typography>
             <Link
               component="button"
@@ -193,10 +235,10 @@ function Login() {
               color="#28c181"
               fontWeight={600}
               underline="none"
-              onClick={handleCreateAccount}
-              disabled={isSubmitting}
+              onClick={() => navigate('/login')}
+              textTransform="none"
             >
-              Create account
+              Login
             </Link>
           </Stack>
         </Box>
@@ -205,4 +247,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default CreateAccount;
