@@ -53,6 +53,7 @@ export interface ConfirmationDiaglogProps {
   rightBtnMsg: string;
   open: boolean;
   handleClose: () => void;
+  handleLogout: () => void;
 }
 
 function BootstrapDialogTitle(props: DialogTitleProps) {
@@ -80,7 +81,7 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
 }
 
 export default function CustomizedDialogs(props: ConfirmationDiaglogProps) {
-  const { title, message, leftBtnMsg, rightBtnMsg, open, handleClose } = props;
+  const { title, message, leftBtnMsg, rightBtnMsg, open, handleClose, handleLogout } = props;
 
   return (
     <BootstrapDialog
@@ -107,7 +108,7 @@ export default function CustomizedDialogs(props: ConfirmationDiaglogProps) {
           variant="contained"
           aria-label={rightBtnMsg}
           sx={rightButtonSx}
-          onClick={handleClose}
+          onClick={handleLogout}
         >
           {rightBtnMsg}
         </Button>

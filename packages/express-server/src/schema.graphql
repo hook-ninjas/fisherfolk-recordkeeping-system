@@ -2,6 +2,11 @@
 ### Do not make changes to this file directly
 
 
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
 """
 The `BigInt` scalar type represents non-fractional signed whole numeric values.
 """
@@ -45,7 +50,18 @@ input CreateFisherfolkInput {
 input CreateGearInput {
   classification: GearClassification!
   fisherfolkId: BigInt!
+  photo: String
   type: String!
+}
+
+input CreateImageInput {
+  fisherfolkId: BigInt!
+  gear_id: BigInt
+  name: String!
+  text: String!
+  updated_at: DateTime!
+  url: String!
+  vessel_id: BigInt
 }
 
 input CreateUserInput {
@@ -56,23 +72,23 @@ input CreateUserInput {
 input CreateVesselInput {
   engineMake: String!
   fisherfolkId: BigInt!
-  grossTonnage: Float!
+  grossTonnage: Float
   homeport: String!
-  horsepower: Float!
-  material: Material!
+  horsepower: Float
+  material: Material
   mfvrNumber: String!
   name: String!
-  netTonnage: Float!
+  netTonnage: Float
   placeBuilt: String!
-  registeredBreadth: Float!
-  registeredDepth: Float!
-  registeredLength: Float!
+  registeredBreadth: Float
+  registeredDepth: Float
+  registeredLength: Float
   serialNumber: String!
-  tonnageBreadth: Float!
-  tonnageDepth: Float!
-  tonnageLength: Float!
+  tonnageBreadth: Float
+  tonnageDepth: Float
+  tonnageLength: Float
   type: String!
-  yearBuilt: Int!
+  yearBuilt: Int
 }
 
 """
@@ -173,13 +189,11 @@ type Image {
   createdAt: DateTime!
   fisherfolk: Fisherfolk
   fisherfolkId: BigInt!
-  format: String!
   id: String!
   isArchive: Boolean!
   name: String!
   updatedAt: DateTime!
   url: String!
-  version: String!
 }
 
 type Livelihood {
@@ -213,8 +227,13 @@ type Member {
 
 type Mutation {
   createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
-  createUser(data: CreateUserInput!): User!
+  createGears(gears: [CreateGearInput!]!): [Gear!]!
+  createImage(data: CreateImageInput!): Image!
+  createUser(data: CreateUserInput!): AuthPayload!
+  createVessel(vessel: CreateVesselInput!): Vessel!
   createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
+  loginUser(data: CreateUserInput!): AuthPayload!
+  updateMfvr(id: Int!, mfvrNum: String!): Vessel!
 }
 
 type Organization {
@@ -249,13 +268,14 @@ type Query {
   fisherfolkGears(count: Int!, fisherfolkId: BigInt!, start: Int!): [Gear!]!
   fisherfolkVessels(count: Int!, fisherfolkId: BigInt!, start: Int!): [Vessel!]!
   fisherfolks: [Fisherfolk!]!
-  gears(count: Int!, start: Int!): [Gear!]!
+  gears: [Gear!]!
   totalFisherfolk: Int!
   totalFisherfolkGears(fisherfolkId: BigInt!): Int!
   totalFisherfolkVessels(fisherfolkId: BigInt!): Int!
   totalGears: Int!
   totalVessels: Int!
-  vessels(count: Int!, start: Int!): [Vessel!]!
+  user: User
+  vessels: [Vessel!]!
 }
 
 type Queue {
@@ -310,8 +330,8 @@ type Vessel {
   tonnageDepth: Float
   tonnageLength: Float
   type: String!
-  yearBuilt: Int
   updatedAt: DateTime!
+  yearBuilt: Int
 }
 
 input livelihoodInput {

@@ -1,159 +1,265 @@
+import React, { useCallback, useRef, useState } from 'react';
 import {
-  Paper,
-  TableRow,
-  TableCell,
-  TableContainer,
+  DataGrid,
+  GridColumns,
+  GridRowModel,
+  GridRowsProp,
+} from '@mui/x-data-grid';
+import {
+  UpdateMfvrDocument,
+  VesselQueryDocument,
+} from '../../graphql/generated';
+import { useMutation, useQuery } from '@apollo/client';
+import Loading from '../Loading/Loading';
+import {
+  Alert,
+  AlertProps,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Menu,
   MenuItem,
-  Table,
-  TableBody,
-  TableHead,
-  TablePagination,
+  Snackbar,
 } from '@mui/material';
-import React, { useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { VesselQueryDocument } from '../../graphql/generated';
-import { useQuery } from '@apollo/client';
-import Loading from '../Loading/Loading';
+import EditIcon from '@mui/icons-material/Edit';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import moment from 'moment';
 
-interface VesselColumn {
-  id:
-    | 'id'
-    | 'registrationDate'
-    | 'mfvrNum'
-    | 'name'
-    | 'status'
-    | 'operator'
-    | 'type'
-  label: string;
-  align?: 'left';
-}
+const renderMoreActions = () => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => setAnchorEl(null);
 
-const vesselColumns: readonly VesselColumn[] = [
-  { id: 'id', label: 'Id',},
-  { id: 'registrationDate', label: 'Date Registered'},
-  { id: 'mfvrNum', label: 'MFVR Number'},
-  { id: 'operator', label: 'Operator'},
-  { id: 'name', label: 'Name'},
-  { id: 'type', label: 'Type'},
-  { id: 'status', label: 'Status'},
+  return (
+    <div>
+      <Button
+        id="vessel-action-btn"
+        aria-controls={open ? 'vessel-action-btn' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        aria-label="vessel-action-btn"
+        disableElevation
+        onClick={handleClick}
+        style={{ color: '#808080' }}
+      >
+        <MoreVertIcon />
+      </Button>
+      <Menu
+        id="vessel-action-menu"
+        MenuListProps={{
+          'aria-labelledby': 'vessel-action-menu-list',
+        }}
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+      >
+        <MenuItem disableRipple>
+          <EditIcon sx={{ width: 20, marginRight: 1.5 }} /> Edit
+        </MenuItem>
+        <MenuItem disableRipple>
+          <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
+        </MenuItem>
+      </Menu>
+    </div>
+  );
+};
+
+const columns: GridColumns = [
+  { field: 'id', headerName: 'ID', disableColumnMenu: true },
+  {
+    field: 'dateRegistered',
+    headerName: 'Date Registered',
+    type: 'date',
+    minWidth: 150,
+    disableColumnMenu: true,
+    valueFormatter: (params) => moment(params?.value).format('MM/DD/YYYY'),
+  },
+  {
+    field: 'mfvrNum',
+    headerName: 'MFVR Number',
+    editable: true,
+    disableColumnMenu: true,
+    minWidth: 170,
+  },
+  {
+    field: 'name',
+    headerName: 'Name',
+    disableColumnMenu: true,
+    minWidth: 170,
+  },
+  {
+    field: 'operator',
+    headerName: 'Operator',
+    disableColumnMenu: true,
+    minWidth: 250,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    disableColumnMenu: true,
+    minWidth: 130,
+  },
+  {
+    field: 'actions',
+    headerName: '',
+    disableColumnMenu: true,
+    sortable: false,
+    renderCell: renderMoreActions,
+  },
 ];
 
+const computeMutation = (newRow: GridRowModel, oldRow: GridRowModel) => {
+  if (newRow.mfvrNum !== oldRow.mfvrNum) {
+    return `MFVR number from ${oldRow.mfvrNum} to ${newRow.mfvrNum}`;
+  }
+  return null;
+};
+
 export default function FisherfolkVesselTable() {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  const handleChangePage = (event: unknown, newPage: number) =>
-    setPage(newPage);
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-  const [drop, setDropDown] = React.useState<null | HTMLElement>(null);
-  const handleDismissDropdown = () => setDropDown(null);
-  const open = Boolean(drop);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
-    setDropDown(event.currentTarget);
-
-  const { loading, error, data } = useQuery(VesselQueryDocument, {
-    variables: {
-      start: page * rowsPerPage,
-      count: rowsPerPage,
-    },
+  const [updateMfvr] = useMutation(UpdateMfvrDocument, {
+    refetchQueries: [
+      {
+        query: VesselQueryDocument,
+      },
+    ],
   });
 
+  const noButtonRef = useRef<HTMLButtonElement>(null);
+  const [promiseArguments, setPromiseArguments] = useState<any>(null);
+
+  const [snackbar, setSnackbar] = React.useState<Pick<
+    AlertProps,
+    'children' | 'severity'
+  > | null>(null);
+
+  const handleCloseSnackbar = () => setSnackbar(null);
+
+  const handleEntered = () => {
+    return 0;
+  };
+
+  const handleNo = () => {
+    const { oldRow, resolve } = promiseArguments;
+    resolve(oldRow); // Resolve with the old row to not update the internal state
+    setPromiseArguments(null);
+  };
+
+  const handleYes = async () => {
+    const { newRow, oldRow, reject, resolve } = promiseArguments;
+
+    try {
+      const response = await updateMfvr({
+        variables: {
+          id: newRow['id'],
+          mfvrNum: newRow['mfvrNum'],
+        },
+      });
+      setSnackbar({
+        children: 'Successfully changed MFVR number.',
+        severity: 'success',
+      });
+      resolve(response);
+      setPromiseArguments(null);
+    } catch (error) {
+      setSnackbar({ children: 'Name can not be empty', severity: 'error' });
+      reject(oldRow);
+      setPromiseArguments(null);
+    }
+  };
+
+  const processRowUpdate = useCallback(
+    (newRow: GridRowModel, oldRow: GridRowModel) =>
+      new Promise<GridRowModel>((resolve, reject) => {
+        const mutation = computeMutation(newRow, oldRow);
+        if (mutation) {
+          // Save the arguments to resolve or reject the promise later
+          setPromiseArguments({ resolve, reject, newRow, oldRow });
+        } else {
+          resolve(oldRow); // Nothing was changed
+        }
+      }),
+    []
+  );
+
+  const renderConfirmDialog = () => {
+    if (!promiseArguments) {
+      return null;
+    }
+
+    const { newRow, oldRow } = promiseArguments;
+    const mutation = computeMutation(newRow, oldRow);
+
+    return (
+      <Dialog
+        maxWidth="xs"
+        TransitionProps={{ onEntered: handleEntered }}
+        open={!!promiseArguments}
+      >
+        <DialogTitle>Are you sure?</DialogTitle>
+        <DialogContent dividers>
+          {`Pressing YES will change ${mutation}.`}
+        </DialogContent>
+        <DialogActions>
+          <Button ref={noButtonRef} onClick={handleNo}>
+            No
+          </Button>
+          <Button onClick={handleYes}>Yes</Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
+
+  const { loading, error, data } = useQuery(VesselQueryDocument);
+  
+  let rows: GridRowsProp = [];
+
   if (error) {
-    console.log(error);
-    return <h1>Error Failed to Fetch!!!</h1>;
+    return (
+      <Alert severity="error">
+        {`Something went wrong. ${error.message} `}
+      </Alert>
+    );
+  }
+  
+  if (loading) {
+    return <Loading />;
   }
 
-  if (loading) {
-    <Loading />;
+  if (!loading && data !== undefined) {
+    rows =
+      data &&
+      data.vessels.map((vessel) => ({
+        id: vessel.id,
+        dateRegistered: new Date(vessel.createdAt),
+        mfvrNum: vessel.mfvrNumber,
+        name: vessel.name,
+        operator: `${vessel.fisherfolk.lastName}, ${vessel.fisherfolk.firstName} ${vessel.fisherfolk.middleName} ${vessel.fisherfolk.appellation}`,
+        status: '',
+      }));
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Table stickyHeader size="small" aria-label="vessel-table" sx={{p: 2}}>
-        <TableHead>
-          <TableRow>
-            {vesselColumns.map((vessel) => (
-              <TableCell
-                key={vessel.id}
-                align={vessel.align}
-              >
-                <b>{vessel.label}</b>
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data &&
-          data.vessels.map((vessel) => {
-            const { createdAt, id, mfvrNumber, name, type, fisherfolk } =
-              vessel;
-            const operator = `${fisherfolk.lastName}, ${fisherfolk.firstName} ${fisherfolk.middleName} ${fisherfolk.appellation}`;
-            return (
-              <TableRow hover role="checkbox" tabIndex={-1} key={id}>
-                <TableCell>{id}</TableCell>
-                <TableCell>
-                  {new Date(createdAt).toLocaleDateString()}
-                </TableCell>
-                <TableCell >
-                  {mfvrNumber}
-                </TableCell>
-                <TableCell>
-                  {operator}
-                </TableCell>
-                <TableCell>
-                  {name}
-                </TableCell>
-                <TableCell>
-                  {type}
-                </TableCell>
-                <TableCell></TableCell>
-                <TableCell align="right">
-                  <Button
-                    id="basic-button"
-                    aria-controls={open ? 'basic-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={(e) => {
-                      handleClick(e);
-                    }}
-                    style={{ color: '#808080' }}
-                  >
-                    <MoreVertIcon />
-                  </Button>{' '}
-                  <Menu
-                    id="dropdwown-menu"
-                    anchorEl={drop}
-                    open={open}
-                    onClose={handleDismissDropdown}
-                    MenuListProps={{
-                      'aria-labelledby': 'basic-button',
-                    }}
-                  > 
-                    <MenuItem>Edit</MenuItem>
-                    <MenuItem>Archive</MenuItem>
-                  </Menu>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 50, 100]}
-        component="div"
-        count={data === undefined ? 0 : data.totalVessels}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+    <div style={{ height: '85vh', width: '100%' }}>
+      {renderConfirmDialog()}
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        experimentalFeatures={{ newEditingApi: true }}
+        disableVirtualization={true}
+        processRowUpdate={processRowUpdate}
+        aria-label="vessel-table"
       />
-    </TableContainer>
+      {!!snackbar && (
+        <Snackbar open onClose={handleCloseSnackbar} autoHideDuration={6000}>
+          <Alert {...snackbar} onClose={handleCloseSnackbar} />
+        </Snackbar>
+      )}
+    </div>
   );
 }

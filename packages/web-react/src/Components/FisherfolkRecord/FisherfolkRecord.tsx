@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Button, Grid, Paper, Typography } from '@mui/material';
+import { Box, Grid, Paper, Typography } from '@mui/material';
 import AddFisherfolkForm from '../Forms/AddMemberForm';
 import FisherfolkTable from '../Table/FisherfolkTable';
+import AddIcon from '@mui/icons-material/Add';
+import { CustomAddButton, CustomBtnText } from '../Buttons/CustomAddButton';
 
 const FisherfolkRecord = () => {
   const [addFisherfolkBtn, setFisherfolkBtn] = useState(false);
@@ -13,27 +15,21 @@ const FisherfolkRecord = () => {
       <Grid item xs={12}>
         <Paper
           sx={{
-            p: 2,
+            p: 0.5,
             display: 'flex',
             flexDirection: 'column',
             boxShadow: 2,
           }}
         >
           <Box m={1} display="flex" justifyContent="space-between">
-            <Typography variant="h5">Fisherfolk Record</Typography>
-            <Button
-              variant="contained"
-              sx={{
-                height: 30,
-                background: '#28c181',
-                fontSize: 12,
-                fontWeight: '600',
-                color: 'whitesmoke'
-              }}
+            <Typography variant="h6">Fisherfolk Record</Typography>
+            <CustomAddButton
+              variant='contained'
+              endIcon={<AddIcon />}
               onClick={handleAddFisherfolkOpen}
             >
-              Add Fisherfolk
-            </Button>
+              <CustomBtnText>Add Fisherfolk</CustomBtnText>
+            </CustomAddButton>
             {addFisherfolkBtn && (
               <AddFisherfolkForm
                 handleClose={handleAddFisherfolkClose}

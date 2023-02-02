@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 
 function Loading() {
   return (
-    <Box sx={{ padding: '25%' }}>
+    <Box sx={{ padding: '25%', height: '85vh' }}>
       <Grid
         container
         sx={{

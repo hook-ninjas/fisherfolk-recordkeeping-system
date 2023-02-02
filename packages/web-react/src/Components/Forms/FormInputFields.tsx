@@ -15,6 +15,7 @@ import {
   FormControlLabel,
   RadioGroup,
   Radio,
+  Autocomplete,
 } from '@mui/material';
 import CreatableSelect from 'react-select/creatable';
 import { splitUpperCase } from '../../utils/utils';
@@ -49,7 +50,8 @@ interface FormInputTextProps {
   name: string;
   label: string;
   placeholder: string;
-  control: Control<FieldValues, any>;
+  control: Control<FieldValues, unknown>;
+  options?: Option[];
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
 }
@@ -59,7 +61,7 @@ interface FormInputSelectProps {
   label: string;
   onSavedValue: string;
   data: string[];
-  control: Control<FieldValues, any>;
+  control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
 }
@@ -67,20 +69,20 @@ interface FormInputSelectProps {
 interface FormInputRadioProps {
   name: string;
   label: string;
-  control: Control<FieldValues, any>;
+  control: Control<FieldValues, unknown>;
   radioOptions: Option[];
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
 }
 
 interface FormCreatableSelectProps {
-  name: string,
-  label: string,
-  options: Option[],
-  isLoading: boolean,
-  isDisabled: boolean,
-  onCreateOption: ((input: string) => void),
-  control: Control<FieldValues, any>;
+  name: string;
+  options: Option[];
+  isLoading: boolean;
+  isDisabled: boolean;
+  placeholder: string;
+  onCreateOption: (input: string) => void;
+  control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
 }
@@ -106,6 +108,41 @@ export const FormInputText = ({
         error={!!errors[name]}
         placeholder={placeholder}
         InputProps={{ style: { fontSize: 14, margin: 10 } }}
+      />
+    )}
+  />
+);
+
+export const FormInputAutoText = ({
+  name,
+  label,
+  placeholder,
+  control,
+  register,
+  options,
+  errors,
+}: FormInputTextProps) => (
+  <Controller
+    name={name}
+    control={control}
+    render={({ field: { value } }) => (
+      <Autocomplete
+        id={name}
+        freeSolo
+        options={options!.map((option) => option.label)}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={label}
+            value={value}
+            sx={{ marginTop: -0.3, width: 230 }}
+            {...register(name)}
+            helperText={errors[name]?.message}
+            error={!!errors[name]}
+            InputProps={{ ...params.InputProps, style : { fontSize: 14, margin: 10, textTransform: 'none'  }}}
+            placeholder={placeholder}
+          />
+        )}
       />
     )}
   />
@@ -191,17 +228,16 @@ export const FormInputRadio = ({
 
 export const FormCreatableSelect = ({
   name,
-  label,
   options,
   isLoading,
   isDisabled,
   onCreateOption,
-  // value,
+  placeholder,
   control,
   errors,
-  register
+  register,
 }: FormCreatableSelectProps) => (
-  <FormControl error={!!errors[name]} aria-label={label}>
+  <FormControl error={!!errors[name]}>
     <Controller
       name={name}
       render={({ field: { onChange, value } }) => (
@@ -213,6 +249,7 @@ export const FormCreatableSelect = ({
           onChange={(input) => onChange(input?.value)}
           onCreateOption={onCreateOption}
           value={options.find((c) => c.value === value)}
+          placeholder={placeholder}
           {...register}
           styles={style}
         />

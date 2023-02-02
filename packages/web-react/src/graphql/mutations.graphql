@@ -1,13 +1,71 @@
 # Write Graphql Mutations here #
 
-  mutation CreateFisherfolk($data: CreateFisherfolkInput!) {
-    createFisherfolk(data: $data) {
-        id
-    }
+mutation CreateFisherfolk($data: CreateFisherfolkInput!) {
+  createFisherfolk(data: $data) {
+    id
   }
+}
 
-  mutation CreateVessselWithGear($vessel: CreateVesselInput!, $gears: [CreateGearInput!]!) {
+mutation CreateVessselWithGear(
+  $vessel: CreateVesselInput!
+  $gears: [CreateGearInput!]!
+) {
   createVesselWithGear(vessel: $vessel, gears: $gears) {
     id
+  }
+}
+
+mutation CreateVessel($vessel: CreateVesselInput!) {
+  createVessel(vessel: $vessel) {
+    id
+  }
+}
+
+mutation CreateGears($gears: [CreateGearInput!]!) {
+  createGears(gears: $gears) {
+    id
+  }
+}
+
+mutation CreateImage($data: CreateImageInput!) {
+  createImage(data: $data) {
+    id
+  }
+}
+
+mutation CreateUser($data: CreateUserInput!){
+  createUser(data: $data) {
+    token,
+    user {
+      id
+      username
+      password
+    }
+  }
+}
+
+mutation LoginUser($data: CreateUserInput!) {
+  loginUser(data: $data) {
+    token,
+    user {
+      id
+      username
+      password
+    }
+  }
+}
+
+mutation UpdateMFVR($id: Int!, $mfvrNum: String!) {
+  updateMfvr(id: $id, mfvrNum: $mfvrNum) {
+   id
+    mfvrNumber
+    createdAt
+    name
+    fisherfolk {
+      lastName
+      firstName
+      middleName
+      appellation
+    }
   }
 }

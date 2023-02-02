@@ -10,19 +10,19 @@ const CreateVesselInput = inputObjectType({
     t.string('name');
     t.string('type');
     t.string('placeBuilt');
-    t.int('yearBuilt');
-    t.field('material', {type: Material});
-    t.float('registeredLength');
-    t.float('registeredBreadth');
-    t.float('registeredDepth');
-    t.float('tonnageLength');
-    t.float('tonnageBreadth');
-    t.float('tonnageDepth');
-    t.float('grossTonnage');
-    t.float('netTonnage');
+    t.nullable.int('yearBuilt');
+    t.nullable.field('material', {type: Material});
+    t.nullable.float('registeredLength');
+    t.nullable.float('registeredBreadth');
+    t.nullable.float('registeredDepth');
+    t.nullable.float('tonnageLength');
+    t.nullable.float('tonnageBreadth');
+    t.nullable.float('tonnageDepth');
+    t.nullable.float('grossTonnage');
+    t.nullable.float('netTonnage');
     t.string('engineMake');
     t.string('serialNumber');
-    t.float('horsepower');
+    t.nullable.float('horsepower');
   },
 });
 

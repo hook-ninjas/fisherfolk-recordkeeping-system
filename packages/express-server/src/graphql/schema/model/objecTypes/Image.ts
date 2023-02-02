@@ -16,8 +16,6 @@ const Image = objectType({
     });
     t.string('name');
     t.string('url');
-    t.string('format');
-    t.string('version');
     t.boolean('isArchive');
     t.field('createdAt', { type: 'DateTime' });
     t.field('updatedAt', { type: 'DateTime' });

@@ -8,4 +8,4 @@ const CreateUserInput = inputObjectType({
   }
 });
 
-export default [CreateUserInput];
+export default CreateUserInput;

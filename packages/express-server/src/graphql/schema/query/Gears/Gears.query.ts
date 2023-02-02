@@ -2,13 +2,7 @@ import { nonNull, queryField, list, intArg, arg } from 'nexus';
 
 const Gears = queryField('gears', {
   type: nonNull(list(nonNull('Gear'))),
-  args: {
-    start: nonNull(intArg()),
-    count: nonNull(intArg())
-  },
   resolve: (_parent, args, ctx) => ctx.prisma.gear.findMany({
-    skip: args.start,
-    take: args.count,
     orderBy: [
       {
         id: 'desc'

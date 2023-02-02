@@ -223,8 +223,6 @@ model Image {
   vesselId     BigInt?     @map("vessel_id")
   name         String
   url          String
-  format       String
-  version      String
   isArchive    Boolean     @default(false) @map("is_archive")
 
   createdAt DateTime @default(now()) @map("created_at")

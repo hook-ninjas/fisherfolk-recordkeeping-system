@@ -68,7 +68,7 @@ export default function GearTable() {
   }
 
   if (loading) {
-    <Loading />;
+    return <Loading />;
   }
 
   if (data && data?.totalFisherfolkGears === 0) {
@@ -123,7 +123,7 @@ export default function GearTable() {
                     {new Date(createdAt).toLocaleDateString()}
                   </TableCell>
                   <TableCell>{splitUpperCase(classification)}</TableCell>
-                  <TableCell>{type}</TableCell>
+                  <TableCell>{splitUpperCase(type)}</TableCell>
                   <TableCell></TableCell>
                   <TableCell align="right">
                     <Button
