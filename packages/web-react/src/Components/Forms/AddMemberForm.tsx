@@ -312,11 +312,18 @@ export default function AddFisherfolkForm({
               radioOptions={registrationTypes}
             /> */}
             <PhotoUpload
+              name="photo-upload"
+              label="photo-upload"
+              control={control}
+              register={register}
+              errors={errors}
               sx={{
                 m: 1,
                 p: 1,
                 maxWidth: '200px',
               }}
+              alt={'Upload 2x2 Photo'}
+              dataCy={'ffolk-img'}
             />
           </Box>
           <Typography variant="h6" color="GrayText" ml={2} mt={2}>
