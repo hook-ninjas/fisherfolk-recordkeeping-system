@@ -22,7 +22,7 @@ import {
   FormInputAutoText,
 } from './FormInputFields';
 import { useForm } from 'react-hook-form';
-import { object, string, mixed } from 'yup';
+import { object, string, mixed, number } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   CreateFisherfolkDocument,
@@ -209,6 +209,16 @@ export default function AddFisherfolkForm({
     ptnAddress: string().required('Enter address of person to notify.'),
     mainFishingActivity: string().required('Select main fishing activity.'),
     orgMemberSince: string().matches(/^$|\d{4}$/, 'Please enter year.'),
+    profilePhoto: object()
+      .shape({
+        name: string().required(),
+        size: number().max(1000000, 'File over 1 mb'),
+        type: string()
+          .matches(/^.*(image\/jpeg|jpg|png)$/gm, 'File format not supported')
+          .required('No File Uploaded'),
+      })
+      .nullable()
+      .required('Add Profile Image'),
   });
 
   const {
@@ -263,6 +273,7 @@ export default function AddFisherfolkForm({
         livelihoods: [],
       },
     };
+    console.log(data.profilePhoto);
     console.log(createFisherfolkInput.data);
 
     // await createFisherfolk({
@@ -312,8 +323,8 @@ export default function AddFisherfolkForm({
               radioOptions={registrationTypes}
             /> */}
             <PhotoUpload
-              name="photo-upload"
-              label="photo-upload"
+              name="profilePhoto"
+              label="profilePhoto"
               control={control}
               register={register}
               errors={errors}
