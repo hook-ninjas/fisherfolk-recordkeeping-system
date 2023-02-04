@@ -5,7 +5,7 @@ import {
   FieldValues,
   Controller,
 } from 'react-hook-form';
-import { Paper, Input, SxProps, Theme } from '@mui/material';
+import { Paper, Input, SxProps, Theme, FormHelperText } from '@mui/material';
 
 interface PhotoUploadProps {
   id?: string;
@@ -30,7 +30,7 @@ function PhotoUpload({
   errors,
   sx,
 }: PhotoUploadProps) {
-  const [image, setImage] = useState<string>('');
+  const [image, setImage] = useState<string | undefined>(undefined);
 
   const setPreview = (file: FileReader) => {
     const image = file.result;
@@ -63,6 +63,13 @@ function PhotoUpload({
   return (
     <>
       <Paper id={id} sx={sx} data-cy={dataCy}>
+        <FormHelperText
+          error={!!errors[name]}
+          hidden={!errors[name]}
+          sx={{ ml: 2, mt: 2 }}
+        >
+          {errors[name]?.message}
+        </FormHelperText>
         <Paper
           data-cy={`${dataCy}-preview`}
           sx={{
