@@ -22,7 +22,7 @@ import {
   FormInputAutoText,
 } from './FormInputFields';
 import { useForm } from 'react-hook-form';
-import { object, string, mixed } from 'yup';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   CreateFisherfolkDocument,
@@ -43,7 +43,8 @@ import {
   cityMunicipalityOptions,
   provinceOptions,
 } from './Enums';
-import { getValues } from '../../utils/utils';
+import PhotoUpload from '../Input/PhotoUpload';
+import { FfolkValidation } from './validation/schema';
 
 export interface FormContainerTitleProps {
   children?: React.ReactNode;
@@ -160,63 +161,13 @@ export default function AddFisherfolkForm({
   const { CaptureFishing, Aquaculture, FishVending, FishProcessing } =
     otherFishingActivities;
 
-  const addFisherfolkSchema = object().shape({
-    registrationType: string()
-      .nullable()
-      .oneOf(getValues(registrationTypes))
-      .required('Select registration type.'),
-    lastName: string().required('Enter last name.'),
-    firstName: string().required('Enter first name.'),
-    middleName: string().required('Enter middle name.'),
-    salutation: string()
-      .nullable()
-      .oneOf(getValues(salutationOptions))
-      .required('Select salutation.'),
-    contactNumber: string()
-      .required('Enter contact number.')
-      .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
-    barangay: string().required('Enter or select barangay.'),
-    cityMunicipality: string().required('Enter city/municipality.'),
-    province: string().required('Enter province.'),
-    residentYear: string().matches(/^\d{4}$/, 'Enter year of residency.'),
-    gender: string()
-      .nullable()
-      .oneOf(getValues(genderOptions))
-      .required('Select gender.'),
-    age: string()
-      .matches(/^$|\d{1,3}$/, 'Age must be a number.')
-      .required('Enter age.'),
-    dateOfBirth: string().nullable().required('Enter date of birth.'),
-    placeOfBirth: string().required('Enter place of birth.'),
-    civilStatus: string().required('Select civil status.'),
-    educationalBackground: mixed()
-      .nullable()
-      .oneOf(getValues(educationalBackgrounds))
-      .required('Enter or select educational background.'),
-    numOfChildren: string().matches(/^$|\d{1,2}$/, 'Enter a number.'),
-    nationality: mixed()
-      .nullable()
-      .oneOf(getValues(nationalities))
-      .required('Enter or select nationality.'),
-    personToNotify: string().required('Enter person to notify.'),
-    ptnRelationship: string().required(
-      'Enter relationship with person to notify.'
-    ),
-    ptnContactNum: string()
-      .required('Enter contact number of person to notify.')
-      .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
-    ptnAddress: string().required('Enter address of person to notify.'),
-    mainFishingActivity: string().required('Select main fishing activity.'),
-    orgMemberSince: string().matches(/^$|\d{4}$/, 'Please enter year.'),
-  });
-
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(addFisherfolkSchema),
+    resolver: yupResolver(FfolkValidation),
   });
 
   const [createFisherfolk] = useMutation(CreateFisherfolkDocument, {
@@ -258,10 +209,11 @@ export default function AddFisherfolkForm({
         religion: data.religion,
         residentYear: parseInt(data.residentYear),
         salutation: data.salutation,
-        numOfChildren: parseInt(data.numOfChildren),
+        numOfChildren: parseInt(data.numberOfChildren),
         livelihoods: [],
       },
     };
+    console.log(data.profilePhoto);
     console.log(createFisherfolkInput.data);
 
     // await createFisherfolk({
@@ -292,8 +244,8 @@ export default function AddFisherfolkForm({
           Fisherfolk Registration
         </FormContainerTitle>
         <DialogContent dividers>
-          <Typography variant="inherit" color="GrayText" mb={2} ml={2}>
-            Type of Registration
+          <Typography variant="body1" color="GrayText" mb={2} ml={2}>
+            Upload Profile Picture
           </Typography>
           <Box
             sx={{
@@ -302,13 +254,27 @@ export default function AddFisherfolkForm({
               mt: -2,
             }}
           >
-            <FormInputRadio
+            {/* <FormInputRadio
               name="registrationType"
               label="registrationType"
               control={control}
               register={register}
               errors={errors}
               radioOptions={registrationTypes}
+            /> */}
+            <PhotoUpload
+              name="profilePhoto"
+              label="profilePhoto"
+              control={control}
+              register={register}
+              errors={errors}
+              sx={{
+                m: 1,
+                p: 1,
+                maxWidth: '200px',
+              }}
+              alt={'Upload 2x2 Photo'}
+              dataCy={'ffolk-img'}
             />
           </Box>
           <Typography variant="h6" color="GrayText" ml={2} mt={2}>
@@ -630,7 +596,7 @@ export default function AddFisherfolkForm({
             <Typography variant="subtitle1" color="GrayText">
               Other Fishing Activities
             </Typography>
-            <Grid container spacing={-2} sx={{ ml: 1}}>
+            <Grid container spacing={-2} sx={{ ml: 1 }}>
               <FormGroup>
                 <FormControlLabel
                   control={
