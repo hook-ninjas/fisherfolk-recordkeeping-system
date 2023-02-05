@@ -6,6 +6,7 @@ import {
   EducationalBackground,
   CivilStatus,
   Material,
+  FisherfolkStatus,
 } from '../../graphql/generated';
 import data from './iloilo-city-brgys.json';
 
@@ -13,6 +14,10 @@ export const createOption = (label: string) => ({
   label,
   value: label,
 });
+
+export const fisherfolkStatus = Object.values(FisherfolkStatus).map((a)=>createOption(a));
+
+export const livelihoods = Object.values(SourceOfIncome).map((a)=>createOption(a)).slice(0, -1);
 
 export const cityMunicipalityOptions = [createOption('Iloilo City')];
 

@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {QueryFisherfolksDocument } from '../../graphql/generated';
-import { useQuery } from '@apollo/client';
 import Loading from '../Loading/Loading';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { splitUpperCase } from '../../utils/utils';
-import { DataGrid, GridColumns, GridRowsProp} from '@mui/x-data-grid';
-import { Button, Menu, MenuItem } from '@mui/material';
+import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
+import { Alert, Button, Menu, MenuItem } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import moment from 'moment';
+import { ApolloError } from '@apollo/client';
+import { QueryFisherfolksQuery } from '../../graphql/generated';
+
+interface Props {
+  error: ApolloError | undefined,
+  loading: boolean,
+  data: QueryFisherfolksQuery | undefined
+}
+
 
 const renderMoreActions = (id: number) => {
   const navigate = useNavigate();
@@ -125,13 +132,15 @@ const columns: GridColumns = [
   },
 ];
 
-export default function FisherfolkVesselTable() {
-  const { loading, error, data } = useQuery(QueryFisherfolksDocument);
+export default function FisherfolkVesselTable({error, loading, data}: Props) {
   let rows: GridRowsProp = [];
 
   if (error) {
-    console.log(error);
-    return <h1>Error Failed to Fetch!!!</h1>;
+    return (
+      <Alert severity="error">
+        Something went wrong.
+      </Alert>
+    );
   }
 
   if (loading) {
