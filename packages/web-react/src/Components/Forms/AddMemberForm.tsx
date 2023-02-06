@@ -45,11 +45,30 @@ import {
 } from './Enums';
 import PhotoUpload from '../Input/PhotoUpload';
 import { FfolkValidation } from './validation/schema';
+import MultiFileUpload from '../Input/MultiFileUpload';
 
 export interface FormContainerTitleProps {
   children?: React.ReactNode;
   onClose: () => void;
 }
+
+const handleUpload = (
+  event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+) => {
+  const reader = new FileReader();
+
+  if (event.target instanceof HTMLInputElement) {
+    if (event.target.files !== null) {
+      const file = event.target.files[0];
+      reader.readAsDataURL(file);
+      console.log(file);
+
+      reader.onloadend = () => setPreview(reader);
+    } else {
+      throw 'No File uploaded';
+    }
+  }
+};
 
 function FormContainerTitle(props: FormContainerTitleProps) {
   const { children, onClose } = props;
@@ -680,26 +699,19 @@ export default function AddFisherfolkForm({
             </Grid>
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
-            <Grid item sm={6}>
-              <FormInputText
-                name="photo"
-                control={control}
-                label="Attach Photo"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6}>
-              <FormInputText
-                name="signature"
-                control={control}
-                label="Attach Signature "
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
+            <MultiFileUpload
+              name="signature"
+              label="signature"
+              control={control}
+              register={register}
+              errors={errors}
+              sx={{
+                m: 1,
+                p: 1,
+                width: '100%',
+              }}
+              dataCy={'ffolk-signature'}
+            />
           </Grid>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
             <Button
