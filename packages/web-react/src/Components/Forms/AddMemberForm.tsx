@@ -52,24 +52,6 @@ export interface FormContainerTitleProps {
   onClose: () => void;
 }
 
-const handleUpload = (
-  event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-) => {
-  const reader = new FileReader();
-
-  if (event.target instanceof HTMLInputElement) {
-    if (event.target.files !== null) {
-      const file = event.target.files[0];
-      reader.readAsDataURL(file);
-      console.log(file);
-
-      reader.onloadend = () => setPreview(reader);
-    } else {
-      throw 'No File uploaded';
-    }
-  }
-};
-
 function FormContainerTitle(props: FormContainerTitleProps) {
   const { children, onClose } = props;
 
