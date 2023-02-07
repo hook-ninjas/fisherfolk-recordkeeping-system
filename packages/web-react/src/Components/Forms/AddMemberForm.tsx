@@ -12,8 +12,6 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import { styled } from '@mui/material/styles';
 import {
   FormInputRadio,
   FormInputSelect,
@@ -21,8 +19,11 @@ import {
   FormCreatableSelect,
   FormInputAutoText,
 } from './FormInputFields';
+import {
+  FormContainer,
+  FormContainerTitle,
+} from '../Containers/FormContainers';
 import { useForm } from 'react-hook-form';
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   CreateFisherfolkDocument,
@@ -34,7 +35,6 @@ import {
   nationalityOptions,
   educationalBackgroundOptions,
   createOption,
-  registrationTypes,
   salutationOptions,
   barangayOptions,
   genderOptions,
@@ -46,42 +46,6 @@ import {
 import PhotoUpload from '../Input/PhotoUpload';
 import { FfolkValidation } from './validation/schema';
 import MultiFileUpload from '../Input/MultiFileUpload';
-
-export interface FormContainerTitleProps {
-  children?: React.ReactNode;
-  onClose: () => void;
-}
-
-function FormContainerTitle(props: FormContainerTitleProps) {
-  const { children, onClose } = props;
-
-  return (
-    <DialogTitle sx={{ ml: 2, p: 2 }}>
-      {children}
-      {onClose ? (
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </DialogTitle>
-  );
-}
-
-const FormContainer = styled(Dialog)(({ theme }) => ({
-  '& .MuiDialogContent-root': {
-    padding: theme.spacing(2),
-  },
-}));
-
 interface AddFisherfolkFormProps {
   open: boolean;
   handleClose: () => void;
