@@ -3,13 +3,10 @@ import {
   Box,
   Button,
   Checkbox,
-  Dialog,
   DialogContent,
-  DialogTitle,
   FormControlLabel,
   FormGroup,
   Grid,
-  IconButton,
   Typography,
 } from '@mui/material';
 import {
@@ -56,19 +53,6 @@ export default function AddFisherfolkForm({
   handleClose,
 }: AddFisherfolkFormProps) {
   const [complete, setComplete] = useState(false);
-
-  const buttonSx = {
-    ...(complete && {
-      bgcolor: '#22cd4c',
-      '&:hover': {
-        bgcolor: '#22cd4c',
-      },
-    }),
-    display: 'block',
-    marginTop: 3,
-    marginLeft: 'auto',
-  };
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [nationalities, setNationalities] = useState(nationalityOptions);
@@ -82,6 +66,18 @@ export default function AddFisherfolkForm({
     FishVending: false,
     FishProcessing: false,
   });
+
+  const buttonSx = {
+    ...(complete && {
+      bgcolor: '#22cd4c',
+      '&:hover': {
+        bgcolor: '#22cd4c',
+      },
+    }),
+    display: 'block',
+    marginTop: 3,
+    marginLeft: 'auto',
+  };
 
   const handleSubmitting = () => setIsSubmitting(true);
 
@@ -219,14 +215,6 @@ export default function AddFisherfolkForm({
               mt: -2,
             }}
           >
-            {/* <FormInputRadio
-              name="registrationType"
-              label="registrationType"
-              control={control}
-              register={register}
-              errors={errors}
-              radioOptions={registrationTypes}
-            /> */}
             <PhotoUpload
               name="profilePhoto"
               label="profilePhoto"
