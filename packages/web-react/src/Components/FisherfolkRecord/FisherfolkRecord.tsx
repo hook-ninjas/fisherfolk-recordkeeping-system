@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 import AddFisherfolkForm from '../Forms/AddMemberForm';
 import FisherfolkTable from '../Table/FisherfolkTable';
+import SearchField from '../Search/Search';
 import AddIcon from '@mui/icons-material/Add';
 import { CustomAddButton, CustomBtnText } from '../Buttons/CustomAddButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -157,6 +158,8 @@ const FisherfolkRecord = () => {
         >
           <Box m={1} display="flex" justifyContent="space-between">
             <Typography variant="h6">Fisherfolk Record</Typography>
+
+            
             <Box display="flex" justifyContent="end">
               <IconButton
                 sx={{
@@ -172,8 +175,11 @@ const FisherfolkRecord = () => {
                 aria-label="logo"
                 onClick={() => setIsDrawOpen(true)}
               >
+
                 <FilterAltIcon />
               </IconButton>
+
+
               <CustomDrawer
                 anchor="right"
                 open={isDrawerOpen}
@@ -182,6 +188,8 @@ const FisherfolkRecord = () => {
                   sx: { width: '30%' },
                 }}
               >
+
+                
                 <DialogTitle sx={{ ml: 2, p: 2 }}>
                   <IconButton
                     aria-label="close"
@@ -300,6 +308,11 @@ const FisherfolkRecord = () => {
               )}
             </Box>
           </Box>
+
+          <Box m={1} display="flex" justifyContent="space-between">
+            <SearchField />
+          </Box>
+
           <Grid item>
             <Box m={1}>
               <FisherfolkTable
