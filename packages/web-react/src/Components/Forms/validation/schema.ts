@@ -8,7 +8,7 @@ import {
   materialOptions,
 } from '../Enums';
 
-const FisherfolkSchema = object().shape({
+const FfolkValidation = object().shape({
   // registrationType: string()
   //   .nullable()
   //   .oneOf(getValues(registrationTypes))
@@ -119,4 +119,4 @@ const LoginSchema = object().shape({
   password: string().required('Enter password.'),
 });
 
-export { FisherfolkSchema, VesselWithGearSchema, CreateAccountSchema, LoginSchema };
+export { FfolkValidation, VesselWithGearSchema, CreateAccountSchema, LoginSchema };
