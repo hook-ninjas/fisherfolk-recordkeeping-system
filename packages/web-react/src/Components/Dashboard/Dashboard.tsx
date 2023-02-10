@@ -1,5 +1,7 @@
 import React from 'react';
-import { Grid, Paper } from '@mui/material';
+import { Box, Grid, Paper, Typography } from '@mui/material';
+import Livelihood from './Livelihood';
+
 function Dashboard() {
   return (
     <Grid container spacing={2}>
@@ -12,7 +14,10 @@ function Dashboard() {
             boxShadow: 2,
           }}
         >
-          Welcome to Dashboard Page!
+          <Box m={1}>
+            <Typography variant="h5">Dashboard</Typography>
+          </Box>
+          <Livelihood />
         </Paper>
       </Grid>
     </Grid>
