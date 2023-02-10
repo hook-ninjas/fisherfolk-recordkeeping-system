@@ -269,6 +269,7 @@ type Query {
   fisherfolkVessels(count: Int!, fisherfolkId: BigInt!, start: Int!): [Vessel!]!
   fisherfolks: [Fisherfolk!]!
   gears: [Gear!]!
+  livelihoodCount(activity: SourceOfIncome!): Int!
   totalFisherfolk: Int!
   totalFisherfolkGears(fisherfolkId: BigInt!): Int!
   totalFisherfolkVessels(fisherfolkId: BigInt!): Int!

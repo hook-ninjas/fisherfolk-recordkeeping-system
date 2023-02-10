@@ -132,3 +132,7 @@ query AuthUser {
      id
   }
 }
+
+query LivelihoodCount($activity: SourceOfIncome!) {
+  livelihoodCount(activity: $activity) 
+}
