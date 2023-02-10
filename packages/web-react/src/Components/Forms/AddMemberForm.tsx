@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { MouseEvent, SyntheticEvent, useState } from 'react';
 import {
   Box,
   Button,
   Checkbox,
   DialogContent,
   FormControlLabel,
-  FormGroup,
   Grid,
   Typography,
+  Tabs,
+  Tab,
 } from '@mui/material';
 import {
   FormInputRadio,
@@ -43,6 +44,8 @@ import {
 import PhotoUpload from '../Input/PhotoUpload';
 import { FfolkValidation } from './validation/schema';
 import MultiFileUpload from '../Input/MultiFileUpload';
+import GearForm from './GearForm';
+import VesselForm from './VesselForm';
 interface AddFisherfolkFormProps {
   open: boolean;
   handleClose: () => void;
@@ -53,6 +56,8 @@ export default function AddFisherfolkForm({
   handleClose,
 }: AddFisherfolkFormProps) {
   const [complete, setComplete] = useState(false);
+  const [isCaptureFishing, setCaptureFishing] = useState(false);
+  const [tab, setTab] = useState('gear');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [nationalities, setNationalities] = useState(nationalityOptions);
@@ -119,20 +124,27 @@ export default function AddFisherfolkForm({
     }, 1000);
   };
 
-  const { CaptureFishing, Aquaculture, FishVending, FishProcessing } =
-    otherFishingActivities;
-
   const {
     register,
     watch,
     control,
     handleSubmit,
+    resetField,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(FfolkValidation),
   });
 
   const watchFishCapture = watch(['mainFishingActivity', '2ndCaptFish']);
+  const watchFishingCheckboxes = watch([
+    '2ndCaptFish',
+    '2ndFishVending',
+    '2ndAquaculture',
+    '2ndFishProcessing',
+  ]);
+  const captureFishingRegistrant =
+    watchFishCapture.includes('CaptureFishing') ||
+    watchFishCapture.includes(true);
 
   const [createFisherfolk] = useMutation(CreateFisherfolkDocument, {
     onCompleted: () => {
@@ -146,6 +158,9 @@ export default function AddFisherfolkForm({
       showFailAlert(err.message);
     },
   });
+
+  const handleTabChange = (event: SyntheticEvent, newValue: string) =>
+    setTab(newValue);
 
   const onSubmit = handleSubmit((data) => {
     // handleSubmitting();
@@ -187,43 +202,30 @@ export default function AddFisherfolkForm({
     // });
   });
 
-  const handleSubmitForm = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const handleSubmitForm = (e: MouseEvent) => {
     e.preventDefault();
     onSubmit();
   };
 
-  const submitButton =
-    watchFishCapture.includes('CaptureFishing') ||
-    watchFishCapture.includes(true) ? (
-      <Button
-        variant="contained"
-        fullWidth
-        // onClick={(e) => {
-        //   handleSubmitForm(e);
-        // }}
-        // onClick={() => onSubmit}
-        disabled={isSubmitting}
-        sx={buttonSx}
-      >
-        Next
-      </Button>
-    ) : (
-      <Button
-        type="submit"
-        variant="contained"
-        fullWidth
-        onClick={(e) => {
-          handleSubmitForm(e);
-        }}
-        // onClick={() => onSubmit}
-        disabled={isSubmitting}
-        sx={buttonSx}
-      >
-        Save
-      </Button>
-    );
+  const handleNextButton = (e: MouseEvent) => setCaptureFishing(true);
+  const handleBackButton = (e: MouseEvent) => setCaptureFishing(false);
+
+  const formTab = () => {
+    switch (tab) {
+      case 'gear':
+        return <GearForm />;
+      case 'vessel':
+        return <VesselForm />;
+      case 'gear&vessel':
+        return (
+          <>
+            <VesselForm />
+            <GearForm />
+          </>
+        );
+    }
+    return <></>;
+  };
   return (
     <>
       <FormContainer
@@ -238,470 +240,525 @@ export default function AddFisherfolkForm({
           Fisherfolk Registration
         </FormContainerTitle>
         <DialogContent dividers>
-          <Box>
-            <Typography variant="body1" color="GrayText" mb={2} ml={2}>
-              Upload Profile Picture
-            </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                pl: 2,
-                mt: -2,
-              }}
-            >
-              <PhotoUpload
-                name="profilePhoto"
-                label="profilePhoto"
-                control={control}
-                register={register}
-                errors={errors}
+          {!isCaptureFishing ? (
+            <Box id="ffolk-form-info">
+              <Typography variant="body1" color="GrayText" mb={2} ml={2}>
+                Upload Profile Picture
+              </Typography>
+              <Box
                 sx={{
-                  m: 1,
-                  p: 1,
-                  maxWidth: '200px',
+                  display: 'flex',
+                  pl: 2,
+                  mt: -2,
                 }}
-                alt={'Upload 2x2 Photo'}
-                dataCy={'ffolk-img'}
-              />
-            </Box>
-            <Typography variant="h6" color="GrayText" ml={2} mt={2}>
-              Personal Information
-            </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                pl: 2,
-              }}
-            >
-              <FormInputRadio
-                name="salutation"
-                label="salutation"
-                control={control}
-                register={register}
-                errors={errors}
-                radioOptions={salutationOptions}
-              />
-            </Box>
-            <Grid container spacing={-2} sx={{ ml: 1, mr: 1 }}>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="lastName"
-                  control={control}
-                  label="Last Name"
-                  placeholder=""
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="firstName"
-                  control={control}
-                  label="First Name"
-                  placeholder=""
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="middleName"
-                  control={control}
-                  label="Middle Name"
-                  placeholder=""
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="apellation"
-                  control={control}
-                  label="Apellation"
-                  placeholder="e.g. Sr. / Jr. / III"
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={-2} sx={{ ml: 2 }}>
-              <Grid item sm={6} sx={{ mt: 2 }}>
-                <FormCreatableSelect
-                  name="barangay"
-                  placeholder="Select Barangay"
-                  isLoading={isLoading}
-                  isDisabled={isLoading}
-                  onCreateOption={handleCreateBarangay}
-                  options={barangays}
+              >
+                <PhotoUpload
+                  name="profilePhoto"
+                  label="profilePhoto"
                   control={control}
                   register={register}
                   errors={errors}
-                />
-              </Grid>
-              <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
-                <FormInputAutoText
-                  name="cityMunicipality"
-                  control={control}
-                  label="City/Municipality"
-                  placeholder=""
-                  options={cityMunicipalityOptions}
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-              <Grid item sm={6}>
-                <FormInputAutoText
-                  name="province"
-                  control={control}
-                  label="Province"
-                  placeholder=""
-                  options={provinceOptions}
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="residentYear"
-                  control={control}
-                  label="Resident of Municipality since"
-                  placeholder="e.g. 2015"
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="age"
-                  control={control}
-                  label="Age"
-                  placeholder=""
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="contactNumber"
-                  control={control}
-                  label="Contact Number"
-                  placeholder=""
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="dateOfBirth"
-                  control={control}
-                  label="Date of Birth"
-                  placeholder="MM/DD/YYYY"
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="placeOfBirth"
-                  control={control}
-                  label="Place of Birth"
-                  placeholder=""
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="religion"
-                  control={control}
-                  label="Religion"
-                  placeholder=""
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-              <Grid item sm={6}>
-                <Typography
-                  variant="body2"
-                  color="GrayText"
-                  mt={0.5}
-                  mb={-1}
-                  ml={1}
-                >
-                  Gender
-                </Typography>
-                <Box
                   sx={{
-                    display: 'flex',
-                    pl: 1,
+                    m: 1,
+                    p: 1,
+                    maxWidth: '200px',
                   }}
-                >
-                  <FormInputRadio
-                    name="gender"
-                    label="gender"
+                  alt={'Upload 2x2 Photo'}
+                  dataCy={'ffolk-img'}
+                />
+              </Box>
+              <Typography variant="h6" color="GrayText" ml={2} mt={2}>
+                Personal Information
+              </Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  pl: 2,
+                }}
+              >
+                <FormInputRadio
+                  name="salutation"
+                  label="salutation"
+                  control={control}
+                  register={register}
+                  errors={errors}
+                  radioOptions={salutationOptions}
+                />
+              </Box>
+              <Grid container spacing={-2} sx={{ ml: 1, mr: 1 }}>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="lastName"
+                    control={control}
+                    label="Last Name"
+                    placeholder=""
                     register={register}
                     errors={errors}
-                    control={control}
-                    radioOptions={genderOptions}
                   />
-                </Box>
+                </Grid>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="firstName"
+                    control={control}
+                    label="First Name"
+                    placeholder=""
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid container spacing={-2} sx={{ ml: 2 }}>
-              <Grid item sm={6} sx={{ mt: 2 }}>
-                <FormCreatableSelect
-                  control={control}
-                  errors={errors}
-                  isLoading={isLoading}
-                  isDisabled={isLoading}
-                  name="nationality"
-                  placeholder="Select Nationality"
-                  onCreateOption={handleCreateNationality}
-                  options={nationalities}
-                  register={register}
-                />
+              <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="middleName"
+                    control={control}
+                    label="Middle Name"
+                    placeholder=""
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="apellation"
+                    control={control}
+                    label="Apellation"
+                    placeholder="e.g. Sr. / Jr. / III"
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
               </Grid>
-              <Grid item sm={6} sx={{ mt: 2 }}>
-                <FormInputSelect
-                  name="civilStatus"
-                  label="Select Civil Status"
-                  data={civilStatusOptions}
-                  onSavedValue=""
-                  control={control}
-                  register={register}
-                  errors={errors}
-                />
+              <Grid container spacing={-2} sx={{ ml: 2 }}>
+                <Grid item sm={6} sx={{ mt: 2 }}>
+                  <FormCreatableSelect
+                    name="barangay"
+                    placeholder="Select Barangay"
+                    isLoading={isLoading}
+                    isDisabled={isLoading}
+                    onCreateOption={handleCreateBarangay}
+                    options={barangays}
+                    control={control}
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
+                <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
+                  <FormInputAutoText
+                    name="cityMunicipality"
+                    control={control}
+                    label="City/Municipality"
+                    placeholder=""
+                    options={cityMunicipalityOptions}
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid container spacing={-2} sx={{ ml: 2, mt: 1 }}>
-              <Grid item sm={6} sx={{ mt: 2 }}>
-                <FormCreatableSelect
-                  control={control}
-                  errors={errors}
-                  isLoading={isLoading}
-                  isDisabled={isLoading}
-                  name="educationalBackground"
-                  placeholder="Select Educational Background"
-                  onCreateOption={handleCreateEducationalBackground}
-                  options={educationalBackgrounds}
-                  register={register}
-                />
+              <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+                <Grid item sm={6}>
+                  <FormInputAutoText
+                    name="province"
+                    control={control}
+                    label="Province"
+                    placeholder=""
+                    options={provinceOptions}
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="residentYear"
+                    control={control}
+                    label="Resident of Municipality since"
+                    placeholder="e.g. 2015"
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
               </Grid>
-              <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
-                <FormInputText
-                  name="numOfChildren"
-                  control={control}
-                  label="Number of Children"
-                  placeholder=""
-                  register={register}
-                  errors={errors}
-                />
+              <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="age"
+                    control={control}
+                    label="Age"
+                    placeholder=""
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="contactNumber"
+                    control={control}
+                    label="Contact Number"
+                    placeholder=""
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-            <Typography variant="h6" color="GrayText" mt={3} mb={-1} ml={2}>
-              Person to Notify Incase of Emergency
-            </Typography>
-            <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="personToNotify"
-                  control={control}
-                  label="Person to Notify"
-                  placeholder=""
-                  register={register}
-                  errors={errors}
-                />
+              <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="dateOfBirth"
+                    control={control}
+                    label="Date of Birth"
+                    placeholder="MM/DD/YYYY"
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="placeOfBirth"
+                    control={control}
+                    label="Place of Birth"
+                    placeholder=""
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
               </Grid>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="ptnRelationship"
-                  control={control}
-                  label="Relationship"
-                  placeholder=""
-                  register={register}
-                  errors={errors}
-                />
+              <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="religion"
+                    control={control}
+                    label="Religion"
+                    placeholder=""
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
+                <Grid item sm={6}>
+                  <Typography
+                    variant="body2"
+                    color="GrayText"
+                    mt={0.5}
+                    mb={-1}
+                    ml={1}
+                  >
+                    Gender
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      pl: 1,
+                    }}
+                  >
+                    <FormInputRadio
+                      name="gender"
+                      label="gender"
+                      register={register}
+                      errors={errors}
+                      control={control}
+                      radioOptions={genderOptions}
+                    />
+                  </Box>
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="ptnContactNum"
-                  control={control}
-                  label="Contact Number"
-                  placeholder=""
-                  register={register}
-                  errors={errors}
-                />
+              <Grid container spacing={-2} sx={{ ml: 2 }}>
+                <Grid item sm={6} sx={{ mt: 2 }}>
+                  <FormCreatableSelect
+                    control={control}
+                    errors={errors}
+                    isLoading={isLoading}
+                    isDisabled={isLoading}
+                    name="nationality"
+                    placeholder="Select Nationality"
+                    onCreateOption={handleCreateNationality}
+                    options={nationalities}
+                    register={register}
+                  />
+                </Grid>
+                <Grid item sm={6} sx={{ mt: 2 }}>
+                  <FormInputSelect
+                    name="civilStatus"
+                    label="Select Civil Status"
+                    data={civilStatusOptions}
+                    onSavedValue=""
+                    control={control}
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
               </Grid>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="ptnAddress"
-                  control={control}
-                  label="Address"
-                  placeholder=""
-                  register={register}
-                  errors={errors}
-                />
+              <Grid container spacing={-2} sx={{ ml: 2, mt: 1 }}>
+                <Grid item sm={6} sx={{ mt: 2 }}>
+                  <FormCreatableSelect
+                    control={control}
+                    errors={errors}
+                    isLoading={isLoading}
+                    isDisabled={isLoading}
+                    name="educationalBackground"
+                    placeholder="Select Educational Background"
+                    onCreateOption={handleCreateEducationalBackground}
+                    options={educationalBackgrounds}
+                    register={register}
+                  />
+                </Grid>
+                <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
+                  <FormInputText
+                    name="numOfChildren"
+                    control={control}
+                    label="Number of Children"
+                    placeholder=""
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-            <Typography variant="h6" color="GrayText" mt={2} ml={2}>
-              Fishing Activity
-            </Typography>
-            <Grid container spacing={-2} sx={{ ml: 2 }}>
-              <Grid item sm={6} sx={{ mt: 2 }}>
-                <FormInputSelect
-                  name="mainFishingActivity"
-                  label="Main Fishing Activity "
-                  data={sourceOfIncomeOptions}
-                  onSavedValue=""
-                  control={control}
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-              <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
-                <FormInputText
-                  name="otherSourceOfIncome"
-                  control={control}
-                  label="Other Source of Income"
-                  placeholder="e.g. Carpentry/Driver"
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-              <Typography variant="subtitle1" color="GrayText">
-                Other Fishing Activities
+              <Typography variant="h6" color="GrayText" mt={3} mb={-1} ml={2}>
+                Person to Notify Incase of Emergency
               </Typography>
-              <Grid direction="column" container spacing={-2} sx={{ ml: 1 }}>
-                {/* <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={CaptureFishing}
-                      onChange={handleOtherFishingActivityChange}
-                      name="CaptureFishing"
-                    />
-                  }
-                  label="Capture Fishing"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={Aquaculture}
-                      onChange={handleOtherFishingActivityChange}
-                      name="Aquaculture"
-                    />
-                  }
-                  label="Aquaculture"
-                />
-
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={FishVending}
-                      onChange={handleOtherFishingActivityChange}
-                      name="FishVending"
-                    />
-                  }
-                  label="Fish Vending"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={FishProcessing}
-                      onChange={handleOtherFishingActivityChange}
-                      name="FishProcessing"
-                    />
-                  }
-                  label="Fish Processing"
-                />
-              </FormGroup> */}
-                <FormControlLabel
-                  control={<Checkbox {...register('2ndCaptFish')} />}
-                  label="Capture Fishing"
-                />
-                <FormControlLabel
-                  control={<Checkbox {...register('2ndFishVending')} />}
-                  label="Fish Vending"
-                />
-                <FormControlLabel
-                  control={<Checkbox {...register('2ndAquaculture')} />}
-                  label="Aquaculture"
-                />
-                <FormControlLabel
-                  control={<Checkbox {...register('2ndFishProcessing')} />}
-                  label="Fish Processing"
-                />
+              <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="personToNotify"
+                    control={control}
+                    label="Person to Notify"
+                    placeholder=""
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="ptnRelationship"
+                    control={control}
+                    label="Relationship"
+                    placeholder=""
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-            <Typography variant="h6" color="GrayText" mb={-1} ml={2}>
-              Organization
-            </Typography>
-            <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="orgName"
+              <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="ptnContactNum"
+                    control={control}
+                    label="Contact Number"
+                    placeholder=""
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="ptnAddress"
+                    control={control}
+                    label="Address"
+                    placeholder=""
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
+              </Grid>
+              <Typography variant="h6" color="GrayText" mt={2} ml={2}>
+                Fishing Activity
+              </Typography>
+              <Grid container spacing={-2} sx={{ ml: 2 }}>
+                <Grid item sm={6} sx={{ mt: 2 }}>
+                  <FormInputSelect
+                    name="mainFishingActivity"
+                    label="Main Fishing Activity "
+                    data={sourceOfIncomeOptions}
+                    onSavedValue=""
+                    control={control}
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
+                <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
+                  <FormInputText
+                    name="otherSourceOfIncome"
+                    control={control}
+                    label="Other Source of Income"
+                    placeholder="e.g. Carpentry/Driver"
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
+                <Typography variant="subtitle1" color="GrayText">
+                  Other Fishing Activities
+                </Typography>
+                <Grid direction="column" container spacing={-2} sx={{ ml: 1 }}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        {...register('2ndCaptFish')}
+                        checked={watchFishingCheckboxes[0]}
+                      />
+                    }
+                    label="Capture Fishing"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        {...register('2ndFishVending')}
+                        checked={watchFishingCheckboxes[1]}
+                      />
+                    }
+                    label="Fish Vending"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        {...register('2ndAquaculture')}
+                        checked={watchFishingCheckboxes[2]}
+                      />
+                    }
+                    label="Aquaculture"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        {...register('2ndFishProcessing')}
+                        checked={watchFishingCheckboxes[3]}
+                      />
+                    }
+                    label="Fish Processing"
+                  />
+                </Grid>
+              </Grid>
+              <Typography variant="h6" color="GrayText" mb={-1} ml={2}>
+                Organization
+              </Typography>
+              <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="orgName"
+                    control={control}
+                    label="Name"
+                    placeholder=""
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="orgMemberSince"
+                    control={control}
+                    label="Member Since"
+                    placeholder="e.g. 2015"
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
+              </Grid>
+              <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+                <Grid item sm={6}>
+                  <FormInputText
+                    name="orgPosition"
+                    control={control}
+                    label="Position/Official Designation"
+                    placeholder=""
+                    register={register}
+                    errors={errors}
+                  />
+                </Grid>
+              </Grid>
+              <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
+                <MultiFileUpload
+                  name="signature"
+                  label="signature"
                   control={control}
-                  label="Name"
-                  placeholder=""
                   register={register}
                   errors={errors}
+                  sx={{
+                    m: 1,
+                    p: 1,
+                    width: '100%',
+                  }}
+                  dataCy={'ffolk-signature'}
                 />
               </Grid>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="orgMemberSince"
-                  control={control}
-                  label="Member Since"
-                  placeholder="e.g. 2015"
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-              <Grid item sm={6}>
-                <FormInputText
-                  name="orgPosition"
-                  control={control}
-                  label="Position/Official Designation"
-                  placeholder=""
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
-              <MultiFileUpload
-                name="signature"
-                label="signature"
-                control={control}
-                register={register}
-                errors={errors}
-                sx={{
-                  m: 1,
-                  p: 1,
-                  width: '100%',
-                }}
-                dataCy={'ffolk-signature'}
-              />
-            </Grid>
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
-            {submitButton}
-            {isSubmitting}
-          </Box>
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
+                {captureFishingRegistrant ? (
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    onClick={handleNextButton}
+                    disabled={isSubmitting}
+                    sx={buttonSx}
+                  >
+                    Next
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    onClick={handleSubmitForm}
+                    disabled={isSubmitting}
+                    sx={buttonSx}
+                  >
+                    Save
+                  </Button>
+                )}
+                {/* <Button
+                  type={captureFishingRegistrant ? 'button' : 'submit'}
+                  variant="contained"
+                  fullWidth
+                  onClick={
+                    captureFishingRegistrant ? handleNextButton : onSubmit
+                  }
+                  disabled={isSubmitting}
+                  sx={buttonSx}
+                >
+                  {captureFishingRegistrant ? 'Next' : 'Save'}
+                </Button> */}
+              </Box>
+            </Box>
+          ) : (
+            <Box id="ffolk-form-gear">
+              <Tabs
+                value={tab}
+                onChange={handleTabChange}
+                aria-label="Fisherfolk form tab selection"
+              >
+                <Tab label="Gear" value={'gear'} />
+                <Tab label="Vessel" value={'vessel'} />
+                <Tab label="Gear & Vessel" value={'gear&vessel'} />
+              </Tabs>
+              {formTab()}
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
+                <Grid
+                  container
+                  spacing={-2}
+                  sx={{ justifyContent: 'space-between', ml: 1, mt: 2 }}
+                >
+                  <Grid item>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      onClick={handleBackButton}
+                      disabled={isSubmitting}
+                      sx={buttonSx}
+                    >
+                      Back
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      fullWidth
+                      onClick={handleSubmitForm}
+                      disabled={isSubmitting}
+                      sx={buttonSx}
+                    >
+                      Save
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+          )}
         </DialogContent>
       </FormContainer>
     </>
