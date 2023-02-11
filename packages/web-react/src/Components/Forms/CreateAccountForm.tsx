@@ -18,7 +18,6 @@ import { useNavigate } from 'react-router-dom';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Alert from '@mui/material/Alert';
-import { object, string } from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -27,6 +26,8 @@ import {
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import OfficeLogo from '../../Assets/city-agri-logo.png';
+import CityLogo from '../../Assets/seal_of_iloilo_city.png';
+import { CreateAccountSchema } from './validation/schema';
 
 const theme = createTheme();
 
@@ -64,18 +65,6 @@ function CreateAccount() {
     navigate('/login');
   };
 
-  const createAccountSchema = object().shape({
-    username: string()
-      .required('Enter username.')
-      .min(6, 'Username must be atleast 6 characters.'),
-    password: string()
-      .required('Enter password.')
-      .matches(
-        /^(?=.*[A-Z])(?=.*[a-z])(?=.*?[0-9])(?=.*[#?!@$%^&*_-]).{8,}$/,
-        'Password must contain atleast 8 characters, one uppercase, one lowercase, one number and one special character.'
-      ),
-  });
-
   const [createUser] = useMutation(CreateUserDocument, {
     onCompleted: () => {
       handleOpen();
@@ -93,7 +82,7 @@ function CreateAccount() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(createAccountSchema),
+    resolver: yupResolver(CreateAccountSchema),
   });
 
   const onSubmit = handleSubmit(async (data) => {
@@ -137,15 +126,25 @@ function CreateAccount() {
             alignItems: 'center',
           }}
         >
-          <Box
-            component="img"
-            sx={{
-              height: 100,
-              width: 100,
-            }}
-            src={OfficeLogo}
-          />
-          <Typography component="h1" variant="h5" mt={2}>
+          <Stack direction="row" spacing={3}>
+            <Box
+              component="img"
+              sx={{
+                height: 90,
+                width: 90,
+              }}
+              src={CityLogo}
+            />
+            <Box
+              component="img"
+              sx={{
+                height: 95,
+                width: 95,
+              }}
+              src={OfficeLogo}
+            />
+          </Stack>
+          <Typography component="h1" variant="h5" mt={5}>
             Create Account
           </Typography>
           <Box component="form" sx={{ mt: 1 }}>

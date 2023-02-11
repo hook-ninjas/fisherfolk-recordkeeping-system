@@ -121,7 +121,7 @@ function Sidebar() {
         </IconButton>
       </Toolbar>
       <Divider />
-      <Link to="/" className="nav-link">
+      <Link to="/dashboard" className="nav-link">
         <Box
           component="img"
           sx={{

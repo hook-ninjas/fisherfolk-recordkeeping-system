@@ -17,7 +17,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { object, string } from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@apollo/client';
@@ -26,6 +25,8 @@ import {
   MutationLoginUserArgs,
 } from '../../graphql/generated';
 import OfficeLogo from '../../Assets/city-agri-logo.png';
+import CityLogo from '../../Assets/seal_of_iloilo_city.png';
+import { LoginSchema } from './validation/schema';
 
 const theme = createTheme();
 
@@ -39,11 +40,6 @@ function Login() {
   const handleCreateAccount = () => {
     navigate('/create-account');
   };
-
-  const loginSchema = object().shape({
-    username: string().required('Enter username.'),
-    password: string().required('Enter password.'),
-  });
 
   const [loginUser] = useMutation(LoginUserDocument, {
     onCompleted: () => {
@@ -61,7 +57,7 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(LoginSchema),
   });
 
   const onSubmit = handleSubmit(async (input) => {
@@ -102,15 +98,25 @@ function Login() {
             alignItems: 'center',
           }}
         >
-          <Box
-            component="img"
-            sx={{
-              height: 100,
-              width: 100,
-            }}
-            src={OfficeLogo}
-          />
-          <Typography component="h1" variant="h5" mt={2}>
+          <Stack direction="row" spacing={3}>
+            <Box
+              component="img"
+              sx={{
+                height: 90,
+                width: 90,
+              }}
+              src={CityLogo}
+            />
+            <Box
+              component="img"
+              sx={{
+                height: 95,
+                width: 95,
+              }}
+              src={OfficeLogo}
+            />
+          </Stack>
+          <Typography component="h1" variant="h5" mt={5}>
             Welcome
           </Typography>
           <Typography component="h1" variant="body2" mt={1}>
