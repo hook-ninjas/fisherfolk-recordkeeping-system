@@ -38,8 +38,8 @@ const thumbnails = (srcs: string[]) => {
   return srcs.map((src, index) => {
     return (
       <Paper
-        id={`file-thumbnail-${index}`}
-        key={index}
+        id={`file-thumbnail-${src}`}
+        key={`file-thumbnail-${src}`}
         data-cy={`thumbnail-test-${index}`}
         sx={{
           m: 1,
@@ -66,7 +66,7 @@ function MultiFileUpload({
   onChange = undefined,
   sx,
 }: MultiFileUploadProps) {
-  const [preview, setPreview] = useState<JSX.Element[] | undefined>([<></>]);
+  const [preview, setPreview] = useState<JSX.Element[] | undefined>([]);
 
   const createSrcs = (files: File[]) => {
     const results: string[] = [];
@@ -116,18 +116,23 @@ function MultiFileUpload({
   return (
     <>
       <Box id={id} sx={sx} data-cy={dataCy}></Box>
-      <Grid container sx={{ p: 1, width: '100%' }}>
+      <Grid
+        id="file-thumbnail-container"
+        container
+        sx={{ p: 1, width: '100%' }}
+      >
         {preview}
       </Grid>
       <Button
         fullWidth
+        id={label}
         variant="contained"
         component="label"
-        htmlFor="upload-btn"
+        htmlFor="multi-upload-btn"
       >
         <input
           accept="image/*"
-          id="upload-btn"
+          id="multi-upload-btn"
           multiple
           type="file"
           hidden
