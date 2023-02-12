@@ -9,6 +9,7 @@ import {
   Typography,
   Tabs,
   Tab,
+  FormHelperText,
 } from '@mui/material';
 import {
   FormInputRadio,
@@ -46,6 +47,7 @@ import { FfolkValidation } from './validation/schema';
 import MultiFileUpload from '../Input/MultiFileUpload';
 import GearForm from './GearForm';
 import VesselForm from './VesselForm';
+
 interface AddFisherfolkFormProps {
   open: boolean;
   handleClose: () => void;
@@ -662,6 +664,9 @@ export default function AddFisherfolkForm({
                 </Grid>
               </Grid>
               <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
+                <FormHelperText required>
+                  Upload required images here:
+                </FormHelperText>
                 <MultiFileUpload
                   name="signature"
                   label="signature"
