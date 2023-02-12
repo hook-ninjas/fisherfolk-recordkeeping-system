@@ -115,31 +115,39 @@ function MultiFileUpload({
 
   return (
     <>
-      <Box id={id} sx={sx} data-cy={dataCy}></Box>
-      <Grid
-        id="file-thumbnail-container"
-        container
-        sx={{ p: 1, width: '100%' }}
-      >
-        {preview}
-      </Grid>
-      <Button
-        fullWidth
-        id={label}
-        variant="contained"
-        component="label"
-        htmlFor="multi-upload-btn"
-      >
-        <input
-          accept="image/*"
-          id="multi-upload-btn"
-          multiple
-          type="file"
-          hidden
-          {...register(name, { onChange: (e) => handleUpload(onChange)(e) })}
-        />
-        Upload
-      </Button>
+      <Box id={id} sx={sx} data-cy={dataCy}>
+        <FormHelperText
+          error={!!errors[name]}
+          hidden={!errors[name]}
+          sx={{ ml: 2, mt: 2 }}
+        >
+          {errors[name]?.message}
+        </FormHelperText>
+        <Grid
+          id="file-thumbnail-container"
+          container
+          sx={{ p: 1, width: '100%' }}
+        >
+          {preview}
+        </Grid>
+        <Button
+          fullWidth
+          id={label}
+          variant="contained"
+          component="label"
+          htmlFor="multi-upload-btn"
+        >
+          <input
+            accept="image/*"
+            id="multi-upload-btn"
+            multiple
+            type="file"
+            hidden
+            {...register(name, { onChange: (e) => handleUpload(onChange)(e) })}
+          />
+          Upload
+        </Button>
+      </Box>
     </>
   );
 }
