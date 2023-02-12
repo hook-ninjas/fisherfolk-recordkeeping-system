@@ -33,6 +33,8 @@ import {
   MutationCreateVesselWithGearArgs,
   MutationCreateImageArgs,
   CreateImageDocument,
+  FisherfolkGearsDocument,
+  GearsQueryDocument,
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
@@ -244,10 +246,10 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showSuccessAlert();
     },
-    onError: (err) => {
+    onError: () => {
       handleClose();
       handleComplete();
-      showFailAlert(err.message);
+      showFailAlert();
     },
   });
 
@@ -257,10 +259,10 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showSuccessAlert();
     },
-    onError: (err) => {
+    onError: () => {
       handleClose();
       handleComplete();
-      showFailAlert(err.message);
+      showFailAlert();
     },
   });
 
@@ -270,10 +272,10 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showSuccessAlert();
     },
-    onError: (err) => {
+    onError: () => {
       handleClose();
       handleComplete();
-      showFailAlert(err.message);
+      showFailAlert();
     },
   });
 
@@ -348,6 +350,10 @@ export default function AddVesselWithGearForm({
         variables: {
           gears: createVesselWithGearInput.gears,
         },
+        awaitRefetchQueries: true,
+        refetchQueries: [ {
+          query: GearsQueryDocument
+        }]
       });
 
       await createImage({
@@ -367,6 +373,10 @@ export default function AddVesselWithGearForm({
           gears: createVesselWithGearInput.gears,
           vessel: createVesselWithGearInput.vessel,
         },
+        awaitRefetchQueries: true,
+        refetchQueries: [ {
+          query: GearsQueryDocument
+        }]
       });
 
       await createImage({

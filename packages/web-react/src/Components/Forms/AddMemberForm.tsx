@@ -158,7 +158,7 @@ export default function AddFisherfolkForm({
     onError: (err) => {
       handleClose();
       handleComplete();
-      showFailAlert(err.message);
+      showFailAlert();
     },
   });
 
