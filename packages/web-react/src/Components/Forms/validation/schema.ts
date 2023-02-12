@@ -1,4 +1,4 @@
-import { object, string, mixed, number } from 'yup';
+import { object, string, mixed, number, array } from 'yup';
 import { getValues } from '../../../utils/utils';
 import {
   registrationTypes,
@@ -66,6 +66,19 @@ const FfolkValidation = object().shape({
     })
     .nullable()
     .required('Add Profile Image'),
+  files: array()
+    .of(
+      object().shape({
+        name: string().required(),
+        size: number().max(1000000, 'File over 1 mb'),
+        type: string().matches(
+          /^.*(image\/jpeg|jpg|png)$/gm,
+          'File format not supported'
+        ),
+      })
+    )
+    .nullable()
+    .required('Upload required file/files'),
 });
 
 export { FfolkValidation };
