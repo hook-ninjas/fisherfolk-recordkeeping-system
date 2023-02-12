@@ -254,7 +254,6 @@ export default function AddFisherfolkForm({
               >
                 <PhotoUpload
                   name="profilePhoto"
-                  label="profilePhoto"
                   control={control}
                   register={register}
                   errors={errors}

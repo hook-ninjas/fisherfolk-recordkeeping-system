@@ -5,12 +5,11 @@ import {
   FieldValues,
   Controller,
 } from 'react-hook-form';
-import { Paper, Input, SxProps, Theme, FormHelperText } from '@mui/material';
+import { Paper, Button, SxProps, Theme, FormHelperText } from '@mui/material';
 
 interface PhotoUploadProps {
   id?: string;
   name: string;
-  label: string;
   alt?: string;
   dataCy?: string;
   control: Control<FieldValues, unknown>;
@@ -22,7 +21,6 @@ interface PhotoUploadProps {
 function PhotoUpload({
   id = '',
   name,
-  label = '',
   alt = '',
   dataCy = '',
   control,
@@ -86,19 +84,24 @@ function PhotoUpload({
           name={name}
           control={control}
           render={({ field: { value } }) => (
-            <Input
-              sx={{ mt: 1 }}
-              data-cy={`${dataCy}-input`}
-              type="file"
-              hidden
-              aria-label="profile-img-upload"
-              inputProps={{
-                accept: 'image/*',
-                label: 'profile-img-upload',
-              }}
-              {...register(name, { onChange: (e) => handleUpload(e) })}
-              error={!!errors[name]}
-            />
+            <Button
+              fullWidth
+              id="upload-btn-label"
+              variant="contained"
+              component="label"
+              htmlFor="upload-btn"
+            >
+              Upload
+              <input
+                id="upload-btn"
+                data-cy={`${dataCy}-input`}
+                type="file"
+                hidden
+                aria-label="profile-img-upload"
+                accept="image/*"
+                {...register(name, { onChange: (e) => handleUpload(e) })}
+              />
+            </Button>
           )}
         />
       </Paper>
