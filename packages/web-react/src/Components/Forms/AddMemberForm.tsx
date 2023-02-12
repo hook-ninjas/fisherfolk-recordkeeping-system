@@ -132,6 +132,7 @@ export default function AddFisherfolkForm({
     control,
     handleSubmit,
     resetField,
+    trigger,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(FfolkValidation),
@@ -209,7 +210,10 @@ export default function AddFisherfolkForm({
     onSubmit();
   };
 
-  const handleNextButton = (e: MouseEvent) => setCaptureFishing(true);
+  const handleNextButton = (e: MouseEvent) => {
+    trigger();
+    setCaptureFishing(true);
+  };
   const handleBackButton = (e: MouseEvent) => setCaptureFishing(false);
 
   const formTab = () => {
@@ -668,8 +672,8 @@ export default function AddFisherfolkForm({
                   Upload required images here:
                 </FormHelperText>
                 <MultiFileUpload
-                  name="signature"
-                  label="signature"
+                  name="files"
+                  label="files"
                   control={control}
                   register={register}
                   errors={errors}
@@ -678,7 +682,7 @@ export default function AddFisherfolkForm({
                     p: 1,
                     width: '100%',
                   }}
-                  dataCy={'ffolk-signature'}
+                  dataCy={'ffolk-files'}
                 />
               </Grid>
               <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
