@@ -19,7 +19,6 @@ import {
 } from '@mui/material';
 import AddFisherfolkForm from '../Forms/AddMemberForm';
 import FisherfolkTable from '../Table/FisherfolkTable';
-import SearchField from '../Search/Search';
 import AddIcon from '@mui/icons-material/Add';
 import { CustomAddButton, CustomBtnText } from '../Buttons/CustomAddButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -31,6 +30,9 @@ import dt from '../Forms/iloilo-city-brgys.json';
 import { useQuery } from '@apollo/client';
 import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import TextField from '@mui/material/TextField';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import InputAdornment from '@mui/material/InputAdornment';
 import {
   QueryFisherfolksQuery,
   QueryFisherfolksDocument,
@@ -66,12 +68,36 @@ const filter = (
 const FisherfolkRecord = () => {
   const [addFisherfolkBtn, setFisherfolkBtn] = useState(false);
   const [isDrawerOpen, setIsDrawOpen] = useState(false);
+  const [searchKey, setSearchKey] = useState('');
   const barangays = dt.barangays.sort();
 
   const handleAddFisherfolkOpen = () => setFisherfolkBtn(true);
   const handleAddFisherfolkClose = () => setFisherfolkBtn(false);
 
+
+
   const { loading, error, data, refetch } = useQuery(QueryFisherfolksDocument);
+
+  const handleSearch = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setSearchKey(event.target.value);
+  };
+
+
+  const onSearchSubmit = (e: any) => {
+    e.preventDefault();
+    if (searchKey.trim().length == 0) {
+      return data?.fisherfolks;
+    } else {
+      return data?.fisherfolks.filter(({ firstName, middleName, lastName }) => {
+        return firstName.toLocaleLowerCase() === searchKey.toLocaleLowerCase()
+          || middleName.toLocaleLowerCase() === searchKey.toLocaleLowerCase()
+          || lastName.toLocaleLowerCase() === searchKey.toLocaleLowerCase();
+      });
+    }
+  };
+
 
   const [fisherfolks, setFisherfolks] = useState<
     QueryFisherfolksQuery | undefined
@@ -310,15 +336,31 @@ const FisherfolkRecord = () => {
           </Box>
 
           <Box m={1} display="flex" justifyContent="space-between">
-            <SearchField />
+            <form
+              onSubmit={(e) => {
+                onSearchSubmit(e); console.log(onSearchSubmit(e));
+                setFisherfolks({ fisherfolks: onSearchSubmit(e)!, totalFisherfolk: onSearchSubmit(e)!.length });
+              }}
+            >
+              <TextField
+                onChange={handleSearch}
+                variant='standard'
+                placeholder='Search a fisherfolk'
+                size='small'
+                color='success'
+                InputProps={{
+                  startAdornment: <InputAdornment position="start"><PersonSearchIcon style={{ fill: 'grey' }} /></InputAdornment>,
+                }}
+              />
+            </form>
           </Box>
-
+          
           <Grid item>
             <Box m={1}>
               <FisherfolkTable
                 error={error}
                 loading={loading}
-                data={fisherfolks ?? data}
+                data={searchKey.trim().length == 0 ? fisherfolks ?? data: fisherfolks ?? data}
                 {...refetch}
               />
             </Box>
