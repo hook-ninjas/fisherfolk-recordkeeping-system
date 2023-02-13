@@ -21,3 +21,16 @@ export const queryById = (id: bigint, ctx: Context) => {
     }
   });
 };
+
+export const queryUniqueBarangayCount = async (ctx: Context) => {
+  const results = await ctx.prisma.fisherfolk.findMany({
+    select: {
+      barangay: true
+    },
+
+    distinct: ['barangay']
+  });
+
+  // returns the number of unique barangay
+  return results.length;
+};

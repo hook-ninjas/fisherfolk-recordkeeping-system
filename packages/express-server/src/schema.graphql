@@ -263,6 +263,7 @@ type Permit {
 }
 
 type Query {
+  barangayCount: Int!
   fisherfolk(id: BigInt!): Fisherfolk!
   fisherfolkByRange(count: Int!, start: Int!): [Fisherfolk!]!
   fisherfolkGears(count: Int!, fisherfolkId: BigInt!, start: Int!): [Gear!]!
