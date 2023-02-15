@@ -136,3 +136,11 @@ query AuthUser {
 query LivelihoodCount($activity: SourceOfIncome!) {
   livelihoodCount(activity: $activity) 
 }
+
+query TotalGears {
+  totalGears
+}
+
+query BarangayCount {
+  barangayCount
+}
