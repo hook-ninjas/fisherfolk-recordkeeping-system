@@ -90,10 +90,15 @@ const FisherfolkRecord = () => {
     if (searchKey.trim().length == 0) {
       return data?.fisherfolks;
     } else {
-      return data?.fisherfolks.filter(({ firstName, middleName, lastName }) => {
-        return firstName.toLocaleLowerCase() === searchKey.toLocaleLowerCase()
-          || middleName.toLocaleLowerCase() === searchKey.toLocaleLowerCase()
-          || lastName.toLocaleLowerCase() === searchKey.toLocaleLowerCase();
+      return data?.fisherfolks.filter(({ firstName, middleName, lastName, appellation }) => {
+        const searchKeyArray = searchKey.split(' ');
+        const completeName = firstName + ' ' + middleName + ' ' + lastName + ' ' + appellation;
+        
+        const res = searchKeyArray.map((key: string) => {
+          return completeName.toLowerCase().includes(key.toLowerCase());
+        });
+
+        return res.every((element: boolean) => { return element === true; });
       });
     }
   };
