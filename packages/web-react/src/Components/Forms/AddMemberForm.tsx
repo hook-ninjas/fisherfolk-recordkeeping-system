@@ -53,6 +53,41 @@ interface AddFisherfolkFormProps {
   handleClose: () => void;
 }
 
+const defaultValues = {
+  lastName: '',
+  firstName: '',
+  middleName: '',
+  appellation: '',
+  salutation: '',
+  barangay: '',
+  cityMunicipality: '',
+  province: '',
+  residentYear: '',
+  gender: '',
+  age: '',
+  dateOfBirth: '',
+  placeOfBirth: '',
+  civilStatus: '',
+  educationalBackground: '',
+  numOFChildren: '',
+  nationality: '',
+  personToNotify: '',
+  ptnRelationship: '',
+  ptnContactNum: '',
+  ptnAddress: '',
+  mainFishingActivity: '',
+  otherSourceOfIncome: '',
+  sndCaptFish: false,
+  sndFishVending: false,
+  sndAquaculture: false,
+  sndFishProcessing: false,
+  orgName: '',
+  orgMemberSince: '',
+  orgPosition: '',
+  profilePhoto: '',
+  files: [],
+};
+
 export default function AddFisherfolkForm({
   open,
   handleClose,
@@ -133,21 +168,53 @@ export default function AddFisherfolkForm({
     handleSubmit,
     resetField,
     trigger,
+    getValues,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(FfolkValidation),
   });
 
-  const watchFishCapture = watch(['mainFishingActivity', '2ndCaptFish']);
+  const ffolkInfo = [
+    'lastName',
+    'firstName',
+    'middleName',
+    'salutation',
+    'contactNumber',
+    'barangay',
+    'cityMunicipality',
+    'province',
+    'residentYear',
+    'gender',
+    'age',
+    'dateOfBirth',
+    'placeBirth',
+    'civilStatus',
+    'educationalBackground',
+    'nationality',
+    'personToNotify',
+    'ptnRelationship',
+    'ptnContactNum',
+    'ptnAddress',
+    'orgName',
+    'orgPosition',
+    'profilePhoto',
+    'files',
+  ];
+
+  const watchFishCapture = watch(['mainFishingActivity', 'sndCaptFish']);
   const watchFishingCheckboxes = watch([
-    '2ndCaptFish',
-    '2ndFishVending',
-    '2ndAquaculture',
-    '2ndFishProcessing',
+    'sndCaptFish',
+    'sndFishVending',
+    'sndAquaculture',
+    'sndFishProcessing',
   ]);
   const captureFishingRegistrant =
     watchFishCapture.includes('CaptureFishing') ||
     watchFishCapture.includes(true);
+
+  const invalidFfolkInfo = ffolkInfo.filter(
+    (field) => errors[field] != undefined
+  );
 
   const [createFisherfolk] = useMutation(CreateFisherfolkDocument, {
     onCompleted: () => {
@@ -195,7 +262,7 @@ export default function AddFisherfolkForm({
         livelihoods: [],
       },
     };
-    console.log(data.profilePhoto);
+    console.log(getValues());
     console.log(createFisherfolkInput.data);
 
     // await createFisherfolk({
@@ -212,8 +279,13 @@ export default function AddFisherfolkForm({
 
   const handleNextButton = (e: MouseEvent) => {
     trigger();
-    setCaptureFishing(true);
+    console.log(getValues());
+    if (invalidFfolkInfo.length == 0) {
+      setCaptureFishing(true);
+    }
   };
+
+  console.log(getValues());
   const handleBackButton = (e: MouseEvent) => setCaptureFishing(false);
 
   const formTab = () => {
@@ -325,9 +397,9 @@ export default function AddFisherfolkForm({
                 </Grid>
                 <Grid item sm={6}>
                   <FormInputText
-                    name="apellation"
+                    name="appellation"
                     control={control}
-                    label="Apellation"
+                    label="Appellation"
                     placeholder="e.g. Sr. / Jr. / III"
                     register={register}
                     errors={errors}
@@ -595,7 +667,8 @@ export default function AddFisherfolkForm({
                   <FormControlLabel
                     control={
                       <Checkbox
-                        {...register('2ndCaptFish')}
+                        {...register('sndCaptFish')}
+                        defaultChecked={false}
                         checked={watchFishingCheckboxes[0]}
                       />
                     }
@@ -604,7 +677,8 @@ export default function AddFisherfolkForm({
                   <FormControlLabel
                     control={
                       <Checkbox
-                        {...register('2ndFishVending')}
+                        {...register('sndFishVending')}
+                        defaultChecked={false}
                         checked={watchFishingCheckboxes[1]}
                       />
                     }
@@ -613,7 +687,8 @@ export default function AddFisherfolkForm({
                   <FormControlLabel
                     control={
                       <Checkbox
-                        {...register('2ndAquaculture')}
+                        {...register('sndAquaculture')}
+                        defaultChecked={false}
                         checked={watchFishingCheckboxes[2]}
                       />
                     }
@@ -622,7 +697,8 @@ export default function AddFisherfolkForm({
                   <FormControlLabel
                     control={
                       <Checkbox
-                        {...register('2ndFishProcessing')}
+                        defaultChecked={false}
+                        {...register('sndFishProcessing')}
                         checked={watchFishingCheckboxes[3]}
                       />
                     }
@@ -686,7 +762,7 @@ export default function AddFisherfolkForm({
                 />
               </Grid>
               <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
-                {captureFishingRegistrant ? (
+                {/* {captureFishingRegistrant ? (
                   <Button
                     variant="contained"
                     fullWidth
@@ -707,19 +783,21 @@ export default function AddFisherfolkForm({
                   >
                     Save
                   </Button>
-                )}
-                {/* <Button
+                )} */}
+                <Button
                   type={captureFishingRegistrant ? 'button' : 'submit'}
                   variant="contained"
                   fullWidth
                   onClick={
-                    captureFishingRegistrant ? handleNextButton : onSubmit
+                    captureFishingRegistrant
+                      ? handleNextButton
+                      : handleSubmitForm
                   }
                   disabled={isSubmitting}
                   sx={buttonSx}
                 >
                   {captureFishingRegistrant ? 'Next' : 'Save'}
-                </Button> */}
+                </Button>
               </Box>
             </Box>
           ) : (
