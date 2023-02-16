@@ -83,6 +83,7 @@ function PhotoUpload({
         <Controller
           name={name}
           control={control}
+          defaultValue=""
           render={({ field: { value } }) => (
             <Button
               fullWidth

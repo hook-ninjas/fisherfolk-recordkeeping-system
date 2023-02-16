@@ -139,7 +139,10 @@ export const FormInputAutoText = ({
             {...register(name)}
             helperText={errors[name]?.message}
             error={!!errors[name]}
-            InputProps={{ ...params.InputProps, style : { fontSize: 14, margin: 10, textTransform: 'none'  }}}
+            InputProps={{
+              ...params.InputProps,
+              style: { fontSize: 14, margin: 10, textTransform: 'none' },
+            }}
             placeholder={placeholder}
           />
         )}
@@ -164,6 +167,7 @@ export const FormInputSelect = ({
     <Controller
       name={name}
       control={control}
+      defaultValue=""
       render={({ field: { onChange, value } }) => (
         <>
           <Select
@@ -240,6 +244,7 @@ export const FormCreatableSelect = ({
   <FormControl error={!!errors[name]}>
     <Controller
       name={name}
+      defaultValue=""
       render={({ field: { onChange, value } }) => (
         <CreatableSelect
           isClearable
