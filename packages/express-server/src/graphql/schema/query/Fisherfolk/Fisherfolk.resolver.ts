@@ -1,4 +1,7 @@
 import { Context } from '../../../context';
+import { FisherfolkStatus, Gender } from '@prisma/client';
+
+
 
 export const queryTotalFisherfolk = (ctx: Context) => {
   return ctx.prisma.fisherfolk.count();
@@ -33,4 +36,21 @@ export const queryUniqueBarangayCount = async (ctx: Context) => {
 
   // returns the number of unique barangay
   return results.length;
-};
+};  
+
+export const querytActiveFisherFolk = (ctx:Context)=>{
+  return ctx.prisma.fisherfolk.count({
+    where:{
+      status: FisherfolkStatus.Active
+    }
+  })
+}
+
+export const queryFisherFolkByGender = (gender:Gender,ctx:Context)=>{
+  return ctx.prisma.fisherfolk.count({
+    where:{
+      gender:gender
+    }
+  })
+}  
+

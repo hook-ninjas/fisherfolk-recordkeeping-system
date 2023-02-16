@@ -144,3 +144,12 @@ query TotalGears {
 query BarangayCount {
   barangayCount
 }
+
+query FisherfolkCount{
+  totalFisherfolk
+  activeFisherFolk
+}
+
+query FisherfolkGenderCount($gender: Gender!) {
+  fisherfolkGender(gender: $gender)
+}

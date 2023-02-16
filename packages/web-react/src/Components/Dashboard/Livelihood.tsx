@@ -56,7 +56,7 @@ function getCount(activity: SourceOfIncome) {
 
 export default function Livelihood() {
   return (
-    <Stack direction="row">
+    <Stack direction="row" mb={4}>
       <Grid
         container
         spacing={3}
