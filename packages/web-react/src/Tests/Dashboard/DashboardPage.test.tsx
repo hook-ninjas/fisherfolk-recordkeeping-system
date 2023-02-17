@@ -18,9 +18,24 @@ describe('Dashboard Page', () => {
   it('checks fisherfolk count display', async () => {
     renderDashboardPage();
 
+    const totalFisherfolk = await screen.findByRole('heading', {
+      level: 3,
+      name: /total fisherfolk-1290/i,
+    });
+
+    const activeFisherfolk = await screen.findByRole('heading', {
+      level: 3,
+      name: /active fisherfolk-670/i,
+    });
+
     const totalGears = await screen.findByRole('heading', {
       level: 4,
       name: /total gears-540/i,
+    });
+
+    const totalVessels = await screen.findByRole('heading', {
+      level: 4,
+      name: /total vessels-670/i,
     });
 
     const totalBarangays = await screen.findByRole('heading', {
@@ -28,8 +43,23 @@ describe('Dashboard Page', () => {
       name: /total barangays-25/i,
     });
 
+    const female = await screen.findByRole('heading', {
+      level: 4,
+      name: /female-340/i,
+    });
+
+    const male = await screen.findByRole('heading', {
+      level: 4,
+      name: /male-790/i,
+    });
+
+    expect(totalFisherfolk).toBeInTheDocument();
+    expect(activeFisherfolk).toBeInTheDocument();
     expect(totalGears).toBeInTheDocument();
+    expect(totalVessels).toBeInTheDocument();
     expect(totalBarangays).toBeInTheDocument();
+    expect(female).toBeInTheDocument();
+    expect(male).toBeInTheDocument();
   });
 
   it('checks livelihood count display', async  () => {
