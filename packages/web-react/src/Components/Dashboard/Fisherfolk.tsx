@@ -16,18 +16,18 @@ import {
 import Gear from '../../Assets/gear.png';
 import Barangay from '../../Assets/barangay.png';
 import Vessel from '../../Assets/vessel.png';
-import Fishpond from '../../Assets/aquaculture.png';
 
 export const FisherfolkInfoPaper = styled(Paper)(({ theme }) => ({
-  height: 70,
-  padding: 8,
+  height: 140,
+  padding: 15,
   borderRadius: 10,
   margin: 2,
   [theme.breakpoints.up('sm')]: {
-    width: 180,
+    width: 280,
   },
   [theme.breakpoints.down('sm')]: {
     width: 250,
+    height: 120,
   },
 }));
 
@@ -41,7 +41,6 @@ export default function FisherfolkInfo() {
       barangays.data && barangays.data.barangayCount,
     ],
     'Total Vessels': [Vessel, ''],
-    'Total Fishponds': [Fishpond, ''],
     'Total Gears': [Gear, gears.data && gears.data.totalGears],
   };
 
@@ -66,33 +65,26 @@ export default function FisherfolkInfo() {
       >
         {Object.keys(fisherfolkInfo).map((item) => (
           <FisherfolkInfoPaper key={item} elevation={2}>
-            <Stack
-              direction="row"
-              spacing={1}
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Grid item sm={3}>
+            <Stack direction="row" spacing={1.8}>
+              <Grid item sm={3} >
                 <Box
                   component="img"
                   src={fisherfolkInfo[item][0]}
-                  sx={{ width: 37, borderRadius: 15 }}
-                  mt={1}
+                  sx={{ width: 50, borderRadius: 15 }}
+                  mt={2}
                 ></Box>
               </Grid>
-              <Grid item sm={6}>
-                <Typography variant="subtitle1" color="#71797E">
+              <Grid item sm={9}>
+                <Typography variant="h6" color="#71797E" mt={2}>
                   {item}
                 </Typography>
-              </Grid>
-              <Grid item sm={3}>
                 <Typography
-                  variant="h5"
+                  variant="h4"
                   color="#71797E"
                   mt={1}
-                  fontWeight={600}
+                  aria-label={`${item.toLocaleLowerCase()}-${getCount(item)}`}
                 >
-                  {getCount(item)}
+                  <b>{getCount(item)}</b>
                 </Typography>
               </Grid>
             </Stack>
