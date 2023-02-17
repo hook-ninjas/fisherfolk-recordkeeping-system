@@ -1,3 +1,4 @@
+import React from 'react';
 import { useQuery } from '@apollo/client';
 import {
   Grid,
@@ -36,7 +37,7 @@ export const FisherfolkInfoPaper = styled(Paper)(({ theme }) => ({
 
 export default function FisherfolkInfoCount() {
     
-  const {data} = useQuery(FisherfolkCountDocument)  
+  const {data} = useQuery(FisherfolkCountDocument);
 
 
   const getCountGender = (gender:Gender) =>{
@@ -44,9 +45,9 @@ export default function FisherfolkInfoCount() {
       variables:{
         gender:gender
       },
-    })
-    return data?.fisherfolkGender
-  }
+    });
+    return data?.fisherfolkGender;
+  };
 
   const fisherfolkInfo: Record<string, any[]> = {
     'Total Fisherfolk': [Total,

@@ -43,14 +43,14 @@ export const querytActiveFisherFolk = (ctx:Context)=>{
     where:{
       status: FisherfolkStatus.Active
     }
-  })
-}
+  });
+};
 
 export const queryFisherFolkByGender = (gender:Gender,ctx:Context)=>{
   return ctx.prisma.fisherfolk.count({
     where:{
       gender:gender
     }
-  })
-}  
+  });
+};
 

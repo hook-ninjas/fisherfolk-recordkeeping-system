@@ -47,7 +47,7 @@ const QueryUniqeBarangays = queryField('barangayCount', {
 const QueryActiveFisherFolk = queryField('activeFisherFolk', {
   type: 'Int',
   resolve: (_, __, ctx) => querytActiveFisherFolk(ctx)
-})
+});
 
 const QueryFisherFolkByGender = queryField('fisherfolkGender', {
   type: 'Int',
@@ -55,7 +55,7 @@ const QueryFisherFolkByGender = queryField('fisherfolkGender', {
     gender: 'Gender'
   },
   resolve: (_, args, ctx) => queryFisherFolkByGender(args.gender, ctx)
-})
+});
 
 
 export default [

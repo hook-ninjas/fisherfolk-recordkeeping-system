@@ -1,3 +1,4 @@
+import React from 'react';
 import { useQuery } from '@apollo/client';
 import {
   Grid,
@@ -8,7 +9,6 @@ import {
   Box,
   CircularProgress,
 } from '@mui/material';
-import React from 'react';
 import {
   BarangayCountDocument,
   FisherfolkGenderCountDocument,
@@ -64,9 +64,9 @@ export default function FisherfolkInfo() {
       variables:{
         gender:gender
       },
-    })
-    return data?.fisherfolkGender
-  }
+    });
+    return data?.fisherfolkGender;
+  };
 
   return (
     <Stack direction="row" mb={5}>
