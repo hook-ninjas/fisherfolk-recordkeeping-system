@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import Livelihood from './Livelihood';
 import FisherfolkInfo from './Fisherfolk';
+import FisherfolkInfoCount from './CountFisherfolk';
 
 function Dashboard() {
   return (
@@ -19,8 +20,9 @@ function Dashboard() {
           <Box m={1}>
             <Typography variant="h5">Dashboard</Typography>
           </Box>
-          <FisherfolkInfo/>
+          <FisherfolkInfoCount/>
           <Livelihood />
+          <FisherfolkInfo/>
         </Paper>
       </Grid>
     </Grid>
