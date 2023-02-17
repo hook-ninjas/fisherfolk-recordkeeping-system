@@ -1,4 +1,4 @@
-import { arg, mutationField, nullable, stringArg } from 'nexus';
+import { mutationField } from 'nexus';
 import { nonNullArg } from '../../../../utils/utils';
 import CreateImageInput from '../../input/Image.input';
 import { uploadImage } from './Image.resolver';
