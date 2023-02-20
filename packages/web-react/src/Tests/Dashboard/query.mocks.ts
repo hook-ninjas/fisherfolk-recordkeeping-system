@@ -1,29 +1,50 @@
 import { MockedResponse } from '@apollo/client/testing';
 import {
-  BarangayCountDocument,
   LivelihoodCountDocument,
+  Gender,
   SourceOfIncome,
-  TotalGearsDocument,
+  FisherfolkCountDocument,
+  FisherfolkGenderCountDocument,
 } from '../../graphql/generated';
 
 export const DashboardQueryMock: MockedResponse[] = [
   {
     request: {
-      query: TotalGearsDocument,
+      query: FisherfolkCountDocument,
     },
     result: {
       data: {
+        totalFisherfolk: 1290,
+        activeFisherFolk: 670,
         totalGears: 540,
+        totalVessels: 670,
+        barangayCount: 25,
       },
     },
   },
   {
     request: {
-      query: BarangayCountDocument,
+      query: FisherfolkGenderCountDocument,
+      variables: {
+        gender: Gender.Female
+      },
     },
     result: {
       data: {
-        barangayCount: 25,
+        fisherfolkGender: 340
+      },
+    },
+  },
+  {
+    request: {
+      query: FisherfolkGenderCountDocument,
+      variables: {
+        gender: Gender.Male
+      },
+    },
+    result: {
+      data: {
+        fisherfolkGender: 790
       },
     },
   },

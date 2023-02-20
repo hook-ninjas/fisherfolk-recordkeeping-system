@@ -30,7 +30,7 @@ export const LivelihoodPaper = styled(Paper)(({ theme }) => ({
     width: 210,
   },
   [theme.breakpoints.down('sm')]: {
-    width: 240,
+    width: 250,
     height: 100,
   },
 }));
@@ -65,7 +65,7 @@ export default function Livelihood() {
       >
         {Object.values(SourceOfIncome).map((item) => (
           <LivelihoodPaper key={item} elevation={2}>
-            <Stack direction="row" spacing={2}>
+            <Stack direction="row" spacing={2} alignItems='center'>
               <Grid item sm={3} mt={1}>
                 <Box
                   component="img"
