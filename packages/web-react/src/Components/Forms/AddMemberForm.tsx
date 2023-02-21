@@ -285,7 +285,6 @@ export default function AddFisherfolkForm({
     }
   };
 
-  console.log(getValues());
   const handleBackButton = (e: MouseEvent) => setCaptureFishing(false);
 
   const formTab = () => {
@@ -356,6 +355,7 @@ export default function AddFisherfolkForm({
                 <FormInputRadio
                   name="salutation"
                   label="salutation"
+                  defaultValue=""
                   control={control}
                   register={register}
                   errors={errors}
@@ -529,6 +529,7 @@ export default function AddFisherfolkForm({
                     <FormInputRadio
                       name="gender"
                       label="gender"
+                      defaultValue=""
                       register={register}
                       errors={errors}
                       control={control}
