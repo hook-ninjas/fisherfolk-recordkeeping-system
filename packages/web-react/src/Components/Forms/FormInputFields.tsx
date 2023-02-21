@@ -16,10 +16,13 @@ import {
   RadioGroup,
   Radio,
   Autocomplete,
+  SxProps,
+  Theme,
 } from '@mui/material';
 import CreatableSelect from 'react-select/creatable';
 import { splitUpperCase } from '../../utils/utils';
-
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 export interface Option {
   label: string;
   value: string;
@@ -52,6 +55,18 @@ interface FormInputTextProps {
   placeholder: string;
   control: Control<FieldValues, unknown>;
   options?: Option[];
+  register: UseFormRegister<FieldValues>;
+  errors: FieldValues;
+}
+
+interface FormInputDateProps {
+  name: string;
+  label: string;
+  defaultValue: string | Date | null;
+  min?: Date | string;
+  max?: Date | string;
+  sx: SxProps<Theme> | undefined;
+  control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
 }
@@ -99,17 +114,55 @@ export const FormInputText = ({
   <Controller
     name={name}
     control={control}
-    render={({ field: { value } }) => (
+    render={({ field: { value, onChange } }) => (
       <TextField
         value={value}
         sx={{ marginTop: -0.3, width: 250 }}
         label={label}
-        {...register(name)}
+        onChange={onChange}
         helperText={errors[name]?.message}
         error={!!errors[name]}
         placeholder={placeholder}
         InputProps={{ style: { fontSize: 14, margin: 10 } }}
       />
+    )}
+  />
+);
+
+export const FormInputDate = ({
+  name,
+  label,
+  sx,
+  defaultValue,
+  max,
+  min,
+  control,
+  errors,
+}: FormInputDateProps) => (
+  <Controller
+    name={name}
+    control={control}
+    defaultValue={defaultValue}
+    render={({ field: { value, onChange } }) => (
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <FormHelperText
+          error={!!errors[name]}
+          hidden={!errors[name]}
+          sx={{ m: !errors[name] ? 2 : 0 }}
+        >
+          {errors[name]?.message}
+        </FormHelperText>
+        <DatePicker
+          label={label}
+          value={value}
+          maxDate={max}
+          minDate={min}
+          onChange={(e) => {
+            onChange(e);
+          }}
+          renderInput={(params) => <TextField sx={sx} {...params} />}
+        />
+      </LocalizationProvider>
     )}
   />
 );

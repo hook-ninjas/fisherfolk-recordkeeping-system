@@ -130,23 +130,32 @@ function MultiFileUpload({
         >
           {preview}
         </Grid>
-        <Button
-          fullWidth
-          id={label}
-          variant="contained"
-          component="label"
-          htmlFor="multi-upload-btn"
-        >
-          <input
-            accept="image/*"
-            id="multi-upload-btn"
-            multiple
-            type="file"
-            hidden
-            {...register(name, { onChange: (e) => handleUpload(onChange)(e) })}
-          />
-          Upload
-        </Button>
+        <Controller
+          name={name}
+          control={control}
+          defaultValue=""
+          render={({ field: { value } }) => (
+            <Button
+              fullWidth
+              id={label}
+              variant="contained"
+              component="label"
+              htmlFor="multi-upload-btn"
+            >
+              <input
+                accept="image/*"
+                id="multi-upload-btn"
+                multiple
+                type="file"
+                hidden
+                {...register(name, {
+                  onChange: (e) => handleUpload(onChange)(e),
+                })}
+              />
+              Upload
+            </Button>
+          )}
+        />
       </Box>
     </>
   );
