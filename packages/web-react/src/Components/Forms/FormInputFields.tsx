@@ -69,6 +69,7 @@ interface FormInputSelectProps {
 interface FormInputRadioProps {
   name: string;
   label: string;
+  defaultValue: string;
   control: Control<FieldValues, unknown>;
   radioOptions: Option[];
   register: UseFormRegister<FieldValues>;
@@ -197,6 +198,7 @@ export const FormInputRadio = ({
   name,
   label,
   control,
+  defaultValue,
   radioOptions,
   register,
   errors,
@@ -206,7 +208,7 @@ export const FormInputRadio = ({
       <Controller
         control={control}
         name={name}
-        defaultValue=""
+        defaultValue={defaultValue}
         render={({ field: { value, onChange } }) => (
           <>
             <RadioGroup row onChange={onChange} value={value}>
