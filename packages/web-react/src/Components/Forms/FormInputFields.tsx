@@ -64,6 +64,19 @@ interface FormInputTextProps {
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
 }
+interface FormInputNumberProps {
+  name: string;
+  label: string;
+  placeholder: string;
+  numericOnly?: boolean;
+  max?: number;
+  min?: number;
+  defaultValue?: string;
+  control: Control<FieldValues, unknown>;
+  options?: Option[];
+  register: UseFormRegister<FieldValues>;
+  errors: FieldValues;
+}
 
 interface FormInputDateProps {
   name: string;
@@ -146,6 +159,42 @@ export const FormInputText = ({
         InputProps={{
           style: { fontSize: 14, margin: 10 },
           inputMode: inputMode ? inputMode : 'text',
+        }}
+      />
+    )}
+  />
+);
+
+export const FormInputNumber = ({
+  name,
+  label,
+  placeholder,
+  control,
+  numericOnly,
+  max,
+  min,
+  defaultValue,
+  register,
+  errors,
+}: FormInputNumberProps) => (
+  <Controller
+    name={name}
+    control={control}
+    defaultValue={defaultValue ? defaultValue : ''}
+    render={({ field: { value, onChange } }) => (
+      <TextField
+        type="number"
+        value={value}
+        sx={{ marginTop: -0.3, width: 250 }}
+        label={label}
+        onChange={onChange}
+        helperText={errors[name]?.message}
+        error={!!errors[name]}
+        placeholder={placeholder}
+        InputProps={{
+          style: { fontSize: 14, margin: 10 },
+          inputMode: numericOnly ? 'numeric' : undefined,
+          inputProps: { max: max, min: min },
         }}
       />
     )}
