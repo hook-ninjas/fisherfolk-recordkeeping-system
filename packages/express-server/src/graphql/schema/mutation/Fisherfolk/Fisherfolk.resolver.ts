@@ -1,6 +1,5 @@
-import { context, Context } from '../../../context';
+import { Context } from '../../../context';
 import { NexusGenInputs } from '../../../generated/nexus';
-import cloudinary from 'cloudinary';
 import 'dotenv/config';
 
 type CreateFisherfolkInput = NexusGenInputs['CreateFisherfolkInput'];

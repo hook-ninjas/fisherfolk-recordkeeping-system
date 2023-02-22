@@ -20,17 +20,18 @@ import FishProcessing from '../../Assets/fish_processing.png';
 import Aquaculture from '../../Assets/aquaculture.png';
 
 export const LivelihoodPaper = styled(Paper)(({ theme }) => ({
-  padding: 5,
+  padding: 8,
   borderRadius: 10,
   margin: 2,
-  height: 80,
+  height: 130,
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'space-between',
   [theme.breakpoints.up('sm')]: {
-    width: 170,
+    width: 210,
   },
   [theme.breakpoints.down('sm')]: {
-    width: 120,
+    width: 250,
+    height: 100,
   },
 }));
 
@@ -56,7 +57,7 @@ function getCount(activity: SourceOfIncome) {
 
 export default function Livelihood() {
   return (
-    <Stack direction="row">
+    <Stack direction="row" mb={4}>
       <Grid
         container
         spacing={3}
@@ -64,19 +65,24 @@ export default function Livelihood() {
       >
         {Object.values(SourceOfIncome).map((item) => (
           <LivelihoodPaper key={item} elevation={2}>
-            <Stack direction="row" spacing={1.5}>
+            <Stack direction="row" spacing={2} alignItems='center'>
               <Grid item sm={3} mt={1}>
                 <Box
                   component="img"
                   src={images[item]}
-                  sx={{ width: 37, borderRadius: 15 }}
+                  sx={{ width: 45, borderRadius: 15 }}
                 ></Box>
               </Grid>
               <Grid item sm={9}>
-                <Typography variant="subtitle2" color="#71797E" mt={0.5}>
+                <Typography color="#71797E" mt={1} fontSize={16.8}>
                   {splitUpperCase(item)}
                 </Typography>
-                <Typography variant="h5" color="#71797E">
+                <Typography
+                  variant="h4"
+                  component='h4'
+                  color="#71797E"
+                  aria-label={`${item.toLocaleLowerCase()}-${getCount(item)}`}
+                >
                   <b>{getCount(item)}</b>
                 </Typography>
               </Grid>

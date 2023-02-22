@@ -136,3 +136,15 @@ query AuthUser {
 query LivelihoodCount($activity: SourceOfIncome!) {
   livelihoodCount(activity: $activity) 
 }
+
+query FisherfolkCount{
+  totalFisherfolk
+  FisherfolkGenderCountDocument
+  totalGears
+  totalVessels
+  barangayCount
+}
+
+query FisherfolkGenderCount($gender: Gender!) {
+  fisherfolkGender(gender: $gender)
+}

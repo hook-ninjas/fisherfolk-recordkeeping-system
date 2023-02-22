@@ -1,5 +1,5 @@
 import { arg, intArg, list, nonNull, queryField } from 'nexus';
-import { queryById, queryByRange, queryTotalFisherfolk } from './Fisherfolk.resolver';
+import { queryById, queryByRange, queryFisherFolkByGender, querytActiveFisherFolk, queryTotalFisherfolk, queryUniqueBarangayCount } from './Fisherfolk.resolver';
 
 const Fisherfolks = queryField('fisherfolks', {
   type: nonNull(list(nonNull('Fisherfolk'))),
@@ -39,9 +39,31 @@ const QueryFisherfolkById = queryField('fisherfolk', {
   resolve: (_, args, ctx) => queryById(args.id, ctx)
 });
 
+const QueryUniqeBarangays = queryField('barangayCount', {
+  type: 'Int',
+  resolve: (_, __, ctx) => queryUniqueBarangayCount(ctx),
+});
+
+const QueryActiveFisherFolk = queryField('activeFisherFolk', {
+  type: 'Int',
+  resolve: (_, __, ctx) => querytActiveFisherFolk(ctx)
+});
+
+const QueryFisherFolkByGender = queryField('fisherfolkGender', {
+  type: 'Int',
+  args: {
+    gender: 'Gender'
+  },
+  resolve: (_, args, ctx) => queryFisherFolkByGender(args.gender, ctx)
+});
+
+
 export default [
   Fisherfolks,
+  QueryActiveFisherFolk,
+  QueryFisherFolkByGender,
   QueryTotalFisherfolk,
   QueryFisherfolkByRange,
-  QueryFisherfolkById
+  QueryFisherfolkById,
+  QueryUniqeBarangays
 ];
