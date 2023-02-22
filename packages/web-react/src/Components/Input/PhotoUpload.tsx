@@ -49,7 +49,6 @@ function PhotoUpload({
       if (event.target.files !== null) {
         const file = event.target.files[0];
         reader.readAsDataURL(file);
-        console.log(file);
 
         reader.onloadend = () => setPreview(reader);
       } else {
