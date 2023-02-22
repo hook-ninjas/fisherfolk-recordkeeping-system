@@ -10,8 +10,6 @@ import {
   Tabs,
   Tab,
   FormHelperText,
-  FormControl,
-  FormGroup,
 } from '@mui/material';
 import {
   FormInputRadio,
@@ -25,7 +23,7 @@ import {
   FormContainer,
   FormContainerTitle,
 } from '../Containers/FormContainers';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   CreateFisherfolkDocument,
@@ -427,6 +425,7 @@ export default function AddFisherfolkForm({
                 </Grid>
                 <Grid item sm={6}>
                   <FormInputText
+                    inputMode="numeric"
                     name="residentYear"
                     control={control}
                     label="Resident of Municipality since"
@@ -443,12 +442,14 @@ export default function AddFisherfolkForm({
                     control={control}
                     label="Age"
                     placeholder=""
+                    inputMode="numeric"
                     register={register}
                     errors={errors}
                   />
                 </Grid>
                 <Grid item sm={6}>
                   <FormInputText
+                    inputMode="numeric"
                     name="contactNumber"
                     control={control}
                     label="Contact Number"
@@ -460,14 +461,6 @@ export default function AddFisherfolkForm({
               </Grid>
               <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
                 <Grid item sm={6}>
-                  {/* <FormInputText
-                    name="dateOfBirth"
-                    control={control}
-                    label="Date of Birth"
-                    placeholder="MM/DD/YYYY"
-                    register={register}
-                    errors={errors}
-                  /> */}
                   <FormInputDate
                     sx={{ pl: 1, width: 240, height: 52 }}
                     name="dateOfBirth"
@@ -609,6 +602,7 @@ export default function AddFisherfolkForm({
                 <Grid item sm={6}>
                   <FormInputText
                     name="ptnContactNum"
+                    inputMode="numeric"
                     control={control}
                     label="Contact Number"
                     placeholder=""
@@ -722,6 +716,7 @@ export default function AddFisherfolkForm({
                 </Grid>
                 <Grid item sm={6}>
                   <FormInputText
+                    inputMode="numeric"
                     name="orgMemberSince"
                     control={control}
                     label="Member Since"
