@@ -36,6 +36,7 @@ const FfolkValidation = object().shape({
     .required('Select gender.'),
   age: string()
     .matches(/^$|\d{1,3}$/, 'Age must be a number.')
+    .matches(/^(1[89]|[2-9]\d)$/gm, 'Must be 18 or Above')
     .required('Enter age.'),
   dateOfBirth: date()
     .max(maxBirthDate, 'Enter Valid Date')
