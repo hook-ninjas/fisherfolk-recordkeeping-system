@@ -10,6 +10,8 @@ import {
   Tabs,
   Tab,
   FormHelperText,
+  FormControl,
+  FormGroup,
 } from '@mui/material';
 import {
   FormInputRadio,
@@ -18,13 +20,12 @@ import {
   FormCreatableSelect,
   FormInputAutoText,
   FormInputDate,
-  FormInputCheckbox,
 } from './FormInputFields';
 import {
   FormContainer,
   FormContainerTitle,
 } from '../Containers/FormContainers';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   CreateFisherfolkDocument,
@@ -55,41 +56,6 @@ interface AddFisherfolkFormProps {
   open: boolean;
   handleClose: () => void;
 }
-
-const defaultValues = {
-  lastName: '',
-  firstName: '',
-  middleName: '',
-  appellation: '',
-  salutation: '',
-  barangay: '',
-  cityMunicipality: '',
-  province: '',
-  residentYear: '',
-  gender: '',
-  age: '',
-  dateOfBirth: '',
-  placeOfBirth: '',
-  civilStatus: '',
-  educationalBackground: '',
-  numOFChildren: '',
-  nationality: '',
-  personToNotify: '',
-  ptnRelationship: '',
-  ptnContactNum: '',
-  ptnAddress: '',
-  mainFishingActivity: '',
-  otherSourceOfIncome: '',
-  sndCaptFish: false,
-  sndFishVending: false,
-  sndAquaculture: false,
-  sndFishProcessing: false,
-  orgName: '',
-  orgMemberSince: '',
-  orgPosition: '',
-  profilePhoto: '',
-  files: [],
-};
 
 export default function AddFisherfolkForm({
   open,
@@ -123,6 +89,13 @@ export default function AddFisherfolkForm({
     marginTop: 3,
     marginLeft: 'auto',
   };
+
+  const livelihoodOptions = [
+    { label: 'Capture Fishing', value: 'CaptureFishing' },
+    { label: 'Aquaculture', value: 'Aquaculture' },
+    { label: 'Fish Processing', value: 'FishProcessing' },
+    { label: 'Fish Vending', value: 'FishVending' },
+  ];
 
   const handleSubmitting = () => setIsSubmitting(true);
 
@@ -205,7 +178,7 @@ export default function AddFisherfolkForm({
   ];
 
   const maxDate = sub({ years: 19 })(new Date());
-
+  const watchMainFishAct = watch('mainFishingActivity');
   const watchFishCapture = watch(['mainFishingActivity', 'sndCaptFish']);
   const watchFishingCheckboxes = watch([
     'sndCaptFish',
@@ -281,6 +254,7 @@ export default function AddFisherfolkForm({
     e.preventDefault();
     trigger();
     console.log(getValues());
+    console.log(invalidFfolkInfo);
     onSubmit();
   };
 
@@ -683,44 +657,52 @@ export default function AddFisherfolkForm({
                 </Typography>
                 <Grid direction="column" container spacing={-2} sx={{ ml: 1 }}>
                   <FormControlLabel
-                    control={
-                      <Checkbox
-                        {...register('sndCaptFish')}
-                        defaultChecked={false}
-                        checked={watchFishingCheckboxes[0]}
-                      />
-                    }
                     label="Capture Fishing"
-                  />
-                  <FormControlLabel
+                    disabled={watchMainFishAct == 'CaptureFishing'}
                     control={
                       <Checkbox
-                        {...register('sndFishVending')}
+                        {...register('otherFishingActivities')}
                         defaultChecked={false}
-                        checked={watchFishingCheckboxes[1]}
+                        // checked={watchFishingCheckboxes[0]}
+                        value="CaptureFishing"
                       />
                     }
+                  />
+                  <FormControlLabel
                     label="Fish Vending"
-                  />
-                  <FormControlLabel
+                    disabled={watchMainFishAct == 'FishVending'}
                     control={
                       <Checkbox
-                        {...register('sndAquaculture')}
+                        {...register('otherFishingActivities')}
                         defaultChecked={false}
-                        checked={watchFishingCheckboxes[2]}
+                        // checked={watchFishingCheckboxes[1]}
+                        value="FishVending"
                       />
                     }
+                  />
+                  <FormControlLabel
                     label="Aquaculture"
+                    disabled={watchMainFishAct == 'Aquaculture'}
+                    control={
+                      <Checkbox
+                        {...register('otherFishingActivities')}
+                        defaultChecked={false}
+                        // checked={watchFishingCheckboxes[2]}
+                        value="Aquaculture"
+                      />
+                    }
                   />
                   <FormControlLabel
+                    label="Fish Processing"
+                    disabled={watchMainFishAct == 'FishProcessing'}
                     control={
                       <Checkbox
                         defaultChecked={false}
-                        {...register('sndFishProcessing')}
-                        checked={watchFishingCheckboxes[3]}
+                        {...register('otherFishingActivities')}
+                        // checked={watchFishingCheckboxes[3]}
+                        value="FishProcessing"
                       />
                     }
-                    label="Fish Processing"
                   />
                 </Grid>
               </Grid>
