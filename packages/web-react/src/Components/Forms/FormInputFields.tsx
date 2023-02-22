@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import {
   UseFormRegister,
   Control,
@@ -57,6 +57,8 @@ interface FormInputTextProps {
   name: string;
   label: string;
   placeholder: string;
+  inputMode?: HTMLAttributes<HTMLLIElement>['inputMode'];
+  defaultValue?: string;
   control: Control<FieldValues, unknown>;
   options?: Option[];
   register: UseFormRegister<FieldValues>;
@@ -123,12 +125,15 @@ export const FormInputText = ({
   label,
   placeholder,
   control,
+  inputMode,
+  defaultValue,
   register,
   errors,
 }: FormInputTextProps) => (
   <Controller
     name={name}
     control={control}
+    defaultValue={defaultValue ? defaultValue : ''}
     render={({ field: { value, onChange } }) => (
       <TextField
         value={value}
@@ -138,7 +143,10 @@ export const FormInputText = ({
         helperText={errors[name]?.message}
         error={!!errors[name]}
         placeholder={placeholder}
-        InputProps={{ style: { fontSize: 14, margin: 10 } }}
+        InputProps={{
+          style: { fontSize: 14, margin: 10 },
+          inputMode: inputMode ? inputMode : 'text',
+        }}
       />
     )}
   />
