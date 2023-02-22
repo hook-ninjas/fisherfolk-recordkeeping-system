@@ -15,6 +15,10 @@ import {
   FormControlLabel,
   RadioGroup,
   Radio,
+  FormGroup,
+  Checkbox,
+  Grid,
+  Typography,
   Autocomplete,
   SxProps,
   Theme,
@@ -65,7 +69,7 @@ interface FormInputDateProps {
   defaultValue: string | Date | null;
   min?: Date | string;
   max?: Date | string;
-  sx: SxProps<Theme> | undefined;
+  sx?: SxProps<Theme> | undefined;
   control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
@@ -88,6 +92,17 @@ interface FormInputRadioProps {
   control: Control<FieldValues, unknown>;
   radioOptions: Option[];
   register: UseFormRegister<FieldValues>;
+  errors: FieldValues;
+}
+
+interface FormInputMultiCheckboxProps {
+  name: string;
+  label: string;
+  header?: Option;
+  defaultValue: string;
+  control: Control<FieldValues, unknown>;
+  options: Option[];
+  sx?: SxProps<Theme> | undefined;
   errors: FieldValues;
 }
 
@@ -279,6 +294,75 @@ export const FormInputRadio = ({
               {errors[name]?.message}
             </FormHelperText>
           </>
+        )}
+      />
+    </FormControl>
+  );
+};
+
+export const FormInputMultiCheckbox = ({
+  name,
+  label,
+  control,
+  defaultValue,
+  header,
+  options,
+  sx,
+  errors,
+}: FormInputMultiCheckboxProps) => {
+  return (
+    <FormControl error={!!errors[name]} aria-label={label} role="radiogroup">
+      <Controller
+        control={control}
+        name={name}
+        defaultValue={defaultValue}
+        render={({ field: { onChange } }) => (
+          <Grid container spacing={-2} sx={sx}>
+            <Grid item sm={6}>
+              {/* <FormControlLabel
+                control={
+                  <Checkbox
+                    size="small"
+                    // checked={SimpleHandLine}
+                    // onChange={handleOtherFishingActivityChange}
+                    name="SimpleHandLine"
+                    value="SimpleHandLine"
+                  />
+                }
+                label={
+                  <Typography variant="subtitle1" color="bold">
+                    Hook and Line
+                  </Typography>
+                }
+              /> */}
+              <FormHelperText
+                error={!!errors[name]}
+                hidden={!errors[name]}
+                sx={{ m: !errors[name] ? 2 : 0 }}
+              >
+                {errors[name]?.message}
+              </FormHelperText>
+              <FormGroup>
+                {options.map(({ label, value }, index) => {
+                  return (
+                    <FormControlLabel
+                      key={`${label}-${index}`}
+                      sx={{ ml: header ? 2 : 0 }}
+                      control={
+                        <Checkbox
+                          size="small"
+                          // checked={SimpleHandLine}
+                          onChange={(e) => onChange(e.target.value)}
+                          value={value}
+                        />
+                      }
+                      label={label}
+                    />
+                  );
+                })}
+              </FormGroup>
+            </Grid>
+          </Grid>
         )}
       />
     </FormControl>
