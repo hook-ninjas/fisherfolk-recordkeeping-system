@@ -1,4 +1,4 @@
-import { object, string, mixed, number, array } from 'yup';
+import { object, string, mixed, number, array, date } from 'yup';
 import { getValues } from '../../../utils/utils';
 import {
   salutationOptions,
@@ -7,6 +7,9 @@ import {
   nationalityOptions,
   materialOptions,
 } from '../Enums';
+import { sub } from 'date-fns/fp';
+
+const maxBirthDate = sub({ years: 19 })(new Date());
 
 const FfolkValidation = object().shape({
   // registrationType: string()
@@ -34,7 +37,10 @@ const FfolkValidation = object().shape({
   age: string()
     .matches(/^$|\d{1,3}$/, 'Age must be a number.')
     .required('Enter age.'),
-  dateOfBirth: string().nullable().required('Enter date of birth.'),
+  dateOfBirth: date()
+    .max(maxBirthDate, 'Enter Valid Date')
+    .typeError('Enter Valid Date')
+    .required('Enter date of birth.'),
   placeOfBirth: string().required('Enter place of birth.'),
   civilStatus: string().required('Select civil status.'),
   educationalBackground: mixed()

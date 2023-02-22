@@ -44,6 +44,13 @@ import {
   materialOptions,
 } from './Enums';
 import { useParams } from 'react-router-dom';
+import { UseFormRegister, Control, FieldValues } from 'react-hook-form';
+
+interface GearFormProps {
+  control: Control<FieldValues, unknown>;
+  register: UseFormRegister<FieldValues>;
+  errors: FieldValues;
+}
 
 function GearForm() {
   return (

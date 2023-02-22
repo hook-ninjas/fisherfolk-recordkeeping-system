@@ -17,6 +17,8 @@ import {
   FormInputText,
   FormCreatableSelect,
   FormInputAutoText,
+  FormInputDate,
+  FormInputCheckbox,
 } from './FormInputFields';
 import {
   FormContainer,
@@ -28,6 +30,7 @@ import {
   CreateFisherfolkDocument,
   MutationCreateFisherfolkArgs,
 } from '../../graphql/generated';
+import { sub } from 'date-fns/fp';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
 import {
@@ -201,6 +204,8 @@ export default function AddFisherfolkForm({
     'files',
   ];
 
+  const maxDate = sub({ years: 19 })(new Date());
+
   const watchFishCapture = watch(['mainFishingActivity', 'sndCaptFish']);
   const watchFishingCheckboxes = watch([
     'sndCaptFish',
@@ -274,6 +279,8 @@ export default function AddFisherfolkForm({
 
   const handleSubmitForm = (e: MouseEvent) => {
     e.preventDefault();
+    trigger();
+    console.log(getValues());
     onSubmit();
   };
 
@@ -479,11 +486,21 @@ export default function AddFisherfolkForm({
               </Grid>
               <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
                 <Grid item sm={6}>
-                  <FormInputText
+                  {/* <FormInputText
                     name="dateOfBirth"
                     control={control}
                     label="Date of Birth"
                     placeholder="MM/DD/YYYY"
+                    register={register}
+                    errors={errors}
+                  /> */}
+                  <FormInputDate
+                    sx={{ pl: 1, width: 240, height: 52 }}
+                    name="dateOfBirth"
+                    control={control}
+                    max={maxDate}
+                    defaultValue={null}
+                    label="Date of Birth"
                     register={register}
                     errors={errors}
                   />
