@@ -236,33 +236,35 @@ export const FormInputDate = ({
   control,
   errors,
 }: FormInputDateProps) => (
-  <Controller
-    name={name}
-    control={control}
-    defaultValue={defaultValue}
-    render={({ field: { value, onChange } }) => (
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <FormHelperText
-          error={!!errors[name]}
-          hidden={!errors[name]}
-          sx={{ m: !errors[name] ? 2 : 0 }}
-        >
-          {errors[name]?.message}
-        </FormHelperText>
-        <DatePicker
-          label={label}
-          value={value}
-          maxDate={max}
-          minDate={min}
-          openTo={openTo}
-          onChange={(e) => {
-            onChange(e);
-          }}
-          renderInput={(params) => <TextField sx={sx} {...params} />}
-        />
-      </LocalizationProvider>
-    )}
-  />
+  <>
+    <Controller
+      name={name}
+      control={control}
+      defaultValue={defaultValue}
+      render={({ field: { value, onChange } }) => (
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            label={label}
+            value={value}
+            maxDate={max}
+            minDate={min}
+            openTo={openTo}
+            onChange={(e) => {
+              onChange(e);
+            }}
+            renderInput={(params) => (
+              <TextField
+                sx={sx}
+                {...params}
+                helperText={errors[name]?.message}
+                error={!!errors[name]}
+              />
+            )}
+          />
+        </LocalizationProvider>
+      )}
+    />
+  </>
 );
 
 export const FormInputAutoText = ({
