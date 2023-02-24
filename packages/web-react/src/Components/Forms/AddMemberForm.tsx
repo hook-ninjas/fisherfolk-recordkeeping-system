@@ -143,7 +143,7 @@ export default function AddFisherfolkForm({
     resetField,
     trigger,
     getValues,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(FfolkValidation),
   });
@@ -177,16 +177,19 @@ export default function AddFisherfolkForm({
 
   const maxDate = sub({ years: 19 })(new Date());
   const watchMainFishAct = watch('mainFishingActivity');
-  const watchFishCapture = watch(['mainFishingActivity', 'sndCaptFish']);
+  const watchFishCapture = watch([
+    'mainFishingActivity',
+    'otherFishingActivities',
+  ]);
   const watchFishingCheckboxes = watch([
     'sndCaptFish',
     'sndFishVending',
     'sndAquaculture',
     'sndFishProcessing',
   ]);
-  const captureFishingRegistrant =
-    watchFishCapture.includes('CaptureFishing') ||
-    watchFishCapture.includes(true);
+  const captureFishingRegistrant = watchFishCapture
+    .flat()
+    .includes('CaptureFishing');
 
   const invalidFfolkInfo = ffolkInfo.filter(
     (field) => errors[field] != undefined
@@ -259,9 +262,10 @@ export default function AddFisherfolkForm({
   const handleNextButton = (e: MouseEvent) => {
     trigger();
     console.log(getValues());
-    if (invalidFfolkInfo.length == 0) {
-      setCaptureFishing(true);
-    }
+    // if (isValid) {
+    //   setCaptureFishing(true);
+    // }
+    setCaptureFishing(true);
   };
 
   const handleBackButton = (e: MouseEvent) => setCaptureFishing(false);
