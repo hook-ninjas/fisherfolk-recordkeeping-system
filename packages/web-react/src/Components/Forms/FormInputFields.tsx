@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react';
+import React, { HTMLAttributes, useState } from 'react';
 import {
   UseFormRegister,
   Control,
@@ -93,6 +93,25 @@ interface FormInputDateProps {
   control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+}
+
+interface FormInputAutoProps {
+  id?: string;
+  dataCy?: string;
+  name: string;
+  label: string;
+  placeholder: string;
+  autoComplete?: boolean;
+  freeSolo?: boolean;
+  handleTextChange?: (value: string) => void;
+  handleInputChange?: (value: string | null) => void;
+  inputMode?: HTMLAttributes<HTMLLIElement>['inputMode'];
+  defaultValue?: string;
+  control: Control<FieldValues, unknown>;
+  options?: Option[] | string[];
+  register: UseFormRegister<FieldValues>;
+  errors: FieldValues;
+  sx?: SxProps<Theme> | undefined;
 }
 
 interface FormInputSelectProps {
@@ -251,25 +270,48 @@ export const FormInputAutoText = ({
   label,
   placeholder,
   control,
+  freeSolo,
+  autoComplete,
+  defaultValue,
+  handleTextChange,
+  handleInputChange,
   register,
+  sx,
   options,
   errors,
-}: FormInputTextProps) => (
+}: FormInputAutoProps) => (
   <Controller
     name={name}
+    defaultValue={defaultValue}
     control={control}
-    render={({ field: { value } }) => (
+    render={({ field: { value, onChange } }) => (
       <Autocomplete
         id={name}
-        freeSolo
-        options={options!.map((option) => option.label)}
+        disableClearable
+        freeSolo={freeSolo}
+        value={value}
+        autoComplete={autoComplete}
+        inputValue={value}
+        onChange={(event, value) => {
+          if (handleInputChange) {
+            handleInputChange(value);
+          }
+          onChange(value);
+        }}
+        onInputChange={(event, value) => {
+          if (handleTextChange) {
+            handleTextChange(value);
+          }
+          onChange(value);
+        }}
+        options={options!.map((option) =>
+          typeof option === 'string' ? option : option.label
+        )}
         renderInput={(params) => (
           <TextField
             {...params}
             label={label}
-            value={value}
-            sx={{ marginTop: -0.3, width: 230 }}
-            {...register(name)}
+            sx={sx}
             helperText={errors[name]?.message}
             error={!!errors[name]}
             InputProps={{
