@@ -34,7 +34,6 @@ import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
 import {
   nationalityOptions,
-  educationalBackgroundOptions,
   createOption,
   salutationOptions,
   genderOptions,
@@ -226,6 +225,14 @@ const barangayOptions = [
   'Brgy. Punong',
 ];
 
+const educationalBackgroundOptions = [
+  { label: 'Elementary', value: 'Elementary' },
+  { label: 'High School', value: 'HighSchool' },
+  { label: 'College', value: 'College' },
+  { label: 'Vocational', value: 'Vocational' },
+  { label: 'Post-Graduate', value: 'PostGraduate' },
+];
+
 export default function AddFisherfolkForm({
   open,
   handleClose,
@@ -313,10 +320,55 @@ export default function AddFisherfolkForm({
     resetField,
     trigger,
     getValues,
+    setValue,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(FfolkValidation),
   });
+
+  const watchMainFishAct = watch('mainFishingActivity');
+  const watchFishCapture = watch([
+    'mainFishingActivity',
+    'otherFishingActivities',
+  ]);
+
+  const watchOtherFishAct = watch('otherFishingActivities');
+
+  const mainFishAct = {
+    aquaculture: watchMainFishAct == 'Aquaculture',
+    captureFishing: watchMainFishAct == 'CaptureFishing',
+    fishVending: watchMainFishAct == 'FishVending',
+    fishProcessing: watchMainFishAct == 'FishProcessing',
+  };
+
+  const otherFishAct = {
+    aquaculture:
+      watchOtherFishAct instanceof Array &&
+      watchOtherFishAct.includes('Aquaculture'),
+    captureFishing:
+      watchOtherFishAct instanceof Array &&
+      watchOtherFishAct.includes('CaptureFishing'),
+    fishVending:
+      watchOtherFishAct instanceof Array &&
+      watchOtherFishAct.includes('FishVending'),
+    fishProcessing:
+      watchOtherFishAct instanceof Array &&
+      watchOtherFishAct.includes('FishProcessing'),
+  };
+
+  const removeFishAct = () => {
+    if (watchOtherFishAct instanceof Array) {
+      return [...getValues('otherFishingActivities')].filter(
+        (value) => value == getValues('mainFishingActivity')
+      );
+    }
+
+    return [];
+  };
+
+  const handleMainFishingAct = (value: string) => {
+    resetField('otherFishingActivities', { defaultValue: [] });
+  };
 
   const ffolkInfo = [
     'lastName',
@@ -346,22 +398,11 @@ export default function AddFisherfolkForm({
   ];
 
   const maxDate = sub({ years: 19 })(new Date());
-  const watchMainFishAct = watch('mainFishingActivity');
-  const watchFishCapture = watch([
-    'mainFishingActivity',
-    'otherFishingActivities',
-  ]);
 
-  const watchFishingCheckboxes = watch([
-    'sndCaptFish',
-    'sndFishVending',
-    'sndAquaculture',
-    'sndFishProcessing',
-  ]);
-
-  const captureFishingRegistrant = watchFishCapture
-    .flat()
-    .includes('CaptureFishing');
+  const captureFishingRegistrant =
+    watchMainFishAct == 'CaptureFishing' ||
+    (watchOtherFishAct instanceof Array &&
+      watchOtherFishAct.includes('CaptureFishing'));
 
   const invalidFfolkInfo = ffolkInfo.filter(
     (field) => errors[field] != undefined
@@ -852,6 +893,8 @@ export default function AddFisherfolkForm({
                     label="Main Fishing Activity "
                     data={sourceOfIncomeOptions}
                     onSavedValue=""
+                    defaultValue=""
+                    handleChange={handleMainFishingAct}
                     control={control}
                     register={register}
                     errors={errors}
@@ -873,48 +916,44 @@ export default function AddFisherfolkForm({
                 <Grid direction="column" container spacing={-2} sx={{ ml: 1 }}>
                   <FormControlLabel
                     label="Capture Fishing"
-                    disabled={watchMainFishAct == 'CaptureFishing'}
+                    disabled={mainFishAct['captureFishing']}
                     control={
                       <Checkbox
                         {...register('otherFishingActivities')}
-                        defaultChecked={false}
-                        // checked={watchFishingCheckboxes[0]}
+                        checked={otherFishAct['captureFishing']}
                         value="CaptureFishing"
                       />
                     }
                   />
                   <FormControlLabel
                     label="Fish Vending"
-                    disabled={watchMainFishAct == 'FishVending'}
+                    disabled={mainFishAct['fishVending']}
                     control={
                       <Checkbox
                         {...register('otherFishingActivities')}
-                        defaultChecked={false}
-                        // checked={watchFishingCheckboxes[1]}
+                        checked={otherFishAct['fishVending']}
                         value="FishVending"
                       />
                     }
                   />
                   <FormControlLabel
                     label="Aquaculture"
-                    disabled={watchMainFishAct == 'Aquaculture'}
+                    disabled={mainFishAct['aquaculture']}
                     control={
                       <Checkbox
                         {...register('otherFishingActivities')}
-                        defaultChecked={false}
-                        // checked={watchFishingCheckboxes[2]}
+                        checked={otherFishAct['aquaculture']}
                         value="Aquaculture"
                       />
                     }
                   />
                   <FormControlLabel
                     label="Fish Processing"
-                    disabled={watchMainFishAct == 'FishProcessing'}
+                    disabled={mainFishAct['fishProcessing']}
                     control={
                       <Checkbox
-                        defaultChecked={false}
                         {...register('otherFishingActivities')}
-                        // checked={watchFishingCheckboxes[3]}
+                        checked={otherFishAct['fishProcessing']}
                         value="FishProcessing"
                       />
                     }
