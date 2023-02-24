@@ -25,7 +25,11 @@ import {
 } from '@mui/material';
 import CreatableSelect from 'react-select/creatable';
 import { splitUpperCase } from '../../utils/utils';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import {
+  DatePicker,
+  LocalizationProvider,
+  CalendarPickerView,
+} from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 export interface Option {
   label: string;
@@ -82,6 +86,7 @@ interface FormInputDateProps {
   name: string;
   label: string;
   defaultValue: string | Date | null;
+  openTo?: CalendarPickerView;
   min?: Date | string;
   max?: Date | string;
   sx?: SxProps<Theme> | undefined;
@@ -206,6 +211,7 @@ export const FormInputDate = ({
   label,
   sx,
   defaultValue,
+  openTo,
   max,
   min,
   control,
@@ -229,6 +235,7 @@ export const FormInputDate = ({
           value={value}
           maxDate={max}
           minDate={min}
+          openTo={openTo}
           onChange={(e) => {
             onChange(e);
           }}
