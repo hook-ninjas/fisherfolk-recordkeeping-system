@@ -263,6 +263,7 @@ export default function AddFisherfolkForm({
     trigger();
     console.log(getValues());
     // if (isValid) {
+
     //   setCaptureFishing(true);
     // }
     setCaptureFishing(true);
@@ -469,6 +470,7 @@ export default function AddFisherfolkForm({
                     sx={{ pl: 1, width: 240, height: 52 }}
                     name="dateOfBirth"
                     control={control}
+                    openTo="year"
                     max={maxDate}
                     defaultValue={null}
                     label="Date of Birth"
