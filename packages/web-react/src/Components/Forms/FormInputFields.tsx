@@ -118,7 +118,7 @@ interface FormInputSelectProps {
   name: string;
   label: string;
   onSavedValue: string;
-  data: string[];
+  data: Option[] | string[];
   control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
@@ -355,11 +355,29 @@ export const FormInputSelect = ({
             name={name}
             sx={{ width: 233, height: 52 }}
           >
-            {data?.map((item) => (
-              <MenuItem value={item} key={item} {...register(name)}>
-                {splitUpperCase(item)}
-              </MenuItem>
-            ))}
+            {data?.map((item, index) => {
+              if (typeof item === 'string') {
+                return (
+                  <MenuItem
+                    value={item}
+                    key={`${item}-${index}`}
+                    {...register(name)}
+                  >
+                    {splitUpperCase(item)}
+                  </MenuItem>
+                );
+              }
+
+              return (
+                <MenuItem
+                  value={item.value}
+                  key={`${item.label}-${index}`}
+                  {...register(name)}
+                >
+                  {item.label}
+                </MenuItem>
+              );
+            })}
           </Select>
           <FormHelperText sx={{ color: '#d32f2f' }}>
             {errors[name]?.message}
