@@ -98,7 +98,6 @@ const FfolkValidation = object().shape({
           }
         }
       }
-      console.log(truthArray.length > 0);
       return truthArray.length > 0;
     })
     .test(
@@ -113,7 +112,6 @@ const FfolkValidation = object().shape({
             }
           }
         }
-        console.log(truthArray.length > 0);
         return truthArray.length > 0;
       }
     ),
