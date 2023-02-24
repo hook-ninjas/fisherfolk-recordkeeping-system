@@ -10,6 +10,8 @@ import {
 import { sub } from 'date-fns/fp';
 
 const maxBirthDate = sub({ years: 19 })(new Date());
+const supportedFormats = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
+const uploadLimit = 10000000;
 
 const FfolkValidation = object().shape({
   // registrationType: string()
@@ -65,29 +67,56 @@ const FfolkValidation = object().shape({
   orgName: string(),
   orgMemberSince: string().matches(/^$|\d{4}$/, 'Please enter year.'),
   orgPosition: string(),
-  profilePhoto: object()
-    .shape({
-      name: string().required(),
-      size: number().max(1000000, 'File over 1 mb'),
-      type: string()
-        .matches(/^.*(image\/jpeg|jpg|png)$/gm, 'File format not supported')
-        .required('No File Uploaded'),
-    })
-    .nullable()
-    .required('Add Profile Image'),
-  files: array()
-    .of(
-      object().shape({
-        name: string().required(),
-        size: number().max(1000000, 'File over 1 mb'),
-        type: string().matches(
-          /^.*(image\/jpeg|jpg|png)$/gm,
-          'File format not supported'
-        ),
-      })
+  profilePhoto: mixed()
+    .test(
+      'uploadedPhoto',
+      'Must upload photo',
+      (value) => value && value instanceof FileList
     )
-    .nullable()
-    .required('Upload required file/files'),
+    .test(
+      'fileSize',
+      'File too large',
+      (value) => value instanceof FileList && value[0].size <= uploadLimit
+    )
+    .test(
+      'fileFormat',
+      'Unsupported Format, Format must be in .jpeg, .jpg, .png',
+      (value) => value && value[0].type.match(/^.*(image\/jpeg|jpg|png)$/gm)
+    ),
+  files: mixed()
+    .test(
+      'uploadedFiles',
+      'Must upload photo',
+      (value) => value && value instanceof FileList
+    )
+    .test('fileSize', 'File too large', (value) => {
+      const truthArray = [];
+      if (value) {
+        for (let i = 0; i < value.length; i++) {
+          if (value[i].size <= uploadLimit) {
+            truthArray.push(value[i]);
+          }
+        }
+      }
+      console.log(truthArray.length > 0);
+      return truthArray.length > 0;
+    })
+    .test(
+      'fileFormat',
+      'Unsupported Format, Format must be in .jpeg, .jpg, .png',
+      (value) => {
+        const truthArray = [];
+        if (value) {
+          for (let i = 0; i < value.length; i++) {
+            if (value[i].type.match(/^.*(image\/jpeg|jpg|png)$/gm)) {
+              truthArray.push(value[i]);
+            }
+          }
+        }
+        console.log(truthArray.length > 0);
+        return truthArray.length > 0;
+      }
+    ),
 });
 
 const VesselWithGearSchema = object().shape({
