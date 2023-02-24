@@ -118,6 +118,8 @@ interface FormInputSelectProps {
   name: string;
   label: string;
   onSavedValue: string;
+  defaultValue?: string;
+  handleChange?: (value: string) => void;
   data: Option[] | string[];
   control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
@@ -333,6 +335,8 @@ export const FormInputSelect = ({
   label,
   onSavedValue,
   data,
+  defaultValue,
+  handleChange,
   control,
   register,
   errors,
@@ -344,14 +348,19 @@ export const FormInputSelect = ({
     <Controller
       name={name}
       control={control}
-      defaultValue=""
+      defaultValue={defaultValue}
       render={({ field: { onChange, value } }) => (
         <>
           <Select
-            defaultValue=""
             label={label}
             value={value || onSavedValue}
-            onChange={onChange}
+            onChange={(e) => {
+              if (handleChange) {
+                handleChange(e.target.value);
+              }
+
+              onChange(e.target.value);
+            }}
             name={name}
             sx={{ width: 233, height: 52 }}
           >
