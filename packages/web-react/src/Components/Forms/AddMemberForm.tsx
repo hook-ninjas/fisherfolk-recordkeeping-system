@@ -761,7 +761,7 @@ export default function AddFisherfolkForm({
               </Grid>
               <Grid container spacing={-2} sx={{ ml: 2, mt: 1 }}>
                 <Grid item sm={6} sx={{ mt: 2 }}>
-                  <FormCreatableSelect
+                  {/* <FormCreatableSelect
                     control={control}
                     errors={errors}
                     isLoading={isLoading}
@@ -771,6 +771,16 @@ export default function AddFisherfolkForm({
                     onCreateOption={handleCreateEducationalBackground}
                     options={educationalBackgrounds}
                     register={register}
+                    
+                  /> */}
+                  <FormInputSelect
+                    name="educationalBackground"
+                    label="Select Educational Background"
+                    data={educationalBackgroundOptions}
+                    onSavedValue=""
+                    control={control}
+                    register={register}
+                    errors={errors}
                   />
                 </Grid>
                 <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
