@@ -37,7 +37,6 @@ import {
   educationalBackgroundOptions,
   createOption,
   salutationOptions,
-  barangayOptions,
   genderOptions,
   civilStatusOptions,
   sourceOfIncomeOptions,
@@ -55,6 +54,178 @@ interface AddFisherfolkFormProps {
   handleClose: () => void;
 }
 
+const barangayOptions = [
+  'Brgy. Bonifacio',
+  'Brgy. Calaparan',
+  'Brgy. Dulonan',
+  'Brgy. Mohon',
+  'Brgy. Quezon',
+  'Brgy. San José - City Proper',
+  'Brgy. Santa Cruz',
+  'Brgy. Santa Filomina',
+  'Brgy. Santo Domingo',
+  'Brgy. Santo Niño Norte',
+  'Brgy. Santo Niño Sur',
+  'Brgy. Sooc',
+  'Brgy. Yulo Drive',
+  'Brgy. Ungka',
+  'Brgy. Buhang',
+  'Brgy. Balabago',
+  'Brgy. Democracia',
+  'Brgy. San Vicente',
+  'Brgy. Ma. Cristina',
+  'Brgy. Balantang',
+  'Brgy. Dungon',
+  'Brgy. Dungon B',
+  'Brgy. San Isidro - Jaro',
+  'Brgy. Desamparados',
+  'Brgy. Our Lady of Lourdes',
+  'Brgy. San Roque',
+  'Brgy. Fajardo',
+  'Brgy. Claudio Castilla El-98',
+  'Brgy. Sambag',
+  'Brgy. Cubay',
+  'Brgy. Dungon A',
+  'Brgy. M.H. del Pilar',
+  'Brgy. Quintin Salas',
+  'Brgy. Lopez Jaena',
+  'Brgy. Tacas',
+  'Brgy. Taytay',
+  'Brgy. Montinola',
+  'Brgy. Bito-on',
+  'Brgy. Lanit',
+  'Brgy. Javellana',
+  'Brgy. Cuartero',
+  'Brgy. Buntatala',
+  'Brgy. Tabuc Suba - Jaro',
+  'Brgy. Camalig',
+  'Brgy. Simon Ledesma',
+  'Brgy. Benedicto',
+  'Brgy. Arsenal Aduana',
+  'Brgy. Baybay Tanza',
+  'Brgy. Bonifacio Tanza',
+  'Brgy. Concepcion-Montes',
+  'Brgy. Danao',
+  'Brgy. Delgado-Jalandoni-Bagumbayan',
+  'Brgy. Edganzon',
+  'Brgy. Flores',
+  'Brgy. General Hughes-Montes',
+  'Brgy. Gloria',
+  'Brgy. Hipodromo',
+  'Brgy. Inday',
+  'Brgy. Jalandoni-Wilson',
+  'Brgy. Kahirupan',
+  'Brgy. Kauswagan',
+  'Brgy. Legaspi dela Rama',
+  'Brgy. Liberation',
+  'Brgy. Mabolo-Delgado',
+  'Brgy. Magsaysay',
+  'Brgy. Malipayon-Delgado',
+  'Brgy. Maria Clara',
+  'Brgy. Monica Blumentritt',
+  'Brgy. Muelle Loney-Montes',
+  'Brgy. Nonoy',
+  'Brgy. Ortiz',
+  'Brgy. Osmeña',
+  'Brgy. President Roxas',
+  'Brgy. Rima-Rizal',
+  'Brgy. Rizal Estanzuela',
+  'Brgy. Rizal Ibarra',
+  'Brgy. Rizal Palapala I',
+  'Brgy. Rizal Palapala II',
+  'Brgy. Roxas Village',
+  'Brgy. Sampaguita',
+  'Brgy. San Agustin',
+  'Brgy. San Felix',
+  'Brgy. San Jose - Arevalo',
+  'Brgy. Santo Rosario-Duran',
+  'Brgy. Tanza-Esperanza',
+  'Brgy. Timawa Tanza I',
+  'Brgy. Timawa Tanza II',
+  'Brgy. Veterans Village',
+  'Brgy. Villa Anita',
+  'Brgy. Yulo-Arroyo',
+  'Brgy. Zamora-Melliza',
+  'Brgy. Calumpang',
+  'Brgy. Cochero',
+  'Brgy. Compania',
+  'Brgy. East Baluarte',
+  'Brgy. East Timawa',
+  'Brgy. Habog-Habog Salvacion',
+  'Brgy. Infante',
+  'Brgy. Kasingkasing',
+  'Brgy. Katilingban',
+  'Brgy. Molo Boulevard',
+  'Brgy. North Avanceña',
+  'Brgy. North Baluarte',
+  'Brgy. North Fundidor',
+  'Brgy. North San Jose',
+  'Brgy. Poblacion',
+  'Brgy. San Antonio',
+  'Brgy. San Juan',
+  'Brgy. San Pedro',
+  'Brgy. South Baluarte',
+  'Brgy. South Fundidor',
+  'Brgy. South San Jose',
+  'Brgy. Taal',
+  'Brgy. Tap-oc',
+  'Brgy. West Habog-Habog',
+  'Brgy. West Timawa',
+  'Brgy. Abeto Mirasol Taft South (Quirino Abeto)',
+  'Brgy. Airport (Tabucan Airport)',
+  'Brgy. Bakhaw',
+  'Brgy. Bolilao',
+  'Brgy. Buhang Taft North',
+  'Brgy. Calahunan',
+  'Brgy. Dungon C',
+  'Brgy. Guzman-Jesena',
+  'Brgy. Hibao-an Norte',
+  'Brgy. Hibao-an Sur',
+  'Brgy. Navais',
+  'Brgy. Oñate de Leon',
+  'Brgy. Pale Benedicto Rizal',
+  'Brgy. PHHC Block 17',
+  'Brgy. PHHC Block 22 NHA',
+  'Brgy. San Rafael',
+  'Brgy. Santa Rosa',
+  'Brgy. Tabucan',
+  'Brgy. Aguinaldo',
+  'Brgy. Baldoza',
+  'Brgy. Bantud',
+  'Brgy. Banuyao',
+  'Brgy. Burgos-Mabini-Plaza',
+  'Brgy. Caingin',
+  'Brgy. Divinagracia',
+  'Brgy. Gustilo',
+  'Brgy. Hinactacan',
+  'Brgy. Ingore',
+  'Brgy. Jereos',
+  'Brgy. Laguda',
+  'Brgy. Lopez Jaena Norte',
+  'Brgy. Luna',
+  'Brgy. MacArthur',
+  'Brgy. Magdalo',
+  'Brgy. Magsaysay Village',
+  'Brgy. Nabitasan',
+  'Brgy. Railway',
+  'Brgy. Rizal',
+  'Brgy. San Isidro - La Paz',
+  'Brgy. San Nicolas',
+  'Brgy. Tabuc Suba - La Paz',
+  'Brgy. Ticud',
+  'Brgy. Alalasan',
+  'Brgy. Don Esteban',
+  'Brgy. Jalandoni Estate',
+  'Brgy. Lapuz Norte',
+  'Brgy. Lapuz Sur',
+  'Brgy. Libertad',
+  'Brgy. Loboc',
+  'Brgy. Mansaya',
+  'Brgy. Bo. Obrero',
+  'Brgy. Progreso',
+  'Brgy. Punong',
+];
+
 export default function AddFisherfolkForm({
   open,
   handleClose,
@@ -68,7 +239,6 @@ export default function AddFisherfolkForm({
   const [educationalBackgrounds, setEducationalBackgrounds] = useState(
     educationalBackgroundOptions
   );
-  const [barangays, setBarangays] = useState(barangayOptions);
   const [otherFishingActivities, setOtherFishingActivities] = React.useState({
     CaptureFishing: false,
     Aquaculture: false,
@@ -126,14 +296,14 @@ export default function AddFisherfolkForm({
     }, 1000);
   };
 
-  const handleCreateBarangay = (inputValue: string) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      const newValue = createOption(inputValue);
-      setIsLoading(false);
-      setBarangays((prev) => [...prev, newValue]);
-    }, 1000);
-  };
+  // const handleCreateBarangay = (inputValue: string) => {
+  //   setIsLoading(true);
+  //   setTimeout(() => {
+  //     const newValue = createOption(inputValue);
+  //     setIsLoading(false);
+  //     setBarangays((prev) => [...prev, newValue]);
+  //   }, 1000);
+  // };
 
   const {
     register,
@@ -181,12 +351,14 @@ export default function AddFisherfolkForm({
     'mainFishingActivity',
     'otherFishingActivities',
   ]);
+
   const watchFishingCheckboxes = watch([
     'sndCaptFish',
     'sndFishVending',
     'sndAquaculture',
     'sndFishProcessing',
   ]);
+
   const captureFishingRegistrant = watchFishCapture
     .flat()
     .includes('CaptureFishing');
@@ -269,7 +441,10 @@ export default function AddFisherfolkForm({
     setCaptureFishing(true);
   };
 
-  const handleBackButton = (e: MouseEvent) => setCaptureFishing(false);
+  const handleBackButton = (e: MouseEvent) => {
+    console.log(getValues());
+    setCaptureFishing(false);
+  };
 
   const formTab = () => {
     switch (tab) {
@@ -391,8 +566,8 @@ export default function AddFisherfolkForm({
                 </Grid>
               </Grid>
               <Grid container spacing={-2} sx={{ ml: 2 }}>
-                <Grid item sm={6} sx={{ mt: 2 }}>
-                  <FormCreatableSelect
+                <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
+                  {/* <FormCreatableSelect
                     name="barangay"
                     placeholder="Select Barangay"
                     isLoading={isLoading}
@@ -402,12 +577,27 @@ export default function AddFisherfolkForm({
                     control={control}
                     register={register}
                     errors={errors}
+                  /> */}
+                  <FormInputAutoText
+                    sx={{ marginTop: -0.3, width: 230 }}
+                    freeSolo
+                    name="barangay"
+                    control={control}
+                    defaultValue=""
+                    label="Barangay"
+                    placeholder="e.g Barangay Sto.nino"
+                    options={barangayOptions}
+                    register={register}
+                    errors={errors}
                   />
                 </Grid>
-                <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
+                <Grid item sm={6} sx={{ mt: 1 }}>
                   <FormInputAutoText
+                    sx={{ marginTop: -0.3, width: 230 }}
+                    freeSolo
                     name="cityMunicipality"
                     control={control}
+                    defaultValue=""
                     label="City/Municipality"
                     placeholder=""
                     options={cityMunicipalityOptions}
@@ -419,9 +609,12 @@ export default function AddFisherfolkForm({
               <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
                 <Grid item sm={6}>
                   <FormInputAutoText
+                    freeSolo
+                    sx={{ marginTop: -0.3, width: 230 }}
                     name="province"
                     control={control}
                     label="Province"
+                    defaultValue=""
                     placeholder=""
                     options={provinceOptions}
                     register={register}
@@ -529,8 +722,8 @@ export default function AddFisherfolkForm({
                 </Grid>
               </Grid>
               <Grid container spacing={-2} sx={{ ml: 2 }}>
-                <Grid item sm={6} sx={{ mt: 2 }}>
-                  <FormCreatableSelect
+                <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
+                  {/* <FormCreatableSelect
                     control={control}
                     errors={errors}
                     isLoading={isLoading}
@@ -540,6 +733,18 @@ export default function AddFisherfolkForm({
                     onCreateOption={handleCreateNationality}
                     options={nationalities}
                     register={register}
+                  /> */}
+                  <FormInputAutoText
+                    sx={{ marginTop: -0.3, width: 230 }}
+                    freeSolo
+                    name="nationality"
+                    control={control}
+                    defaultValue=""
+                    label="Nationality"
+                    placeholder="e.g Filipino"
+                    options={['Filipino']}
+                    register={register}
+                    errors={errors}
                   />
                 </Grid>
                 <Grid item sm={6} sx={{ mt: 2 }}>
