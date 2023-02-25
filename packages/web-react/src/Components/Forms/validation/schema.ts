@@ -66,7 +66,10 @@ const FfolkValidation = object().shape({
   mainFishingActivity: string().required('Select main fishing activity.'),
   orgName: string(),
   orgMemberSince: string().matches(/^$|\d{4}$/, 'Please enter year.'),
-  orgPosition: string(),
+  orgPosition: string().matches(
+    /(^[\sA-Za-z0-9]+$)/i,
+    'No special characters allowed'
+  ),
   profilePhoto: mixed()
     .test(
       'uploadedPhoto',
