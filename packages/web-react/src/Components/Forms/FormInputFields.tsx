@@ -85,7 +85,7 @@ interface FormInputNumberProps {
 interface FormInputDateProps {
   name: string;
   label: string;
-  defaultValue: string | Date | null;
+  defaultValue?: string | Date | null;
   openTo?: CalendarPickerView;
   min?: Date | string;
   max?: Date | string;
@@ -129,7 +129,7 @@ interface FormInputSelectProps {
 interface FormInputRadioProps {
   name: string;
   label: string;
-  defaultValue: string;
+  defaultValue?: string;
   control: Control<FieldValues, unknown>;
   radioOptions: Option[];
   register: UseFormRegister<FieldValues>;
