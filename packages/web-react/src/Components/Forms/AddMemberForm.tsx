@@ -208,12 +208,12 @@ export default function AddFisherfolkForm({
 
     //   setCaptureFishing(true);
     // }
-    setCaptureFishing(true);
+    setStep('gearVessel');
   };
 
   const handleBackButton = (e: MouseEvent) => {
     console.log(getValues());
-    setCaptureFishing(false);
+    setStep('ffolkInfo');
   };
 
   const formStep = (
