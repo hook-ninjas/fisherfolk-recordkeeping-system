@@ -118,6 +118,31 @@ const FfolkValidation = object().shape({
         return truthArray.length > 0;
       }
     ),
+  gears: object()
+    .shape({
+      hookAndLine: array().of(string()).ensure(),
+      gillNets: array().of(string()).ensure(),
+      liftNets: array().of(string()).ensure(),
+      potsAndTraps: array().of(string()).ensure(),
+      seineNets: array().of(string()).ensure(),
+      scoopNets: array().of(string()).ensure(),
+      fallingGear: array().of(string()).ensure(),
+      miscellaneous: array().of(string()).ensure(),
+      others: string(),
+    })
+    .test('requiredGear', 'Must have at least 1 gear', (value) => {
+      const truthArray = Object.keys(value).map((key) => {
+        if (key != 'others') {
+          const array = value[key] as Array<string>;
+          if (array instanceof Array) {
+            return !array.includes('false') && array.length >= 1;
+          }
+        }
+        return typeof value[key] === 'string' && value[key] != '';
+      });
+
+      return truthArray.includes(true);
+    }),
 });
 
 const VesselWithGearSchema = object().shape({
