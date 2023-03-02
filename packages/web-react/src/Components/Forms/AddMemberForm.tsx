@@ -197,7 +197,6 @@ export default function AddFisherfolkForm({
     e.preventDefault();
     trigger();
     console.log(getValues());
-    console.log(getValues('HookAndLine')[0]['type']);
     console.log(invalidFfolkInfo);
     onSubmit();
   };
