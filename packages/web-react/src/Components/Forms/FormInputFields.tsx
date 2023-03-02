@@ -68,6 +68,7 @@ interface FormInputTextProps {
   options?: Option[];
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  shouldUnregister?: boolean;
 }
 interface FormInputNumberProps {
   name: string;
@@ -173,11 +174,13 @@ export const FormInputText = ({
   handleChange,
   register,
   errors,
+  shouldUnregister,
 }: FormInputTextProps) => (
   <Controller
     name={name}
     control={control}
     defaultValue={defaultValue ? defaultValue : ''}
+    shouldUnregister={shouldUnregister}
     render={({ field: { value, onChange } }) => (
       <TextField
         value={value}
