@@ -135,6 +135,7 @@ interface FormInputRadioProps {
   radioOptions: Option[];
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  shouldUnregister?: boolean;
 }
 
 interface FormInputCheckboxProps {
@@ -416,6 +417,7 @@ export const FormInputRadio = ({
   radioOptions,
   register,
   errors,
+  shouldUnregister,
 }: FormInputRadioProps) => {
   return (
     <FormControl error={!!errors[name]} aria-label={label} role="radiogroup">
@@ -423,6 +425,7 @@ export const FormInputRadio = ({
         control={control}
         name={name}
         defaultValue={defaultValue}
+        shouldUnregister={shouldUnregister}
         render={({ field: { value, onChange } }) => (
           <>
             <RadioGroup row onChange={onChange} value={value}>
@@ -432,7 +435,6 @@ export const FormInputRadio = ({
                   value={item.value}
                   label={splitUpperCase(item.label)}
                   control={<Radio />}
-                  {...register(name)}
                 />
               ))}
             </RadioGroup>
