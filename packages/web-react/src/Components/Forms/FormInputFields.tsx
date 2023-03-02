@@ -126,6 +126,7 @@ interface FormInputSelectProps {
   control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  shouldUnregister?: boolean;
 }
 
 interface FormInputRadioProps {
@@ -355,6 +356,7 @@ export const FormInputSelect = ({
   control,
   register,
   errors,
+  shouldUnregister,
 }: FormInputSelectProps) => (
   <FormControl error={!!errors[name]} aria-label={label} role="combobox">
     <InputLabel id={label} htmlFor={label}>
@@ -364,6 +366,7 @@ export const FormInputSelect = ({
       name={name}
       control={control}
       defaultValue={defaultValue}
+      shouldUnregister={shouldUnregister}
       render={({ field: { onChange, value } }) => (
         <>
           <Select
