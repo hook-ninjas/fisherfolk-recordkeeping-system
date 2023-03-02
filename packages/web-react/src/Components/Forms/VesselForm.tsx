@@ -22,6 +22,7 @@ import {
   FormInputText,
   FormCreatableSelect,
   FormInputSelect,
+  FormInputAutoText,
 } from './FormInputFields';
 import { useForm } from 'react-hook-form';
 import { object, string } from 'yup';
@@ -50,6 +51,8 @@ interface VesselFormProps {
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
 }
+
+const vesselType = ['Non-Motorized', 'Motorized'];
 
 function VesselForm({ control, register, errors }: VesselFormProps) {
   const [vesselTypes, setVesselTypes] = useState(vesselTypeOptions);
@@ -139,16 +142,18 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
           />
         </Grid>
         <Grid item sm={6} sx={{ mt: 2 }}>
-          <FormCreatableSelect
+          <FormInputAutoText
+            sx={{ marginTop: -1.5, width: 220 }}
+            freeSolo
+            name="vessel.type"
             control={control}
-            errors={errors}
-            isLoading={isLoading}
-            isDisabled={isLoading}
-            name="type"
-            placeholder="Select Type"
-            onCreateOption={handleCreateTypeVessel}
-            options={vesselTypes}
+            defaultValue=""
+            label="type"
+            placeholder="Motorized"
+            options={vesselType}
             register={register}
+            errors={errors}
+            shouldUnregister
           />
         </Grid>
       </Grid>
