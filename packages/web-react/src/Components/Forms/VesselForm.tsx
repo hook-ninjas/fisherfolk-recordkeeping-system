@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { UseFormRegister, Control, FieldValues } from 'react-hook-form';
 import {
   Box,
   Button,
@@ -39,21 +40,18 @@ import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
 import {
   createOption,
   registrationTypeForBoatsAndGears,
-  gears,
   vesselTypeOptions,
   materialOptions,
 } from './Enums';
 import { useParams } from 'react-router-dom';
 
-function VesselForm() {
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    // resolver: yupResolver(addVesselWithGearSchema),
-  });
+interface VesselFormProps {
+  control: Control<FieldValues, unknown>;
+  register: UseFormRegister<FieldValues>;
+  errors: FieldValues;
+}
+
+function VesselForm({ control, register, errors }: VesselFormProps) {
   const [vesselTypes, setVesselTypes] = useState(vesselTypeOptions);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -85,6 +83,8 @@ function VesselForm() {
           register={register}
           errors={errors}
           radioOptions={registrationTypeForBoatsAndGears}
+          defaultValue=""
+          shouldUnregister
         />
       </Box>
 
@@ -97,6 +97,7 @@ function VesselForm() {
             placeholder=""
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
       </Grid>
@@ -109,6 +110,7 @@ function VesselForm() {
             placeholder=""
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
         <Grid item sm={6}>
@@ -119,6 +121,7 @@ function VesselForm() {
             placeholder=""
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
       </Grid>
@@ -132,6 +135,7 @@ function VesselForm() {
             control={control}
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
         <Grid item sm={6} sx={{ mt: 2 }}>
@@ -157,6 +161,7 @@ function VesselForm() {
             placeholder=""
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
         <Grid item sm={6} sx={{ mt: 1, ml: 0 }}>
@@ -167,6 +172,7 @@ function VesselForm() {
             placeholder="e.g. 2020"
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
       </Grid>
@@ -182,6 +188,7 @@ function VesselForm() {
             placeholder=""
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
         <Grid item sm={6}>
@@ -192,6 +199,7 @@ function VesselForm() {
             placeholder=""
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
       </Grid>
@@ -204,6 +212,7 @@ function VesselForm() {
             placeholder=""
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
         <Grid item sm={6}>
@@ -214,6 +223,7 @@ function VesselForm() {
             placeholder=""
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
       </Grid>
@@ -226,6 +236,7 @@ function VesselForm() {
             placeholder=""
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
         <Grid item sm={6}>
@@ -236,6 +247,7 @@ function VesselForm() {
             placeholder=""
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
       </Grid>
@@ -248,6 +260,7 @@ function VesselForm() {
             placeholder=""
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
         <Grid item sm={6}>
@@ -258,6 +271,7 @@ function VesselForm() {
             placeholder=""
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
       </Grid>
@@ -273,6 +287,7 @@ function VesselForm() {
             placeholder=""
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
         <Grid item sm={6}>
@@ -283,6 +298,7 @@ function VesselForm() {
             placeholder=""
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
       </Grid>
@@ -295,6 +311,7 @@ function VesselForm() {
             placeholder=""
             register={register}
             errors={errors}
+            shouldUnregister
           />
         </Grid>
       </Grid>
