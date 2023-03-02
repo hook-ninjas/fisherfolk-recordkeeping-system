@@ -80,7 +80,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
         }}
       >
         <FormInputRadio
-          name="registrationType"
+          name="vessel.registrationType"
           label="registrationType"
           control={control}
           register={register}
@@ -94,7 +94,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
       <Grid container spacing={-2} sx={{ ml: 1, mr: 1, mt: 1 }}>
         <Grid item sm={6}>
           <FormInputText
-            name="mfvrNumber"
+            name="vessel.mfvrNumber"
             control={control}
             label="MFVR Number"
             placeholder=""
@@ -107,7 +107,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
       <Grid container spacing={-2} sx={{ ml: 1, mr: 1, mt: 1 }}>
         <Grid item sm={6}>
           <FormInputText
-            name="homeport"
+            name="vessel.homeport"
             control={control}
             label="Homeport"
             placeholder=""
@@ -118,7 +118,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
         </Grid>
         <Grid item sm={6}>
           <FormInputText
-            name="name"
+            name="vessel.name"
             control={control}
             label="Name of Fishing Vessel"
             placeholder=""
@@ -131,7 +131,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
       <Grid container spacing={-2} sx={{ ml: 2 }}>
         <Grid item sm={6} sx={{ mt: 2 }}>
           <FormInputSelect
-            name="material"
+            name="vessel.material"
             label="Select Material Used"
             data={materialOptions}
             onSavedValue=""
@@ -160,7 +160,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
       <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
         <Grid item sm={6} sx={{ mt: 1 }}>
           <FormInputText
-            name="placeBuilt"
+            name="vessel.placeBuilt"
             control={control}
             label="Place Built"
             placeholder=""
@@ -171,7 +171,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
         </Grid>
         <Grid item sm={6} sx={{ mt: 1, ml: 0 }}>
           <FormInputText
-            name="yearBuilt"
+            name="vessel.yearBuilt"
             control={control}
             label="Year Built"
             placeholder="e.g. 2020"
@@ -187,7 +187,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
       <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
         <Grid item sm={6}>
           <FormInputText
-            name="registeredLength"
+            name="vessel.registeredLength"
             control={control}
             label="Registered Length"
             placeholder=""
@@ -198,7 +198,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
         </Grid>
         <Grid item sm={6}>
           <FormInputText
-            name="registeredDepth"
+            name="vessel.registeredDepth"
             control={control}
             label="Registered Depth"
             placeholder=""
@@ -211,7 +211,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
       <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
         <Grid item sm={6}>
           <FormInputText
-            name="registeredBreadth"
+            name="vessel.registeredBreadth"
             control={control}
             label="Registered Breadth"
             placeholder=""
@@ -222,7 +222,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
         </Grid>
         <Grid item sm={6}>
           <FormInputText
-            name="tonnageLength"
+            name="vessel.tonnageLength"
             control={control}
             label="Tonnage Length"
             placeholder=""
@@ -235,7 +235,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
       <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
         <Grid item sm={6}>
           <FormInputText
-            name="tonnageDepth"
+            name="vessel.tonnageDepth"
             control={control}
             label="Tonnage Depth"
             placeholder=""
@@ -246,7 +246,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
         </Grid>
         <Grid item sm={6}>
           <FormInputText
-            name="tonnageBreadth"
+            name="vessel.tonnageBreadth"
             control={control}
             label="Tonnage Breadth"
             placeholder=""
@@ -259,9 +259,9 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
       <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
         <Grid item sm={6}>
           <FormInputText
-            name="grossTonnage"
+            name="vessel.grossTonnage"
             control={control}
-            label="Gross Tonnage"
+            label="vessel.Gross Tonnage"
             placeholder=""
             register={register}
             errors={errors}
@@ -270,7 +270,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
         </Grid>
         <Grid item sm={6}>
           <FormInputText
-            name="netTonnage"
+            name="vessel.netTonnage"
             control={control}
             label="Net Tonnage"
             placeholder=""
@@ -286,7 +286,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
       <Grid container spacing={-2} sx={{ ml: 1 }}>
         <Grid item sm={6}>
           <FormInputText
-            name="engineMake"
+            name="vessel.engineMake"
             control={control}
             label="Engine Make"
             placeholder=""
@@ -297,7 +297,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
         </Grid>
         <Grid item sm={6}>
           <FormInputText
-            name="serialNumber"
+            name="vessel.serialNumber"
             control={control}
             label="Serial Number"
             placeholder=""
@@ -310,7 +310,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
       <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
         <Grid item sm={6} sx={{ mt: -1 }}>
           <FormInputText
-            name="horsepower"
+            name="vessel.horsepower"
             control={control}
             label="Horsepower"
             placeholder=""
