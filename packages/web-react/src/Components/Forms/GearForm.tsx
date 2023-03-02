@@ -7,7 +7,6 @@ import {
   Typography,
 } from '@mui/material';
 import { FormInputText, FormInputCheckbox } from './FormInputFields';
-import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
 import { UseFormRegister, Control, FieldValues } from 'react-hook-form';
 
 interface GearFormProps {
