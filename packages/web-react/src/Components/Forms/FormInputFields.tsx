@@ -114,6 +114,7 @@ interface FormInputAutoProps {
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
   sx?: SxProps<Theme> | undefined;
+  shouldUnregister?: boolean;
 }
 
 interface FormInputSelectProps {
@@ -299,11 +300,13 @@ export const FormInputAutoText = ({
   sx,
   options,
   errors,
+  shouldUnregister,
 }: FormInputAutoProps) => (
   <Controller
     name={name}
     defaultValue={defaultValue}
     control={control}
+    shouldUnregister={shouldUnregister}
     render={({ field: { value, onChange } }) => (
       <Autocomplete
         id={name}
