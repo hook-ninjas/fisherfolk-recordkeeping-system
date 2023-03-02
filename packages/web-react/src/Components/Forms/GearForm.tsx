@@ -23,7 +23,7 @@ interface GearCheckboxProps {
   type: string;
   register: UseFormRegister<FieldValues>;
   shouldUnregister?: boolean;
-  checked?: boolean;
+  defaultValue: any;
 }
 
 const gearOptions = {
@@ -69,7 +69,7 @@ const createGearCheckBox = ({
   keyId,
   classification,
   type,
-  checked,
+  defaultValue,
   register,
   shouldUnregister,
 }: GearCheckboxProps) => {
@@ -80,7 +80,7 @@ const createGearCheckBox = ({
       name={name}
       label={type}
       value={value}
-      checked={checked}
+      defaultValue={defaultValue}
       register={register}
       shouldUnregister={shouldUnregister}
     />
@@ -90,9 +90,10 @@ const createGearCheckBox = ({
 function GearForm({ control, register, errors }: GearFormProps) {
   const hookAndLineCheckboxes = gearOptions['hookAndLine'].map((type, index) =>
     createGearCheckBox({
-      name: 'gear',
+      name: 'gears.hookAndLine',
       keyId: `${type}-${index}`,
       classification: 'HookAndLine',
+      defaultValue: '',
       type: type,
       register: register,
       shouldUnregister: true,
@@ -101,9 +102,10 @@ function GearForm({ control, register, errors }: GearFormProps) {
 
   const gillNetCheckboxes = gearOptions['gillNets'].map((type, index) =>
     createGearCheckBox({
-      name: 'gear',
+      name: 'gears.Nets',
       keyId: `${type}-${index}`,
       classification: 'GillNets',
+      defaultValue: '',
       type: type,
       register: register,
       shouldUnregister: true,
@@ -112,9 +114,10 @@ function GearForm({ control, register, errors }: GearFormProps) {
 
   const liftNetsCheckboxes = gearOptions['liftNets'].map((type, index) =>
     createGearCheckBox({
-      name: 'gear',
+      name: 'gears.LiftNets',
       keyId: `${type}-${index}`,
       classification: 'LiftNets',
+      defaultValue: '',
       type: type,
       register: register,
       shouldUnregister: true,
@@ -124,9 +127,10 @@ function GearForm({ control, register, errors }: GearFormProps) {
   const potsAndTrapsCheckboxes = gearOptions['potsAndTraps'].map(
     (type, index) =>
       createGearCheckBox({
-        name: 'gear',
+        name: 'gears.potsAndTraps',
         keyId: `${type}-${index}`,
         classification: 'PotsAndTraps',
+        defaultValue: '',
         type: type,
         register: register,
         shouldUnregister: true,
@@ -135,9 +139,10 @@ function GearForm({ control, register, errors }: GearFormProps) {
 
   const seineNetsCheckboxes = gearOptions['seineNets'].map((type, index) =>
     createGearCheckBox({
-      name: 'gear',
+      name: 'gears.seineNets',
       keyId: `${type}-${index}`,
       classification: 'SeineNets',
+      defaultValue: '',
       type: type,
       register: register,
       shouldUnregister: true,
@@ -146,9 +151,10 @@ function GearForm({ control, register, errors }: GearFormProps) {
 
   const scoopNetsCheckboxes = gearOptions['scoopNets'].map((type, index) =>
     createGearCheckBox({
-      name: 'gear',
+      name: 'gears.scoopNets',
       keyId: `${type}-${index}`,
       classification: 'ScoopNets',
+      defaultValue: '',
       type: type,
       register: register,
       shouldUnregister: true,
@@ -157,9 +163,10 @@ function GearForm({ control, register, errors }: GearFormProps) {
 
   const fallingGearCheckboxes = gearOptions['fallingGear'].map((type, index) =>
     createGearCheckBox({
-      name: 'gear',
+      name: 'gears.fallingGear',
       keyId: `${type}-${index}`,
       classification: 'FallingGear',
+      defaultValue: '',
       type: type,
       register: register,
       shouldUnregister: true,
@@ -169,9 +176,10 @@ function GearForm({ control, register, errors }: GearFormProps) {
   const miscellaneousCheckboxes = gearOptions['miscellaneous'].map(
     (type, index) =>
       createGearCheckBox({
-        name: 'gear',
+        name: 'gears.miscellaneous',
         keyId: `${type}-${index}`,
         classification: 'Miscellaneous',
+        defaultValue: '',
         type: type,
         register: register,
         shouldUnregister: true,
@@ -321,16 +329,25 @@ function GearForm({ control, register, errors }: GearFormProps) {
           <Grid item sm={6}>
             <FormHelperText>If not in the ff: please Specify:</FormHelperText>
             <FormInputText
-              name="otherGear"
+              name="gears.others"
               control={control}
               label="Others"
               placeholder=""
+              defaultValue=""
               register={register}
               errors={errors}
             />
           </Grid>
         </Grid>
       </Grid>
+      <FormHelperText
+        error={!!errors['gears']}
+        // hidden={false}
+        hidden={!errors['gears']}
+        sx={{ fontSize: 15, ml: 2, mt: 2 }}
+      >
+        {errors['gears']?.message}
+      </FormHelperText>
     </>
   );
 }
