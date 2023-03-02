@@ -204,9 +204,10 @@ export default function AddFisherfolkForm({
   const handleNextButton = (e: MouseEvent) => {
     trigger();
     console.log(getValues());
+    //Temporarily disabled
     // if (isValid) {
 
-    //   setCaptureFishing(true);
+    //   setStep('gearVessel');
     // }
     setStep('gearVessel');
   };
@@ -282,11 +283,13 @@ export default function AddFisherfolkForm({
           <GearForm control={control} register={register} errors={errors} />
         );
       case 'vessel':
-        return <VesselForm />;
+        return (
+          <VesselForm control={control} register={register} errors={errors} />
+        );
       case 'gear&vessel':
         return (
           <>
-            <VesselForm />
+            <VesselForm control={control} register={register} errors={errors} />
             <GearForm control={control} register={register} errors={errors} />
           </>
         );
