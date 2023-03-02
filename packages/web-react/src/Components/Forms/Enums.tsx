@@ -15,9 +15,13 @@ export const createOption = (label: string) => ({
   value: label,
 });
 
-export const fisherfolkStatus = Object.values(FisherfolkStatus).map((a)=>createOption(a));
+export const fisherfolkStatus = Object.values(FisherfolkStatus).map((a) =>
+  createOption(a)
+);
 
-export const livelihoods = Object.values(SourceOfIncome).map((a)=>createOption(a)).slice(0, -1);
+export const livelihoods = Object.values(SourceOfIncome)
+  .map((a) => createOption(a))
+  .slice(0, -1);
 
 export const cityMunicipalityOptions = [createOption('Iloilo City')];
 
@@ -39,7 +43,9 @@ export const civilStatusOptions = Object.values(CivilStatus);
 
 export const sourceOfIncomeOptions = Object.values(SourceOfIncome).slice(0, -1);
 
-export const barangayOptions = data.barangays.sort().map((a) => createOption(a));
+export const barangayOptions = data.barangays
+  .sort()
+  .map((a) => createOption(a));
 
 export const genderOptions = Object.values(Gender).map((a) => createOption(a));
 

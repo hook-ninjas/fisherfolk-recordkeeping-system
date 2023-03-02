@@ -1,28 +1,19 @@
-import React, { MouseEvent, SyntheticEvent, useState } from 'react';
+import React from 'react';
 import {
   Box,
-  Button,
   Checkbox,
-  DialogContent,
   FormControlLabel,
   Grid,
   Typography,
-  Tabs,
-  Tab,
   FormHelperText,
 } from '@mui/material';
 import {
   FormInputRadio,
   FormInputSelect,
   FormInputText,
-  FormCreatableSelect,
   FormInputAutoText,
   FormInputDate,
 } from './FormInputFields';
-import {
-  FormContainer,
-  FormContainerTitle,
-} from '../Containers/FormContainers';
 import {
   UseFormResetField,
   UseFormWatch,
@@ -30,17 +21,8 @@ import {
   Control,
   FieldValues,
 } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  CreateFisherfolkDocument,
-  MutationCreateFisherfolkArgs,
-} from '../../graphql/generated';
 import { sub } from 'date-fns/fp';
-import { useMutation } from '@apollo/client';
-import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
 import {
-  nationalityOptions,
-  createOption,
   salutationOptions,
   genderOptions,
   civilStatusOptions,
@@ -49,10 +31,7 @@ import {
   provinceOptions,
 } from './Enums';
 import PhotoUpload from '../Input/PhotoUpload';
-import { FfolkValidation } from './validation/schema';
 import MultiFileUpload from '../Input/MultiFileUpload';
-import GearForm from './GearForm';
-import VesselForm from './VesselForm';
 
 interface FfolkInfoFormProps {
   control: Control<FieldValues, unknown>;

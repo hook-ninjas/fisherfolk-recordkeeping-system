@@ -1,49 +1,13 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Button,
-  Checkbox,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  FormControlLabel,
   FormGroup,
+  FormHelperText,
   Grid,
-  IconButton,
   Typography,
 } from '@mui/material';
-import {
-  FormContainer,
-  FormContainerTitle,
-} from '../Containers/FormContainers';
-import {
-  FormInputRadio,
-  FormInputText,
-  FormCreatableSelect,
-  FormInputSelect,
-} from './FormInputFields';
-import { useForm } from 'react-hook-form';
-import { object, string } from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  CreateGearsDocument,
-  CreateVesselDocument,
-  CreateVessselWithGearDocument,
-  GearClassification,
-  MutationCreateVesselWithGearArgs,
-  MutationCreateImageArgs,
-  CreateImageDocument,
-} from '../../graphql/generated';
-import { useMutation } from '@apollo/client';
+import { FormInputText, FormInputCheckbox } from './FormInputFields';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
-import {
-  createOption,
-  registrationTypeForBoatsAndGears,
-  gears,
-  vesselTypeOptions,
-  materialOptions,
-} from './Enums';
-import { useParams } from 'react-router-dom';
 import { UseFormRegister, Control, FieldValues } from 'react-hook-form';
 
 interface GearFormProps {
@@ -52,7 +16,168 @@ interface GearFormProps {
   errors: FieldValues;
 }
 
-function GearForm() {
+interface GearCheckboxProps {
+  name: string;
+  keyId: string;
+  classification: string;
+  type: string;
+  register: UseFormRegister<FieldValues>;
+  shouldUnregister?: boolean;
+  checked?: boolean;
+}
+
+const gearOptions = {
+  hookAndLine: [
+    'Simple Hand Line',
+    'Multiple Hand Line',
+    'Bottom Set Long Line',
+    'Drift Long Line',
+    'Troll Line',
+    'Jig',
+  ],
+  gillNets: [
+    'Surface Set Gill Net',
+    'Drift Gill Net',
+    'Bottom Set Gill Net',
+    'Trammel Net',
+    'Encircling Gill Net',
+  ],
+  liftNets: [
+    'Crab Lift Nets/Bintol',
+    'Fish Lift Nets/Bagnet',
+    'New Look/Zapara',
+    'Shrimp Lift Nets',
+    'Lever Net',
+  ],
+  potsAndTraps: [
+    'CrabPots',
+    'SquidPots',
+    'FykeNetsOrFilterNets',
+    'FishCorralsOrBaklad',
+    'SetNetOrLambaklad',
+    'BarrierNetOrLikus',
+    'FishPots',
+  ],
+  seineNets: ['BeachSeine', 'FryDozerOrGatherer'],
+  scoopNets: ['ManPushNets', 'ScoopNets'],
+  fallingGear: ['CastNet'],
+  miscellaneous: ['Spear', 'OctopusOrSquidLuringDevice', 'GaffHook'],
+};
+
+const createGearCheckBox = ({
+  name,
+  keyId,
+  classification,
+  type,
+  checked,
+  register,
+  shouldUnregister,
+}: GearCheckboxProps) => {
+  const value = JSON.stringify({ classification: classification, type: type });
+  return (
+    <FormInputCheckbox
+      keyId={keyId}
+      name={name}
+      label={type}
+      value={value}
+      checked={checked}
+      register={register}
+      shouldUnregister={shouldUnregister}
+    />
+  );
+};
+
+function GearForm({ control, register, errors }: GearFormProps) {
+  const hookAndLineCheckboxes = gearOptions['hookAndLine'].map((type, index) =>
+    createGearCheckBox({
+      name: 'gear',
+      keyId: `${type}-${index}`,
+      classification: 'HookAndLine',
+      type: type,
+      register: register,
+      shouldUnregister: true,
+    })
+  );
+
+  const gillNetCheckboxes = gearOptions['gillNets'].map((type, index) =>
+    createGearCheckBox({
+      name: 'gear',
+      keyId: `${type}-${index}`,
+      classification: 'GillNets',
+      type: type,
+      register: register,
+      shouldUnregister: true,
+    })
+  );
+
+  const liftNetsCheckboxes = gearOptions['liftNets'].map((type, index) =>
+    createGearCheckBox({
+      name: 'gear',
+      keyId: `${type}-${index}`,
+      classification: 'LiftNets',
+      type: type,
+      register: register,
+      shouldUnregister: true,
+    })
+  );
+
+  const potsAndTrapsCheckboxes = gearOptions['potsAndTraps'].map(
+    (type, index) =>
+      createGearCheckBox({
+        name: 'gear',
+        keyId: `${type}-${index}`,
+        classification: 'PotsAndTraps',
+        type: type,
+        register: register,
+        shouldUnregister: true,
+      })
+  );
+
+  const seineNetsCheckboxes = gearOptions['seineNets'].map((type, index) =>
+    createGearCheckBox({
+      name: 'gear',
+      keyId: `${type}-${index}`,
+      classification: 'SeineNets',
+      type: type,
+      register: register,
+      shouldUnregister: true,
+    })
+  );
+
+  const scoopNetsCheckboxes = gearOptions['scoopNets'].map((type, index) =>
+    createGearCheckBox({
+      name: 'gear',
+      keyId: `${type}-${index}`,
+      classification: 'ScoopNets',
+      type: type,
+      register: register,
+      shouldUnregister: true,
+    })
+  );
+
+  const fallingGearCheckboxes = gearOptions['fallingGear'].map((type, index) =>
+    createGearCheckBox({
+      name: 'gear',
+      keyId: `${type}-${index}`,
+      classification: 'FallingGear',
+      type: type,
+      register: register,
+      shouldUnregister: true,
+    })
+  );
+
+  const miscellaneousCheckboxes = gearOptions['miscellaneous'].map(
+    (type, index) =>
+      createGearCheckBox({
+        name: 'gear',
+        keyId: `${type}-${index}`,
+        classification: 'Miscellaneous',
+        type: type,
+        register: register,
+        shouldUnregister: true,
+      })
+  );
+
   return (
     <>
       <Typography variant="h6" color="GrayText" mt={2} mb={2} ml={2}>
@@ -72,80 +197,7 @@ function GearForm() {
                 pl: 1,
               }}
             >
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={SimpleHandLine}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="SimpleHandLine"
-                      value="SimpleHandLine"
-                    />
-                  }
-                  label="Simple-Hand Line"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={MultipleHandLine}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="MultipleHandLine"
-                      value="MultipleHandLine"
-                    />
-                  }
-                  label="Multiple-Hand Line"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={BottomSetLongLine}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="BottomSetLongLine"
-                      value="BottomSetLongLine"
-                    />
-                  }
-                  label="Bottom Set Long Line"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={DriftLongLine}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="DriftLongLine"
-                      value="DriftLongLine"
-                    />
-                  }
-                  label="Drift Long Line"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={TrollLine}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="TrollLine"
-                      value="TrollLine"
-                    />
-                  }
-                  label="Troll line"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={Jig}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="Jig"
-                      value="Jig"
-                    />
-                  }
-                  label="Jig"
-                />
-              </FormGroup>
+              <FormGroup>{hookAndLineCheckboxes}</FormGroup>
             </Box>
           </Grid>
           <Grid item sm={6}>
@@ -160,68 +212,7 @@ function GearForm() {
                 pl: 1,
               }}
             >
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={SurfaceSetGillNet}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="SurfaceSetGillNet"
-                      value="SurfaceSetGillNet"
-                    />
-                  }
-                  label="Surface Set Gill Net"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={DriftGillNet}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="DriftGillNet"
-                      value="DriftGillNet"
-                    />
-                  }
-                  label="Drift Gill Net"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={BottomSetGillNet}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="BottomSetGillNet"
-                      value="BottomSetGillNet"
-                    />
-                  }
-                  label="Bottom Set Gill Net"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={TrammelNet}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="TrammelNet"
-                      value="TrammelNet"
-                    />
-                  }
-                  label="Trammel Net"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={EncirclingGillNet}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="EncirclingGillNet"
-                      value="EncirclingGillNet"
-                    />
-                  }
-                  label="Encircling Gill Net"
-                />
-              </FormGroup>
+              <FormGroup>{gillNetCheckboxes}</FormGroup>
             </Box>
           </Grid>
         </Grid>
@@ -240,68 +231,7 @@ function GearForm() {
                 pl: 1,
               }}
             >
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={CrabLiftNetsOrBintol}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="CrabLiftNetsOrBintol"
-                      value="CrabLiftNetsOrBintol"
-                    />
-                  }
-                  label="Crab Lift Nets (Bintol)"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={FishLiftNetsOrBagnet}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="FishLiftNetsOrBagnet"
-                      value="FishLiftNetsOrBagnet"
-                    />
-                  }
-                  label="Fish Lift Nets (Basnig) / Bagnet"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={NewLookOrZapara}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="NewLookOrZapara"
-                      value="NewLookOrZapara"
-                    />
-                  }
-                  label="“New Look” or “Zapra”"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={ShrimpLiftNets}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="ShrimpLiftNets"
-                      value="ShrimpLiftNets"
-                    />
-                  }
-                  label="Shrimp Lift Nets"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={LeverNet}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="LeverNet"
-                      value="LeverNet"
-                    />
-                  }
-                  label="Lever Net"
-                />
-              </FormGroup>
+              <FormGroup>{liftNetsCheckboxes}</FormGroup>
             </Box>
           </Grid>
           <Grid item sm={6}>
@@ -316,92 +246,7 @@ function GearForm() {
                 pl: 1,
               }}
             >
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={CrabPots}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="CrabPots"
-                      value="CrabPots"
-                    />
-                  }
-                  label="Crab Pots"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={SquidPots}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="SquidPots"
-                      value="SquidPots"
-                    />
-                  }
-                  label="Squid Pots"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={FykeNetsOrFilterNets}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="FykeNetsOrFilterNets"
-                      value="FykeNetsOrFilterNets"
-                    />
-                  }
-                  label="Fyke Nets/Filter Nets"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={FishCorralsOrBaklad}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="FishCorralsOrBaklad"
-                      value="FishCorralsOrBaklad"
-                    />
-                  }
-                  label="Fish Corrals (Baklad)"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={SetNetOrLambaklad}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="SetNetOrLambaklad"
-                      value="SetNetOrLambaklad"
-                    />
-                  }
-                  label="Set Net (Lambaklad)"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={BarrierNetOrLikus}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="BarrierNetOrLikus"
-                      value="BarrierNetOrLikus"
-                    />
-                  }
-                  label="Barrier Net (Likus)"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={FishPots}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="FishPots"
-                      value="FishPots"
-                    />
-                  }
-                  label="Fish Pots"
-                />
-              </FormGroup>
+              <FormGroup>{potsAndTrapsCheckboxes}</FormGroup>
             </Box>
           </Grid>
         </Grid>
@@ -420,32 +265,7 @@ function GearForm() {
                 pl: 1,
               }}
             >
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={BeachSeine}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="BeachSeine"
-                      value="BeachSeine"
-                    />
-                  }
-                  label="Beach Seine"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={FryDozerOrGatherer}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="FryDozerOrGatherer"
-                      value="FryDozerOrGatherer"
-                    />
-                  }
-                  label="Fry Dozer or Gatherer"
-                />
-              </FormGroup>
+              <FormGroup>{seineNetsCheckboxes}</FormGroup>
             </Box>
           </Grid>
 
@@ -461,91 +281,13 @@ function GearForm() {
                 pl: 1,
               }}
             >
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={ManPushNets}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="ManPushNets"
-                      value="ManPushNets"
-                    />
-                  }
-                  label="Man Push Nets"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={ScoopNets}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="ScoopNets"
-                      value="ScoopNets"
-                    />
-                  }
-                  label="Scoop Nets"
-                />
-              </FormGroup>
+              <FormGroup>{scoopNetsCheckboxes}</FormGroup>
             </Box>
           </Grid>
         </Grid>
       </Grid>
       <Grid container spacing={-2} sx={{ ml: 2 }}>
         <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
-          <Grid item sm={6}>
-            <Typography variant="subtitle1" color="GrayText" mt={-2} mb={3}>
-              Miscellaneous Fishing Gears
-            </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                mt: -3,
-                mb: 2,
-                pl: 1,
-              }}
-            >
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={Spear}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="Spear"
-                      value="Spear"
-                    />
-                  }
-                  label="Spear"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={OctopusOrSquidLuringDevice}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="OctopusOrSquidLuringDevice"
-                      value="OctopusOrSquidLuringDevice"
-                    />
-                  }
-                  label="Octopus/Squid Luring Device"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={GaffHook}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="GaffHook"
-                      value="GaffHook"
-                    />
-                  }
-                  label="Gaff Hook"
-                />
-              </FormGroup>
-            </Box>
-          </Grid>
-
           <Grid item sm={6}>
             <Typography variant="subtitle1" color="GrayText" mt={-2} mb={3}>
               Falling Gear
@@ -558,21 +300,34 @@ function GearForm() {
                 pl: 1,
               }}
             >
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      size="small"
-                      // checked={CastNet}
-                      // onChange={handleOtherFishingActivityChange}
-                      name="CastNet"
-                      value="CastNet"
-                    />
-                  }
-                  label="Cast Net"
-                />
-              </FormGroup>
+              <FormGroup>{fallingGearCheckboxes}</FormGroup>
             </Box>
+          </Grid>
+          <Grid item sm={6}>
+            <Typography variant="subtitle1" color="GrayText" mt={-2} mb={3}>
+              Miscellaneous
+            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                mt: -3,
+                mb: 2,
+                pl: 1,
+              }}
+            >
+              <FormGroup>{miscellaneousCheckboxes}</FormGroup>
+            </Box>
+          </Grid>
+          <Grid item sm={6}>
+            <FormHelperText>If not in the ff: please Specify:</FormHelperText>
+            <FormInputText
+              name="otherGear"
+              control={control}
+              label="Others"
+              placeholder=""
+              register={register}
+              errors={errors}
+            />
           </Grid>
         </Grid>
       </Grid>

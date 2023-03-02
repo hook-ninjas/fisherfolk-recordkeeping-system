@@ -197,6 +197,7 @@ export default function AddFisherfolkForm({
     e.preventDefault();
     trigger();
     console.log(getValues());
+    console.log(getValues('HookAndLine')[0]['type']);
     console.log(invalidFfolkInfo);
     onSubmit();
   };
@@ -214,35 +215,6 @@ export default function AddFisherfolkForm({
   const handleBackButton = (e: MouseEvent) => {
     console.log(getValues());
     setStep('ffolkInfo');
-  };
-
-  const formStep = (
-    control: Control<FieldValues, unknown>,
-    register: UseFormRegister<FieldValues>,
-    errors: FieldValues,
-    watch: UseFormWatch<FieldValues>,
-    resetField: UseFormResetField<FieldValues>
-  ) => {
-    switch (step) {
-      case 'ffolkInfo':
-        return FfolkInfoForm({ control, register, errors, watch, resetField });
-
-      case 'gearVessel':
-        return (
-          <Box id="ffolk-form-gear">
-            <Tabs
-              value={tab}
-              onChange={handleTabChange}
-              aria-label="Fisherfolk form tab selection"
-            >
-              <Tab label="Gear" value={'gear'} />
-              <Tab label="Vessel" value={'vessel'} />
-              <Tab label="Gear & Vessel" value={'gear&vessel'} />
-            </Tabs>
-            {formTab()}
-          </Box>
-        );
-    }
   };
 
   const bottomRowButtons = () => {
@@ -300,21 +272,56 @@ export default function AddFisherfolkForm({
     }
   };
 
-  const formTab = () => {
+  const formTab = (
+    control: Control<FieldValues, unknown>,
+    register: UseFormRegister<FieldValues>,
+    errors: FieldValues
+  ) => {
     switch (tab) {
       case 'gear':
-        return <GearForm />;
+        return (
+          <GearForm control={control} register={register} errors={errors} />
+        );
       case 'vessel':
         return <VesselForm />;
       case 'gear&vessel':
         return (
           <>
             <VesselForm />
-            <GearForm />
+            <GearForm control={control} register={register} errors={errors} />
           </>
         );
     }
     return <></>;
+  };
+
+  const formStep = (
+    control: Control<FieldValues, unknown>,
+    register: UseFormRegister<FieldValues>,
+    errors: FieldValues,
+    watch: UseFormWatch<FieldValues>,
+    resetField: UseFormResetField<FieldValues>
+  ) => {
+    switch (step) {
+      case 'ffolkInfo':
+        return FfolkInfoForm({ control, register, errors, watch, resetField });
+
+      case 'gearVessel':
+        return (
+          <Box id="ffolk-form-gear">
+            <Tabs
+              value={tab}
+              onChange={handleTabChange}
+              aria-label="Fisherfolk form tab selection"
+            >
+              <Tab label="Gear" value={'gear'} />
+              <Tab label="Vessel" value={'vessel'} />
+              <Tab label="Gear & Vessel" value={'gear&vessel'} />
+            </Tabs>
+            {formTab(control, register, errors)}
+          </Box>
+        );
+    }
   };
 
   return (

@@ -63,6 +63,7 @@ interface FormInputTextProps {
   placeholder: string;
   inputMode?: HTMLAttributes<HTMLLIElement>['inputMode'];
   defaultValue?: string;
+  handleChange?: (value: string) => any;
   control: Control<FieldValues, unknown>;
   options?: Option[];
   register: UseFormRegister<FieldValues>;
@@ -136,15 +137,17 @@ interface FormInputRadioProps {
   errors: FieldValues;
 }
 
-interface FormInputMultiCheckboxProps {
+interface FormInputCheckboxProps {
   name: string;
   label: string;
-  header?: Option;
-  defaultValue: string;
-  control: Control<FieldValues, unknown>;
-  options: Option[];
+  keyId?: string | number;
+  checked?: boolean;
+  defaultValue?: any;
+  disabled?: boolean;
+  shouldUnregister?: boolean;
+  value: any;
   sx?: SxProps<Theme> | undefined;
-  errors: FieldValues;
+  register: UseFormRegister<FieldValues>;
 }
 
 interface FormCreatableSelectProps {
@@ -166,6 +169,7 @@ export const FormInputText = ({
   control,
   inputMode,
   defaultValue,
+  handleChange,
   register,
   errors,
 }: FormInputTextProps) => (
@@ -178,7 +182,14 @@ export const FormInputText = ({
         value={value}
         sx={{ marginTop: -0.3, width: 250 }}
         label={label}
-        onChange={onChange}
+        onChange={(e) => {
+          if (handleChange) {
+            const newValue = handleChange(e.target.value);
+            onChange(newValue);
+          } else {
+            onChange(e.target.value);
+          }
+        }}
         helperText={errors[name]?.message}
         error={!!errors[name]}
         placeholder={placeholder}
@@ -435,74 +446,36 @@ export const FormInputRadio = ({
   );
 };
 
-export const FormInputMultiCheckbox = ({
+export const FormInputCheckbox = ({
   name,
   label,
-  control,
+  keyId,
   defaultValue,
-  header,
-  options,
+  value,
+  checked,
+  disabled,
+  register,
+  shouldUnregister,
   sx,
-  errors,
-}: FormInputMultiCheckboxProps) => {
-  return (
-    <FormControl error={!!errors[name]} aria-label={label} role="radiogroup">
-      <Controller
-        control={control}
-        name={name}
-        defaultValue={defaultValue}
-        render={({ field: { onChange } }) => (
-          <Grid container spacing={-2} sx={sx}>
-            <Grid item sm={6}>
-              {/* <FormControlLabel
-                control={
-                  <Checkbox
-                    size="small"
-                    // checked={SimpleHandLine}
-                    // onChange={handleOtherFishingActivityChange}
-                    name="SimpleHandLine"
-                    value="SimpleHandLine"
-                  />
-                }
-                label={
-                  <Typography variant="subtitle1" color="bold">
-                    Hook and Line
-                  </Typography>
-                }
-              /> */}
-              <FormHelperText
-                error={!!errors[name]}
-                hidden={!errors[name]}
-                sx={{ m: !errors[name] ? 2 : 0 }}
-              >
-                {errors[name]?.message}
-              </FormHelperText>
-              <FormGroup>
-                {options.map(({ label, value }, index) => {
-                  return (
-                    <FormControlLabel
-                      key={`${label}-${index}`}
-                      sx={{ ml: header ? 2 : 0 }}
-                      control={
-                        <Checkbox
-                          size="small"
-                          // checked={SimpleHandLine}
-                          onChange={(e) => onChange(e.target.value)}
-                          value={value}
-                        />
-                      }
-                      label={label}
-                    />
-                  );
-                })}
-              </FormGroup>
-            </Grid>
-          </Grid>
-        )}
+}: FormInputCheckboxProps) => (
+  <FormControlLabel
+    key={`${keyId}-label`}
+    sx={sx}
+    label={label}
+    disabled={disabled}
+    defaultValue={defaultValue}
+    control={
+      <Checkbox
+        key={`${keyId}-checkbox`}
+        {...register(name, {
+          shouldUnregister: shouldUnregister,
+        })}
+        checked={checked}
+        value={value}
       />
-    </FormControl>
-  );
-};
+    }
+  />
+);
 
 export const FormCreatableSelect = ({
   name,
