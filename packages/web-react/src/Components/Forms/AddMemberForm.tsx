@@ -183,8 +183,6 @@ export default function AddFisherfolkForm({
         livelihoods: [],
       },
     };
-    console.log(getValues());
-    console.log(createFisherfolkInput.data);
 
     // await createFisherfolk({
     //   variables: {
@@ -196,14 +194,11 @@ export default function AddFisherfolkForm({
   const handleSubmitForm = (e: MouseEvent) => {
     e.preventDefault();
     trigger();
-    console.log(getValues());
-    console.log(invalidFfolkInfo);
     onSubmit();
   };
 
   const handleNextButton = (e: MouseEvent) => {
     trigger();
-    console.log(getValues());
     //Temporarily disabled
     // if (isValid) {
 
@@ -213,7 +208,6 @@ export default function AddFisherfolkForm({
   };
 
   const handleBackButton = (e: MouseEvent) => {
-    console.log(getValues());
     setStep('ffolkInfo');
   };
 
