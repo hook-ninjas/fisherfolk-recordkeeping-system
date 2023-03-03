@@ -1,28 +1,17 @@
-import React, { useState } from 'react';
+import React, { MouseEvent, SyntheticEvent, useState } from 'react';
+import { Box, Button, DialogContent, Grid, Tabs, Tab } from '@mui/material';
 import {
-  Box,
-  Button,
-  Checkbox,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  IconButton,
-  Typography,
-} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import { styled } from '@mui/material/styles';
+  FormContainer,
+  FormContainerTitle,
+} from '../Containers/FormContainers';
 import {
-  FormInputRadio,
-  FormInputSelect,
-  FormInputText,
-  FormCreatableSelect,
-  FormInputAutoText,
-} from './FormInputFields';
-import { useForm } from 'react-hook-form';
-
+  useForm,
+  UseFormRegister,
+  UseFormWatch,
+  UseFormResetField,
+  Control,
+  FieldValues,
+} from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   CreateFisherfolkDocument,
@@ -30,57 +19,10 @@ import {
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
-import {
-  nationalityOptions,
-  educationalBackgroundOptions,
-  createOption,
-  registrationTypes,
-  salutationOptions,
-  barangayOptions,
-  genderOptions,
-  civilStatusOptions,
-  sourceOfIncomeOptions,
-  cityMunicipalityOptions,
-  provinceOptions,
-} from './Enums';
-import PhotoUpload from '../Input/PhotoUpload';
 import { FfolkValidation } from './validation/schema';
-import MultiFileUpload from '../Input/MultiFileUpload';
-
-export interface FormContainerTitleProps {
-  children?: React.ReactNode;
-  onClose: () => void;
-}
-
-function FormContainerTitle(props: FormContainerTitleProps) {
-  const { children, onClose } = props;
-
-  return (
-    <DialogTitle sx={{ ml: 2, p: 2 }}>
-      {children}
-      {onClose ? (
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </DialogTitle>
-  );
-}
-
-const FormContainer = styled(Dialog)(({ theme }) => ({
-  '& .MuiDialogContent-root': {
-    padding: theme.spacing(2),
-  },
-}));
+import GearForm from './GearForm';
+import VesselForm from './VesselForm';
+import FfolkInfoForm from './FfolkInfoForm';
 
 interface AddFisherfolkFormProps {
   open: boolean;
@@ -92,6 +34,11 @@ export default function AddFisherfolkForm({
   handleClose,
 }: AddFisherfolkFormProps) {
   const [complete, setComplete] = useState(false);
+  const [isCaptureFishing, setCaptureFishing] = useState(false);
+  const [tab, setTab] = useState('gear');
+  const [step, setStep] = useState('ffolkInfo');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const buttonSx = {
     ...(complete && {
@@ -105,71 +52,90 @@ export default function AddFisherfolkForm({
     marginLeft: 'auto',
   };
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [nationalities, setNationalities] = useState(nationalityOptions);
-  const [educationalBackgrounds, setEducationalBackgrounds] = useState(
-    educationalBackgroundOptions
-  );
-  const [barangays, setBarangays] = useState(barangayOptions);
-  const [otherFishingActivities, setOtherFishingActivities] = React.useState({
-    CaptureFishing: false,
-    Aquaculture: false,
-    FishVending: false,
-    FishProcessing: false,
+  const {
+    register,
+    watch,
+    control,
+    handleSubmit,
+    resetField,
+    trigger,
+    getValues,
+    setValue,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: yupResolver(FfolkValidation),
   });
 
   const handleSubmitting = () => setIsSubmitting(true);
 
   const handleComplete = () => setComplete(true);
 
-  const handleOtherFishingActivityChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setOtherFishingActivities({
-      ...otherFishingActivities,
-      [event.target.name]: event.target.checked,
-    });
+  const watchMainFishAct = watch('mainFishingActivity');
+
+  const watchFishCapture = watch([
+    'mainFishingActivity',
+    'otherFishingActivities',
+  ]);
+
+  const watchOtherFishAct = watch('otherFishingActivities');
+
+  const mainFishAct = {
+    aquaculture: watchMainFishAct == 'Aquaculture',
+    captureFishing: watchMainFishAct == 'CaptureFishing',
+    fishVending: watchMainFishAct == 'FishVending',
+    fishProcessing: watchMainFishAct == 'FishProcessing',
   };
 
-  const handleCreateNationality = (inputValue: string) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      const newValue = createOption(inputValue);
-      setIsLoading(false);
-      setNationalities((prev) => [...prev, newValue]);
-    }, 1500);
+  const otherFishAct = {
+    aquaculture:
+      watchOtherFishAct instanceof Array &&
+      watchOtherFishAct.includes('Aquaculture'),
+    captureFishing:
+      watchOtherFishAct instanceof Array &&
+      watchOtherFishAct.includes('CaptureFishing'),
+    fishVending:
+      watchOtherFishAct instanceof Array &&
+      watchOtherFishAct.includes('FishVending'),
+    fishProcessing:
+      watchOtherFishAct instanceof Array &&
+      watchOtherFishAct.includes('FishProcessing'),
   };
 
-  const handleCreateEducationalBackground = (inputValue: string) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      const newValue = createOption(inputValue);
-      setIsLoading(false);
-      setEducationalBackgrounds((prev) => [...prev, newValue]);
-    }, 1000);
-  };
+  const ffolkInfo = [
+    'lastName',
+    'firstName',
+    'middleName',
+    'salutation',
+    'contactNumber',
+    'barangay',
+    'cityMunicipality',
+    'province',
+    'residentYear',
+    'gender',
+    'age',
+    'dateOfBirth',
+    'placeBirth',
+    'civilStatus',
+    'educationalBackground',
+    'nationality',
+    'personToNotify',
+    'ptnRelationship',
+    'ptnContactNum',
+    'ptnAddress',
+    'orgName',
+    'orgPosition',
+    'profilePhoto',
+    'files',
+  ];
 
-  const handleCreateBarangay = (inputValue: string) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      const newValue = createOption(inputValue);
-      setIsLoading(false);
-      setBarangays((prev) => [...prev, newValue]);
-    }, 1000);
-  };
+  const captureFishingRegistrant =
+    watchMainFishAct == 'CaptureFishing' ||
+    (watchOtherFishAct instanceof Array &&
+      watchOtherFishAct.includes('CaptureFishing'));
 
-  const { CaptureFishing, Aquaculture, FishVending, FishProcessing } =
-    otherFishingActivities;
-
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(FfolkValidation),
-  });
+  const invalidFfolkInfo = ffolkInfo.filter(
+    (field) => errors[field] != undefined
+  );
 
   const [createFisherfolk] = useMutation(CreateFisherfolkDocument, {
     onCompleted: () => {
@@ -183,6 +149,9 @@ export default function AddFisherfolkForm({
       showFailAlert();
     },
   });
+
+  const handleTabChange = (event: SyntheticEvent, newValue: string) =>
+    setTab(newValue);
 
   const onSubmit = handleSubmit((data) => {
     // handleSubmitting();
@@ -214,8 +183,6 @@ export default function AddFisherfolkForm({
         livelihoods: [],
       },
     };
-    console.log(data.profilePhoto);
-    console.log(createFisherfolkInput.data);
 
     // await createFisherfolk({
     //   variables: {
@@ -224,11 +191,133 @@ export default function AddFisherfolkForm({
     // });
   });
 
-  const handleSubmitForm = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const handleSubmitForm = (e: MouseEvent) => {
     e.preventDefault();
+    trigger();
     onSubmit();
+  };
+
+  const handleNextButton = (e: MouseEvent) => {
+    trigger();
+    //Temporarily disabled
+    // if (isValid) {
+
+    //   setStep('gearVessel');
+    // }
+    setStep('gearVessel');
+  };
+
+  const handleBackButton = (e: MouseEvent) => {
+    setStep('ffolkInfo');
+  };
+
+  const bottomRowButtons = () => {
+    switch (step) {
+      case 'ffolkInfo':
+        return (
+          <Button
+            type={captureFishingRegistrant ? 'button' : 'submit'}
+            variant="contained"
+            fullWidth
+            onClick={
+              captureFishingRegistrant ? handleNextButton : handleSubmitForm
+            }
+            disabled={isSubmitting}
+            sx={buttonSx}
+          >
+            {captureFishingRegistrant ? 'Next' : 'Save'}
+          </Button>
+        );
+      case 'gearVessel':
+        return (
+          <Grid
+            container
+            spacing={-2}
+            sx={{ justifyContent: 'space-between', ml: 1, mt: 2 }}
+          >
+            <Grid item>
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={handleBackButton}
+                disabled={isSubmitting}
+                sx={buttonSx}
+              >
+                Back
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                onClick={handleSubmitForm}
+                disabled={isSubmitting}
+                sx={buttonSx}
+              >
+                Save
+              </Button>
+            </Grid>
+          </Grid>
+        );
+
+      default:
+        break;
+    }
+  };
+
+  const formTab = (
+    control: Control<FieldValues, unknown>,
+    register: UseFormRegister<FieldValues>,
+    errors: FieldValues
+  ) => {
+    switch (tab) {
+      case 'gear':
+        return (
+          <GearForm control={control} register={register} errors={errors} />
+        );
+      case 'vessel':
+        return (
+          <VesselForm control={control} register={register} errors={errors} />
+        );
+      case 'gear&vessel':
+        return (
+          <>
+            <VesselForm control={control} register={register} errors={errors} />
+            <GearForm control={control} register={register} errors={errors} />
+          </>
+        );
+    }
+    return <></>;
+  };
+
+  const formStep = (
+    control: Control<FieldValues, unknown>,
+    register: UseFormRegister<FieldValues>,
+    errors: FieldValues,
+    watch: UseFormWatch<FieldValues>,
+    resetField: UseFormResetField<FieldValues>
+  ) => {
+    switch (step) {
+      case 'ffolkInfo':
+        return FfolkInfoForm({ control, register, errors, watch, resetField });
+
+      case 'gearVessel':
+        return (
+          <Box id="ffolk-form-gear">
+            <Tabs
+              value={tab}
+              onChange={handleTabChange}
+              aria-label="Fisherfolk form tab selection"
+            >
+              <Tab label="Gear" value={'gear'} />
+              <Tab label="Vessel" value={'vessel'} />
+              <Tab label="Gear & Vessel" value={'gear&vessel'} />
+            </Tabs>
+            {formTab(control, register, errors)}
+          </Box>
+        );
+    }
   };
 
   return (
@@ -245,471 +334,9 @@ export default function AddFisherfolkForm({
           Fisherfolk Registration
         </FormContainerTitle>
         <DialogContent dividers>
-          <Typography variant="body1" color="GrayText" mb={2} ml={2}>
-            Upload Profile Picture
-          </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              pl: 2,
-              mt: -2,
-            }}
-          >
-            {/* <FormInputRadio
-              name="registrationType"
-              label="registrationType"
-              control={control}
-              register={register}
-              errors={errors}
-              radioOptions={registrationTypes}
-            /> */}
-            <PhotoUpload
-              name="profilePhoto"
-              label="profilePhoto"
-              control={control}
-              register={register}
-              errors={errors}
-              sx={{
-                m: 1,
-                p: 1,
-                maxWidth: '200px',
-              }}
-              alt={'Upload 2x2 Photo'}
-              dataCy={'ffolk-img'}
-            />
-          </Box>
-          <Typography variant="h6" color="GrayText" ml={2} mt={2}>
-            Personal Information
-          </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              pl: 2,
-            }}
-          >
-            <FormInputRadio
-              name="salutation"
-              label="salutation"
-              control={control}
-              register={register}
-              errors={errors}
-              radioOptions={salutationOptions}
-            />
-          </Box>
-          <Grid container spacing={-2} sx={{ ml: 1, mr: 1 }}>
-            <Grid item sm={6}>
-              <FormInputText
-                name="lastName"
-                control={control}
-                label="Last Name"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6}>
-              <FormInputText
-                name="firstName"
-                control={control}
-                label="First Name"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-            <Grid item sm={6}>
-              <FormInputText
-                name="middleName"
-                control={control}
-                label="Middle Name"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6}>
-              <FormInputText
-                name="apellation"
-                control={control}
-                label="Apellation"
-                placeholder="e.g. Sr. / Jr. / III"
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 2 }}>
-            <Grid item sm={6} sx={{ mt: 2 }}>
-              <FormCreatableSelect
-                name="barangay"
-                placeholder="Select Barangay"
-                isLoading={isLoading}
-                isDisabled={isLoading}
-                onCreateOption={handleCreateBarangay}
-                options={barangays}
-                control={control}
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
-              <FormInputAutoText
-                name="cityMunicipality"
-                control={control}
-                label="City/Municipality"
-                placeholder=""
-                options={cityMunicipalityOptions}
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-            <Grid item sm={6}>
-              <FormInputAutoText
-                name="province"
-                control={control}
-                label="Province"
-                placeholder=""
-                options={provinceOptions}
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6}>
-              <FormInputText
-                name="residentYear"
-                control={control}
-                label="Resident of Municipality since"
-                placeholder="e.g. 2015"
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-            <Grid item sm={6}>
-              <FormInputText
-                name="age"
-                control={control}
-                label="Age"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6}>
-              <FormInputText
-                name="contactNumber"
-                control={control}
-                label="Contact Number"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-            <Grid item sm={6}>
-              <FormInputText
-                name="dateOfBirth"
-                control={control}
-                label="Date of Birth"
-                placeholder="MM/DD/YYYY"
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6}>
-              <FormInputText
-                name="placeOfBirth"
-                control={control}
-                label="Place of Birth"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-            <Grid item sm={6}>
-              <FormInputText
-                name="religion"
-                control={control}
-                label="Religion"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6}>
-              <Typography
-                variant="body2"
-                color="GrayText"
-                mt={0.5}
-                mb={-1}
-                ml={1}
-              >
-                Gender
-              </Typography>
-              <Box
-                sx={{
-                  display: 'flex',
-                  pl: 1,
-                }}
-              >
-                <FormInputRadio
-                  name="gender"
-                  label="gender"
-                  register={register}
-                  errors={errors}
-                  control={control}
-                  radioOptions={genderOptions}
-                />
-              </Box>
-            </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 2 }}>
-            <Grid item sm={6} sx={{ mt: 2 }}>
-              <FormCreatableSelect
-                control={control}
-                errors={errors}
-                isLoading={isLoading}
-                isDisabled={isLoading}
-                name="nationality"
-                placeholder="Select Nationality"
-                onCreateOption={handleCreateNationality}
-                options={nationalities}
-                register={register}
-              />
-            </Grid>
-            <Grid item sm={6} sx={{ mt: 2 }}>
-              <FormInputSelect
-                name="civilStatus"
-                label="Select Civil Status"
-                data={civilStatusOptions}
-                onSavedValue=""
-                control={control}
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 2, mt: 1 }}>
-            <Grid item sm={6} sx={{ mt: 2 }}>
-              <FormCreatableSelect
-                control={control}
-                errors={errors}
-                isLoading={isLoading}
-                isDisabled={isLoading}
-                name="educationalBackground"
-                placeholder="Select Educational Background"
-                onCreateOption={handleCreateEducationalBackground}
-                options={educationalBackgrounds}
-                register={register}
-              />
-            </Grid>
-            <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
-              <FormInputText
-                name="numOfChildren"
-                control={control}
-                label="Number of Children"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
-          <Typography variant="h6" color="GrayText" mt={3} mb={-1} ml={2}>
-            Person to Notify Incase of Emergency
-          </Typography>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
-            <Grid item sm={6}>
-              <FormInputText
-                name="personToNotify"
-                control={control}
-                label="Person to Notify"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6}>
-              <FormInputText
-                name="ptnRelationship"
-                control={control}
-                label="Relationship"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-            <Grid item sm={6}>
-              <FormInputText
-                name="ptnContactNum"
-                control={control}
-                label="Contact Number"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6}>
-              <FormInputText
-                name="ptnAddress"
-                control={control}
-                label="Address"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
-          <Typography variant="h6" color="GrayText" mt={2} ml={2}>
-            Fishing Activity
-          </Typography>
-          <Grid container spacing={-2} sx={{ ml: 2 }}>
-            <Grid item sm={6} sx={{ mt: 2 }}>
-              <FormInputSelect
-                name="mainFishingActivity"
-                label="Main Fishing Activity "
-                data={sourceOfIncomeOptions}
-                onSavedValue=""
-                control={control}
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
-              <FormInputText
-                name="otherSourceOfIncome"
-                control={control}
-                label="Other Source of Income"
-                placeholder="e.g. Carpentry/Driver"
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Typography variant="subtitle1" color="GrayText">
-              Other Fishing Activities
-            </Typography>
-            <Grid container spacing={-2} sx={{ ml: 1 }}>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={CaptureFishing}
-                      onChange={handleOtherFishingActivityChange}
-                      name="CaptureFishing"
-                    />
-                  }
-                  label="Capture Fishing"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={Aquaculture}
-                      onChange={handleOtherFishingActivityChange}
-                      name="Aquaculture"
-                    />
-                  }
-                  label="Aquaculture"
-                />
-
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={FishVending}
-                      onChange={handleOtherFishingActivityChange}
-                      name="FishVending"
-                    />
-                  }
-                  label="Fish Vending"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={FishProcessing}
-                      onChange={handleOtherFishingActivityChange}
-                      name="FishProcessing"
-                    />
-                  }
-                  label="Fish Processing"
-                />
-              </FormGroup>
-            </Grid>
-          </Grid>
-          <Typography variant="h6" color="GrayText" mb={-1} ml={2}>
-            Organization
-          </Typography>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
-            <Grid item sm={6}>
-              <FormInputText
-                name="orgName"
-                control={control}
-                label="Name"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item sm={6}>
-              <FormInputText
-                name="orgMemberSince"
-                control={control}
-                label="Member Since"
-                placeholder="e.g. 2015"
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-            <Grid item sm={6}>
-              <FormInputText
-                name="orgPosition"
-                control={control}
-                label="Position/Official Designation"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
-            <MultiFileUpload
-              name="signature"
-              label="signature"
-              control={control}
-              register={register}
-              errors={errors}
-              sx={{
-                m: 1,
-                p: 1,
-                width: '100%',
-              }}
-              dataCy={'ffolk-signature'}
-            />
-          </Grid>
+          {formStep(control, register, errors, watch, resetField)}
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              onClick={(e) => {
-                handleSubmitForm(e);
-              }}
-              // onClick={() => onSubmit}
-              disabled={isSubmitting}
-              sx={buttonSx}
-            >
-              Save
-            </Button>
-            {isSubmitting}
+            {bottomRowButtons()}
           </Box>
         </DialogContent>
       </FormContainer>
