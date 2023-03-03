@@ -143,6 +143,25 @@ const FfolkValidation = object().shape({
 
       return truthArray.includes(true);
     }),
+  registrationType: string(),
+  mfvrNumber: string().required('Please fill up mfvr no.'),
+  homeport: string().required('Please indicate home port'),
+  name: string().required('Vessel must have name'),
+  material: string().nullable().oneOf(materialOptions),
+  type: string().required('Please indicate type'),
+  placeBuilt: string().required('Please indicate place built'),
+  yearBuilt: string().matches(/^$|\d{4}$/, 'Enter year.'),
+  registeredLength: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+  registeredDepth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+  registeredBreadth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+  tonnageLength: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+  tonnageDepth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+  tonnageBreadth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+  grossTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+  netTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+  engineMake: string().required('Please indicate engine make'),
+  serialNumber: string().required('Please enter engine serial number'),
+  horsepower: string(),
 });
 
 const VesselWithGearSchema = object().shape({
