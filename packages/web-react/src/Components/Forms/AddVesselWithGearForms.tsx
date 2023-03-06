@@ -3,13 +3,10 @@ import {
   Box,
   Button,
   Checkbox,
-  Dialog,
   DialogContent,
-  DialogTitle,
   FormControlLabel,
   FormGroup,
   Grid,
-  IconButton,
   Typography,
 } from '@mui/material';
 import {
@@ -473,7 +470,6 @@ export default function AddVesselWithGearForm({
                 name="material"
                 label="Select Material Used"
                 data={materialOptions}
-                onSavedValue=""
                 control={control}
                 register={register}
                 errors={errors}

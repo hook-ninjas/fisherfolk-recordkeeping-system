@@ -63,7 +63,7 @@ input CreateFisherfolkInput {
   registeredLength: Float
   religion: String!
   residentYear: Int
-  salutation: Salutation
+  salutation: Salutation!
   serialNumber: String
   tonnageBreadth: Float
   tonnageDepth: Float
@@ -260,6 +260,7 @@ type Mutation {
   createVessel(vessel: CreateVesselInput!): Vessel!
   createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
   loginUser(data: CreateUserInput!): AuthPayload!
+  updateFisherfolk(data: CreateFisherfolkInput!, id: Int!): Fisherfolk!
   updateMfvr(id: Int!, mfvrNum: String!): Vessel!
 }
 

@@ -1,23 +1,12 @@
-import { object, string, mixed, number, array, date } from 'yup';
+import { object, string, mixed, array, date } from 'yup';
 import { getValues } from '../../../utils/utils';
-import {
-  salutationOptions,
-  genderOptions,
-  educationalBackgroundOptions,
-  nationalityOptions,
-  materialOptions,
-} from '../Enums';
+import { salutationOptions, genderOptions } from '../Enums';
 import { sub } from 'date-fns/fp';
 
 const maxBirthDate = sub({ years: 19 })(new Date());
-const supportedFormats = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
 const uploadLimit = 10000000;
 
 const FfolkValidation = object().shape({
-  // registrationType: string()
-  //   .nullable()
-  //   .oneOf(getValues(registrationTypes))
-  // .required('Select registration type.'),
   lastName: string().required('Enter last name.'),
   firstName: string().required('Enter first name.'),
   middleName: string().required('Enter middle name.'),
@@ -46,15 +35,9 @@ const FfolkValidation = object().shape({
     .required('Enter date of birth.'),
   placeOfBirth: string().required('Enter place of birth.'),
   civilStatus: string().required('Select civil status.'),
-  educationalBackground: mixed()
-    .nullable()
-    .oneOf(getValues(educationalBackgroundOptions))
-    .required('Enter or select educational background.'),
+  educationalBackground: string().required('Select educational background.'),
   numOfChildren: string().matches(/^$|\d{1,2}$/, 'Enter a number.'),
-  nationality: mixed()
-    .nullable()
-    .oneOf(getValues(nationalityOptions))
-    .required('Enter or select nationality.'),
+  nationality: string().required('Enter nationality.'),
   personToNotify: string().required('Enter person to notify.'),
   ptnRelationship: string().required(
     'Enter relationship with person to notify.'
@@ -147,7 +130,7 @@ const FfolkValidation = object().shape({
   mfvrNumber: string().required('Please fill up mfvr no.'),
   homeport: string().required('Please indicate home port'),
   name: string().required('Vessel must have name'),
-  material: string().nullable().oneOf(materialOptions),
+  material: string().required('Select material.'),
   type: string().required('Please indicate type'),
   placeBuilt: string().required('Please indicate place built'),
   yearBuilt: string().matches(/^$|\d{4}$/, 'Enter year.'),
@@ -171,7 +154,7 @@ const VesselWithGearSchema = object().shape({
     homeport: string(),
     horsepower: string(),
     mfvrNumber: string(),
-    material: string().nullable().oneOf(materialOptions),
+    material: string().required('Select material.'),
     name: string(),
     netTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
     placeBuilt: string(),
@@ -205,19 +188,27 @@ const CreateAccountSchema = object().shape({
 const LoginSchema = object().shape({
   username: string().required('Enter username.'),
   password: string().required('Enter password.'),
-  files: array()
-    .of(
-      object().shape({
-        name: string().required(),
-        size: number().max(1000000, 'File over 1 mb'),
-        type: string().matches(
-          /^.*(image\/jpeg|jpg|png)$/gm,
-          'File format not supported'
-        ),
-      })
+});
+
+const UpdateFisherfolkSchema = object().shape({
+  profilePhoto: mixed()
+    .test(
+      'fileSize',
+      'File too large',
+      (value) => !value || (value instanceof FileList && value[0].size <= uploadLimit)
     )
-    .nullable()
-    .required('Upload required file/files'),
+    .test(
+      'fileFormat',
+      'Unsupported Format, Format must be in .jpeg, .jpg, .png',
+      (value) => !value || (value && value[0].type.match(/^.*(image\/jpeg|jpg|png)$/gm))
+    ),
+  contactNumber: string()
+    .matches(/^$|^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
+  age: string().matches(/^$|^(1[89]|[2-9]\d)$/gm, 'Must be 18 or Above'),
+  ptnContactNum: string().matches(
+    /^$|^(09|\+639)\d{9}$/,
+    'Please enter a valid contact number.'
+  ),
 });
 
 export {
@@ -225,4 +216,5 @@ export {
   VesselWithGearSchema,
   CreateAccountSchema,
   LoginSchema,
+  UpdateFisherfolkSchema,
 };

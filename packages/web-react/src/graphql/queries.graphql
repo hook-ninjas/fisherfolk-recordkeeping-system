@@ -139,10 +139,10 @@ query LivelihoodCount($activity: SourceOfIncome!) {
 
 query FisherfolkCount {
   totalFisherfolk
+  activeFisherFolk
   totalGears
   totalVessels
   barangayCount
-  activeFisherFolk
 }
 
 query FisherfolkGenderCount($gender: Gender!) {

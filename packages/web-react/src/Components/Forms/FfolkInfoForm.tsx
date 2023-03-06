@@ -508,7 +508,6 @@ function FfolkInfoForm({
             name="civilStatus"
             label="Select Civil Status"
             data={civilStatusOptions}
-            onSavedValue=""
             control={control}
             register={register}
             errors={errors}
@@ -521,7 +520,6 @@ function FfolkInfoForm({
             name="educationalBackground"
             label="Select Educational Background"
             data={educationalBackgroundOptions}
-            onSavedValue=""
             control={control}
             register={register}
             errors={errors}
@@ -595,7 +593,6 @@ function FfolkInfoForm({
             name="mainFishingActivity"
             label="Main Fishing Activity "
             data={sourceOfIncomeOptions}
-            onSavedValue=""
             defaultValue=""
             handleChange={handleMainFishingAct}
             control={control}
