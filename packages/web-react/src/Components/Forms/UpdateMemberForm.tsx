@@ -331,8 +331,8 @@ export default function UpdateFisherfolkForm({
               />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 2 }}>
-            <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
+          <Grid container spacing={-2} sx={{ ml: 1, }}>
+            <Grid item sm={6} sx={{ mt: 1,}}>
               <FormInputAutoText
                 sx={{ marginTop: -0.3, width: 230 }}
                 freeSolo
@@ -345,9 +345,9 @@ export default function UpdateFisherfolkForm({
                 errors={errors}
               />
             </Grid>
-            <Grid item sm={6} sx={{ mt: 1 }}>
+            <Grid item sm={6} sx={{ mt: 1}}>
               <FormInputAutoText
-                sx={{ marginTop: -0.3, width: 230 }}
+                sx={{ marginTop: -0.3, width: 230}}
                 freeSolo
                 name="cityMunicipality"
                 control={control}
@@ -406,10 +406,10 @@ export default function UpdateFisherfolkForm({
               />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+          <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
             <Grid item sm={6}>
               <FormInputDate
-                sx={{ pl: 1, width: 240, height: 52, mt: 1 }}
+                sx={{ pl: 1, width: 240, height: 52, ml: 0.5 }}
                 name="dateOfBirth"
                 control={control}
                 openTo="year"
@@ -471,8 +471,8 @@ export default function UpdateFisherfolkForm({
               </Box>
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 2 }}>
-            <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
+          <Grid container spacing={-1} sx={{ ml: 1 }}>
+            <Grid item sm={6} sx={{ mt: 1 }}>
               <FormInputAutoText
                 sx={{ marginTop: -0.3, width: 230 }}
                 freeSolo
@@ -485,7 +485,7 @@ export default function UpdateFisherfolkForm({
                 errors={errors}
               />
             </Grid>
-            <Grid item sm={6} sx={{ mt: 2 }}>
+            <Grid item sm={6} sx={{ mt: 2,}}>
               <FormInputSelect
                 name="civilStatus"
                 label="Select Civil Status"
