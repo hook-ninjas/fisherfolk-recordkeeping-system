@@ -44,13 +44,13 @@ export const CustomDrawer = styled(Drawer)(({ theme }) => ({
   padding: theme.spacing(1),
   [theme.breakpoints.down('md')]: {
     '& .MuiPaper-root': {
-      width: '60%'
-    }
+      width: '60%',
+    },
   },
   [theme.breakpoints.down('sm')]: {
     '& .MuiPaper-root': {
-      width: '90%'
-    }
+      width: '90%',
+    },
   },
 }));
 
@@ -67,6 +67,7 @@ const filter = (
 
 const FisherfolkRecord = () => {
   const [addFisherfolkBtn, setFisherfolkBtn] = useState(false);
+  const [isFiltered, setIsFiltered] = useState(false);
   const [isDrawerOpen, setIsDrawOpen] = useState(false);
   const [searchKey, setSearchKey] = useState('');
   const barangays = dt.barangays.sort();
@@ -74,35 +75,34 @@ const FisherfolkRecord = () => {
   const handleAddFisherfolkOpen = () => setFisherfolkBtn(true);
   const handleAddFisherfolkClose = () => setFisherfolkBtn(false);
 
-
-
   const { loading, error, data, refetch } = useQuery(QueryFisherfolksDocument);
 
-  const handleSearch = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKey(event.target.value);
   };
-
 
   const onSearchSubmit = (e: any) => {
     e.preventDefault();
     if (searchKey.trim().length == 0) {
       return data?.fisherfolks;
     } else {
-      return data?.fisherfolks.filter(({ firstName, middleName, lastName, appellation }) => {
-        const searchKeyArray = searchKey.split(' ');
-        const completeName = firstName + ' ' + middleName + ' ' + lastName + ' ' + appellation;
-        
-        const res = searchKeyArray.map((key: string) => {
-          return completeName.toLowerCase().includes(key.toLowerCase());
-        });
+      return data?.fisherfolks.filter(
+        ({ firstName, middleName, lastName, appellation }) => {
+          const searchKeyArray = searchKey.split(' ');
+          const completeName =
+            firstName + ' ' + middleName + ' ' + lastName + ' ' + appellation;
 
-        return res.every((element: boolean) => { return element === true; });
-      });
+          const res = searchKeyArray.map((key: string) => {
+            return completeName.toLowerCase().includes(key.toLowerCase());
+          });
+
+          return res.every((element: boolean) => {
+            return element === true;
+          });
+        }
+      );
     }
   };
-
 
   const [fisherfolks, setFisherfolks] = useState<
     QueryFisherfolksQuery | undefined
@@ -134,14 +134,12 @@ const FisherfolkRecord = () => {
 
     if (data) {
       if (filterValues.length > 1) {
-
         // filter fisherfolk by status and livelihood
-        const newData = filter(data, selectedFilter.status)
-          .filter(
-            ({ livelihoods }) =>
-              livelihoods?.find((a) => a?.isMain)?.type ===
-              selectedFilter.livelihood
-          );
+        const newData = filter(data, selectedFilter.status).filter(
+          ({ livelihoods }) =>
+            livelihoods?.find((a) => a?.isMain)?.type ===
+            selectedFilter.livelihood
+        );
 
         setFisherfolks({
           fisherfolks: newData,
@@ -174,6 +172,14 @@ const FisherfolkRecord = () => {
     e.preventDefault();
     onSubmit();
     handleCloseDrawer();
+    setIsFiltered(true);
+  };
+
+  const handleReset = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    handleCloseDrawer();
+    setIsFiltered(false);
+    setFisherfolks(undefined);
   };
 
   return (
@@ -190,7 +196,6 @@ const FisherfolkRecord = () => {
           <Box m={1} display="flex" justifyContent="space-between">
             <Typography variant="h6">Fisherfolk Record</Typography>
 
-            
             <Box display="flex" justifyContent="end">
               <IconButton
                 sx={{
@@ -206,11 +211,8 @@ const FisherfolkRecord = () => {
                 aria-label="logo"
                 onClick={() => setIsDrawOpen(true)}
               >
-
                 <FilterAltIcon />
               </IconButton>
-
-
               <CustomDrawer
                 anchor="right"
                 open={isDrawerOpen}
@@ -219,8 +221,6 @@ const FisherfolkRecord = () => {
                   sx: { width: '30%' },
                 }}
               >
-
-                
                 <DialogTitle sx={{ ml: 2, p: 2 }}>
                   <IconButton
                     aria-label="close"
@@ -323,6 +323,22 @@ const FisherfolkRecord = () => {
                     Apply
                   </Button>
                 </Box>
+                <Box p={8} sx={{ mb: 2 }} width="250" textAlign="start">
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                      mt: -35,
+                      background: 'blue[300]',
+                      fontSize: 12,
+                      fontWeight: '600',
+                      color: 'whitesmoke',
+                    }}
+                    onClick={handleReset}
+                  >
+                    Reset
+                  </Button>
+                </Box>
               </CustomDrawer>
               <CustomAddButton
                 variant="contained"
@@ -339,33 +355,52 @@ const FisherfolkRecord = () => {
               )}
             </Box>
           </Box>
-
           <Box m={1} display="flex" justifyContent="space-between">
             <form
               onSubmit={(e) => {
-                onSearchSubmit(e); console.log(onSearchSubmit(e));
-                setFisherfolks({ fisherfolks: onSearchSubmit(e)!, totalFisherfolk: onSearchSubmit(e)!.length });
+                setIsFiltered(true);
+                onSearchSubmit(e);
+                setFisherfolks({
+                  fisherfolks: onSearchSubmit(e)!,
+                  totalFisherfolk: onSearchSubmit(e)!.length,
+                });
               }}
             >
               <TextField
                 onChange={handleSearch}
-                variant='standard'
-                placeholder='Search a fisherfolk'
-                size='small'
-                color='success'
+                variant="standard"
+                placeholder="Search a fisherfolk"
+                size="small"
+                color="success"
+                sx={{ width: 180 }}
                 InputProps={{
-                  startAdornment: <InputAdornment position="start"><PersonSearchIcon style={{ fill: 'grey' }} /></InputAdornment>,
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PersonSearchIcon style={{ fill: 'grey' }} />
+                    </InputAdornment>
+                  ),
                 }}
               />
             </form>
+            <Typography variant="body1">
+              {data?.totalFisherfolk != undefined
+                ? isFiltered
+                  ? `Total: ${fisherfolks?.totalFisherfolk}`
+                  : `Total: ${data?.totalFisherfolk}`
+                : ''}
+            </Typography>
           </Box>
-          
+
           <Grid item>
             <Box m={1}>
               <FisherfolkTable
                 error={error}
                 loading={loading}
-                data={searchKey.trim().length == 0 ? fisherfolks ?? data: fisherfolks ?? data}
+                data={
+                  searchKey.trim().length == 0
+                    ? fisherfolks ?? data
+                    : fisherfolks ?? data
+                }
                 {...refetch}
               />
             </Box>

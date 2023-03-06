@@ -31,6 +31,7 @@ import {
   CalendarPickerView,
 } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { CivilStatus, EducationalBackground, Gender, Salutation, SourceOfIncome } from '../../graphql/generated';
 export interface Option {
   label: string;
   value: string;
@@ -60,7 +61,7 @@ const style = {
 interface FormInputTextProps {
   name: string;
   label: string;
-  placeholder: string;
+  placeholder?: string;
   inputMode?: HTMLAttributes<HTMLLIElement>['inputMode'];
   defaultValue?: string;
   handleChange?: (value: string) => any;
@@ -73,7 +74,7 @@ interface FormInputTextProps {
 interface FormInputNumberProps {
   name: string;
   label: string;
-  placeholder: string;
+  placeholder?: string;
   numericOnly?: boolean;
   max?: number;
   min?: number;
@@ -88,6 +89,7 @@ interface FormInputDateProps {
   name: string;
   label: string;
   defaultValue?: string | Date | null;
+  onSavedValue?: string | Date;
   openTo?: CalendarPickerView;
   min?: Date | string;
   max?: Date | string;
@@ -102,7 +104,7 @@ interface FormInputAutoProps {
   dataCy?: string;
   name: string;
   label: string;
-  placeholder: string;
+  placeholder?: string;
   autoComplete?: boolean;
   freeSolo?: boolean;
   handleTextChange?: (value: string) => void;
@@ -120,7 +122,7 @@ interface FormInputAutoProps {
 interface FormInputSelectProps {
   name: string;
   label: string;
-  onSavedValue: string;
+  onSavedValue?: CivilStatus | SourceOfIncome | EducationalBackground;
   defaultValue?: string;
   handleChange?: (value: string) => void;
   data: Option[] | string[];
@@ -134,6 +136,7 @@ interface FormInputRadioProps {
   name: string;
   label: string;
   defaultValue?: string;
+  onSavedValue?: Salutation | Gender;
   control: Control<FieldValues, unknown>;
   radioOptions: Option[];
   register: UseFormRegister<FieldValues>;
@@ -174,7 +177,6 @@ export const FormInputText = ({
   inputMode,
   defaultValue,
   handleChange,
-  register,
   errors,
   shouldUnregister,
 }: FormInputTextProps) => (
@@ -217,7 +219,6 @@ export const FormInputNumber = ({
   max,
   min,
   defaultValue,
-  register,
   errors,
 }: FormInputNumberProps) => (
   <Controller
@@ -249,6 +250,7 @@ export const FormInputDate = ({
   label,
   sx,
   defaultValue,
+  onSavedValue,
   openTo,
   max,
   min,
@@ -264,7 +266,7 @@ export const FormInputDate = ({
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             label={label}
-            value={value}
+            value={value || onSavedValue}
             maxDate={max}
             minDate={min}
             openTo={openTo}
@@ -296,7 +298,6 @@ export const FormInputAutoText = ({
   defaultValue,
   handleTextChange,
   handleInputChange,
-  register,
   sx,
   options,
   errors,
@@ -423,8 +424,8 @@ export const FormInputRadio = ({
   label,
   control,
   defaultValue,
+  onSavedValue,
   radioOptions,
-  register,
   errors,
   shouldUnregister,
 }: FormInputRadioProps) => {
@@ -437,7 +438,7 @@ export const FormInputRadio = ({
         shouldUnregister={shouldUnregister}
         render={({ field: { value, onChange } }) => (
           <>
-            <RadioGroup row onChange={onChange} value={value}>
+            <RadioGroup row onChange={onChange} value={value || onSavedValue}>
               {radioOptions.map((item) => (
                 <FormControlLabel
                   key={item.value}

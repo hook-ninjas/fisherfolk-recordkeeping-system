@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import Loading from '../Loading/Loading';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { splitUpperCase } from '../../utils/utils';
-import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridColumns,
+  GridRowsProp,
+} from '@mui/x-data-grid';
 import { Alert, Button, Menu, MenuItem } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
@@ -12,17 +16,18 @@ import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import moment from 'moment';
 import { ApolloError } from '@apollo/client';
 import { QueryFisherfolksQuery } from '../../graphql/generated';
+import UpdateFisherfolkForm from '../Forms/UpdateMemberForm';
 
 interface Props {
-  error: ApolloError | undefined,
-  loading: boolean,
-  data: QueryFisherfolksQuery | undefined
+  error: ApolloError | undefined;
+  loading: boolean;
+  data: QueryFisherfolksQuery | undefined;
 }
-
 
 const renderMoreActions = (id: number) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [updateFisherfolk, setUpdateFisherfolk] = useState(false);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -32,6 +37,12 @@ const renderMoreActions = (id: number) => {
   const handleProfileView = () => {
     navigate(`/fisherfolk-profile/${id}`);
   };
+
+  const handleUpdateFormOpen = () => {
+    setUpdateFisherfolk(true);
+  };
+
+  const handleUpdateFormClose = () => setUpdateFisherfolk(false);
 
   return (
     <div>
@@ -59,9 +70,16 @@ const renderMoreActions = (id: number) => {
         <MenuItem onClick={handleProfileView} disableRipple>
           <VisibilityIcon sx={{ width: 20, marginRight: 1.5 }} /> View
         </MenuItem>
-        <MenuItem disableRipple>
+        <MenuItem onClick={handleUpdateFormOpen} disableRipple>
           <EditIcon sx={{ width: 20, marginRight: 1.5 }} /> Edit
         </MenuItem>
+        {updateFisherfolk && (
+          <UpdateFisherfolkForm
+            id={id}
+            handleClose={handleUpdateFormClose}
+            open={updateFisherfolk}
+          />
+        )}
         <MenuItem disableRipple>
           <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
         </MenuItem>
@@ -78,8 +96,7 @@ const columns: GridColumns = [
     type: 'date',
     minWidth: 130,
     disableColumnMenu: true,
-    valueFormatter: params =>
-      moment(params?.value).format('MM/DD/YYYY'),
+    valueFormatter: (params) => moment(params?.value).format('MM/DD/YYYY'),
   },
   {
     field: 'name',
@@ -132,15 +149,11 @@ const columns: GridColumns = [
   },
 ];
 
-export default function FisherfolkVesselTable({error, loading, data}: Props) {
+export default function FisherfolkTable({ error, loading, data }: Props) {
   let rows: GridRowsProp = [];
 
   if (error) {
-    return (
-      <Alert severity="error">
-        Something went wrong.
-      </Alert>
-    );
+    return <Alert severity="error">Something went wrong.</Alert>;
   }
 
   if (loading) {
@@ -155,19 +168,21 @@ export default function FisherfolkVesselTable({error, loading, data}: Props) {
         dateRegistered: new Date(fisherfolk.registrationDate),
         name: `${fisherfolk.lastName}, ${fisherfolk.firstName} ${fisherfolk.appellation} ${fisherfolk.middleName}`,
         contactNumber: fisherfolk.contactNum,
-        livelihood: fisherfolk.livelihoods == null ? '' : splitUpperCase(fisherfolk.livelihoods[0]?.type),
+        livelihood:
+          fisherfolk.livelihoods == null
+            ? ''
+            : splitUpperCase(fisherfolk.livelihoods[0]?.type),
         barangay: fisherfolk.barangay,
         status: fisherfolk.status,
       }));
   }
-
   return (
     <div style={{ height: '85vh', width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columns}
         disableVirtualization={true}
-        aria-label='fisherfolk-table'
+        aria-label="fisherfolk-table"
       />
     </div>
   );
