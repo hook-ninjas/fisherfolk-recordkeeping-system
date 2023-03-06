@@ -1,6 +1,6 @@
 # Write Graphql Queries here #
 
-  query QueryFisherfolks {
+query QueryFisherfolks {
   fisherfolks {
     id
     registrationDate
@@ -20,37 +20,37 @@
 }
 query FisherfolkById($fisherfolkId: BigInt!) {
   fisherfolk(id: $fisherfolkId) {
-    age,
-    appellation,
-    barangay,
-    cityMunicipality,
-    civilStatus,
-    contactNum,
-    dateOfBirth,
-    educationalBackground,
-    firstName,
-    gender,
-    id,
-    lastName,
-    middleName,
-    nationality,
-    numOfChildren,
-    personToNotify,
-    placeOfBirth,
-    province,
-    ptnAddress,
-    ptnContactNum,
-    ptnRelationship,
-    registrationDate,
-    religion,
-    residentYear,
-    salutation,
-    status,
-    livelihoods { 
+    age
+    appellation
+    barangay
+    cityMunicipality
+    civilStatus
+    contactNum
+    dateOfBirth
+    educationalBackground
+    firstName
+    gender
+    id
+    lastName
+    middleName
+    nationality
+    numOfChildren
+    personToNotify
+    placeOfBirth
+    province
+    ptnAddress
+    ptnContactNum
+    ptnRelationship
+    registrationDate
+    religion
+    residentYear
+    salutation
+    status
+    livelihoods {
       isMain
       type
       description
-    },
+    }
     organizations {
       organization {
         name
@@ -83,7 +83,7 @@ query FisherfolkVessels($fisherfolkId: BigInt!, $start: Int!, $count: Int!) {
     tonnageLength
     type
     yearBuilt
-  },
+  }
   totalFisherfolkVessels(fisherfolkId: $fisherfolkId)
 }
 
@@ -93,7 +93,7 @@ query FisherfolkGears($fisherfolkId: BigInt!, $start: Int!, $count: Int!) {
     createdAt
     id
     type
-  },
+  }
   totalFisherfolkGears(fisherfolkId: $fisherfolkId)
 }
 
@@ -129,17 +129,16 @@ query GearsQuery {
 
 query AuthUser {
   user {
-     id
+    id
   }
 }
 
 query LivelihoodCount($activity: SourceOfIncome!) {
-  livelihoodCount(activity: $activity) 
+  livelihoodCount(activity: $activity)
 }
 
-query FisherfolkCount{
+query FisherfolkCount {
   totalFisherfolk
-  FisherfolkGenderCountDocument
   totalGears
   totalVessels
   barangayCount
