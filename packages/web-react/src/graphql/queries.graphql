@@ -139,7 +139,6 @@ query LivelihoodCount($activity: SourceOfIncome!) {
 
 query FisherfolkCount{
   totalFisherfolk
-  FisherfolkGenderCountDocument
   totalGears
   totalVessels
   barangayCount
