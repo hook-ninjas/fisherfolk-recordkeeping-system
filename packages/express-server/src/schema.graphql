@@ -68,6 +68,8 @@ input CreateFisherfolkInput {
   tonnageLength: Float
   type: String
   vesselFiles: [CreateImageInput!]
+  withGear: Boolean!
+  withVessel: Boolean!
   yearBuilt: Int
 }
 

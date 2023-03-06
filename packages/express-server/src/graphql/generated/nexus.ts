@@ -87,6 +87,8 @@ export interface NexusGenInputs {
     tonnageLength?: number | null; // Float
     type?: string | null; // String
     vesselFiles?: NexusGenInputs['CreateImageInput'][] | null; // [CreateImageInput!]
+    withGear: boolean; // Boolean!
+    withVessel: boolean; // Boolean!
     yearBuilt?: number | null; // Int
   }
   CreateGearInput: { // input type
