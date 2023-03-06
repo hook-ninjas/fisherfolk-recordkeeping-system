@@ -38,8 +38,8 @@ const thumbnails = (srcs: string[]) => {
   return srcs.map((src, index) => {
     return (
       <Paper
-        id={`file-thumbnail-${index}`}
-        key={index}
+        id={`file-thumbnail-${src}`}
+        key={`file-thumbnail-${src}`}
         data-cy={`thumbnail-test-${index}`}
         sx={{
           m: 1,
@@ -66,7 +66,7 @@ function MultiFileUpload({
   onChange = undefined,
   sx,
 }: MultiFileUploadProps) {
-  const [preview, setPreview] = useState<JSX.Element[] | undefined>([<></>]);
+  const [preview, setPreview] = useState<JSX.Element[] | undefined>([]);
 
   const createSrcs = (files: File[]) => {
     const results: string[] = [];
@@ -115,26 +115,48 @@ function MultiFileUpload({
 
   return (
     <>
-      <Box id={id} sx={sx} data-cy={dataCy}></Box>
-      <Grid container sx={{ p: 1, width: '100%' }}>
-        {preview}
-      </Grid>
-      <Button
-        fullWidth
-        variant="contained"
-        component="label"
-        htmlFor="upload-btn"
-      >
-        <input
-          accept="image/*"
-          id="upload-btn"
-          multiple
-          type="file"
-          hidden
-          {...register(name, { onChange: (e) => handleUpload(onChange)(e) })}
+      <Box id={id} sx={sx} data-cy={dataCy}>
+        <FormHelperText
+          error={!!errors[name]}
+          hidden={!errors[name]}
+          sx={{ ml: 2, mt: 2 }}
+        >
+          {errors[name]?.message}
+        </FormHelperText>
+        <Grid
+          id="file-thumbnail-container"
+          container
+          sx={{ p: 1, width: '100%' }}
+        >
+          {preview}
+        </Grid>
+        <Controller
+          name={name}
+          control={control}
+          defaultValue=""
+          render={({ field: { value } }) => (
+            <Button
+              fullWidth
+              id={label}
+              variant="contained"
+              component="label"
+              htmlFor="multi-upload-btn"
+            >
+              <input
+                accept="image/*"
+                id="multi-upload-btn"
+                multiple
+                type="file"
+                hidden
+                {...register(name, {
+                  onChange: (e) => handleUpload(onChange)(e),
+                })}
+              />
+              Upload
+            </Button>
+          )}
         />
-        Upload
-      </Button>
+      </Box>
     </>
   );
 }

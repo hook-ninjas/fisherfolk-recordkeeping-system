@@ -1,3 +1,4 @@
+import React from 'react';
 import { useQuery } from '@apollo/client';
 import {
   Grid,
@@ -8,53 +9,89 @@ import {
   Box,
   CircularProgress,
 } from '@mui/material';
-import React from 'react';
 import {
-  BarangayCountDocument,
-  TotalGearsDocument,
+  FisherfolkCountDocument,
+  FisherfolkGenderCountDocument,
+  Gender,
 } from '../../graphql/generated';
 import Gear from '../../Assets/gear.png';
 import Barangay from '../../Assets/barangay.png';
 import Vessel from '../../Assets/vessel.png';
-import Fishpond from '../../Assets/aquaculture.png';
+import Female from '../../Assets/female.png';
+import Male from '../../Assets/male.png';
 
 export const FisherfolkInfoPaper = styled(Paper)(({ theme }) => ({
-  height: 70,
-  padding: 8,
+  height: 110,
+  padding: 15,
   borderRadius: 10,
   margin: 2,
+  marginTop: 20,
   [theme.breakpoints.up('sm')]: {
-    width: 180,
+    width: 220,
   },
   [theme.breakpoints.down('sm')]: {
     width: 250,
+    height: 120,
   },
 }));
 
-export default function FisherfolkInfo() {
-  const gears = useQuery(TotalGearsDocument);
-  const barangays = useQuery(BarangayCountDocument);
+export const GenderPaper = styled(Paper)(({ theme }) => ({
+  height: 150,
+  padding: 15,
+  borderRadius: 10,
+  margin: 2,
+  [theme.breakpoints.up('sm')]: {
+    width: 170,
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: 250,
+    height: 120,
+  },
+}));
 
-  const fisherfolkInfo: Record<string, any[]> = {
-    'Total Barangays': [
-      Barangay,
-      barangays.data && barangays.data.barangayCount,
-    ],
-    'Total Vessels': [Vessel, ''],
-    'Total Fishponds': [Fishpond, ''],
-    'Total Gears': [Gear, gears.data && gears.data.totalGears],
+export const CustomTitleFont = styled(Typography)(({ theme }) => ({
+  color: '#71797E',
+  [theme.breakpoints.down('sm')]: {
+    fontSize: 20,
+  },
+}));
+
+export const CustomCountFont = styled(Typography)(({ theme }) => ({
+  color: '#71797E',
+  [theme.breakpoints.down('sm')]: {
+    fontSize: 36,
+  },
+}));
+
+const getCountGender = (gender: Gender) => {
+  const { data } = useQuery(FisherfolkGenderCountDocument, {
+    variables: {
+      gender: gender,
+    },
+  });
+  return data?.fisherfolkGender;
+};
+
+export default function FisherfolkInfo() {
+  const fisherfolkQuery = useQuery(FisherfolkCountDocument);
+
+  const gender: Record<string, any[]> = {
+    Male: [Male, getCountGender(Gender.Male)],
+    Female: [Female, getCountGender(Gender.Female)],
   };
 
-  const getCount = (value: string) => {
-    if (gears.loading) {
+  const fisherfolkInfo: Record<string, any[]> = {
+    'Total Barangays': [Barangay, fisherfolkQuery.data?.barangayCount],
+    'Total Vessels': [Vessel, fisherfolkQuery.data?.totalVessels],
+    'Total Gears': [Gear, fisherfolkQuery.data?.totalGears],
+  };
+
+  const getCount = (value: string, info: Record<string, any[]>) => {
+    if (fisherfolkQuery.loading) {
       return <CircularProgress size={20} />;
     }
 
-    if (barangays.loading) {
-      return <CircularProgress size={20} />;
-    }
-
-    return fisherfolkInfo[value][1];
+    return info[value][1];
   };
 
   return (
@@ -64,35 +101,61 @@ export default function FisherfolkInfo() {
         spacing={2}
         sx={{ justifyContent: 'space-between', margin: 1 }}
       >
+        {Object.keys(gender).map((item) => (
+          <GenderPaper key={item} elevation={2}>
+            <Stack direction="row" spacing={3.5} alignItems="center">
+              <Grid item sm={3}>
+                <Box
+                  component="img"
+                  src={gender[item][0]}
+                  sx={{ width: 50, borderRadius: 15 }}
+                  mt={2}
+                ></Box>
+              </Grid>
+              <Grid item sm={9}>
+                <Typography color="#71797E" mt={1} variant="h5">
+                  {item}
+                </Typography>
+                <Typography
+                  variant="h4"
+                  color="#71797E"
+                  mt={1}
+                  aria-label={`${item.toLocaleLowerCase()}-${getCount(
+                    item,
+                    gender
+                  )}`}
+                >
+                  <b>{getCount(item, gender)}</b>
+                </Typography>
+              </Grid>
+            </Stack>
+          </GenderPaper>
+        ))}
         {Object.keys(fisherfolkInfo).map((item) => (
           <FisherfolkInfoPaper key={item} elevation={2}>
-            <Stack
-              direction="row"
-              spacing={1}
-              justifyContent="space-between"
-              alignItems="center"
-            >
+            <Stack direction="row" spacing={1.8} alignItems="center">
               <Grid item sm={3}>
                 <Box
                   component="img"
                   src={fisherfolkInfo[item][0]}
-                  sx={{ width: 37, borderRadius: 15 }}
-                  mt={1}
+                  sx={{ width: 50, borderRadius: 15 }}
+                  mt={2}
                 ></Box>
               </Grid>
-              <Grid item sm={6}>
-                <Typography variant="subtitle1" color="#71797E">
+              <Grid item sm={9}>
+                <Typography color="#71797E" mt={1} fontSize={17}>
                   {item}
                 </Typography>
-              </Grid>
-              <Grid item sm={3}>
                 <Typography
-                  variant="h5"
+                  variant="h4"
                   color="#71797E"
                   mt={1}
-                  fontWeight={600}
+                  aria-label={`${item.toLocaleLowerCase()}-${getCount(
+                    item,
+                    fisherfolkInfo
+                  )}`}
                 >
-                  {getCount(item)}
+                  <b>{getCount(item, fisherfolkInfo)}</b>
                 </Typography>
               </Grid>
             </Stack>

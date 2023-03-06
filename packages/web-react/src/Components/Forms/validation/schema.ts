@@ -1,4 +1,4 @@
-import { object, string, mixed, number } from 'yup';
+import { object, string, mixed, number, array, date } from 'yup';
 import { getValues } from '../../../utils/utils';
 import {
   salutationOptions,
@@ -7,12 +7,17 @@ import {
   nationalityOptions,
   materialOptions,
 } from '../Enums';
+import { sub } from 'date-fns/fp';
+
+const maxBirthDate = sub({ years: 19 })(new Date());
+const supportedFormats = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
+const uploadLimit = 10000000;
 
 const FfolkValidation = object().shape({
   // registrationType: string()
   //   .nullable()
   //   .oneOf(getValues(registrationTypes))
-    // .required('Select registration type.'),
+  // .required('Select registration type.'),
   lastName: string().required('Enter last name.'),
   firstName: string().required('Enter first name.'),
   middleName: string().required('Enter middle name.'),
@@ -33,8 +38,12 @@ const FfolkValidation = object().shape({
     .required('Select gender.'),
   age: string()
     .matches(/^$|\d{1,3}$/, 'Age must be a number.')
+    .matches(/^(1[89]|[2-9]\d)$/gm, 'Must be 18 or Above')
     .required('Enter age.'),
-  dateOfBirth: string().nullable().required('Enter date of birth.'),
+  dateOfBirth: date()
+    .max(maxBirthDate, 'Enter Valid Date')
+    .typeError('Enter Valid Date')
+    .required('Enter date of birth.'),
   placeOfBirth: string().required('Enter place of birth.'),
   civilStatus: string().required('Select civil status.'),
   educationalBackground: mixed()
@@ -57,17 +66,102 @@ const FfolkValidation = object().shape({
   mainFishingActivity: string().required('Select main fishing activity.'),
   orgName: string(),
   orgMemberSince: string().matches(/^$|\d{4}$/, 'Please enter year.'),
-  orgPosition: string(),
-  profilePhoto: object()
-    .shape({
-      name: string().required(),
-      size: number().max(1000000, 'File over 1 mb'),
-      type: string()
-        .matches(/^.*(image\/jpeg|jpg|png)$/gm, 'File format not supported')
-        .required('No File Uploaded'),
+  orgPosition: string().matches(
+    /(^[\sA-Za-z0-9]+$)/i,
+    'No special characters allowed'
+  ),
+  profilePhoto: mixed()
+    .test(
+      'uploadedPhoto',
+      'Must upload photo',
+      (value) => value && value instanceof FileList
+    )
+    .test(
+      'fileSize',
+      'File too large',
+      (value) => value instanceof FileList && value[0].size <= uploadLimit
+    )
+    .test(
+      'fileFormat',
+      'Unsupported Format, Format must be in .jpeg, .jpg, .png',
+      (value) => value && value[0].type.match(/^.*(image\/jpeg|jpg|png)$/gm)
+    ),
+  files: mixed()
+    .test(
+      'uploadedFiles',
+      'Must upload photo',
+      (value) => value && value instanceof FileList
+    )
+    .test('fileSize', 'File too large', (value) => {
+      const truthArray = [];
+      if (value) {
+        for (let i = 0; i < value.length; i++) {
+          if (value[i].size <= uploadLimit) {
+            truthArray.push(value[i]);
+          }
+        }
+      }
+      return truthArray.length > 0;
     })
-    .nullable()
-    // .required('Add Profile Image'),
+    .test(
+      'fileFormat',
+      'Unsupported Format, Format must be in .jpeg, .jpg, .png',
+      (value) => {
+        const truthArray = [];
+        if (value) {
+          for (let i = 0; i < value.length; i++) {
+            if (value[i].type.match(/^.*(image\/jpeg|jpg|png)$/gm)) {
+              truthArray.push(value[i]);
+            }
+          }
+        }
+        return truthArray.length > 0;
+      }
+    ),
+  gears: object()
+    .shape({
+      hookAndLine: array().of(string()).ensure(),
+      gillNets: array().of(string()).ensure(),
+      liftNets: array().of(string()).ensure(),
+      potsAndTraps: array().of(string()).ensure(),
+      seineNets: array().of(string()).ensure(),
+      scoopNets: array().of(string()).ensure(),
+      fallingGear: array().of(string()).ensure(),
+      miscellaneous: array().of(string()).ensure(),
+      others: string(),
+    })
+    .test('requiredGear', 'Must have at least 1 gear', (value) => {
+      const truthArray = Object.keys(value).map((key) => {
+        if (key != 'others') {
+          const array = value[key] as Array<string>;
+          if (array instanceof Array) {
+            return !array.includes('false') && array.length >= 1;
+          }
+        }
+        return typeof value[key] === 'string' && value[key] != '';
+      });
+
+      return truthArray.includes(true);
+    }),
+  registrationType: string(),
+  mfvrNumber: string().required('Please fill up mfvr no.'),
+  homeport: string().required('Please indicate home port'),
+  name: string().required('Vessel must have name'),
+  material: string().nullable().oneOf(materialOptions),
+  type: string().required('Please indicate type'),
+  placeBuilt: string().required('Please indicate place built'),
+  yearBuilt: string().matches(/^$|\d{4}$/, 'Enter year.'),
+  registeredLength: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+  registeredDepth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+  registeredBreadth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+  tonnageLength: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+  tonnageDepth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+  tonnageBreadth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+  grossTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+  netTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+  engineMake: string().required('Please indicate engine make'),
+  serialNumber: string().required('Please enter engine serial number'),
+  horsepower: string(),
 });
 
 const VesselWithGearSchema = object().shape({
@@ -85,14 +179,8 @@ const VesselWithGearSchema = object().shape({
       /^[0-9]\d*(\.\d+)?$/,
       'Enter a number.'
     ),
-    registeredDepth: string().matches(
-      /^[0-9]\d*(\.\d+)?$/,
-      'Enter a number.'
-    ),
-    registeredLength: string().matches(
-      /^[0-9]\d*(\.\d+)?$/,
-      'Enter a number.'
-    ),
+    registeredDepth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+    registeredLength: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
     serialNumber: string(),
     tonnageBreadth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
     tonnageDepth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
@@ -117,6 +205,24 @@ const CreateAccountSchema = object().shape({
 const LoginSchema = object().shape({
   username: string().required('Enter username.'),
   password: string().required('Enter password.'),
+  files: array()
+    .of(
+      object().shape({
+        name: string().required(),
+        size: number().max(1000000, 'File over 1 mb'),
+        type: string().matches(
+          /^.*(image\/jpeg|jpg|png)$/gm,
+          'File format not supported'
+        ),
+      })
+    )
+    .nullable()
+    .required('Upload required file/files'),
 });
 
-export { FfolkValidation, VesselWithGearSchema, CreateAccountSchema, LoginSchema };
+export {
+  FfolkValidation,
+  VesselWithGearSchema,
+  CreateAccountSchema,
+  LoginSchema,
+};
