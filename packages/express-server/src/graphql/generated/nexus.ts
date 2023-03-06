@@ -47,28 +47,47 @@ export interface NexusGenInputs {
     contactNum: string; // String!
     dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
+    engineMake: string; // String!
     files: NexusGenInputs['CreateImageInput'][]; // [CreateImageInput!]!
     firstName: string; // String!
     gears: string[]; // [String!]!
     gender: NexusGenEnums['Gender']; // Gender!
+    grossTonnage?: number | null; // Float
+    homeport: string; // String!
+    horsepower?: number | null; // Float
     lastName: string; // String!
     mainFishingActivity: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
+    material?: NexusGenEnums['Material'] | null; // Material
+    mfvrNumber: string; // String!
     middleName: string; // String!
+    name: string; // String!
     nationality: string; // String!
+    netTonnage?: number | null; // Float
     numOfChildren?: number | null; // Int
     organization?: NexusGenInputs['OrganizationInput'] | null; // OrganizationInput
     otherFishingActivity?: NexusGenEnums['SourceOfIncome'][] | null; // [SourceOfIncome!]
     otherSourceOfIncome?: string | null; // String
     personToNotify: string; // String!
+    placeBuilt: string; // String!
     placeOfBirth: string; // String!
     profilePhoto: NexusGenInputs['CreateImageInput']; // CreateImageInput!
     province: string; // String!
     ptnAddress: string; // String!
     ptnContactNum: string; // String!
     ptnRelationship: string; // String!
+    registeredBreadth?: number | null; // Float
+    registeredDepth?: number | null; // Float
+    registeredLength?: number | null; // Float
     religion: string; // String!
     residentYear?: number | null; // Int
     salutation?: NexusGenEnums['Salutation'] | null; // Salutation
+    serialNumber: string; // String!
+    tonnageBreadth?: number | null; // Float
+    tonnageDepth?: number | null; // Float
+    tonnageLength?: number | null; // Float
+    type: string; // String!
+    vesselFiles: NexusGenInputs['CreateImageInput'][]; // [CreateImageInput!]!
+    yearBuilt?: number | null; // Int
   }
   CreateGearInput: { // input type
     classification: NexusGenEnums['GearClassification']; // GearClassification!

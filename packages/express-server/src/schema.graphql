@@ -28,28 +28,47 @@ input CreateFisherfolkInput {
   contactNum: String!
   dateOfBirth: DateTime!
   educationalBackground: EducationalBackground!
+  engineMake: String!
   files: [CreateImageInput!]!
   firstName: String!
   gears: [String!]!
   gender: Gender!
+  grossTonnage: Float
+  homeport: String!
+  horsepower: Float
   lastName: String!
   mainFishingActivity: SourceOfIncome!
+  material: Material
+  mfvrNumber: String!
   middleName: String!
+  name: String!
   nationality: String!
+  netTonnage: Float
   numOfChildren: Int
   organization: OrganizationInput
   otherFishingActivity: [SourceOfIncome!]
   otherSourceOfIncome: String
   personToNotify: String!
+  placeBuilt: String!
   placeOfBirth: String!
   profilePhoto: CreateImageInput!
   province: String!
   ptnAddress: String!
   ptnContactNum: String!
   ptnRelationship: String!
+  registeredBreadth: Float
+  registeredDepth: Float
+  registeredLength: Float
   religion: String!
   residentYear: Int
   salutation: Salutation
+  serialNumber: String!
+  tonnageBreadth: Float
+  tonnageDepth: Float
+  tonnageLength: Float
+  type: String!
+  vesselFiles: [CreateImageInput!]!
+  yearBuilt: Int
 }
 
 input CreateGearInput {
