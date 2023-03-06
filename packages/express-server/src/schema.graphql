@@ -30,6 +30,7 @@ input CreateFisherfolkInput {
   educationalBackground: EducationalBackground!
   files: [CreateImageInput!]!
   firstName: String!
+  gears: [String!]!
   gender: Gender!
   lastName: String!
   mainFishingActivity: SourceOfIncome!

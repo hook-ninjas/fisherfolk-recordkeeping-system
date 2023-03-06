@@ -42,6 +42,7 @@ const CreateFisherfolkInput = inputObjectType({
     t.nullable.field('organization', { type: nullable(OrganizationInput) });
     t.field('profilePhoto', { type: ImageInput });
     t.field('files', { type: list(ImageInput) });
+    t.field('gears', { type: list('String') });
   },
 });
 

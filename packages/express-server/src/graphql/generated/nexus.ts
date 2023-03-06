@@ -49,6 +49,7 @@ export interface NexusGenInputs {
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
     files: NexusGenInputs['CreateImageInput'][]; // [CreateImageInput!]!
     firstName: string; // String!
+    gears: string[]; // [String!]!
     gender: NexusGenEnums['Gender']; // Gender!
     lastName: string; // String!
     mainFishingActivity: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
