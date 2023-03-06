@@ -34,6 +34,8 @@ input CreateFisherfolkInput {
   gears: [String!]
   gender: Gender!
   grossTonnage: Float
+  hasGear: Boolean!
+  hasVessel: Boolean!
   homeport: String
   horsepower: Float
   lastName: String!
@@ -68,8 +70,6 @@ input CreateFisherfolkInput {
   tonnageLength: Float
   type: String
   vesselFiles: [CreateImageInput!]
-  withGear: Boolean!
-  withVessel: Boolean!
   yearBuilt: Int
 }
 

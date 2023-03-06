@@ -53,6 +53,8 @@ export interface NexusGenInputs {
     gears?: string[] | null; // [String!]
     gender: NexusGenEnums['Gender']; // Gender!
     grossTonnage?: number | null; // Float
+    hasGear: boolean; // Boolean!
+    hasVessel: boolean; // Boolean!
     homeport?: string | null; // String
     horsepower?: number | null; // Float
     lastName: string; // String!
@@ -87,8 +89,6 @@ export interface NexusGenInputs {
     tonnageLength?: number | null; // Float
     type?: string | null; // String
     vesselFiles?: NexusGenInputs['CreateImageInput'][] | null; // [CreateImageInput!]
-    withGear: boolean; // Boolean!
-    withVessel: boolean; // Boolean!
     yearBuilt?: number | null; // Int
   }
   CreateGearInput: { // input type

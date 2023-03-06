@@ -63,8 +63,8 @@ const CreateFisherfolkInput = inputObjectType({
     t.nullable.string('serialNumber');
     t.nullable.float('horsepower');
     t.nullable.field('vesselFiles', { type: list(ImageInput) });
-    t.boolean('withGear');
-    t.boolean('withVessel');
+    t.boolean('hasGear');
+    t.boolean('hasVessel');
   },
 });
 
