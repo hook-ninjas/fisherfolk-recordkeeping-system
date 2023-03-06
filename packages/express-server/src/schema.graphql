@@ -41,7 +41,7 @@ input CreateFisherfolkInput {
   otherSourceOfIncome: String
   personToNotify: String!
   placeOfBirth: String!
-  profliePhoto: CreateImageInput!
+  profilePhoto: CreateImageInput!
   province: String!
   ptnAddress: String!
   ptnContactNum: String!

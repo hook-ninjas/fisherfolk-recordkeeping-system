@@ -60,7 +60,7 @@ export interface NexusGenInputs {
     otherSourceOfIncome?: string | null; // String
     personToNotify: string; // String!
     placeOfBirth: string; // String!
-    profliePhoto: NexusGenInputs['CreateImageInput']; // CreateImageInput!
+    profilePhoto: NexusGenInputs['CreateImageInput']; // CreateImageInput!
     province: string; // String!
     ptnAddress: string; // String!
     ptnContactNum: string; // String!
