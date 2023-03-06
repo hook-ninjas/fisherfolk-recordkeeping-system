@@ -142,6 +142,7 @@ query FisherfolkCount {
   totalGears
   totalVessels
   barangayCount
+  activeFisherFolk
 }
 
 query FisherfolkGenderCount($gender: Gender!) {
