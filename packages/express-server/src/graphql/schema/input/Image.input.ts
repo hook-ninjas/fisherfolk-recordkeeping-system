@@ -1,16 +1,17 @@
 import { inputObjectType } from 'nexus';
 
-const CreateImageInput = inputObjectType({
+const ImageInput = inputObjectType({
   name: 'CreateImageInput',
   definition(t) {
-    t.string('text');
-    t.field('fisherfolkId', { type: 'BigInt' });
+    t.nullable.field('fisherfolkId', { type: 'BigInt' });
     t.nullable.field('gear_id', { type: 'BigInt' });
     t.nullable.field('vessel_id', { type: 'BigInt' });
-    t.string('name');
     t.string('url');
+    t.string('name');
+    t.nullable.int('size');
+    t.nullable.string('type');
     t.field('updated_at', { type: 'DateTime' });
-  }
+  },
 });
 
-export default CreateImageInput;
+export default ImageInput;

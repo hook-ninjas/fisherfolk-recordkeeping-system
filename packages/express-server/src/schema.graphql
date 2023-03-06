@@ -29,7 +29,6 @@ input CreateFisherfolkInput {
   dateOfBirth: DateTime!
   educationalBackground: EducationalBackground!
   firstName: String!
-  gears: [String!]!
   gender: Gender!
   lastName: String!
   mainFishingActivity: SourceOfIncome!
@@ -37,7 +36,7 @@ input CreateFisherfolkInput {
   nationality: String!
   numOfChildren: Int
   organization: OrganizationInput
-  otherFishingActivity: SourceOfIncome!
+  otherFishingActivity: [SourceOfIncome!]
   otherSourceOfIncome: String
   personToNotify: String!
   placeOfBirth: String!
@@ -58,10 +57,11 @@ input CreateGearInput {
 }
 
 input CreateImageInput {
-  fisherfolkId: BigInt!
+  fisherfolkId: BigInt
   gear_id: BigInt
   name: String!
-  text: String!
+  size: Int
+  type: String
   updated_at: DateTime!
   url: String!
   vessel_id: BigInt
