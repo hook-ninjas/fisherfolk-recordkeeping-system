@@ -48,13 +48,16 @@ export interface NexusGenInputs {
     dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
     firstName: string; // String!
+    gears: string[]; // [String!]!
     gender: NexusGenEnums['Gender']; // Gender!
     lastName: string; // String!
-    livelihoods: NexusGenInputs['livelihoodInput'][]; // [livelihoodInput!]!
+    mainFishingActivity: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
     middleName: string; // String!
     nationality: string; // String!
-    numOfChildren: number; // Int!
+    numOfChildren?: number | null; // Int
     organization?: NexusGenInputs['OrganizationInput'] | null; // OrganizationInput
+    otherFishingActivity: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
+    otherSourceOfIncome?: string | null; // String
     personToNotify: string; // String!
     placeOfBirth: string; // String!
     province: string; // String!
@@ -62,8 +65,8 @@ export interface NexusGenInputs {
     ptnContactNum: string; // String!
     ptnRelationship: string; // String!
     religion: string; // String!
-    residentYear: number; // Int!
-    salutation: NexusGenEnums['Salutation']; // Salutation!
+    residentYear?: number | null; // Int
+    salutation?: NexusGenEnums['Salutation'] | null; // Salutation
   }
   CreateGearInput: { // input type
     classification: NexusGenEnums['GearClassification']; // GearClassification!
@@ -109,11 +112,6 @@ export interface NexusGenInputs {
     name: string; // String!
     position: string; // String!
     yearJoined: number; // Int!
-  }
-  livelihoodInput: { // input type
-    description: string; // String!
-    isMain: boolean; // Boolean!
-    type: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
   }
 }
 

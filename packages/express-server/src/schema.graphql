@@ -29,13 +29,16 @@ input CreateFisherfolkInput {
   dateOfBirth: DateTime!
   educationalBackground: EducationalBackground!
   firstName: String!
+  gears: [String!]!
   gender: Gender!
   lastName: String!
-  livelihoods: [livelihoodInput!]!
+  mainFishingActivity: SourceOfIncome!
   middleName: String!
   nationality: String!
-  numOfChildren: Int!
+  numOfChildren: Int
   organization: OrganizationInput
+  otherFishingActivity: SourceOfIncome!
+  otherSourceOfIncome: String
   personToNotify: String!
   placeOfBirth: String!
   province: String!
@@ -43,8 +46,8 @@ input CreateFisherfolkInput {
   ptnContactNum: String!
   ptnRelationship: String!
   religion: String!
-  residentYear: Int!
-  salutation: Salutation!
+  residentYear: Int
+  salutation: Salutation
 }
 
 input CreateGearInput {
@@ -336,10 +339,4 @@ type Vessel {
   type: String!
   updatedAt: DateTime!
   yearBuilt: Int
-}
-
-input livelihoodInput {
-  description: String!
-  isMain: Boolean!
-  type: SourceOfIncome!
 }

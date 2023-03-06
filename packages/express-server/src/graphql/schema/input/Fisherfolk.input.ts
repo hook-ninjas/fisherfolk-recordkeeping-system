@@ -4,6 +4,7 @@ import {
   EducationalBackground,
   Gender,
   Salutation,
+  SourceOfIncome,
 } from '../enums/';
 import LivelihoodInput from './Livelihood.input';
 import OrganizationInput from './Organization.input';
@@ -34,7 +35,9 @@ const CreateFisherfolkInput = inputObjectType({
     t.string('ptnRelationship');
     t.string('ptnAddress');
     t.string('ptnContactNum');
-    t.field('livelihoods', { type: list(LivelihoodInput) });
+    t.field('mainFishingActivity', { type: SourceOfIncome });
+    t.nullable.field('otherFishingActivity', { type: list(SourceOfIncome) });
+    t.nullable.string('otherSourceOfIncome');
     t.nullable.field('organization', { type: nullable(OrganizationInput) });
   },
 });
