@@ -47,6 +47,7 @@ export interface NexusGenInputs {
     contactNum: string; // String!
     dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
+    files: NexusGenInputs['CreateImageInput'][]; // [CreateImageInput!]!
     firstName: string; // String!
     gender: NexusGenEnums['Gender']; // Gender!
     lastName: string; // String!
@@ -59,6 +60,7 @@ export interface NexusGenInputs {
     otherSourceOfIncome?: string | null; // String
     personToNotify: string; // String!
     placeOfBirth: string; // String!
+    profliePhoto: NexusGenInputs['CreateImageInput']; // CreateImageInput!
     province: string; // String!
     ptnAddress: string; // String!
     ptnContactNum: string; // String!

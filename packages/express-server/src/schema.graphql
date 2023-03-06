@@ -28,6 +28,7 @@ input CreateFisherfolkInput {
   contactNum: String!
   dateOfBirth: DateTime!
   educationalBackground: EducationalBackground!
+  files: [CreateImageInput!]!
   firstName: String!
   gender: Gender!
   lastName: String!
@@ -40,6 +41,7 @@ input CreateFisherfolkInput {
   otherSourceOfIncome: String
   personToNotify: String!
   placeOfBirth: String!
+  profliePhoto: CreateImageInput!
   province: String!
   ptnAddress: String!
   ptnContactNum: String!

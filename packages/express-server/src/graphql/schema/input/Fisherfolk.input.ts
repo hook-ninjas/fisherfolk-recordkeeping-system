@@ -8,6 +8,7 @@ import {
 } from '../enums/';
 import LivelihoodInput from './Livelihood.input';
 import OrganizationInput from './Organization.input';
+import ImageInput from './Image.input';
 
 const CreateFisherfolkInput = inputObjectType({
   name: 'CreateFisherfolkInput',
@@ -39,6 +40,8 @@ const CreateFisherfolkInput = inputObjectType({
     t.nullable.field('otherFishingActivity', { type: list(SourceOfIncome) });
     t.nullable.string('otherSourceOfIncome');
     t.nullable.field('organization', { type: nullable(OrganizationInput) });
+    t.field('profliePhoto', { type: ImageInput });
+    t.field('files', { type: list(ImageInput) });
   },
 });
 
