@@ -28,20 +28,20 @@ input CreateFisherfolkInput {
   contactNum: String!
   dateOfBirth: DateTime!
   educationalBackground: EducationalBackground!
-  engineMake: String!
+  engineMake: String
   files: [CreateImageInput!]!
   firstName: String!
-  gears: [String!]!
+  gears: [String!]
   gender: Gender!
   grossTonnage: Float
-  homeport: String!
+  homeport: String
   horsepower: Float
   lastName: String!
   mainFishingActivity: SourceOfIncome!
   material: Material
-  mfvrNumber: String!
+  mfvrNumber: String
   middleName: String!
-  name: String!
+  name: String
   nationality: String!
   netTonnage: Float
   numOfChildren: Int
@@ -49,7 +49,7 @@ input CreateFisherfolkInput {
   otherFishingActivity: [SourceOfIncome!]
   otherSourceOfIncome: String
   personToNotify: String!
-  placeBuilt: String!
+  placeBuilt: String
   placeOfBirth: String!
   profilePhoto: CreateImageInput!
   province: String!
@@ -62,12 +62,12 @@ input CreateFisherfolkInput {
   religion: String!
   residentYear: Int
   salutation: Salutation
-  serialNumber: String!
+  serialNumber: String
   tonnageBreadth: Float
   tonnageDepth: Float
   tonnageLength: Float
-  type: String!
-  vesselFiles: [CreateImageInput!]!
+  type: String
+  vesselFiles: [CreateImageInput!]
   yearBuilt: Int
 }
 

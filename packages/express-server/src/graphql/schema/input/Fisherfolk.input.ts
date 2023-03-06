@@ -43,12 +43,12 @@ const CreateFisherfolkInput = inputObjectType({
     t.nullable.field('organization', { type: nullable(OrganizationInput) });
     t.field('profilePhoto', { type: ImageInput });
     t.field('files', { type: list(ImageInput) });
-    t.field('gears', { type: list('String') });
-    t.string('mfvrNumber');
-    t.string('homeport');
-    t.string('name');
-    t.string('type');
-    t.string('placeBuilt');
+    t.nullable.field('gears', { type: list('String') });
+    t.nullable.string('mfvrNumber');
+    t.nullable.string('homeport');
+    t.nullable.string('name');
+    t.nullable.string('type');
+    t.nullable.string('placeBuilt');
     t.nullable.int('yearBuilt');
     t.nullable.field('material', { type: Material });
     t.nullable.float('registeredLength');
@@ -59,10 +59,10 @@ const CreateFisherfolkInput = inputObjectType({
     t.nullable.float('tonnageDepth');
     t.nullable.float('grossTonnage');
     t.nullable.float('netTonnage');
-    t.string('engineMake');
-    t.string('serialNumber');
+    t.nullable.string('engineMake');
+    t.nullable.string('serialNumber');
     t.nullable.float('horsepower');
-    t.field('vesselFiles', { type: list(ImageInput) });
+    t.nullable.field('vesselFiles', { type: list(ImageInput) });
   },
 });
 

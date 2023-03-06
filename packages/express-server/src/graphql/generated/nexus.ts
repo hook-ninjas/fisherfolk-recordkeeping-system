@@ -47,20 +47,20 @@ export interface NexusGenInputs {
     contactNum: string; // String!
     dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
-    engineMake: string; // String!
+    engineMake?: string | null; // String
     files: NexusGenInputs['CreateImageInput'][]; // [CreateImageInput!]!
     firstName: string; // String!
-    gears: string[]; // [String!]!
+    gears?: string[] | null; // [String!]
     gender: NexusGenEnums['Gender']; // Gender!
     grossTonnage?: number | null; // Float
-    homeport: string; // String!
+    homeport?: string | null; // String
     horsepower?: number | null; // Float
     lastName: string; // String!
     mainFishingActivity: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
     material?: NexusGenEnums['Material'] | null; // Material
-    mfvrNumber: string; // String!
+    mfvrNumber?: string | null; // String
     middleName: string; // String!
-    name: string; // String!
+    name?: string | null; // String
     nationality: string; // String!
     netTonnage?: number | null; // Float
     numOfChildren?: number | null; // Int
@@ -68,7 +68,7 @@ export interface NexusGenInputs {
     otherFishingActivity?: NexusGenEnums['SourceOfIncome'][] | null; // [SourceOfIncome!]
     otherSourceOfIncome?: string | null; // String
     personToNotify: string; // String!
-    placeBuilt: string; // String!
+    placeBuilt?: string | null; // String
     placeOfBirth: string; // String!
     profilePhoto: NexusGenInputs['CreateImageInput']; // CreateImageInput!
     province: string; // String!
@@ -81,12 +81,12 @@ export interface NexusGenInputs {
     religion: string; // String!
     residentYear?: number | null; // Int
     salutation?: NexusGenEnums['Salutation'] | null; // Salutation
-    serialNumber: string; // String!
+    serialNumber?: string | null; // String
     tonnageBreadth?: number | null; // Float
     tonnageDepth?: number | null; // Float
     tonnageLength?: number | null; // Float
-    type: string; // String!
-    vesselFiles: NexusGenInputs['CreateImageInput'][]; // [CreateImageInput!]!
+    type?: string | null; // String
+    vesselFiles?: NexusGenInputs['CreateImageInput'][] | null; // [CreateImageInput!]
     yearBuilt?: number | null; // Int
   }
   CreateGearInput: { // input type
