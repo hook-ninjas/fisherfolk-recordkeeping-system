@@ -19,7 +19,7 @@ const CreateFisherfolkInput = inputObjectType({
     t.string('middleName');
     t.string('appellation');
     t.int('age');
-    t.nullable.field('salutation', { type: Salutation });
+    t.field('salutation', { type: Salutation });
     t.string('barangay');
     t.string('cityMunicipality');
     t.string('province');
