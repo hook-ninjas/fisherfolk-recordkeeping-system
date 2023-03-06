@@ -69,3 +69,9 @@ mutation UpdateMFVR($id: Int!, $mfvrNum: String!) {
     }
   }
 }
+
+mutation UpdateFisherfolk($updateFisherfolkId: Int!, $data: CreateFisherfolkInput!) {
+  updateFisherfolk(id: $updateFisherfolkId, data: $data) {
+    id
+  }
+}
