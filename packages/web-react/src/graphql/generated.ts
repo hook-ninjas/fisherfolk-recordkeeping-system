@@ -109,7 +109,6 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   User: ResolverTypeWrapper<User>;
   Vessel: ResolverTypeWrapper<Vessel>;
-  livelihoodInput: LivelihoodInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -140,7 +139,6 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   User: User;
   Vessel: Vessel;
-  livelihoodInput: LivelihoodInput;
 };
 
 export type AuthPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']> = {
@@ -409,11 +407,13 @@ export type CreateFisherfolkInput = {
   firstName: Scalars['String'];
   gender: Gender;
   lastName: Scalars['String'];
-  livelihoods: Array<LivelihoodInput>;
+  mainFishingActivity: SourceOfIncome;
   middleName: Scalars['String'];
   nationality: Scalars['String'];
-  numOfChildren: Scalars['Int'];
+  numOfChildren?: InputMaybe<Scalars['Int']>;
   organization?: InputMaybe<OrganizationInput>;
+  otherFishingActivity?: InputMaybe<Array<SourceOfIncome>>;
+  otherSourceOfIncome?: InputMaybe<Scalars['String']>;
   personToNotify: Scalars['String'];
   placeOfBirth: Scalars['String'];
   province: Scalars['String'];
@@ -421,8 +421,8 @@ export type CreateFisherfolkInput = {
   ptnContactNum: Scalars['String'];
   ptnRelationship: Scalars['String'];
   religion: Scalars['String'];
-  residentYear: Scalars['Int'];
-  salutation: Salutation;
+  residentYear?: InputMaybe<Scalars['Int']>;
+  salutation?: InputMaybe<Salutation>;
 };
 
 export type CreateGearInput = {
@@ -433,10 +433,11 @@ export type CreateGearInput = {
 };
 
 export type CreateImageInput = {
-  fisherfolkId: Scalars['BigInt'];
+  fisherfolkId?: InputMaybe<Scalars['BigInt']>;
   gear_id?: InputMaybe<Scalars['BigInt']>;
   name: Scalars['String'];
-  text: Scalars['String'];
+  size?: InputMaybe<Scalars['Int']>;
+  type?: InputMaybe<Scalars['String']>;
   updated_at: Scalars['DateTime'];
   url: Scalars['String'];
   vessel_id?: InputMaybe<Scalars['BigInt']>;
@@ -811,12 +812,6 @@ export type Vessel = {
   yearBuilt?: Maybe<Scalars['Int']>;
 };
 
-export type LivelihoodInput = {
-  description: Scalars['String'];
-  isMain: Scalars['Boolean'];
-  type: SourceOfIncome;
-};
-
 export type CreateFisherfolkMutationVariables = Exact<{
   data: CreateFisherfolkInput;
 }>;
@@ -930,7 +925,7 @@ export type LivelihoodCountQuery = { __typename?: 'Query', livelihoodCount: numb
 export type FisherfolkCountQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FisherfolkCountQuery = { __typename?: 'Query', totalFisherfolk: number, activeFisherFolk: number, totalGears: number, totalVessels: number, barangayCount: number };
+export type FisherfolkCountQuery = { __typename?: 'Query', totalFisherfolk: number, totalGears: number, totalVessels: number, barangayCount: number, activeFisherFolk: number };
 
 export type FisherfolkGenderCountQueryVariables = Exact<{
   gender: Gender;
@@ -956,5 +951,5 @@ export const VesselQueryDocument = {"kind":"Document","definitions":[{"kind":"Op
 export const GearsQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GearsQuery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gears"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"classification"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"fisherfolk"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"middleName"}},{"kind":"Field","name":{"kind":"Name","value":"appellation"}}]}}]}}]}}]} as unknown as DocumentNode<GearsQueryQuery, GearsQueryQueryVariables>;
 export const AuthUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AuthUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<AuthUserQuery, AuthUserQueryVariables>;
 export const LivelihoodCountDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"LivelihoodCount"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"activity"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SourceOfIncome"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"livelihoodCount"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"activity"},"value":{"kind":"Variable","name":{"kind":"Name","value":"activity"}}}]}]}}]} as unknown as DocumentNode<LivelihoodCountQuery, LivelihoodCountQueryVariables>;
-export const FisherfolkCountDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FisherfolkCount"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"totalFisherfolk"}},{"kind":"Field","name":{"kind":"Name","value":"activeFisherFolk"}},{"kind":"Field","name":{"kind":"Name","value":"totalGears"}},{"kind":"Field","name":{"kind":"Name","value":"totalVessels"}},{"kind":"Field","name":{"kind":"Name","value":"barangayCount"}}]}}]} as unknown as DocumentNode<FisherfolkCountQuery, FisherfolkCountQueryVariables>;
+export const FisherfolkCountDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FisherfolkCount"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"totalFisherfolk"}},{"kind":"Field","name":{"kind":"Name","value":"totalGears"}},{"kind":"Field","name":{"kind":"Name","value":"totalVessels"}},{"kind":"Field","name":{"kind":"Name","value":"barangayCount"}},{"kind":"Field","name":{"kind":"Name","value":"activeFisherFolk"}}]}}]} as unknown as DocumentNode<FisherfolkCountQuery, FisherfolkCountQueryVariables>;
 export const FisherfolkGenderCountDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FisherfolkGenderCount"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"gender"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Gender"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fisherfolkGender"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gender"},"value":{"kind":"Variable","name":{"kind":"Name","value":"gender"}}}]}]}}]} as unknown as DocumentNode<FisherfolkGenderCountQuery, FisherfolkGenderCountQueryVariables>;

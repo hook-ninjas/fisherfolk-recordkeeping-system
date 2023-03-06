@@ -323,7 +323,6 @@ export default function AddVesselWithGearForm({
         url: image!.toString(),
         gear_id: null,
         vessel_id: null,
-        text: 'none',
         name: '',
         updated_at: new Date(),
       },
@@ -351,9 +350,11 @@ export default function AddVesselWithGearForm({
           gears: createVesselWithGearInput.gears,
         },
         awaitRefetchQueries: true,
-        refetchQueries: [ {
-          query: GearsQueryDocument
-        }]
+        refetchQueries: [
+          {
+            query: GearsQueryDocument,
+          },
+        ],
       });
 
       await createImage({
@@ -374,9 +375,11 @@ export default function AddVesselWithGearForm({
           vessel: createVesselWithGearInput.vessel,
         },
         awaitRefetchQueries: true,
-        refetchQueries: [ {
-          query: GearsQueryDocument
-        }]
+        refetchQueries: [
+          {
+            query: GearsQueryDocument,
+          },
+        ],
       });
 
       await createImage({
