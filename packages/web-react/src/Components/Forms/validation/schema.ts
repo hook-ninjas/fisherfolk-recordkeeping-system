@@ -26,8 +26,7 @@ const FfolkValidation = object().shape({
     .oneOf(getValues(genderOptions))
     .required('Select gender.'),
   age: string()
-    .matches(/^$|\d{1,3}$/, 'Age must be a number.')
-    .matches(/^(1[89]|[2-9]\d)$/gm, 'Must be 18 or Above')
+    .matches(/^$|^(1[89]|[2-9]\d)$/gm, 'Must be 18 or Above')
     .required('Enter age.'),
   dateOfBirth: date()
     .max(maxBirthDate, 'Enter Valid Date')
@@ -36,7 +35,6 @@ const FfolkValidation = object().shape({
   placeOfBirth: string().required('Enter place of birth.'),
   civilStatus: string().required('Select civil status.'),
   educationalBackground: string().required('Select educational background.'),
-  numOfChildren: string().matches(/^$|\d{1,2}$/, 'Enter a number.'),
   nationality: string().required('Enter nationality.'),
   personToNotify: string().required('Enter person to notify.'),
   ptnRelationship: string().required(
@@ -47,12 +45,7 @@ const FfolkValidation = object().shape({
     .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
   ptnAddress: string().required('Enter address of person to notify.'),
   mainFishingActivity: string().required('Select main fishing activity.'),
-  orgName: string(),
   orgMemberSince: string().matches(/^$|\d{4}$/, 'Please enter year.'),
-  orgPosition: string().matches(
-    /(^[\sA-Za-z0-9]+$)/i,
-    'No special characters allowed'
-  ),
   profilePhoto: mixed()
     .test(
       'uploadedPhoto',
@@ -111,7 +104,6 @@ const FfolkValidation = object().shape({
       scoopNets: array().of(string()).ensure(),
       fallingGear: array().of(string()).ensure(),
       miscellaneous: array().of(string()).ensure(),
-      others: string(),
     })
     .test('requiredGear', 'Must have at least 1 gear', (value) => {
       const truthArray = Object.keys(value).map((key) => {
@@ -126,7 +118,6 @@ const FfolkValidation = object().shape({
 
       return truthArray.includes(true);
     }),
-  registrationType: string(),
   mfvrNumber: string().required('Please fill up mfvr no.'),
   homeport: string().required('Please indicate home port'),
   name: string().required('Vessel must have name'),
@@ -134,43 +125,6 @@ const FfolkValidation = object().shape({
   type: string().required('Please indicate type'),
   placeBuilt: string().required('Please indicate place built'),
   yearBuilt: string().matches(/^$|\d{4}$/, 'Enter year.'),
-  registeredLength: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-  registeredDepth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-  registeredBreadth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-  tonnageLength: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-  tonnageDepth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-  tonnageBreadth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-  grossTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-  netTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-  engineMake: string().required('Please indicate engine make'),
-  serialNumber: string().required('Please enter engine serial number'),
-  horsepower: string(),
-});
-
-const VesselWithGearSchema = object().shape({
-  vessel: object().shape({
-    engineMake: string(),
-    grossTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-    homeport: string(),
-    horsepower: string(),
-    mfvrNumber: string(),
-    material: string().required('Select material.'),
-    name: string(),
-    netTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-    placeBuilt: string(),
-    registeredBreadth: string().matches(
-      /^[0-9]\d*(\.\d+)?$/,
-      'Enter a number.'
-    ),
-    registeredDepth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-    registeredLength: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-    serialNumber: string(),
-    tonnageBreadth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-    tonnageDepth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-    tonnageLength: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-    type: string(),
-    yearBuilt: string().matches(/^$|\d{4}$/, 'Enter year.'),
-  }),
 });
 
 const CreateAccountSchema = object().shape({
@@ -213,7 +167,6 @@ const UpdateFisherfolkSchema = object().shape({
 
 export {
   FfolkValidation,
-  VesselWithGearSchema,
   CreateAccountSchema,
   LoginSchema,
   UpdateFisherfolkSchema,
