@@ -83,6 +83,7 @@ interface FormInputNumberProps {
   options?: Option[];
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  shouldUnregister?: boolean;
 }
 
 interface FormInputDateProps {
@@ -219,12 +220,14 @@ export const FormInputNumber = ({
   max,
   min,
   defaultValue,
+  shouldUnregister,
   errors,
 }: FormInputNumberProps) => (
   <Controller
     name={name}
     control={control}
     defaultValue={defaultValue ? defaultValue : ''}
+    shouldUnregister={shouldUnregister}
     render={({ field: { value, onChange } }) => (
       <TextField
         type="number"

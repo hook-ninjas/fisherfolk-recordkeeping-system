@@ -13,6 +13,7 @@ import {
   FormInputText,
   FormInputAutoText,
   FormInputDate,
+  FormInputNumber,
 } from './FormInputFields';
 import {
   UseFormResetField,
@@ -395,8 +396,7 @@ function FfolkInfoForm({
           />
         </Grid>
         <Grid item sm={6}>
-          <FormInputText
-            inputMode="numeric"
+          <FormInputNumber
             name="residentYear"
             control={control}
             label="Resident of Municipality since"
@@ -408,12 +408,11 @@ function FfolkInfoForm({
       </Grid>
       <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
         <Grid item sm={6}>
-          <FormInputText
+          <FormInputNumber
             name="age"
             control={control}
             label="Age"
             placeholder=""
-            inputMode="numeric"
             register={register}
             errors={errors}
           />
@@ -526,7 +525,7 @@ function FfolkInfoForm({
           />
         </Grid>
         <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
-          <FormInputText
+          <FormInputNumber
             name="numOfChildren"
             control={control}
             label="Number of Children"
@@ -675,8 +674,7 @@ function FfolkInfoForm({
           />
         </Grid>
         <Grid item sm={6}>
-          <FormInputText
-            inputMode="numeric"
+          <FormInputNumber
             name="orgMemberSince"
             control={control}
             label="Member Since"
