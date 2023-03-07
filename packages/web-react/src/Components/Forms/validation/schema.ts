@@ -54,20 +54,16 @@ const FfolkValidation = object().shape({
     'No special characters allowed'
   ),
   profilePhoto: mixed()
-    .test(
-      'uploadedPhoto',
-      'Must upload photo',
-      (value) => value && value instanceof FileList
-    )
+    .test('uploadedPhoto', 'Must upload photo', (value) => value != '')
     .test(
       'fileSize',
       'File too large',
-      (value) => value instanceof FileList && value[0].size <= uploadLimit
+      (value) => value && value.size <= uploadLimit
     )
     .test(
       'fileFormat',
       'Unsupported Format, Format must be in .jpeg, .jpg, .png',
-      (value) => value && value[0].type.match(/^.*(image\/jpeg|jpg|png)$/gm)
+      (value) => value && value.type.match(/^.*(image\/jpeg|jpg|png)$/gm)
     ),
   files: mixed()
     .test(
@@ -195,15 +191,19 @@ const UpdateFisherfolkSchema = object().shape({
     .test(
       'fileSize',
       'File too large',
-      (value) => !value || (value instanceof FileList && value[0].size <= uploadLimit)
+      (value) =>
+        !value || (value instanceof FileList && value[0].size <= uploadLimit)
     )
     .test(
       'fileFormat',
       'Unsupported Format, Format must be in .jpeg, .jpg, .png',
-      (value) => !value || (value && value[0].type.match(/^.*(image\/jpeg|jpg|png)$/gm))
+      (value) =>
+        !value || (value && value[0].type.match(/^.*(image\/jpeg|jpg|png)$/gm))
     ),
-  contactNumber: string()
-    .matches(/^$|^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
+  contactNumber: string().matches(
+    /^$|^(09|\+639)\d{9}$/,
+    'Please enter a valid contact number.'
+  ),
   age: string().matches(/^$|^(1[89]|[2-9]\d)$/gm, 'Must be 18 or Above'),
   ptnContactNum: string().matches(
     /^$|^(09|\+639)\d{9}$/,
