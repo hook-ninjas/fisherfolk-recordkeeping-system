@@ -40,22 +40,36 @@ function PhotoUpload({
     }
   };
 
-  const handleUpload = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const reader = new FileReader();
+  const handleUpload =
+    (onChange: (value: any) => void) =>
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const reader = new FileReader();
 
-    if (event.target instanceof HTMLInputElement) {
-      if (event.target.files !== null) {
-        const file = event.target.files[0];
-        reader.readAsDataURL(file);
+      if (event.target instanceof HTMLInputElement) {
+        if (event.target.files !== null) {
+          const file = event.target.files[0];
+          const { name, size, type } = file;
 
-        reader.onloadend = () => setPreview(reader);
-      } else {
-        throw 'No File uploaded';
+          reader.onloadend = (ev) => {
+            setPreview(reader);
+            if (ev.target != null) {
+              const data = {
+                uri: ev.target.result,
+                name: name,
+                size: size,
+                type: type,
+              };
+
+              onChange(data);
+            }
+          };
+
+          reader.readAsDataURL(file);
+        } else {
+          throw 'No File uploaded';
+        }
       }
-    }
-  };
+    };
 
   return (
     <>
@@ -83,7 +97,7 @@ function PhotoUpload({
           name={name}
           control={control}
           defaultValue=""
-          render={({ field: { value } }) => (
+          render={({ field: { value, onChange } }) => (
             <Button
               fullWidth
               id="upload-btn-label"
@@ -99,7 +113,7 @@ function PhotoUpload({
                 hidden
                 aria-label="profile-img-upload"
                 accept="image/*"
-                {...register(name, { onChange: (e) => handleUpload(e) })}
+                onChange={handleUpload(onChange)}
               />
             </Button>
           )}
