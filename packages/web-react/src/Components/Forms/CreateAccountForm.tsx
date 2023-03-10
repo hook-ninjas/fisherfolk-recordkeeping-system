@@ -3,7 +3,6 @@ import {
   Button,
   CssBaseline,
   TextField,
-  Grid,
   Box,
   Typography,
   Container,
@@ -28,6 +27,8 @@ import { useMutation } from '@apollo/client';
 import OfficeLogo from '../../Assets/city-agri-logo.png';
 import CityLogo from '../../Assets/seal_of_iloilo_city.png';
 import { CreateAccountSchema } from './validation/schema';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SaveIcon from '@mui/icons-material/Save';
 
 const theme = createTheme();
 
@@ -61,7 +62,7 @@ function CreateAccount() {
   };
 
   const handleLogin = async () => {
-    await wait(2500);
+    await wait(1_500);
     navigate('/login');
   };
 
@@ -69,6 +70,7 @@ function CreateAccount() {
     onCompleted: () => {
       handleOpen();
       handleLogin();
+      setIsSubmitting(false);
     },
     onError: (err) => {
       setError(err.message);
@@ -82,6 +84,7 @@ function CreateAccount() {
     handleSubmit,
     formState: { errors },
   } = useForm({
+    mode: 'onChange',
     resolver: yupResolver(CreateAccountSchema),
   });
 
@@ -153,6 +156,7 @@ function CreateAccount() {
               control={control}
               render={({ field: { value } }) => (
                 <TextField
+                  autoComplete="new-email"
                   margin="normal"
                   fullWidth
                   id="username"
@@ -169,6 +173,7 @@ function CreateAccount() {
               control={control}
               render={({ field: { value } }) => (
                 <TextField
+                  autoComplete="new-password"
                   margin="normal"
                   fullWidth
                   label="Password"
@@ -194,35 +199,57 @@ function CreateAccount() {
               )}
             />
             {error && <Alert severity="error">{error}</Alert>}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                mt: 3,
-                mb: 2,
-                background: '#28c181',
-                fontSize: 12,
-                fontWeight: '600',
-                color: 'whitesmoke',
-              }}
-              onClick={(e) => {
-                handleSubmitCreateAccountForm(e);
-              }}
-              disabled={isSubmitting}
-            >
-              Create account
-            </Button>
-            <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
-              <Alert
-                onClose={handleClose}
-                severity="success"
-                sx={{ width: '100%', background: '#98FB98' }}
+            {isSubmitting ? (
+              <LoadingButton
+                loading
+                fullWidth
+                loadingPosition="start"
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                }}
+                startIcon={<SaveIcon />}
+                variant="outlined"
               >
-                Success! Your account has been created.
-              </Alert>
-            </Snackbar>
-            <Grid container></Grid>
+                Loading
+              </LoadingButton>
+            ) : (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  background: '#28c181',
+                  fontSize: 12,
+                  fontWeight: '600',
+                  color: 'whitesmoke',
+                }}
+                onClick={(e) => {
+                  handleSubmitCreateAccountForm(e);
+                }}
+              >
+                Create account
+              </Button>
+            )}
+            {!isSubmitting ? (
+              <Snackbar
+                open={open}
+                autoHideDuration={2000}
+                onClose={handleClose}
+              >
+                <Alert
+                  onClose={handleClose}
+                  severity="success"
+                  sx={{ width: '100%', background: '#98FB98' }}
+                >
+                  Success! Your account has been created.
+                </Alert>
+              </Snackbar>
+            ) : (
+              ''
+            )}
           </Box>
           <Stack direction="row" spacing={0.5}>
             <Typography variant="subtitle2">
