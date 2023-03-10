@@ -17,6 +17,9 @@
     status
   }
   totalFisherfolk
+  fisherfolksWithUniqueBarangay {
+    barangay
+  }
 }
 query FisherfolkById($fisherfolkId: BigInt!) {
   fisherfolk(id: $fisherfolkId) {

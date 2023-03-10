@@ -10,11 +10,9 @@ import {
   FormControlLabel,
   Grid,
   IconButton,
-  MenuItem,
   Paper,
   Radio,
   RadioGroup,
-  Select,
   styled,
   Typography,
 } from '@mui/material';
@@ -27,7 +25,6 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { Controller, useForm } from 'react-hook-form';
 import { splitUpperCase } from '../../utils/utils';
 import { livelihoods, fisherfolkStatus } from '../Forms/Enums';
-import dt from '../Forms/iloilo-city-brgys.json';
 import { useQuery } from '@apollo/client';
 import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -71,12 +68,16 @@ const FisherfolkRecord = () => {
   const [isFiltered, setIsFiltered] = useState(false);
   const [isDrawerOpen, setIsDrawOpen] = useState(false);
   const [searchKey, setSearchKey] = useState('');
-  const barangays = dt.barangays.sort();
 
   const handleAddFisherfolkOpen = () => setFisherfolkBtn(true);
   const handleAddFisherfolkClose = () => setFisherfolkBtn(false);
 
   const { loading, error, data, refetch } = useQuery(QueryFisherfolksDocument);
+
+  const barangayOptions =
+    data != undefined
+      ? data.fisherfolksWithUniqueBarangay.map((a) => a.barangay).sort()
+      : [];
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKey(event.target.value);
@@ -299,7 +300,7 @@ const FisherfolkRecord = () => {
                           autoComplete
                           onChange={(_, values) => onChange(values)}
                           value={value}
-                          options={barangays}
+                          options={barangayOptions}
                           renderInput={(params) => (
                             <TextField
                               {...params}
