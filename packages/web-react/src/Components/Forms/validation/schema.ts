@@ -2,9 +2,12 @@ import { object, string, mixed, array, date } from 'yup';
 import { getValues } from '../../../utils/utils';
 import { salutationOptions, genderOptions } from '../Enums';
 import { sub } from 'date-fns/fp';
+import { FisherfolkStatus, SourceOfIncome } from '../../../graphql/generated';
+import data from '../../Forms/iloilo-city-brgys.json';
 
 const maxBirthDate = sub({ years: 19 })(new Date());
 const uploadLimit = 10000000;
+const barangays = data.barangays.sort();
 
 const FfolkValidation = object().shape({
   lastName: string().required('Enter last name.'),
@@ -149,15 +152,19 @@ const UpdateFisherfolkSchema = object().shape({
     .test(
       'fileSize',
       'File too large',
-      (value) => !value || (value instanceof FileList && value[0].size <= uploadLimit)
+      (value) =>
+        !value || (value instanceof FileList && value[0].size <= uploadLimit)
     )
     .test(
       'fileFormat',
       'Unsupported Format, Format must be in .jpeg, .jpg, .png',
-      (value) => !value || (value && value[0].type.match(/^.*(image\/jpeg|jpg|png)$/gm))
+      (value) =>
+        !value || (value && value[0].type.match(/^.*(image\/jpeg|jpg|png)$/gm))
     ),
-  contactNumber: string()
-    .matches(/^$|^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
+  contactNumber: string().matches(
+    /^$|^(09|\+639)\d{9}$/,
+    'Please enter a valid contact number.'
+  ),
   age: string().matches(/^$|^(1[89]|[2-9]\d)$/gm, 'Must be 18 or Above'),
   ptnContactNum: string().matches(
     /^$|^(09|\+639)\d{9}$/,
@@ -165,9 +172,37 @@ const UpdateFisherfolkSchema = object().shape({
   ),
 });
 
+const AddVesselWithGearSchema = object().shape({
+  vesselGearPhoto: mixed()
+    .test(
+      'uploadedPhoto',
+      'Must upload photo',
+      (value) => value && value instanceof FileList
+    )
+    .test(
+      'fileSize',
+      'File too large',
+      (value) => value instanceof FileList && value[0].size <= uploadLimit
+    )
+    .test(
+      'fileFormat',
+      'Unsupported Format, Format must be in .jpeg, .jpg, .png',
+      (value) => value && value[0].type.match(/^.*(image\/jpeg|jpg|png)$/gm)
+    ),
+  yearBuilt: string().matches(/^$|\d{4}$/, 'Enter year.'),
+});
+
+const FilterSchema = object().shape({
+  status: string().nullable().oneOf(Object.values(FisherfolkStatus)),
+  livelihood: string().nullable().oneOf(Object.values(SourceOfIncome)),
+  barangay: string().nullable().oneOf(barangays),
+});
+
 export {
   FfolkValidation,
   CreateAccountSchema,
   LoginSchema,
   UpdateFisherfolkSchema,
+  AddVesselWithGearSchema,
+  FilterSchema
 };
