@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Autocomplete,
   Box,
   Button,
   DialogTitle,
@@ -287,22 +288,36 @@ const FisherfolkRecord = () => {
                   <Typography textAlign="start" color="GrayText">
                     Barangays
                   </Typography>
-                  <FormControl aria-label="barangay" role="combobox">
+                  <FormControl aria-label="barangay" role="textbox">
                     <Controller
                       name="barangay"
                       control={control}
                       render={({ field: { onChange, value } }) => (
-                        <Select
-                          value={value ?? ''}
-                          onChange={onChange}
-                          sx={{ width: 260, height: 40 }}
-                        >
-                          {barangays?.map((item) => (
-                            <MenuItem value={item} key={item}>
-                              {splitUpperCase(item)}
-                            </MenuItem>
-                          ))}
-                        </Select>
+                        <Autocomplete
+                          disableClearable
+                          freeSolo
+                          autoComplete
+                          onChange={(_, values) => onChange(values)}
+                          value={value}
+                          options={barangays}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              sx={{
+                                marginLeft: -1.5,
+                                width: 250,
+                              }}
+                              InputProps={{
+                                ...params.InputProps,
+                                style: {
+                                  fontSize: 14,
+                                  margin: 10,
+                                  textTransform: 'none',
+                                },
+                              }}
+                            />
+                          )}
+                        />
                       )}
                     />
                   </FormControl>
