@@ -6,7 +6,7 @@ import {
   EducationalBackground,
   CivilStatus,
   Gender,
-  Salutation
+  Salutation,
 } from '../../graphql/generated';
 import { MockedResponse } from '@apollo/client/testing';
 
@@ -54,6 +54,17 @@ export const FisherfolksQueryMock: MockedResponse[] = [
           },
         ],
         totalFisherfolk: 2,
+        fisherfolksWithUniqueBarangay: [
+          {
+            barangay: 'Brgy. Buhang',
+          },
+          {
+            barangay: 'Brgy. Santa Cruz',
+          },
+          {
+            barangay: 'Brgy. Kauswagan',
+          },
+        ],
       },
     },
   },
@@ -61,8 +72,8 @@ export const FisherfolksQueryMock: MockedResponse[] = [
     request: {
       query: FisherfolkByIdDocument,
       variables: {
-        fisherfolkId: 101
-      }
+        fisherfolkId: 101,
+      },
     },
     result: {
       data: {
@@ -97,8 +108,8 @@ export const FisherfolksQueryMock: MockedResponse[] = [
             {
               isMain: true,
               type: SourceOfIncome.FishVending,
-              description: ''
-            }
+              description: '',
+            },
           ],
           organizations: [
             {
@@ -106,11 +117,11 @@ export const FisherfolksQueryMock: MockedResponse[] = [
                 name: 'FishCom',
               },
               position: 'Member',
-              yearJoined: 2017
-            }
-          ]
-        }
+              yearJoined: 2017,
+            },
+          ],
+        },
       },
     },
-  }
+  },
 ];
