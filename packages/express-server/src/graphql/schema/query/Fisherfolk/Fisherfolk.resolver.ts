@@ -54,3 +54,9 @@ export const queryFisherFolkByGender = (gender:Gender,ctx:Context)=>{
   });
 };
 
+export const queryFisherfolksWithUniqueBarangay = (ctx:Context)=>{
+  return ctx.prisma.fisherfolk.findMany({
+    distinct: 'barangay' 
+  });
+};
+

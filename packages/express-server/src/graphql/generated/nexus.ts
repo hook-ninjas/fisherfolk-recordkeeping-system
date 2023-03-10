@@ -297,18 +297,18 @@ export interface NexusGenFieldTypes {
     dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
     firstName: string; // String!
-    gears: Array<NexusGenRootTypes['Gear'] | null> | null; // [Gear]
+    gears: NexusGenRootTypes['Gear'][]; // [Gear!]!
     gender: NexusGenEnums['Gender']; // Gender!
-    governmentAid: Array<NexusGenRootTypes['Queue'] | null> | null; // [Queue]
+    governmentAid: NexusGenRootTypes['Queue'][]; // [Queue!]!
     id: NexusGenScalars['BigInt']; // BigInt!
-    images: Array<NexusGenRootTypes['Image'] | null> | null; // [Image]
+    images: NexusGenRootTypes['Image'][]; // [Image!]!
     isArchive: boolean; // Boolean!
     lastName: string; // String!
-    livelihoods: Array<NexusGenRootTypes['Livelihood'] | null> | null; // [Livelihood]
+    livelihoods: NexusGenRootTypes['Livelihood'][]; // [Livelihood!]!
     middleName: string; // String!
     nationality: string; // String!
     numOfChildren: number; // Int!
-    organizations: Array<NexusGenRootTypes['Member'] | null> | null; // [Member]
+    organizations: NexusGenRootTypes['Member'][]; // [Member!]!
     permit: NexusGenRootTypes['Permit'] | null; // Permit
     personToNotify: string; // String!
     placeOfBirth: string; // String!
@@ -322,7 +322,7 @@ export interface NexusGenFieldTypes {
     salutation: NexusGenEnums['Salutation']; // Salutation!
     status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
-    vessels: Array<NexusGenRootTypes['Vessel'] | null> | null; // [Vessel]
+    vessels: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
   }
   Gear: { // field return type
     classification: NexusGenEnums['GearClassification']; // GearClassification!
@@ -410,6 +410,7 @@ export interface NexusGenFieldTypes {
     fisherfolkGender: number; // Int!
     fisherfolkVessels: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
     fisherfolks: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
+    fisherfolksWithUniqueBarangay: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     gears: NexusGenRootTypes['Gear'][]; // [Gear!]!
     livelihoodCount: number; // Int!
     totalFisherfolk: number; // Int!
@@ -590,6 +591,7 @@ export interface NexusGenFieldTypeNames {
     fisherfolkGender: 'Int'
     fisherfolkVessels: 'Vessel'
     fisherfolks: 'Fisherfolk'
+    fisherfolksWithUniqueBarangay: 'Fisherfolk'
     gears: 'Gear'
     livelihoodCount: 'Int'
     totalFisherfolk: 'Int'
