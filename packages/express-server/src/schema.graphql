@@ -233,6 +233,7 @@ type Mutation {
   createVessel(vessel: CreateVesselInput!): Vessel!
   createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
   loginUser(data: CreateUserInput!): AuthPayload!
+  updateFisherfolk(data: CreateFisherfolkInput!, id: Int!): Fisherfolk!
   updateMfvr(id: Int!, mfvrNum: String!): Vessel!
 }
 

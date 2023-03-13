@@ -1,50 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { UseFormRegister, Control, FieldValues } from 'react-hook-form';
 import {
   Box,
-  Button,
-  Checkbox,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  FormControlLabel,
-  FormGroup,
   Grid,
-  IconButton,
   Typography,
 } from '@mui/material';
 import {
-  FormContainer,
-  FormContainerTitle,
-} from '../Containers/FormContainers';
-import {
   FormInputRadio,
   FormInputText,
-  FormCreatableSelect,
   FormInputSelect,
   FormInputAutoText,
 } from './FormInputFields';
-import { useForm } from 'react-hook-form';
-import { object, string } from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 import {
-  CreateGearsDocument,
-  CreateVesselDocument,
-  CreateVessselWithGearDocument,
-  GearClassification,
-  MutationCreateVesselWithGearArgs,
-  MutationCreateImageArgs,
-  CreateImageDocument,
-} from '../../graphql/generated';
-import { useMutation } from '@apollo/client';
-import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
-import {
-  createOption,
   registrationTypeForBoatsAndGears,
-  vesselTypeOptions,
   materialOptions,
 } from './Enums';
-import { useParams } from 'react-router-dom';
 
 interface VesselFormProps {
   control: Control<FieldValues, unknown>;
@@ -134,7 +104,6 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
             name="material"
             label="Select Material Used"
             data={materialOptions}
-            onSavedValue=""
             control={control}
             register={register}
             errors={errors}

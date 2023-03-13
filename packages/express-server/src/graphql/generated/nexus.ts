@@ -380,6 +380,7 @@ export interface NexusGenFieldTypes {
     createVessel: NexusGenRootTypes['Vessel']; // Vessel!
     createVesselWithGear: NexusGenRootTypes['Vessel']; // Vessel!
     loginUser: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    updateFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     updateMfvr: NexusGenRootTypes['Vessel']; // Vessel!
   }
   Organization: { // field return type
@@ -559,6 +560,7 @@ export interface NexusGenFieldTypeNames {
     createVessel: 'Vessel'
     createVesselWithGear: 'Vessel'
     loginUser: 'AuthPayload'
+    updateFisherfolk: 'Fisherfolk'
     updateMfvr: 'Vessel'
   }
   Organization: { // field return type name
@@ -662,6 +664,10 @@ export interface NexusGenArgTypes {
     }
     loginUser: { // args
       data: NexusGenInputs['CreateUserInput']; // CreateUserInput!
+    }
+    updateFisherfolk: { // args
+      data: NexusGenInputs['CreateFisherfolkInput']; // CreateFisherfolkInput!
+      id: number; // Int!
     }
     updateMfvr: { // args
       id: number; // Int!

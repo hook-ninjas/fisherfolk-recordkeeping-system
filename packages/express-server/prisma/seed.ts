@@ -92,7 +92,7 @@ const createFisherFolk = async (x: number) => {
         barangay: address.street(),
         cityMunicipality: address.county(),
         province: address.state(),
-        contactNum: phone.number('+639##########'),
+        contactNum: phone.number('+639#########'),
         residentYear: getRandomInt(2022, birthdate.getFullYear()),
         dateOfBirth: birthdate,
         placeOfBirth: address.city(),
@@ -105,7 +105,7 @@ const createFisherFolk = async (x: number) => {
         personToNotify: randomName(randomGender, 'full'),
         ptnRelationship: 'relative',
         ptnAddress: address.city() + ' ' + address.state(),
-        ptnContactNum: phone.number('+639##########'),
+        ptnContactNum: phone.number('+639#########'),
         status: randomStatus,
         livelihoods: {
           create: {
