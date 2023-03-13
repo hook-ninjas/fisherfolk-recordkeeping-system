@@ -16,11 +16,11 @@ import {
 import {
   FormInputRadio,
   FormInputText,
-  FormCreatableSelect,
   FormInputSelect,
+  FormInputNumber,
+  FormInputAutoText,
 } from './FormInputFields';
 import { useForm } from 'react-hook-form';
-import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   CreateGearsDocument,
@@ -30,19 +30,17 @@ import {
   MutationCreateVesselWithGearArgs,
   MutationCreateImageArgs,
   CreateImageDocument,
-  FisherfolkGearsDocument,
-  GearsQueryDocument,
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
 import {
-  createOption,
   registrationTypeForBoatsAndGears,
   gears,
   vesselTypeOptions,
   materialOptions,
 } from './Enums';
 import { useParams } from 'react-router-dom';
+import { AddVesselWithGearSchema } from './validation/schema';
 
 interface AddVesselWithGearFormProps {
   open: boolean;
@@ -86,8 +84,6 @@ export default function AddVesselWithGearForm({
   };
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [vesselTypes, setVesselTypes] = useState(vesselTypeOptions);
 
   const [gearTypes, setGearTypes] = useState({
     SimpleHandLine: false,
@@ -170,47 +166,6 @@ export default function AddVesselWithGearForm({
     });
   };
 
-  const handleCreateTypeVessel = (inputValue: string) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      const newValue = createOption(inputValue);
-      setIsLoading(false);
-      setVesselTypes((prev) => [...prev, newValue]);
-    }, 1500);
-  };
-
-  const addVesselWithGearSchema = object().shape({
-    vessel: object().shape({
-      engineMake: string(),
-      grossTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-      homeport: string(),
-      horsepower: string(),
-      mfvrNumber: string(),
-      material: string().nullable().oneOf(materialOptions),
-      name: string(),
-      netTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-      placeBuilt: string(),
-      registeredBreadth: string().matches(
-        /^[0-9]\d*(\.\d+)?$/,
-        'Enter a number.'
-      ),
-      registeredDepth: string().matches(
-        /^[0-9]\d*(\.\d+)?$/,
-        'Enter a number.'
-      ),
-      registeredLength: string().matches(
-        /^[0-9]\d*(\.\d+)?$/,
-        'Enter a number.'
-      ),
-      serialNumber: string(),
-      tonnageBreadth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-      tonnageDepth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-      tonnageLength: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-      type: string(),
-      yearBuilt: string().matches(/^$|\d{4}$/, 'Enter year.'),
-    }),
-  });
-
   const keys = Object.keys(gears) as GearClassification[];
 
   const getClassification = (value: string) => {
@@ -234,7 +189,8 @@ export default function AddVesselWithGearForm({
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(addVesselWithGearSchema),
+    mode: 'onChange',
+    resolver: yupResolver(AddVesselWithGearSchema),
   });
 
   const [createVesselWithGear] = useMutation(CreateVessselWithGearDocument, {
@@ -347,10 +303,6 @@ export default function AddVesselWithGearForm({
         variables: {
           gears: createVesselWithGearInput.gears,
         },
-        awaitRefetchQueries: true,
-        refetchQueries: [ {
-          query: GearsQueryDocument
-        }]
       });
 
       await createImage({
@@ -370,10 +322,6 @@ export default function AddVesselWithGearForm({
           gears: createVesselWithGearInput.gears,
           vessel: createVesselWithGearInput.vessel,
         },
-        awaitRefetchQueries: true,
-        refetchQueries: [ {
-          query: GearsQueryDocument
-        }]
       });
 
       await createImage({
@@ -382,8 +330,6 @@ export default function AddVesselWithGearForm({
         },
       });
     }
-
-    console.log(image);
   });
 
   const handleSubmitForm = (
@@ -426,7 +372,6 @@ export default function AddVesselWithGearForm({
               radioOptions={registrationTypeForBoatsAndGears}
             />
           </Box>
-
           <Grid container spacing={-2} sx={{ ml: 1, mr: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
@@ -473,16 +418,16 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
             <Grid item sm={6} sx={{ mt: 2 }}>
-              <FormCreatableSelect
-                control={control}
-                errors={errors}
-                isLoading={isLoading}
-                isDisabled={isLoading}
+              <FormInputAutoText
+                sx={{ marginTop: -1.5, marginLeft: -1, width: 230 }}
+                freeSolo
                 name="type"
-                placeholder="Select Type"
-                onCreateOption={handleCreateTypeVessel}
-                options={vesselTypes}
+                control={control}
+                label="Type"
+                options={vesselTypeOptions}
                 register={register}
+                errors={errors}
+                shouldUnregister
               />
             </Grid>
           </Grid>
@@ -498,7 +443,7 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
             <Grid item sm={6} sx={{ mt: 1, ml: 0 }}>
-              <FormInputText
+              <FormInputNumber
                 name="yearBuilt"
                 control={control}
                 label="Year Built"
@@ -513,7 +458,7 @@ export default function AddVesselWithGearForm({
           </Typography>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputNumber
                 name="registeredLength"
                 control={control}
                 label="Registered Length"
@@ -523,7 +468,7 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputNumber
                 name="registeredDepth"
                 control={control}
                 label="Registered Depth"
@@ -535,7 +480,7 @@ export default function AddVesselWithGearForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputNumber
                 name="registeredBreadth"
                 control={control}
                 label="Registered Breadth"
@@ -545,7 +490,7 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputNumber
                 name="tonnageLength"
                 control={control}
                 label="Tonnage Length"
@@ -557,7 +502,7 @@ export default function AddVesselWithGearForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputNumber
                 name="tonnageDepth"
                 control={control}
                 label="Tonnage Depth"
@@ -567,7 +512,7 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputNumber
                 name="tonnageBreadth"
                 control={control}
                 label="Tonnage Breadth"
@@ -579,7 +524,7 @@ export default function AddVesselWithGearForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputNumber
                 name="grossTonnage"
                 control={control}
                 label="Gross Tonnage"
@@ -589,7 +534,7 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputNumber
                 name="netTonnage"
                 control={control}
                 label="Net Tonnage"
@@ -626,7 +571,7 @@ export default function AddVesselWithGearForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6} sx={{ mt: -1 }}>
-              <FormInputText
+              <FormInputNumber
                 name="horsepower"
                 control={control}
                 label="Horsepower"
@@ -1126,7 +1071,6 @@ export default function AddVesselWithGearForm({
                   </FormGroup>
                 </Box>
               </Grid>
-
               <Grid item sm={6}>
                 <Typography variant="subtitle1" color="GrayText" mt={-2} mb={3}>
                   Falling Gear
