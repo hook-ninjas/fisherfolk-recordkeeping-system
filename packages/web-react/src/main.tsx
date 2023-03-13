@@ -16,6 +16,7 @@ import Login from './Components/Forms/LoginForm';
 import FisherfolkViewProfile from './Components/FisherfolkRecord/FisherfolkViewProfile';
 import FisherfolkBoatRecord from './Components/FisherfolkRecord/FisherfolkBoatRecord';
 import FisherfolkGearRecord from './Components/FisherfolkRecord/FisherfolkGearRecord';
+import FisherfolkArchiveRecord from './Components/FisherfolkRecord/FisherfolkArchiveRecord';
 import CreateAccount from './Components/Forms/CreateAccountForm';
 import ProtectedRoute from './Components/NotAuthorizedPage/ProtectedRoute';
 
@@ -58,6 +59,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               <Route
                 path="fisherfolk-gears"
                 element={<FisherfolkGearRecord />}
+              />
+              <Route
+                path="fisherfolk-archive"
+                element={<FisherfolkArchiveRecord />}
               />
             </Route>
           </Route>

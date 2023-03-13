@@ -76,4 +76,17 @@ const updateFisherfolk = async (
   });
 };
 
-export { createFisherfolk, updateFisherfolk };
+const archiveFisherfolk = async (
+  id: number,
+  ctx: Context
+) => {
+  ctx.prisma.fisherfolk.delete({
+    where: {
+      id: id
+    }
+  });
+
+  // return ctx.prisma
+};
+
+export { createFisherfolk, updateFisherfolk, archiveFisherfolk };
