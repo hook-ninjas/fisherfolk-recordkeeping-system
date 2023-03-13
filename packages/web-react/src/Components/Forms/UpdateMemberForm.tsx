@@ -6,6 +6,7 @@ import {
   DialogContent,
   FormControlLabel,
   FormGroup,
+  FormHelperText,
   Grid,
   Typography,
 } from '@mui/material';
@@ -17,12 +18,14 @@ import {
   FormInputDate,
   FormInputNumber,
 } from './FormInputFields';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import {
   FisherfolkByIdDocument,
   MutationCreateFisherfolkArgs,
+  MutationUpdateFisherfolkImageArgs,
   SourceOfIncome,
   UpdateFisherfolkDocument,
+  UpdateFisherfolkImageDocument,
 } from '../../graphql/generated';
 import { useMutation, useQuery } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
@@ -44,7 +47,8 @@ import {
 import { UpdateFisherfolkSchema } from './validation/schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import LinearProgress from '@mui/material/LinearProgress';
-import PhotoUpload from '../Input/PhotoUpload';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SaveIcon from '@mui/icons-material/Save';
 
 interface UpdateFisherfolkFormProps {
   id: number;
@@ -78,6 +82,22 @@ export default function UpdateFisherfolkForm({
     FishVending: false,
     FishProcessing: false,
   });
+  const [image, setImage] = React.useState<
+    string | undefined | ArrayBuffer | null
+  >();
+
+  const previewImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    if (event.target.files instanceof FileList) {
+      reader.readAsDataURL(event.target.files[0]);
+
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+    } else {
+      return 'handle exception';
+    }
+  };
 
   const handleSubmitting = () => setIsSubmitting(true);
 
@@ -113,6 +133,8 @@ export default function UpdateFisherfolkForm({
     },
   });
 
+  const [updateImage] = useMutation(UpdateFisherfolkImageDocument);
+
   const [updateFisherfolk] = useMutation(UpdateFisherfolkDocument, {
     onCompleted: () => {
       handleClose();
@@ -137,7 +159,8 @@ export default function UpdateFisherfolkForm({
         civilStatus: input.civilStatus ?? civilStatus,
         contactNum: input.contactNumber,
         dateOfBirth: new Date(input.dateOfBirth),
-        educationalBackground: input.educationalBackground ?? educationalBackground,
+        educationalBackground:
+          input.educationalBackground ?? educationalBackground,
         firstName: input.firstName,
         gender: input.gender ?? gender,
         lastName: input.lastName,
@@ -163,14 +186,36 @@ export default function UpdateFisherfolkForm({
       },
     };
 
-    console.log(updateFisherfolkInput.data);
-
-    await updateFisherfolk({
-      variables: {
-        updateFisherfolkId: id,
-        data: updateFisherfolkInput.data,
-      },
-    });
+    if(data) {
+      const updateImageInput: MutationUpdateFisherfolkImageArgs = {
+        data: {
+          fisherfolkId: id,
+          url: image != null ? image.toString() : data.fisherfolkPhoto[0].url,
+          vessel_id: null,
+          gear_id: null,
+          updated_at: new Date(),
+          name: '',
+          text: '',
+        },
+        id: data.fisherfolkPhoto[0].id,
+        url: data.fisherfolkPhoto[0].url,
+      };
+  
+      await updateImage({
+        variables: {
+          data: updateImageInput.data,
+          updateFisherfolkImageId: updateImageInput.id,
+          url: updateImageInput.url,
+        },
+      }).then(async () => (
+        await updateFisherfolk({
+          variables: {
+            updateFisherfolkId: id,
+            data: updateFisherfolkInput.data,
+          },
+        })
+      ));
+    }
   });
 
   const handleSubmitForm = (
@@ -244,9 +289,6 @@ export default function UpdateFisherfolkForm({
           Update Fisherfolk
         </FormContainerTitle>
         <DialogContent dividers>
-          <Typography variant="body1" color="GrayText" mb={2} ml={2}>
-            Upload Profile Picture
-          </Typography>
           <Box
             sx={{
               display: 'flex',
@@ -254,19 +296,51 @@ export default function UpdateFisherfolkForm({
               mt: -2,
             }}
           >
-            <PhotoUpload
-              name="profilePhoto"
-              control={control}
-              register={register}
-              errors={errors}
-              sx={{
-                m: 1,
-                p: 1,
-                maxWidth: '200px',
-              }}
-              alt={'Upload 2x2 Photo'}
-              dataCy={'ffolk-img'}
-            />
+            <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+              <Grid item sm={6}>
+                <Box sx={{ width: 150, height: 150 }} mt={2}>
+                  <img
+                    src={
+                      data?.fisherfolkPhoto.length != 0
+                        ? image?.toString() ?? data?.fisherfolkPhoto[0].url
+                        : ''
+                    }
+                    width={150}
+                    height={150}
+                  />
+                </Box>
+                <FormHelperText sx={{ color: '#d32f2f' }}>
+                  {errors['vesselGearPhoto']?.message?.toString()}
+                </FormHelperText>
+                <Controller
+                  name="profilePhoto"
+                  control={control}
+                  defaultValue=""
+                  render={() => (
+                    <Button
+                      sx={{ width: 150 }}
+                      id="upload-btn-label"
+                      variant="contained"
+                      component="label"
+                      htmlFor="upload-btn"
+                    >
+                      Upload
+                      <input
+                        id="upload-btn"
+                        data-cy="vessel-gear-input"
+                        type="file"
+                        hidden
+                        aria-label="vessel-gear-img-upload"
+                        accept="image/*"
+                        {...register('profilePhoto', {
+                          onChange: (e) => previewImage(e),
+                        })}
+                      />
+                    </Button>
+                  )}
+                />
+              </Grid>
+            </Grid>
           </Box>
           <Typography variant="h6" color="GrayText" ml={2} mt={2}>
             Personal Information
@@ -331,8 +405,8 @@ export default function UpdateFisherfolkForm({
               />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, }}>
-            <Grid item sm={6} sx={{ mt: 1,}}>
+          <Grid container spacing={-2} sx={{ ml: 1 }}>
+            <Grid item sm={6} sx={{ mt: 1 }}>
               <FormInputAutoText
                 sx={{ marginTop: -0.3, width: 230 }}
                 freeSolo
@@ -345,9 +419,9 @@ export default function UpdateFisherfolkForm({
                 errors={errors}
               />
             </Grid>
-            <Grid item sm={6} sx={{ mt: 1}}>
+            <Grid item sm={6} sx={{ mt: 1 }}>
               <FormInputAutoText
-                sx={{ marginTop: -0.3, width: 230}}
+                sx={{ marginTop: -0.3, width: 230 }}
                 freeSolo
                 name="cityMunicipality"
                 control={control}
@@ -406,16 +480,15 @@ export default function UpdateFisherfolkForm({
               />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
+          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputDate
-                sx={{ pl: 1, width: 240, height: 52, ml: 0.5 }}
+                sx={{ pl: 1, width: 240, height: 52, ml: 0.1, mt: 0.9 }}
                 name="dateOfBirth"
                 control={control}
                 openTo="year"
                 max={maxDate}
                 defaultValue={data && dateOfBirth}
-                // onSavedValue={}
                 label="Date of Birth"
                 register={register}
                 errors={errors}
@@ -471,8 +544,19 @@ export default function UpdateFisherfolkForm({
               </Box>
             </Grid>
           </Grid>
-          <Grid container spacing={-1} sx={{ ml: 1 }}>
-            <Grid item sm={6} sx={{ mt: 1 }}>
+          <Grid container spacing={-2} sx={{ ml: 2 }}>
+            <Grid item sm={6} sx={{ mt: 2 }}>
+              <FormInputSelect
+                name="civilStatus"
+                label="Select Civil Status"
+                data={civilStatusOptions}
+                control={control}
+                register={register}
+                errors={errors}
+                onSavedValue={data && civilStatus}
+              />
+            </Grid>
+            <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
               <FormInputAutoText
                 sx={{ marginTop: -0.3, width: 230 }}
                 freeSolo
@@ -485,19 +569,8 @@ export default function UpdateFisherfolkForm({
                 errors={errors}
               />
             </Grid>
-            <Grid item sm={6} sx={{ mt: 2,}}>
-              <FormInputSelect
-                name="civilStatus"
-                label="Select Civil Status"
-                data={civilStatusOptions}
-                control={control}
-                register={register}
-                errors={errors}
-                onSavedValue={data && civilStatus}
-              />
-            </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 2, mt: 1 }}>
+          <Grid container spacing={-2} sx={{ ml: 2 }}>
             <Grid item sm={6} sx={{ mt: 2 }}>
               <FormInputSelect
                 name="educationalBackground"
@@ -678,18 +751,34 @@ export default function UpdateFisherfolkForm({
             </Grid>
           </Grid>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              onClick={(e) => {
-                handleSubmitForm(e);
-              }}
-              disabled={isSubmitting}
-              sx={buttonSx}
-            >
-              Save Changes
-            </Button>
+            {isSubmitting ? (
+              <LoadingButton
+                loading
+                fullWidth
+                loadingPosition="start"
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                }}
+                startIcon={<SaveIcon />}
+                variant="outlined"
+              >
+                Loading
+              </LoadingButton>
+            ) : (
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                onClick={(e) => {
+                  handleSubmitForm(e);
+                }}
+                disabled={isSubmitting}
+                sx={buttonSx}
+              >
+                Save Changes
+              </Button>
+            )}
             {isSubmitting}
           </Box>
         </DialogContent>
