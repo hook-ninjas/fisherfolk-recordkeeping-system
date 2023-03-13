@@ -42,6 +42,8 @@ import {
 } from './Enums';
 import { useParams } from 'react-router-dom';
 import { AddVesselWithGearSchema } from './validation/schema';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SaveIcon from '@mui/icons-material/Save';
 
 interface AddVesselWithGearFormProps {
   open: boolean;
@@ -1148,21 +1150,37 @@ export default function AddVesselWithGearForm({
               </FormHelperText>
             </Grid>
           </Grid>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button
-              type="submit"
-              variant="contained"
+          {isSubmitting ? (
+            <LoadingButton
+              loading
               fullWidth
-              onClick={(e) => {
-                handleSubmitForm(e);
+              loadingPosition="start"
+              sx={{
+                mt: 3,
+                mb: 2,
               }}
-              disabled={isSubmitting}
-              sx={buttonSx}
+              startIcon={<SaveIcon />}
+              variant="outlined"
             >
-              Save
-            </Button>
-            {isSubmitting}
-          </Box>
+              Loading
+            </LoadingButton>
+          ) : (
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                onClick={(e) => {
+                  handleSubmitForm(e);
+                }}
+                disabled={isSubmitting}
+                sx={buttonSx}
+              >
+                Save
+              </Button>
+              {isSubmitting}
+            </Box>
+          )}
         </DialogContent>
       </FormContainer>
     </>
