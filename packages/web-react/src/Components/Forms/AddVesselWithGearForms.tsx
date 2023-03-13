@@ -6,6 +6,7 @@ import {
   DialogContent,
   FormControlLabel,
   FormGroup,
+  FormHelperText,
   Grid,
   Typography,
 } from '@mui/material';
@@ -20,7 +21,7 @@ import {
   FormInputNumber,
   FormInputAutoText,
 } from './FormInputFields';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   CreateGearsDocument,
@@ -1103,17 +1104,41 @@ export default function AddVesselWithGearForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <Button variant="contained" component="label" sx={{ width: 210 }}>
-                <input
-                  type="file"
-                  onChange={(e) => {
-                    previewImage(e);
-                  }}
-                />
-              </Button>
+              <Controller
+                name="vesselGearPhoto"
+                control={control}
+                defaultValue=""
+                render={() => (
+                  <Button
+                    sx={{width: 150}}
+                    id="upload-btn-label"
+                    variant="contained"
+                    component="label"
+                    htmlFor="upload-btn"
+                  >
+                    Upload
+                    <input
+                      id="upload-btn"
+                      data-cy="vessel-gear-input"
+                      type="file"
+                      hidden
+                      aria-label="vessel-gear-img-upload"
+                      accept="image/*"
+                      {...register('vesselGearPhoto', {
+                        onChange: (e) => previewImage(e),
+                      })}
+                    />
+                  </Button>
+                )}
+              />
               <Box sx={{ width: 150, height: 150 }} mt={2}>
                 <img src={image?.toString()} width={150} height={150} />
               </Box>
+              <FormHelperText
+                sx={{ color: '#d32f2f' }}
+              >
+                {errors['vesselGearPhoto']?.message?.toString()}
+              </FormHelperText>
             </Grid>
           </Grid>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
