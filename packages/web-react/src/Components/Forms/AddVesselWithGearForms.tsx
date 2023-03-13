@@ -285,7 +285,7 @@ export default function AddVesselWithGearForm({
 
     // create vessel only
     if (createVesselWithGearInput.gears.length == 0) {
-      await createVessel({
+      const vessel = await createVessel({
         variables: {
           vessel: createVesselWithGearInput.vessel,
         },
@@ -293,14 +293,17 @@ export default function AddVesselWithGearForm({
 
       await createImage({
         variables: {
-          data: createImageInput.data,
+          data: {
+            ...createImageInput.data,
+            vessel_id: vessel.data?.createVessel.id,
+          },
         },
       });
     }
 
     // create gears only
     if (createVesselWithGearInput.vessel.mfvrNumber == '') {
-      await createGears({
+      const gears = await createGears({
         variables: {
           gears: createVesselWithGearInput.gears,
         },
@@ -308,7 +311,10 @@ export default function AddVesselWithGearForm({
 
       await createImage({
         variables: {
-          data: createImageInput.data,
+          data: {
+            ...createImageInput.data,
+            gear_id: gears.data?.createGears[0].id,
+          },
         },
       });
     }
@@ -318,7 +324,7 @@ export default function AddVesselWithGearForm({
       createVesselWithGearInput.gears.length != 0 &&
       createVesselWithGearInput.vessel.mfvrNumber != ''
     ) {
-      await createVesselWithGear({
+      const vessel = await createVesselWithGear({
         variables: {
           gears: createVesselWithGearInput.gears,
           vessel: createVesselWithGearInput.vessel,
@@ -327,7 +333,10 @@ export default function AddVesselWithGearForm({
 
       await createImage({
         variables: {
-          data: createImageInput.data,
+          data: {
+            ...createImageInput.data,
+            vessel_id: vessel.data?.createVesselWithGear.id,
+          },
         },
       });
     }
@@ -1110,7 +1119,7 @@ export default function AddVesselWithGearForm({
                 defaultValue=""
                 render={() => (
                   <Button
-                    sx={{width: 150}}
+                    sx={{ width: 150 }}
                     id="upload-btn-label"
                     variant="contained"
                     component="label"
@@ -1134,9 +1143,7 @@ export default function AddVesselWithGearForm({
               <Box sx={{ width: 150, height: 150 }} mt={2}>
                 <img src={image?.toString()} width={150} height={150} />
               </Box>
-              <FormHelperText
-                sx={{ color: '#d32f2f' }}
-              >
+              <FormHelperText sx={{ color: '#d32f2f' }}>
                 {errors['vesselGearPhoto']?.message?.toString()}
               </FormHelperText>
             </Grid>
