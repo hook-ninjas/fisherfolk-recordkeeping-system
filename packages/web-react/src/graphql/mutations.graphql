@@ -75,3 +75,10 @@ mutation UpdateFisherfolk($updateFisherfolkId: Int!, $data: CreateFisherfolkInpu
     id
   }
 }
+
+mutation UpdateFisherfolkImage($data: CreateImageInput!, $updateFisherfolkImageId: String!, $url: String!) {
+  updateFisherfolkImage(data: $data, id: $updateFisherfolkImageId, url: $url) {
+    id,
+    url
+  }
+}

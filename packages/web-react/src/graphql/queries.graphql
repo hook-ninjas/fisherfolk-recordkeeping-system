@@ -62,6 +62,10 @@ query FisherfolkById($fisherfolkId: BigInt!) {
       position
     }
   }
+  fisherfolkPhoto(fisherfolkId: $fisherfolkId) {
+    id,
+    url
+  }
 }
 
 query FisherfolkVessels($fisherfolkId: BigInt!, $start: Int!, $count: Int!) {
