@@ -234,6 +234,7 @@ type Mutation {
   createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
   loginUser(data: CreateUserInput!): AuthPayload!
   updateFisherfolk(data: CreateFisherfolkInput!, id: Int!): Fisherfolk!
+  updateFisherfolkImage(data: CreateImageInput!, id: String!, url: String!): Image!
   updateMfvr(id: Int!, mfvrNum: String!): Vessel!
 }
 
@@ -270,6 +271,7 @@ type Query {
   fisherfolkByRange(count: Int!, start: Int!): [Fisherfolk!]!
   fisherfolkGears(count: Int!, fisherfolkId: BigInt!, start: Int!): [Gear!]!
   fisherfolkGender(gender: Gender!): Int!
+  fisherfolkPhoto(fisherfolkId: BigInt!): [Image!]!
   fisherfolkVessels(count: Int!, fisherfolkId: BigInt!, start: Int!): [Vessel!]!
   fisherfolks: [Fisherfolk!]!
   fisherfolksWithUniqueBarangay: [Fisherfolk!]!

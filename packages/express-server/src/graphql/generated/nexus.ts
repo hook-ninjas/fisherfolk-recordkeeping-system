@@ -381,6 +381,7 @@ export interface NexusGenFieldTypes {
     createVesselWithGear: NexusGenRootTypes['Vessel']; // Vessel!
     loginUser: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     updateFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
+    updateFisherfolkImage: NexusGenRootTypes['Image']; // Image!
     updateMfvr: NexusGenRootTypes['Vessel']; // Vessel!
   }
   Organization: { // field return type
@@ -408,6 +409,7 @@ export interface NexusGenFieldTypes {
     fisherfolkByRange: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     fisherfolkGears: NexusGenRootTypes['Gear'][]; // [Gear!]!
     fisherfolkGender: number; // Int!
+    fisherfolkPhoto: NexusGenRootTypes['Image'][]; // [Image!]!
     fisherfolkVessels: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
     fisherfolks: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     fisherfolksWithUniqueBarangay: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
@@ -562,6 +564,7 @@ export interface NexusGenFieldTypeNames {
     createVesselWithGear: 'Vessel'
     loginUser: 'AuthPayload'
     updateFisherfolk: 'Fisherfolk'
+    updateFisherfolkImage: 'Image'
     updateMfvr: 'Vessel'
   }
   Organization: { // field return type name
@@ -589,6 +592,7 @@ export interface NexusGenFieldTypeNames {
     fisherfolkByRange: 'Fisherfolk'
     fisherfolkGears: 'Gear'
     fisherfolkGender: 'Int'
+    fisherfolkPhoto: 'Image'
     fisherfolkVessels: 'Vessel'
     fisherfolks: 'Fisherfolk'
     fisherfolksWithUniqueBarangay: 'Fisherfolk'
@@ -671,6 +675,11 @@ export interface NexusGenArgTypes {
       data: NexusGenInputs['CreateFisherfolkInput']; // CreateFisherfolkInput!
       id: number; // Int!
     }
+    updateFisherfolkImage: { // args
+      data: NexusGenInputs['CreateImageInput']; // CreateImageInput!
+      id: string; // String!
+      url: string; // String!
+    }
     updateMfvr: { // args
       id: number; // Int!
       mfvrNum: string; // String!
@@ -691,6 +700,9 @@ export interface NexusGenArgTypes {
     }
     fisherfolkGender: { // args
       gender: NexusGenEnums['Gender']; // Gender!
+    }
+    fisherfolkPhoto: { // args
+      fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
     }
     fisherfolkVessels: { // args
       count: number; // Int!
