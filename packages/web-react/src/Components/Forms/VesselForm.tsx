@@ -10,6 +10,7 @@ import {
   FormInputText,
   FormInputSelect,
   FormInputAutoText,
+  FormInputNumber,
 } from './FormInputFields';
 import {
   registrationTypeForBoatsAndGears,
@@ -118,7 +119,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
             name="type"
             control={control}
             defaultValue=""
-            label="type"
+            label="Type"
             placeholder="Motorized"
             options={vesselType}
             register={register}
@@ -140,7 +141,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
           />
         </Grid>
         <Grid item sm={6} sx={{ mt: 1, ml: 0 }}>
-          <FormInputText
+          <FormInputNumber
             name="yearBuilt"
             control={control}
             label="Year Built"
@@ -156,7 +157,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
       </Typography>
       <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
         <Grid item sm={6}>
-          <FormInputText
+          <FormInputNumber
             name="registeredLength"
             control={control}
             label="Registered Length"
@@ -167,7 +168,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
           />
         </Grid>
         <Grid item sm={6}>
-          <FormInputText
+          <FormInputNumber
             name="registeredDepth"
             control={control}
             label="Registered Depth"
@@ -180,7 +181,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
       </Grid>
       <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
         <Grid item sm={6}>
-          <FormInputText
+          <FormInputNumber
             name="registeredBreadth"
             control={control}
             label="Registered Breadth"
@@ -191,7 +192,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
           />
         </Grid>
         <Grid item sm={6}>
-          <FormInputText
+          <FormInputNumber
             name="tonnageLength"
             control={control}
             label="Tonnage Length"
@@ -204,7 +205,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
       </Grid>
       <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
         <Grid item sm={6}>
-          <FormInputText
+          <FormInputNumber
             name="tonnageDepth"
             control={control}
             label="Tonnage Depth"
@@ -215,7 +216,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
           />
         </Grid>
         <Grid item sm={6}>
-          <FormInputText
+          <FormInputNumber
             name="tonnageBreadth"
             control={control}
             label="Tonnage Breadth"
@@ -228,7 +229,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
       </Grid>
       <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
         <Grid item sm={6}>
-          <FormInputText
+          <FormInputNumber
             name="grossTonnage"
             control={control}
             label="Gross Tonnage"
@@ -239,7 +240,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
           />
         </Grid>
         <Grid item sm={6}>
-          <FormInputText
+          <FormInputNumber
             name="netTonnage"
             control={control}
             label="Net Tonnage"
@@ -279,7 +280,7 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
       </Grid>
       <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
         <Grid item sm={6} sx={{ mt: -1 }}>
-          <FormInputText
+          <FormInputNumber
             name="horsepower"
             control={control}
             label="Horsepower"

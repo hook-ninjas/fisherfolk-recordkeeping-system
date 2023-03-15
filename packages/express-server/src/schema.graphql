@@ -115,18 +115,18 @@ type Fisherfolk {
   dateOfBirth: DateTime!
   educationalBackground: EducationalBackground!
   firstName: String!
-  gears: [Gear]
+  gears: [Gear!]!
   gender: Gender!
-  governmentAid: [Queue]
+  governmentAid: [Queue!]!
   id: BigInt!
-  images: [Image]
+  images: [Image!]!
   isArchive: Boolean!
   lastName: String!
-  livelihoods: [Livelihood]
+  livelihoods: [Livelihood!]!
   middleName: String!
   nationality: String!
   numOfChildren: Int!
-  organizations: [Member]
+  organizations: [Member!]!
   permit: Permit
   personToNotify: String!
   placeOfBirth: String!
@@ -140,7 +140,7 @@ type Fisherfolk {
   salutation: Salutation!
   status: FisherfolkStatus!
   updatedAt: DateTime!
-  vessels: [Vessel]
+  vessels: [Vessel!]!
 }
 
 enum FisherfolkStatus {
@@ -272,6 +272,7 @@ type Query {
   fisherfolkGender(gender: Gender!): Int!
   fisherfolkVessels(count: Int!, fisherfolkId: BigInt!, start: Int!): [Vessel!]!
   fisherfolks: [Fisherfolk!]!
+  fisherfolksWithUniqueBarangay: [Fisherfolk!]!
   gears: [Gear!]!
   livelihoodCount(activity: SourceOfIncome!): Int!
   totalFisherfolk: Int!
