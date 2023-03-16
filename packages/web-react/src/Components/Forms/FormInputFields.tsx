@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, useState } from 'react';
+import React, { HTMLAttributes } from 'react';
 import {
   UseFormRegister,
   Control,
@@ -15,10 +15,7 @@ import {
   FormControlLabel,
   RadioGroup,
   Radio,
-  FormGroup,
   Checkbox,
-  Grid,
-  Typography,
   Autocomplete,
   SxProps,
   Theme,
@@ -31,7 +28,13 @@ import {
   CalendarPickerView,
 } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { CivilStatus, EducationalBackground, Gender, Salutation, SourceOfIncome } from '../../graphql/generated';
+import {
+  CivilStatus,
+  EducationalBackground,
+  Gender,
+  Salutation,
+  SourceOfIncome,
+} from '../../graphql/generated';
 export interface Option {
   label: string;
   value: string;
@@ -60,6 +63,7 @@ const style = {
 
 interface FormInputTextProps {
   name: string;
+  id?: string;
   label: string;
   placeholder?: string;
   inputMode?: HTMLAttributes<HTMLLIElement>['inputMode'];
@@ -74,6 +78,7 @@ interface FormInputTextProps {
 interface FormInputNumberProps {
   name: string;
   label: string;
+  id?: string;
   placeholder?: string;
   numericOnly?: boolean;
   max?: number;
@@ -172,6 +177,7 @@ interface FormCreatableSelectProps {
 
 export const FormInputText = ({
   name,
+  id,
   label,
   placeholder,
   control,
@@ -188,6 +194,7 @@ export const FormInputText = ({
     shouldUnregister={shouldUnregister}
     render={({ field: { value, onChange } }) => (
       <TextField
+        id={id}
         value={value}
         sx={{ marginTop: -0.3, width: 250 }}
         label={label}
@@ -387,7 +394,7 @@ export const FormInputSelect = ({
               onChange(e.target.value);
             }}
             name={name}
-            sx={{ width: 233, height: 52 }}
+            sx={{ width: 230, height: 52 }}
           >
             {data?.map((item, index) => {
               if (typeof item === 'string') {

@@ -211,7 +211,7 @@ export default function UpdateFisherfolkForm({
           },
         ],
         organizations: [
-          input.orgMemberSince
+          input.orgMemberSince || input.orgName || input.orgPosition
             ? {
               name: input.orgName,
               position: input.orgPosition,
@@ -360,6 +360,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6}>
               <FormInputText
                 name="lastName"
+                id="lastName"
                 control={control}
                 label="Last Name"
                 defaultValue={fisherfolk && lastName}
@@ -370,6 +371,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6}>
               <FormInputText
                 name="firstName"
+                id="firstName"
                 control={control}
                 label="First Name"
                 defaultValue={fisherfolk && firstName}
@@ -382,6 +384,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6}>
               <FormInputText
                 name="middleName"
+                id="middleName"
                 control={control}
                 label="Middle Name"
                 defaultValue={fisherfolk && middleName}
@@ -392,6 +395,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6}>
               <FormInputText
                 name="appellation"
+                id="appellation"
                 control={control}
                 label="Apellation"
                 defaultValue={fisherfolk && appellation}
@@ -406,6 +410,7 @@ export default function UpdateFisherfolkForm({
                 sx={{ marginTop: -0.3, width: 230 }}
                 freeSolo
                 name="barangay"
+                id="barangay"
                 control={control}
                 label="Barangay"
                 defaultValue={fisherfolk && barangay}
@@ -419,6 +424,7 @@ export default function UpdateFisherfolkForm({
                 sx={{ marginTop: -0.3, width: 230 }}
                 freeSolo
                 name="cityMunicipality"
+                id="cityMunicipality"
                 control={control}
                 label="City/Municipality"
                 defaultValue={fisherfolk && cityMunicipality}
@@ -434,6 +440,7 @@ export default function UpdateFisherfolkForm({
                 freeSolo
                 sx={{ marginTop: -0.3, width: 230 }}
                 name="province"
+                id="province"
                 control={control}
                 label="Province"
                 defaultValue={fisherfolk && province}
@@ -445,6 +452,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6}>
               <FormInputNumber
                 name="residentYear"
+                id="residentYear"
                 control={control}
                 label="Resident of Municipality since"
                 defaultValue={fisherfolk && residentYear.toString()}
@@ -457,6 +465,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6}>
               <FormInputNumber
                 name="age"
+                id="age"
                 control={control}
                 label="Age"
                 defaultValue={fisherfolk && age.toString()}
@@ -467,6 +476,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6}>
               <FormInputText
                 name="contactNumber"
+                id="contactNumber"
                 control={control}
                 label="Contact Number"
                 defaultValue={fisherfolk && contactNum}
@@ -492,6 +502,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6}>
               <FormInputText
                 name="placeOfBirth"
+                id="placeOfBirth"
                 control={control}
                 label="Place of Birth"
                 defaultValue={fisherfolk && placeOfBirth}
@@ -504,6 +515,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6}>
               <FormInputText
                 name="religion"
+                id="religion"
                 control={control}
                 label="Religion"
                 defaultValue={fisherfolk && religion}
@@ -580,6 +592,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
               <FormInputNumber
                 name="numOfChildren"
+                id="numOfChildren"
                 control={control}
                 label="Number of Children"
                 defaultValue={fisherfolk && numOfChildren.toString()}
@@ -595,6 +608,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6}>
               <FormInputText
                 name="personToNotify"
+                id="personToNotify"
                 control={control}
                 label="Person to Notify"
                 defaultValue={fisherfolk && personToNotify}
@@ -605,6 +619,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6}>
               <FormInputText
                 name="ptnRelationship"
+                id="ptnRelationship"
                 control={control}
                 label="Relationship"
                 defaultValue={fisherfolk && ptnRelationship}
@@ -617,6 +632,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6}>
               <FormInputText
                 name="ptnContactNum"
+                id="ptnContactNum"
                 control={control}
                 label="Contact Number"
                 defaultValue={fisherfolk && ptnContactNum.toString()}
@@ -627,6 +643,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6}>
               <FormInputText
                 name="ptnAddress"
+                id="ptnAddress"
                 control={control}
                 label="Address"
                 defaultValue={fisherfolk && ptnAddress}
@@ -658,6 +675,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6}>
               <FormInputText
                 name="orgName"
+                id="orgName"
                 control={control}
                 label="Name"
                 defaultValue={fisherfolk && orgName}
@@ -668,6 +686,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6}>
               <FormInputNumber
                 name="orgMemberSince"
+                id="orgMemberSince"
                 control={control}
                 label="Member Since"
                 defaultValue={fisherfolk && orgMemberSince}
@@ -680,6 +699,7 @@ export default function UpdateFisherfolkForm({
             <Grid item sm={6}>
               <FormInputText
                 name="orgPosition"
+                id="orgPosition"
                 control={control}
                 label="Position/Official Designation"
                 defaultValue={fisherfolk && orgPosition}
