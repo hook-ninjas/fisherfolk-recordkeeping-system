@@ -233,7 +233,7 @@ type Mutation {
   createVessel(vessel: CreateVesselInput!): Vessel!
   createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
   loginUser(data: CreateUserInput!): AuthPayload!
-  updateFisherfolk(data: CreateFisherfolkInput!, id: Int!): Fisherfolk!
+  updateFisherfolk(data: UpdateFisherfolkInput!, fisherfolkId: Int!): Fisherfolk!
   updateFisherfolkImage(data: CreateImageInput!, id: String!, url: String!): Image!
   updateMfvr(id: Int!, mfvrNum: String!): Vessel!
 }
@@ -309,6 +309,34 @@ enum SourceOfIncome {
   FishProcessing
   FishVending
   Others
+}
+
+input UpdateFisherfolkInput {
+  age: Int!
+  appellation: String!
+  barangay: String!
+  cityMunicipality: String!
+  civilStatus: CivilStatus!
+  contactNum: String!
+  dateOfBirth: DateTime!
+  educationalBackground: EducationalBackground!
+  firstName: String!
+  gender: Gender!
+  lastName: String!
+  livelihoods: [livelihoodInput!]!
+  middleName: String!
+  nationality: String!
+  numOfChildren: Int!
+  organizations: [OrganizationInput]!
+  personToNotify: String!
+  placeOfBirth: String!
+  province: String!
+  ptnAddress: String!
+  ptnContactNum: String!
+  ptnRelationship: String!
+  religion: String!
+  residentYear: Int!
+  salutation: Salutation!
 }
 
 type User {

@@ -3,6 +3,7 @@ import { NexusGenInputs } from '../../../generated/nexus';
 import 'dotenv/config';
 
 type CreateFisherfolkInput = NexusGenInputs['CreateFisherfolkInput'];
+type UpdateFisherfolkInput = NexusGenInputs['UpdateFisherfolkInput'];
 
 const createFisherfolk = (input: CreateFisherfolkInput, ctx: Context) => {
   const { organization, livelihoods } = input;
@@ -51,27 +52,115 @@ const createFisherfolk = (input: CreateFisherfolkInput, ctx: Context) => {
 };
 
 const updateFisherfolk = async (
-  id: number,
-  input: CreateFisherfolkInput,
+  fisherfolkId: number,
+  input: UpdateFisherfolkInput,
   ctx: Context
 ) => {
+  const orgInput = input.organizations[0];
+
+  const fisherfolkOrganization = await ctx.prisma.member.findFirst({
+    where: {
+      fisherfolkId: fisherfolkId,
+    },
+    select: { organizationId: true },
+  });
+
+  // update existing fisherfolk org
+  if (fisherfolkOrganization) {
+    return ctx.prisma.fisherfolk.update({
+      where: {
+        id: fisherfolkId,
+      },
+      data: {
+        ...input,
+        livelihoods: {
+          updateMany: {
+            data: {
+              ...input.livelihoods[0],
+            },
+            where: {
+              fisherfolkId: fisherfolkId,
+            },
+          },
+        },
+        organizations: {
+          update: {
+            data: {
+              position: orgInput?.position,
+              yearJoined: orgInput?.yearJoined,
+              organization: {
+                update: {
+                  name: orgInput?.name,
+                },
+              },
+            },
+            where: {
+              id: {
+                fisherfolkId: fisherfolkId,
+                organizationId: fisherfolkOrganization.organizationId,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  // create fisherfolk org if it doesn't exist
+  if (!fisherfolkOrganization && orgInput) {
+    return ctx.prisma.fisherfolk.update({
+      where: {
+        id: fisherfolkId,
+      },
+      data: {
+        ...input,
+        livelihoods: {
+          updateMany: {
+            data: {
+              ...input.livelihoods[0],
+            },
+            where: {
+              fisherfolkId: fisherfolkId,
+            },
+          },
+        },
+        organizations: {
+          create: {
+            position: orgInput.position,
+            yearJoined: orgInput.yearJoined,
+            organization: {
+              connectOrCreate: {
+                create: {
+                  name: orgInput.name,
+                },
+                where: {
+                  name: orgInput.name,
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
   return ctx.prisma.fisherfolk.update({
     where: {
-      id: id,
+      id: fisherfolkId,
     },
     data: {
       ...input,
       livelihoods: {
         updateMany: {
           data: {
-            ...input.livelihoods[0], 
-            // updates main fishing activity only
+            ...input.livelihoods[0],
           },
-          where: { 
-            fisherfolkId: id
+          where: {
+            fisherfolkId: fisherfolkId,
           },
         },
       },
+      organizations: {},
     },
   });
 };
