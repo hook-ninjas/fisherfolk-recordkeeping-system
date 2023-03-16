@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import {
   Box,
   Button,
-  Checkbox,
   DialogContent,
-  FormControlLabel,
-  FormGroup,
   FormHelperText,
   Grid,
   Typography,
@@ -21,9 +18,8 @@ import {
 import { Controller, useForm } from 'react-hook-form';
 import {
   FisherfolkByIdDocument,
-  MutationCreateFisherfolkArgs,
+  MutationUpdateFisherfolkArgs,
   MutationUpdateFisherfolkImageArgs,
-  SourceOfIncome,
   UpdateFisherfolkDocument,
   UpdateFisherfolkImageDocument,
 } from '../../graphql/generated';
@@ -61,6 +57,7 @@ export default function UpdateFisherfolkForm({
   open,
   handleClose,
 }: UpdateFisherfolkFormProps) {
+  const MAXDATE = sub({ years: 19 })(new Date());
   const [complete, setComplete] = useState(false);
 
   const buttonSx = {
@@ -76,15 +73,13 @@ export default function UpdateFisherfolkForm({
   };
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [otherFishingActivities, setOtherFishingActivities] = React.useState({
-    CaptureFishing: false,
-    Aquaculture: false,
-    FishVending: false,
-    FishProcessing: false,
-  });
   const [image, setImage] = React.useState<
     string | undefined | ArrayBuffer | null
   >();
+
+  const handleSubmitting = () => setIsSubmitting(true);
+
+  const handleComplete = () => setComplete(true);
 
   const previewImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
@@ -99,24 +94,6 @@ export default function UpdateFisherfolkForm({
     }
   };
 
-  const handleSubmitting = () => setIsSubmitting(true);
-
-  const handleComplete = () => setComplete(true);
-
-  const handleOtherFishingActivityChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setOtherFishingActivities({
-      ...otherFishingActivities,
-      [event.target.name]: event.target.checked,
-    });
-  };
-
-  const maxDate = sub({ years: 19 })(new Date());
-
-  const { CaptureFishing, Aquaculture, FishVending, FishProcessing } =
-    otherFishingActivities;
-
   const {
     register,
     control,
@@ -127,11 +104,14 @@ export default function UpdateFisherfolkForm({
     resolver: yupResolver(UpdateFisherfolkSchema),
   });
 
-  const { data, loading } = useQuery(FisherfolkByIdDocument, {
-    variables: {
-      fisherfolkId: id,
-    },
-  });
+  const { loading, data: { fisherfolk, fisherfolkPhoto } = {} } = useQuery(
+    FisherfolkByIdDocument,
+    {
+      variables: {
+        fisherfolkId: id,
+      },
+    }
+  );
 
   const [updateImage] = useMutation(UpdateFisherfolkImageDocument);
 
@@ -148,9 +128,56 @@ export default function UpdateFisherfolkForm({
     },
   });
 
+  if (loading) {
+    return <LinearProgress />;
+  }
+
+  if (!loading && !fisherfolk) {
+    throw 'Fisherfolk does not exist.';
+  }
+
+  const {
+    age,
+    appellation,
+    barangay,
+    cityMunicipality,
+    civilStatus,
+    contactNum,
+    dateOfBirth,
+    educationalBackground,
+    firstName,
+    gender,
+    lastName,
+    livelihoods,
+    middleName,
+    nationality,
+    numOfChildren,
+    organizations,
+    personToNotify,
+    placeOfBirth,
+    province,
+    ptnAddress,
+    ptnContactNum,
+    ptnRelationship,
+    religion,
+    residentYear,
+    salutation,
+  } = fisherfolk!;
+
+  const photo = fisherfolkPhoto![0];
+  const organization = organizations[0];
+
+  const fishingAct = (isMain: boolean) =>
+    livelihoods.filter((a) => a.isMain == isMain);
+
+  const mainFishingAct = fishingAct(true)[0].type;
+  const orgName = organization?.organization.name;
+  const orgMemberSince = organization?.yearJoined.toString();
+  const orgPosition = organization?.position;
+
   const onSubmit = handleSubmit(async (input) => {
     handleSubmitting();
-    const updateFisherfolkInput: MutationCreateFisherfolkArgs = {
+    const updateFisherfolkInput: MutationUpdateFisherfolkArgs = {
       data: {
         age: parseInt(input.age),
         appellation: input.appellation,
@@ -183,39 +210,57 @@ export default function UpdateFisherfolkForm({
             type: input.mainFishingActivity ?? mainFishingAct,
           },
         ],
+        organizations: [
+          input.orgMemberSince
+            ? {
+              name: input.orgName,
+              position: input.orgPosition,
+              yearJoined: parseInt(input.orgMemberSince),
+            }
+            : null,
+        ],
       },
+      fisherfolkId: id,
     };
 
-    if(data) {
+    if (fisherfolkPhoto && photo) {
       const updateImageInput: MutationUpdateFisherfolkImageArgs = {
         data: {
           fisherfolkId: id,
-          url: image != null ? image.toString() : data.fisherfolkPhoto[0].url,
+          url: image != null ? image.toString() : photo.url,
           vessel_id: null,
           gear_id: null,
           updated_at: new Date(),
           name: '',
           text: '',
         },
-        id: data.fisherfolkPhoto[0].id,
-        url: data.fisherfolkPhoto[0].url,
+        id: photo.id,
+        url: photo.url,
       };
-  
+
       await updateImage({
         variables: {
           data: updateImageInput.data,
           updateFisherfolkImageId: updateImageInput.id,
           url: updateImageInput.url,
         },
-      }).then(async () => (
-        await updateFisherfolk({
-          variables: {
-            updateFisherfolkId: id,
-            data: updateFisherfolkInput.data,
-          },
-        })
-      ));
+      }).then(
+        async () =>
+          await updateFisherfolk({
+            variables: {
+              fisherfolkId: id,
+              data: updateFisherfolkInput.data,
+            },
+          })
+      );
     }
+
+    await updateFisherfolk({
+      variables: {
+        fisherfolkId: id,
+        data: updateFisherfolkInput.data,
+      },
+    });
   });
 
   const handleSubmitForm = (
@@ -224,56 +269,6 @@ export default function UpdateFisherfolkForm({
     e.preventDefault();
     onSubmit();
   };
-
-  if (loading) {
-    return <LinearProgress />;
-  }
-
-  if (!loading && !data) {
-    throw 'Fisherfolk does not exist.';
-  }
-
-  const {
-    age,
-    appellation,
-    barangay,
-    cityMunicipality,
-    civilStatus,
-    contactNum,
-    dateOfBirth,
-    educationalBackground,
-    firstName,
-    gender,
-    lastName,
-    livelihoods,
-    middleName,
-    nationality,
-    numOfChildren,
-    organizations,
-    personToNotify,
-    placeOfBirth,
-    province,
-    ptnAddress,
-    ptnContactNum,
-    ptnRelationship,
-    religion,
-    residentYear,
-    salutation,
-  } = data!.fisherfolk;
-
-  const otherSrcOfIncome = livelihoods?.find(
-    (a) => a?.type == SourceOfIncome.Others
-  )?.description;
-
-  const mainFishingAct = livelihoods?.find((a) => a?.isMain)?.type;
-
-  const orgName =
-    organizations == null ? '' : organizations[0]?.organization.name;
-
-  const orgPosition = organizations == null ? '' : organizations[0]?.position;
-
-  const orgMemberSince =
-    organizations == null ? '' : organizations[0]?.yearJoined.toString();
 
   return (
     <>
@@ -301,8 +296,8 @@ export default function UpdateFisherfolkForm({
                 <Box sx={{ width: 150, height: 150 }} mt={2}>
                   <img
                     src={
-                      data?.fisherfolkPhoto.length != 0
-                        ? image?.toString() ?? data?.fisherfolkPhoto[0].url
+                      fisherfolkPhoto?.length != 0
+                        ? image?.toString() ?? fisherfolkPhoto![0].url
                         : ''
                     }
                     width={150}
@@ -358,7 +353,7 @@ export default function UpdateFisherfolkForm({
               register={register}
               errors={errors}
               radioOptions={salutationOptions}
-              onSavedValue={data && salutation}
+              onSavedValue={fisherfolk && salutation}
             />
           </Box>
           <Grid container spacing={-2} sx={{ ml: 1, mr: 1 }}>
@@ -367,7 +362,7 @@ export default function UpdateFisherfolkForm({
                 name="lastName"
                 control={control}
                 label="Last Name"
-                defaultValue={data && lastName}
+                defaultValue={fisherfolk && lastName}
                 register={register}
                 errors={errors}
               />
@@ -377,7 +372,7 @@ export default function UpdateFisherfolkForm({
                 name="firstName"
                 control={control}
                 label="First Name"
-                defaultValue={data && firstName}
+                defaultValue={fisherfolk && firstName}
                 register={register}
                 errors={errors}
               />
@@ -389,7 +384,7 @@ export default function UpdateFisherfolkForm({
                 name="middleName"
                 control={control}
                 label="Middle Name"
-                defaultValue={data && middleName}
+                defaultValue={fisherfolk && middleName}
                 register={register}
                 errors={errors}
               />
@@ -399,7 +394,7 @@ export default function UpdateFisherfolkForm({
                 name="appellation"
                 control={control}
                 label="Apellation"
-                defaultValue={data && appellation}
+                defaultValue={fisherfolk && appellation}
                 register={register}
                 errors={errors}
               />
@@ -413,7 +408,7 @@ export default function UpdateFisherfolkForm({
                 name="barangay"
                 control={control}
                 label="Barangay"
-                defaultValue={data && barangay}
+                defaultValue={fisherfolk && barangay}
                 options={barangayOptions}
                 register={register}
                 errors={errors}
@@ -426,7 +421,7 @@ export default function UpdateFisherfolkForm({
                 name="cityMunicipality"
                 control={control}
                 label="City/Municipality"
-                defaultValue={data && cityMunicipality}
+                defaultValue={fisherfolk && cityMunicipality}
                 options={cityMunicipalityOptions}
                 register={register}
                 errors={errors}
@@ -441,7 +436,7 @@ export default function UpdateFisherfolkForm({
                 name="province"
                 control={control}
                 label="Province"
-                defaultValue={data && province}
+                defaultValue={fisherfolk && province}
                 options={provinceOptions}
                 register={register}
                 errors={errors}
@@ -452,7 +447,7 @@ export default function UpdateFisherfolkForm({
                 name="residentYear"
                 control={control}
                 label="Resident of Municipality since"
-                defaultValue={data && residentYear.toString()}
+                defaultValue={fisherfolk && residentYear.toString()}
                 register={register}
                 errors={errors}
               />
@@ -464,7 +459,7 @@ export default function UpdateFisherfolkForm({
                 name="age"
                 control={control}
                 label="Age"
-                defaultValue={data && age.toString()}
+                defaultValue={fisherfolk && age.toString()}
                 register={register}
                 errors={errors}
               />
@@ -474,7 +469,7 @@ export default function UpdateFisherfolkForm({
                 name="contactNumber"
                 control={control}
                 label="Contact Number"
-                defaultValue={data && contactNum}
+                defaultValue={fisherfolk && contactNum}
                 register={register}
                 errors={errors}
               />
@@ -487,8 +482,8 @@ export default function UpdateFisherfolkForm({
                 name="dateOfBirth"
                 control={control}
                 openTo="year"
-                max={maxDate}
-                defaultValue={data && dateOfBirth}
+                max={MAXDATE}
+                defaultValue={fisherfolk && dateOfBirth}
                 label="Date of Birth"
                 register={register}
                 errors={errors}
@@ -499,7 +494,7 @@ export default function UpdateFisherfolkForm({
                 name="placeOfBirth"
                 control={control}
                 label="Place of Birth"
-                defaultValue={data && placeOfBirth}
+                defaultValue={fisherfolk && placeOfBirth}
                 register={register}
                 errors={errors}
               />
@@ -511,7 +506,7 @@ export default function UpdateFisherfolkForm({
                 name="religion"
                 control={control}
                 label="Religion"
-                defaultValue={data && religion}
+                defaultValue={fisherfolk && religion}
                 register={register}
                 errors={errors}
               />
@@ -539,7 +534,7 @@ export default function UpdateFisherfolkForm({
                   errors={errors}
                   control={control}
                   radioOptions={genderOptions}
-                  onSavedValue={data && gender}
+                  onSavedValue={fisherfolk && gender}
                 />
               </Box>
             </Grid>
@@ -553,7 +548,7 @@ export default function UpdateFisherfolkForm({
                 control={control}
                 register={register}
                 errors={errors}
-                onSavedValue={data && civilStatus}
+                onSavedValue={fisherfolk && civilStatus}
               />
             </Grid>
             <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
@@ -563,7 +558,7 @@ export default function UpdateFisherfolkForm({
                 name="nationality"
                 control={control}
                 label="Nationality"
-                defaultValue={data && nationality}
+                defaultValue={fisherfolk && nationality}
                 options={['Filipino']}
                 register={register}
                 errors={errors}
@@ -579,7 +574,7 @@ export default function UpdateFisherfolkForm({
                 control={control}
                 register={register}
                 errors={errors}
-                onSavedValue={data && educationalBackground}
+                onSavedValue={fisherfolk && educationalBackground}
               />
             </Grid>
             <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
@@ -587,7 +582,7 @@ export default function UpdateFisherfolkForm({
                 name="numOfChildren"
                 control={control}
                 label="Number of Children"
-                defaultValue={data && numOfChildren.toString()}
+                defaultValue={fisherfolk && numOfChildren.toString()}
                 register={register}
                 errors={errors}
               />
@@ -602,7 +597,7 @@ export default function UpdateFisherfolkForm({
                 name="personToNotify"
                 control={control}
                 label="Person to Notify"
-                defaultValue={data && personToNotify}
+                defaultValue={fisherfolk && personToNotify}
                 register={register}
                 errors={errors}
               />
@@ -612,7 +607,7 @@ export default function UpdateFisherfolkForm({
                 name="ptnRelationship"
                 control={control}
                 label="Relationship"
-                defaultValue={data && ptnRelationship}
+                defaultValue={fisherfolk && ptnRelationship}
                 register={register}
                 errors={errors}
               />
@@ -624,7 +619,7 @@ export default function UpdateFisherfolkForm({
                 name="ptnContactNum"
                 control={control}
                 label="Contact Number"
-                defaultValue={data && ptnContactNum.toString()}
+                defaultValue={fisherfolk && ptnContactNum.toString()}
                 register={register}
                 errors={errors}
               />
@@ -634,7 +629,7 @@ export default function UpdateFisherfolkForm({
                 name="ptnAddress"
                 control={control}
                 label="Address"
-                defaultValue={data && ptnAddress}
+                defaultValue={fisherfolk && ptnAddress}
                 register={register}
                 errors={errors}
               />
@@ -649,68 +644,11 @@ export default function UpdateFisherfolkForm({
                 name="mainFishingActivity"
                 label="Main Fishing Activity "
                 data={sourceOfIncomeOptions}
-                onSavedValue={data && mainFishingAct}
+                onSavedValue={fisherfolk && mainFishingAct}
                 control={control}
                 register={register}
                 errors={errors}
               />
-            </Grid>
-            <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
-              <FormInputText
-                name="otherSourceOfIncome"
-                control={control}
-                label="Other Source of Income"
-                defaultValue={data && otherSrcOfIncome}
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Typography variant="subtitle1" color="GrayText">
-              Other Fishing Activities
-            </Typography>
-            <Grid container spacing={-2} sx={{ ml: 1 }}>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={CaptureFishing}
-                      onChange={handleOtherFishingActivityChange}
-                      name="CaptureFishing"
-                    />
-                  }
-                  label="Capture Fishing"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={Aquaculture}
-                      onChange={handleOtherFishingActivityChange}
-                      name="Aquaculture"
-                    />
-                  }
-                  label="Aquaculture"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={FishVending}
-                      onChange={handleOtherFishingActivityChange}
-                      name="FishVending"
-                    />
-                  }
-                  label="Fish Vending"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={FishProcessing}
-                      onChange={handleOtherFishingActivityChange}
-                      name="FishProcessing"
-                    />
-                  }
-                  label="Fish Processing"
-                />
-              </FormGroup>
             </Grid>
           </Grid>
           <Typography variant="h6" color="GrayText" mt={2} mb={-1} ml={2}>
@@ -722,7 +660,7 @@ export default function UpdateFisherfolkForm({
                 name="orgName"
                 control={control}
                 label="Name"
-                defaultValue={data && orgName}
+                defaultValue={fisherfolk && orgName}
                 register={register}
                 errors={errors}
               />
@@ -732,7 +670,7 @@ export default function UpdateFisherfolkForm({
                 name="orgMemberSince"
                 control={control}
                 label="Member Since"
-                defaultValue={data && orgMemberSince}
+                defaultValue={fisherfolk && orgMemberSince}
                 register={register}
                 errors={errors}
               />
@@ -744,7 +682,7 @@ export default function UpdateFisherfolkForm({
                 name="orgPosition"
                 control={control}
                 label="Position/Official Designation"
-                defaultValue={data && orgPosition}
+                defaultValue={fisherfolk && orgPosition}
                 register={register}
                 errors={errors}
               />
