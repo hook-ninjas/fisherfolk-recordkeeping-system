@@ -4,7 +4,7 @@ import { GearsQueryDocument } from '../../graphql/generated';
 import Loading from '../Loading/Loading';
 import { splitUpperCase } from '../../utils/utils';
 import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
-import { Button, Menu, MenuItem } from '@mui/material';
+import { Alert, Button, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
@@ -101,8 +101,7 @@ export default function FisherfolkGearTable() {
   let rows: GridRowsProp = [];
 
   if (error) {
-    console.log(error);
-    return <h1>Error Failed to Fetch!!!</h1>;
+    return <Alert severity="error">Something went wrong.</Alert>;
   }
 
   if (loading) {

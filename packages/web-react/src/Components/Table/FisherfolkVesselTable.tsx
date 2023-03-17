@@ -220,11 +220,7 @@ export default function FisherfolkVesselTable() {
   let rows: GridRowsProp = [];
 
   if (error) {
-    return (
-      <Alert severity="error">
-        {`Something went wrong. ${error.message} `}
-      </Alert>
-    );
+    return <Alert severity="error">Something went wrong.</Alert>;
   }
   
   if (loading) {
