@@ -1,8 +1,7 @@
-import { mutationField } from 'nexus';
+import { mutationField, nonNull } from 'nexus';
 import { nonNullArg } from '../../../../utils/utils';
 import CreateImageInput from '../../input/Image.input';
-import { uploadImage } from './Image.resolver';
-
+import { updateFisherfolkImage, uploadImage } from './Image.resolver';
 
 const CreateImage = mutationField('createImage', {
   type: 'Image',
@@ -15,4 +14,14 @@ const CreateImage = mutationField('createImage', {
   }
 });
 
-export { CreateImage };
+const UpdateFisherfolkImage = mutationField('updateFisherfolkImage', {
+  type: 'Image',
+  args: {
+    data: nonNullArg(CreateImageInput),
+    id: nonNull('String'),
+    url: nonNull('String')
+  },
+  resolve: (_, args, ctx) => updateFisherfolkImage(args.data, args.id, args.url, ctx)
+});
+
+export { CreateImage, UpdateFisherfolkImage };

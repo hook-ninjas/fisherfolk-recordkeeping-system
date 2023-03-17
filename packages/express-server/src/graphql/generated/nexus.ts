@@ -110,6 +110,33 @@ export interface NexusGenInputs {
     position: string; // String!
     yearJoined: number; // Int!
   }
+  UpdateFisherfolkInput: { // input type
+    age: number; // Int!
+    appellation: string; // String!
+    barangay: string; // String!
+    cityMunicipality: string; // String!
+    civilStatus: NexusGenEnums['CivilStatus']; // CivilStatus!
+    contactNum: string; // String!
+    dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
+    educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
+    firstName: string; // String!
+    gender: NexusGenEnums['Gender']; // Gender!
+    lastName: string; // String!
+    livelihoods: NexusGenInputs['livelihoodInput'][]; // [livelihoodInput!]!
+    middleName: string; // String!
+    nationality: string; // String!
+    numOfChildren: number; // Int!
+    organizations: Array<NexusGenInputs['OrganizationInput'] | null>; // [OrganizationInput]!
+    personToNotify: string; // String!
+    placeOfBirth: string; // String!
+    province: string; // String!
+    ptnAddress: string; // String!
+    ptnContactNum: string; // String!
+    ptnRelationship: string; // String!
+    religion: string; // String!
+    residentYear: number; // Int!
+    salutation: NexusGenEnums['Salutation']; // Salutation!
+  }
   livelihoodInput: { // input type
     description: string; // String!
     isMain: boolean; // Boolean!
@@ -381,6 +408,7 @@ export interface NexusGenFieldTypes {
     createVesselWithGear: NexusGenRootTypes['Vessel']; // Vessel!
     loginUser: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     updateFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
+    updateFisherfolkImage: NexusGenRootTypes['Image']; // Image!
     updateMfvr: NexusGenRootTypes['Vessel']; // Vessel!
   }
   Organization: { // field return type
@@ -408,6 +436,7 @@ export interface NexusGenFieldTypes {
     fisherfolkByRange: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     fisherfolkGears: NexusGenRootTypes['Gear'][]; // [Gear!]!
     fisherfolkGender: number; // Int!
+    fisherfolkPhoto: NexusGenRootTypes['Image'][]; // [Image!]!
     fisherfolkVessels: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
     fisherfolks: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     fisherfolksWithUniqueBarangay: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
@@ -562,6 +591,7 @@ export interface NexusGenFieldTypeNames {
     createVesselWithGear: 'Vessel'
     loginUser: 'AuthPayload'
     updateFisherfolk: 'Fisherfolk'
+    updateFisherfolkImage: 'Image'
     updateMfvr: 'Vessel'
   }
   Organization: { // field return type name
@@ -589,6 +619,7 @@ export interface NexusGenFieldTypeNames {
     fisherfolkByRange: 'Fisherfolk'
     fisherfolkGears: 'Gear'
     fisherfolkGender: 'Int'
+    fisherfolkPhoto: 'Image'
     fisherfolkVessels: 'Vessel'
     fisherfolks: 'Fisherfolk'
     fisherfolksWithUniqueBarangay: 'Fisherfolk'
@@ -668,8 +699,13 @@ export interface NexusGenArgTypes {
       data: NexusGenInputs['CreateUserInput']; // CreateUserInput!
     }
     updateFisherfolk: { // args
-      data: NexusGenInputs['CreateFisherfolkInput']; // CreateFisherfolkInput!
-      id: number; // Int!
+      data: NexusGenInputs['UpdateFisherfolkInput']; // UpdateFisherfolkInput!
+      fisherfolkId: number; // Int!
+    }
+    updateFisherfolkImage: { // args
+      data: NexusGenInputs['CreateImageInput']; // CreateImageInput!
+      id: string; // String!
+      url: string; // String!
     }
     updateMfvr: { // args
       id: number; // Int!
@@ -691,6 +727,9 @@ export interface NexusGenArgTypes {
     }
     fisherfolkGender: { // args
       gender: NexusGenEnums['Gender']; // Gender!
+    }
+    fisherfolkPhoto: { // args
+      fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
     }
     fisherfolkVessels: { // args
       count: number; // Int!

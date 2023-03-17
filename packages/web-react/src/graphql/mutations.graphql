@@ -70,8 +70,15 @@ mutation UpdateMFVR($id: Int!, $mfvrNum: String!) {
   }
 }
 
-mutation UpdateFisherfolk($updateFisherfolkId: Int!, $data: CreateFisherfolkInput!) {
-  updateFisherfolk(id: $updateFisherfolkId, data: $data) {
+mutation UpdateFisherfolk($fisherfolkId: Int!, $data: UpdateFisherfolkInput!) {
+  updateFisherfolk(fisherfolkId: $fisherfolkId, data: $data) {
     id
+  }
+}
+
+mutation UpdateFisherfolkImage($data: CreateImageInput!, $updateFisherfolkImageId: String!, $url: String!) {
+  updateFisherfolkImage(data: $data, id: $updateFisherfolkImageId, url: $url) {
+    id,
+    url
   }
 }
