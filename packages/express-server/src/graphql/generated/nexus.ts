@@ -721,9 +721,7 @@ export interface NexusGenArgTypes {
       start: number; // Int!
     }
     fisherfolkGears: { // args
-      count: number; // Int!
       fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
-      start: number; // Int!
     }
     fisherfolkGender: { // args
       gender: NexusGenEnums['Gender']; // Gender!
@@ -732,9 +730,7 @@ export interface NexusGenArgTypes {
       fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
     }
     fisherfolkVessels: { // args
-      count: number; // Int!
       fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
-      start: number; // Int!
     }
     livelihoodCount: { // args
       activity: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
