@@ -47,7 +47,7 @@ describe('Gear Record Page', () => {
     });
 
     const name = await within(firstRecord).findByRole('cell', {
-      name: /simple-hand Line/i,
+      name: /simple Line/i,
     });
 
     const operator = await within(firstRecord).findByRole('cell', {
