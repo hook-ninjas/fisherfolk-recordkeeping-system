@@ -1,9 +1,4 @@
-import {
-  Button,
-  Menu,
-  MenuItem,
-  Alert,
-} from '@mui/material';
+import { Button, Menu, MenuItem, Alert } from '@mui/material';
 import React, { useState } from 'react';
 import { FisherfolkVesselsDocument } from '../../graphql/generated';
 import { useQuery } from '@apollo/client';
@@ -15,7 +10,7 @@ import moment from 'moment';
 import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
 import { useParams } from 'react-router-dom';
 
-const renderMoreActions = () => {
+const RenderMoreActions = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -57,13 +52,15 @@ const renderMoreActions = () => {
   );
 };
 
-export default function VesselTable() { 
+const  renderCell = () => <RenderMoreActions />;
+
+export default function VesselTable() {
   const { id } = useParams();
 
-  const {error, loading, data} = useQuery(FisherfolkVesselsDocument, {
+  const { error, loading, data } = useQuery(FisherfolkVesselsDocument, {
     variables: {
-      fisherfolkId: id
-    }
+      fisherfolkId: id,
+    },
   });
 
   let rows: GridRowsProp = [];
@@ -71,7 +68,7 @@ export default function VesselTable() {
   if (error) {
     return <Alert severity="error">Something went wrong.</Alert>;
   }
-  
+
   if (loading) {
     return <Loading />;
   }
@@ -100,7 +97,7 @@ export default function VesselTable() {
         netTon: vessel.netTonnage,
         engineMake: vessel.engineMake,
         serialNum: vessel.serialNumber,
-        horsePower: vessel.horsepower
+        horsePower: vessel.horsepower,
       }));
   }
 
@@ -223,12 +220,6 @@ const columns: GridColumns = [
     minWidth: 130,
   },
   {
-    field: 'tonDepth',
-    headerName: 'Ton Depth',
-    disableColumnMenu: true,
-    minWidth: 130,
-  },
-  {
     field: 'engineMake',
     headerName: 'Engine Make',
     disableColumnMenu: true,
@@ -251,6 +242,6 @@ const columns: GridColumns = [
     headerName: '',
     disableColumnMenu: true,
     sortable: false,
-    renderCell: renderMoreActions,
+    renderCell: renderCell,
   },
 ];
