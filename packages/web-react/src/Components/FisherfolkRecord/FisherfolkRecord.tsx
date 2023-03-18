@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Autocomplete,
   Box,
   Button,
   DialogTitle,
@@ -9,11 +10,9 @@ import {
   FormControlLabel,
   Grid,
   IconButton,
-  MenuItem,
   Paper,
   Radio,
   RadioGroup,
-  Select,
   styled,
   Typography,
 } from '@mui/material';
@@ -26,9 +25,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { Controller, useForm } from 'react-hook-form';
 import { splitUpperCase } from '../../utils/utils';
 import { livelihoods, fisherfolkStatus } from '../Forms/Enums';
-import dt from '../Forms/iloilo-city-brgys.json';
 import { useQuery } from '@apollo/client';
-import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextField from '@mui/material/TextField';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
@@ -36,9 +33,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import {
   QueryFisherfolksQuery,
   QueryFisherfolksDocument,
-  SourceOfIncome,
-  FisherfolkStatus,
 } from '../../graphql/generated';
+import { FilterSchema } from '../Forms/validation/schema';
 
 export const CustomDrawer = styled(Drawer)(({ theme }) => ({
   padding: theme.spacing(1),
@@ -54,28 +50,21 @@ export const CustomDrawer = styled(Drawer)(({ theme }) => ({
   },
 }));
 
-// filter function for filtering status, livelihood, and barangay
-const filter = (
-  data: QueryFisherfolksQuery,
-  key: FisherfolkStatus | SourceOfIncome | string
-) => {
-  return data.fisherfolks.filter(({ status, barangay, livelihoods }) => {
-    const livelihood = livelihoods?.find((main) => main?.isMain)?.type;
-    return status === key || barangay === key || livelihood === key;
-  });
-};
-
 const FisherfolkRecord = () => {
   const [addFisherfolkBtn, setFisherfolkBtn] = useState(false);
   const [isFiltered, setIsFiltered] = useState(false);
   const [isDrawerOpen, setIsDrawOpen] = useState(false);
   const [searchKey, setSearchKey] = useState('');
-  const barangays = dt.barangays.sort();
 
   const handleAddFisherfolkOpen = () => setFisherfolkBtn(true);
   const handleAddFisherfolkClose = () => setFisherfolkBtn(false);
 
   const { loading, error, data, refetch } = useQuery(QueryFisherfolksDocument);
+
+  const barangayOptions =
+    data != undefined
+      ? data.fisherfolksWithUniqueBarangay.map((a) => a.barangay).sort()
+      : [];
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKey(event.target.value);
@@ -108,14 +97,8 @@ const FisherfolkRecord = () => {
     QueryFisherfolksQuery | undefined
   >();
 
-  const filterschema = object().shape({
-    status: string().nullable().oneOf(Object.values(FisherfolkStatus)),
-    livelihood: string().nullable().oneOf(Object.values(SourceOfIncome)),
-    barangay: string().nullable().oneOf(barangays),
-  });
-
   const { control, handleSubmit, reset } = useForm({
-    resolver: yupResolver(filterschema),
+    resolver: yupResolver(FilterSchema),
   });
 
   const handleCloseDrawer = () => {
@@ -124,47 +107,26 @@ const FisherfolkRecord = () => {
   };
 
   const onSubmit = handleSubmit((fisherFolk) => {
-    const selectedFilter = {
-      status: fisherFolk.status,
-      livelihood: fisherFolk.livelihood,
-      barangay: fisherFolk.barangay,
-    };
-
-    const filterValues = Object.values(selectedFilter).filter((a) => a != null);
+    const filterValues = Object.values(fisherFolk).filter((a) => a != null);
 
     if (data) {
-      if (filterValues.length > 1) {
-        // filter fisherfolk by status and livelihood
-        const newData = filter(data, selectedFilter.status).filter(
-          ({ livelihoods }) =>
-            livelihoods?.find((a) => a?.isMain)?.type ===
-            selectedFilter.livelihood
-        );
-
-        setFisherfolks({
-          fisherfolks: newData,
-          totalFisherfolk: newData.length,
-        });
-      } else {
-        if (selectedFilter.status) {
-          setFisherfolks({
-            fisherfolks: filter(data, selectedFilter.status),
-            totalFisherfolk: filter(data, selectedFilter.status).length,
+      const results = data.fisherfolks.filter(
+        ({ status, livelihoods, barangay }) => {
+          const livelihood = livelihoods?.find((main) => main?.isMain)?.type;
+          const filterResult = status + ' ' + livelihood + ' ' + barangay;
+          const res = filterValues.map((key: string) => {
+            return filterResult.includes(key);
+          });
+          return res.every((element: boolean) => {
+            return element === true;
           });
         }
-        if (selectedFilter.livelihood) {
-          setFisherfolks({
-            fisherfolks: filter(data, selectedFilter.livelihood),
-            totalFisherfolk: filter(data, selectedFilter.livelihood).length,
-          });
-        }
-        if (selectedFilter.barangay) {
-          setFisherfolks({
-            fisherfolks: filter(data, selectedFilter.barangay),
-            totalFisherfolk: filter(data, selectedFilter.barangay).length,
-          });
-        }
-      }
+      );
+      setFisherfolks({
+        fisherfolks: results,
+        totalFisherfolk: results.length,
+        fisherfolksWithUniqueBarangay: data.fisherfolksWithUniqueBarangay,
+      });
     }
   });
 
@@ -287,22 +249,36 @@ const FisherfolkRecord = () => {
                   <Typography textAlign="start" color="GrayText">
                     Barangays
                   </Typography>
-                  <FormControl aria-label="barangay" role="combobox">
+                  <FormControl aria-label="barangay" role="textbox">
                     <Controller
                       name="barangay"
                       control={control}
                       render={({ field: { onChange, value } }) => (
-                        <Select
-                          value={value ?? ''}
-                          onChange={onChange}
-                          sx={{ width: 260, height: 40 }}
-                        >
-                          {barangays?.map((item) => (
-                            <MenuItem value={item} key={item}>
-                              {splitUpperCase(item)}
-                            </MenuItem>
-                          ))}
-                        </Select>
+                        <Autocomplete
+                          disableClearable
+                          freeSolo
+                          autoComplete
+                          onChange={(_, values) => onChange(values)}
+                          value={value}
+                          options={barangayOptions}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              sx={{
+                                marginLeft: -1.5,
+                                width: 250,
+                              }}
+                              InputProps={{
+                                ...params.InputProps,
+                                style: {
+                                  fontSize: 14,
+                                  margin: 10,
+                                  textTransform: 'none',
+                                },
+                              }}
+                            />
+                          )}
+                        />
                       )}
                     />
                   </FormControl>
@@ -363,6 +339,8 @@ const FisherfolkRecord = () => {
                 setFisherfolks({
                   fisherfolks: onSearchSubmit(e)!,
                   totalFisherfolk: onSearchSubmit(e)!.length,
+                  fisherfolksWithUniqueBarangay:
+                    data!.fisherfolksWithUniqueBarangay,
                 });
               }}
             >
@@ -396,11 +374,7 @@ const FisherfolkRecord = () => {
               <FisherfolkTable
                 error={error}
                 loading={loading}
-                data={
-                  searchKey.trim().length == 0
-                    ? fisherfolks ?? data
-                    : fisherfolks ?? data
-                }
+                data={fisherfolks ?? data}
                 {...refetch}
               />
             </Box>

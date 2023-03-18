@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import { FisherfolkStatus } from '../../graphql/generated';
 
 interface FisherfolkStatusProps {
-  label: FisherfolkStatus | undefined;
+  label: FisherfolkStatus | undefined ;
 }
 
 const fisherfolkStatusColor = {

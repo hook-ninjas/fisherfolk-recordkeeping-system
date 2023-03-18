@@ -17,6 +17,9 @@
     status
   }
   totalFisherfolk
+  fisherfolksWithUniqueBarangay {
+    barangay
+  }
 }
 query FisherfolkById($fisherfolkId: BigInt!) {
   fisherfolk(id: $fisherfolkId) {
@@ -58,6 +61,10 @@ query FisherfolkById($fisherfolkId: BigInt!) {
       yearJoined
       position
     }
+  }
+  fisherfolkPhoto(fisherfolkId: $fisherfolkId) {
+    id,
+    url
   }
 }
 

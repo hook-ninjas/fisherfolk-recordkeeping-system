@@ -27,6 +27,8 @@ import {
 import OfficeLogo from '../../Assets/city-agri-logo.png';
 import CityLogo from '../../Assets/seal_of_iloilo_city.png';
 import { LoginSchema } from './validation/schema';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SaveIcon from '@mui/icons-material/Save';
 
 const theme = createTheme();
 
@@ -57,6 +59,7 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm({
+    mode: 'onChange',
     resolver: yupResolver(LoginSchema),
   });
 
@@ -169,24 +172,40 @@ function Login() {
               )}
             />
             {error && <Alert severity="error">{error}</Alert>}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                mt: 3,
-                mb: 2,
-                background: '#28c181',
-                fontSize: 12,
-                fontWeight: '600',
-                color: 'whitesmoke',
-              }}
-              onClick={(e) => {
-                handleSubmitLoginForm(e);
-              }}
-            >
-              Continue
-            </Button>
+            {isSubmitting ? (
+              <LoadingButton
+                loading
+                fullWidth
+                loadingPosition="start"
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                }}
+                startIcon={<SaveIcon />}
+                variant="outlined"
+              >
+                Loading
+              </LoadingButton>
+            ) : (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  background: '#28c181',
+                  fontSize: 12,
+                  fontWeight: '600',
+                  color: 'whitesmoke',
+                }}
+                onClick={(e) => {
+                  handleSubmitLoginForm(e);
+                }}
+              >
+                Continue
+              </Button>
+            )}
             <Grid container></Grid>
           </Box>
           <Stack direction="row" spacing={0.5}>
@@ -200,7 +219,6 @@ function Login() {
               fontWeight={600}
               underline="none"
               onClick={handleCreateAccount}
-              disabled={isSubmitting}
             >
               Create account
             </Link>

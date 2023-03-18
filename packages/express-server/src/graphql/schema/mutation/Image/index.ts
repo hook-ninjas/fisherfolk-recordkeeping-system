@@ -1,5 +1,5 @@
-import { CreateImage } from './Image.mutation';
+import { CreateImage, UpdateFisherfolkImage } from './Image.mutation';
 
-const Mutations = [CreateImage];
+const Mutations = [CreateImage, UpdateFisherfolkImage];
 
 export default Mutations;

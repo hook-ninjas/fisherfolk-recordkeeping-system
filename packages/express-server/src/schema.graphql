@@ -115,18 +115,18 @@ type Fisherfolk {
   dateOfBirth: DateTime!
   educationalBackground: EducationalBackground!
   firstName: String!
-  gears: [Gear]
+  gears: [Gear!]!
   gender: Gender!
-  governmentAid: [Queue]
+  governmentAid: [Queue!]!
   id: BigInt!
-  images: [Image]
+  images: [Image!]!
   isArchive: Boolean!
   lastName: String!
-  livelihoods: [Livelihood]
+  livelihoods: [Livelihood!]!
   middleName: String!
   nationality: String!
   numOfChildren: Int!
-  organizations: [Member]
+  organizations: [Member!]!
   permit: Permit
   personToNotify: String!
   placeOfBirth: String!
@@ -140,7 +140,7 @@ type Fisherfolk {
   salutation: Salutation!
   status: FisherfolkStatus!
   updatedAt: DateTime!
-  vessels: [Vessel]
+  vessels: [Vessel!]!
 }
 
 enum FisherfolkStatus {
@@ -233,7 +233,8 @@ type Mutation {
   createVessel(vessel: CreateVesselInput!): Vessel!
   createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
   loginUser(data: CreateUserInput!): AuthPayload!
-  updateFisherfolk(data: CreateFisherfolkInput!, id: Int!): Fisherfolk!
+  updateFisherfolk(data: UpdateFisherfolkInput!, fisherfolkId: Int!): Fisherfolk!
+  updateFisherfolkImage(data: CreateImageInput!, id: String!, url: String!): Image!
   updateMfvr(id: Int!, mfvrNum: String!): Vessel!
 }
 
@@ -270,8 +271,10 @@ type Query {
   fisherfolkByRange(count: Int!, start: Int!): [Fisherfolk!]!
   fisherfolkGears(count: Int!, fisherfolkId: BigInt!, start: Int!): [Gear!]!
   fisherfolkGender(gender: Gender!): Int!
+  fisherfolkPhoto(fisherfolkId: BigInt!): [Image!]!
   fisherfolkVessels(count: Int!, fisherfolkId: BigInt!, start: Int!): [Vessel!]!
   fisherfolks: [Fisherfolk!]!
+  fisherfolksWithUniqueBarangay: [Fisherfolk!]!
   gears: [Gear!]!
   livelihoodCount(activity: SourceOfIncome!): Int!
   totalFisherfolk: Int!
@@ -306,6 +309,34 @@ enum SourceOfIncome {
   FishProcessing
   FishVending
   Others
+}
+
+input UpdateFisherfolkInput {
+  age: Int!
+  appellation: String!
+  barangay: String!
+  cityMunicipality: String!
+  civilStatus: CivilStatus!
+  contactNum: String!
+  dateOfBirth: DateTime!
+  educationalBackground: EducationalBackground!
+  firstName: String!
+  gender: Gender!
+  lastName: String!
+  livelihoods: [livelihoodInput!]!
+  middleName: String!
+  nationality: String!
+  numOfChildren: Int!
+  organizations: [OrganizationInput]!
+  personToNotify: String!
+  placeOfBirth: String!
+  province: String!
+  ptnAddress: String!
+  ptnContactNum: String!
+  ptnRelationship: String!
+  religion: String!
+  residentYear: Int!
+  salutation: Salutation!
 }
 
 type User {

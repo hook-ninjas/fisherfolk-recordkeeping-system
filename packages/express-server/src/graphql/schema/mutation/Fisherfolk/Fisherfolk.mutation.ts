@@ -1,6 +1,6 @@
 import { intArg, mutationField } from 'nexus';
 import { createFisherfolk, updateFisherfolk, archiveFisherfolk } from './Fisherfolk.resolver';
-import CreateFisherfolkInput from '../../input/Fisherfolk.input';
+import {CreateFisherfolkInput, UpdateFisherfolkInput} from '../../input/Fisherfolk.input';
 import { nonNullArg } from '../../../../utils/utils';
 import Fisherfolk from '../../model/objecTypes/Fisherfolk';
 
@@ -18,10 +18,11 @@ const CreateFisherfolk = mutationField('createFisherfolk', {
 const UpdateFisherfolk = mutationField('updateFisherfolk', {
   type: Fisherfolk,
   args: {
-    id: intArg(),
-    data: nonNullArg(CreateFisherfolkInput),
+    fisherfolkId: intArg(),
+    data: nonNullArg(UpdateFisherfolkInput),
   },
-  resolve: (_, args, ctx) => updateFisherfolk(args.id, args.data, ctx)
+  resolve: (_, args, ctx) =>
+    updateFisherfolk(args.fisherfolkId, args.data, ctx),
 });
 
 const ArchiveFisherfolk = mutationField('archiveFisherfolk', {
