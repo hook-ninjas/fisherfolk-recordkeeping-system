@@ -28,7 +28,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import moment from 'moment';
 
-const renderMoreActions = () => {
+const RenderMoreActions = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -70,49 +70,7 @@ const renderMoreActions = () => {
   );
 };
 
-const columns: GridColumns = [
-  { field: 'id', headerName: 'ID', disableColumnMenu: true },
-  {
-    field: 'dateRegistered',
-    headerName: 'Date Registered',
-    type: 'date',
-    minWidth: 150,
-    disableColumnMenu: true,
-    valueFormatter: (params) => moment(params?.value).format('MM/DD/YYYY'),
-  },
-  {
-    field: 'mfvrNum',
-    headerName: 'MFVR Number',
-    editable: true,
-    disableColumnMenu: true,
-    minWidth: 170,
-  },
-  {
-    field: 'name',
-    headerName: 'Name',
-    disableColumnMenu: true,
-    minWidth: 170,
-  },
-  {
-    field: 'operator',
-    headerName: 'Operator',
-    disableColumnMenu: true,
-    minWidth: 250,
-  },
-  {
-    field: 'status',
-    headerName: 'Status',
-    disableColumnMenu: true,
-    minWidth: 130,
-  },
-  {
-    field: 'actions',
-    headerName: '',
-    disableColumnMenu: true,
-    sortable: false,
-    renderCell: renderMoreActions,
-  },
-];
+const  renderCell = () => <RenderMoreActions />;
 
 const computeMutation = (newRow: GridRowModel, oldRow: GridRowModel) => {
   if (newRow.mfvrNum !== oldRow.mfvrNum) {
@@ -259,3 +217,48 @@ export default function FisherfolkVesselTable() {
     </div>
   );
 }
+
+
+const columns: GridColumns = [
+  { field: 'id', headerName: 'ID', disableColumnMenu: true },
+  {
+    field: 'dateRegistered',
+    headerName: 'Date Registered',
+    type: 'date',
+    minWidth: 150,
+    disableColumnMenu: true,
+    valueFormatter: (params) => moment(params?.value).format('MM/DD/YYYY'),
+  },
+  {
+    field: 'mfvrNum',
+    headerName: 'MFVR Number',
+    editable: true,
+    disableColumnMenu: true,
+    minWidth: 170,
+  },
+  {
+    field: 'name',
+    headerName: 'Name',
+    disableColumnMenu: true,
+    minWidth: 170,
+  },
+  {
+    field: 'operator',
+    headerName: 'Operator',
+    disableColumnMenu: true,
+    minWidth: 250,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    disableColumnMenu: true,
+    minWidth: 130,
+  },
+  {
+    field: 'actions',
+    headerName: '',
+    disableColumnMenu: true,
+    sortable: false,
+    renderCell: renderCell,
+  },
+];

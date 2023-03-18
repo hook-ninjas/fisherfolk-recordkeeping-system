@@ -16,7 +16,7 @@ import ArchiveIcon from '@mui/icons-material/Archive';
 import moment from 'moment';
 import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
 
-const renderMoreActions = () => {
+const RenderMoreActions = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -57,6 +57,8 @@ const renderMoreActions = () => {
     </div>
   );
 };
+
+const  renderCell = () => <RenderMoreActions />;
 
 export default function GearTable() {
   const { id } = useParams();
@@ -132,6 +134,6 @@ const columns: GridColumns = [
     headerName: '',
     disableColumnMenu: true,
     sortable: false,
-    renderCell: renderMoreActions,
+    renderCell: renderCell,
   },
 ];

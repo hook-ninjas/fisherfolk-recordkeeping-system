@@ -88,6 +88,45 @@ const renderMoreActions = (id: number) => {
   );
 };
 
+export default function FisherfolkTable({ error, loading, data }: Props) {
+  let rows: GridRowsProp = [];
+
+  if (error) {
+    return <Alert severity="error">Something went wrong.</Alert>;
+  }
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (!loading && data !== undefined) {
+    rows =
+      data &&
+      data.fisherfolks.map((fisherfolk) => ({
+        id: fisherfolk.id,
+        dateRegistered: new Date(fisherfolk.registrationDate),
+        name: `${fisherfolk.lastName}, ${fisherfolk.firstName} ${fisherfolk.appellation} ${fisherfolk.middleName}`,
+        contactNumber: fisherfolk.contactNum,
+        livelihood:
+          fisherfolk.livelihoods == null
+            ? ''
+            : splitUpperCase(fisherfolk.livelihoods[0]?.type),
+        barangay: fisherfolk.barangay,
+        status: fisherfolk.status,
+      }));
+  }
+  return (
+    <div style={{ height: '85vh', width: '100%' }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        disableVirtualization={true}
+        aria-label="fisherfolk-table"
+      />
+    </div>
+  );
+}
+
 const columns: GridColumns = [
   { field: 'id', headerName: 'ID', disableColumnMenu: true },
   {
@@ -148,42 +187,3 @@ const columns: GridColumns = [
     },
   },
 ];
-
-export default function FisherfolkTable({ error, loading, data }: Props) {
-  let rows: GridRowsProp = [];
-
-  if (error) {
-    return <Alert severity="error">Something went wrong.</Alert>;
-  }
-
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (!loading && data !== undefined) {
-    rows =
-      data &&
-      data.fisherfolks.map((fisherfolk) => ({
-        id: fisherfolk.id,
-        dateRegistered: new Date(fisherfolk.registrationDate),
-        name: `${fisherfolk.lastName}, ${fisherfolk.firstName} ${fisherfolk.appellation} ${fisherfolk.middleName}`,
-        contactNumber: fisherfolk.contactNum,
-        livelihood:
-          fisherfolk.livelihoods == null
-            ? ''
-            : splitUpperCase(fisherfolk.livelihoods[0]?.type),
-        barangay: fisherfolk.barangay,
-        status: fisherfolk.status,
-      }));
-  }
-  return (
-    <div style={{ height: '85vh', width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        disableVirtualization={true}
-        aria-label="fisherfolk-table"
-      />
-    </div>
-  );
-}
