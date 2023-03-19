@@ -1,5 +1,16 @@
 import { inputObjectType } from 'nexus';
 
+const UploadImageInput = inputObjectType({
+  name: 'UploadImageInput',
+  definition(t) {
+    t.string('uri');
+    t.string('name');
+    t.int('size');
+    t.string('type');
+    t.boolean('isProfileImage');
+  },
+});
+
 const ImageInput = inputObjectType({
   name: 'CreateImageInput',
   definition(t) {
@@ -10,8 +21,7 @@ const ImageInput = inputObjectType({
     t.string('name');
     t.nullable.int('size');
     t.nullable.string('type');
-    t.field('updated_at', { type: 'DateTime' });
   },
 });
 
-export default ImageInput;
+export { ImageInput, UploadImageInput };
