@@ -445,21 +445,56 @@ const createFisherfolk = async (
     ptnContactNum: input.ptnContactNum,
   };
 
-  const livelihoods = convertActivities(
-    mainFishingActivity,
-    otherFishingActivity,
-    otherSourceOfIncome
-  ) as Livelihood[];
+  try {
+    const livelihoods = convertActivities(
+      mainFishingActivity,
+      otherFishingActivity,
+      otherSourceOfIncome
+    ) as Livelihood[];
 
-  const profilePhoto = await createImage(input.profilePhoto);
-  const files = await createImages(input.files);
-  const images = [profilePhoto, ...files] as Image[];
+    const profilePhoto = await createImage(input.profilePhoto);
+    const files = await createImages(input.files);
+    const images = [profilePhoto, ...files] as Image[];
 
-  if (organization != null || organization != undefined) {
+    if (organization != null || organization != undefined) {
+      if (gears != null && gears.length != 0) {
+        return await createFfolkWithOrgAndGear(
+          ffolkInfo,
+          organization,
+          livelihoods,
+          images,
+          gears,
+          context
+        );
+      }
+
+      if (vessel != null) {
+        return await createFfolkWithOrgAndVessel(
+          ffolkInfo,
+          organization,
+          livelihoods,
+          images,
+          vessel,
+          context
+        );
+      }
+
+      if (vessel != null && gears != null && gears.length != 0) {
+        return await createFfolkWithOrgGearAndVessel(
+          ffolkInfo,
+          organization,
+          livelihoods,
+          images,
+          gears,
+          vessel,
+          context
+        );
+      }
+    }
+
     if (gears != null && gears.length != 0) {
-      return await createFfolkWithOrgAndGear(
+      return await createFfolkWithGear(
         ffolkInfo,
-        organization,
         livelihoods,
         images,
         gears,
@@ -468,9 +503,8 @@ const createFisherfolk = async (
     }
 
     if (vessel != null) {
-      return await createFfolkWithOrgAndVessel(
+      return await createFfolkWithVessel(
         ffolkInfo,
-        organization,
         livelihoods,
         images,
         vessel,
@@ -479,9 +513,8 @@ const createFisherfolk = async (
     }
 
     if (vessel != null && gears != null && gears.length != 0) {
-      return await createFfolkWithOrgGearAndVessel(
+      return await createFfolkWithGearAndVessel(
         ffolkInfo,
-        organization,
         livelihoods,
         images,
         gears,
@@ -489,58 +522,29 @@ const createFisherfolk = async (
         context
       );
     }
-  }
 
-  if (gears != null && gears.length != 0) {
-    return await createFfolkWithGear(
-      ffolkInfo,
-      livelihoods,
-      images,
-      gears,
-      context
-    );
-  }
-
-  if (vessel != null) {
-    return await createFfolkWithVessel(
-      ffolkInfo,
-      livelihoods,
-      images,
-      vessel,
-      context
-    );
-  }
-
-  if (vessel != null && gears != null && gears.length != 0) {
-    return await createFfolkWithGearAndVessel(
-      ffolkInfo,
-      livelihoods,
-      images,
-      gears,
-      vessel,
-      context
-    );
-  }
-
-  return await context.prisma.fisherfolk.create({
-    data: {
-      ...ffolkInfo,
-      livelihoods: {
-        createMany: {
-          data: {
-            ...livelihoods,
+    return await context.prisma.fisherfolk.create({
+      data: {
+        ...ffolkInfo,
+        livelihoods: {
+          createMany: {
+            data: {
+              ...livelihoods,
+            },
+          },
+        },
+        images: {
+          createMany: {
+            data: {
+              ...images,
+            },
           },
         },
       },
-      images: {
-        createMany: {
-          data: {
-            ...images,
-          },
-        },
-      },
-    },
-  });
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const updateFisherfolk = async (
