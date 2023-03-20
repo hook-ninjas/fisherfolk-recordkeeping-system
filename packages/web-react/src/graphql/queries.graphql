@@ -68,8 +68,8 @@ query FisherfolkById($fisherfolkId: BigInt!) {
   }
 }
 
-query FisherfolkVessels($fisherfolkId: BigInt!, $start: Int!, $count: Int!) {
-  fisherfolkVessels(fisherfolkId: $fisherfolkId, start: $start, count: $count) {
+query FisherfolkVessels($fisherfolkId: BigInt!) {
+  fisherfolkVessels(fisherfolkId: $fisherfolkId) {
     createdAt
     engineMake
     grossTonnage
@@ -91,17 +91,15 @@ query FisherfolkVessels($fisherfolkId: BigInt!, $start: Int!, $count: Int!) {
     type
     yearBuilt
   },
-  totalFisherfolkVessels(fisherfolkId: $fisherfolkId)
 }
 
-query FisherfolkGears($fisherfolkId: BigInt!, $start: Int!, $count: Int!) {
-  fisherfolkGears(fisherfolkId: $fisherfolkId, start: $start, count: $count) {
+query FisherfolkGears($fisherfolkId: BigInt!) {
+  fisherfolkGears(fisherfolkId: $fisherfolkId) {
     classification
     createdAt
     id
     type
   },
-  totalFisherfolkGears(fisherfolkId: $fisherfolkId)
 }
 
 query VesselQuery {

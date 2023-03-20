@@ -31,6 +31,10 @@ import {
   MutationCreateVesselWithGearArgs,
   MutationCreateImageArgs,
   CreateImageDocument,
+  FisherfolkVesselsDocument,
+  FisherfolkGearsDocument,
+  VesselQueryDocument,
+  GearsQueryDocument,
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
@@ -207,6 +211,12 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showFailAlert();
     },
+    refetchQueries: [
+      { query: FisherfolkVesselsDocument, variables: { fisherfolkId: id } },
+      { query: FisherfolkGearsDocument, variables: { fisherfolkId: id } },
+      { query: VesselQueryDocument },
+      { query: GearsQueryDocument },
+    ],
   });
 
   const [createVessel] = useMutation(CreateVesselDocument, {
@@ -220,6 +230,10 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showFailAlert();
     },
+    refetchQueries: [
+      { query: FisherfolkVesselsDocument, variables: { fisherfolkId: id } },
+      { query: VesselQueryDocument },
+    ],
   });
 
   const [createGears] = useMutation(CreateGearsDocument, {
@@ -233,6 +247,10 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showFailAlert();
     },
+    refetchQueries: [
+      { query: FisherfolkGearsDocument, variables: { fisherfolkId: id } },
+      { query: GearsQueryDocument },
+    ],
   });
 
   const [createImage] = useMutation(CreateImageDocument, {
@@ -297,7 +315,7 @@ export default function AddVesselWithGearForm({
         variables: {
           data: {
             ...createImageInput.data,
-            vessel_id: vessel.data?.createVessel.id,
+            vessel_id: vessel.data!.createVessel.id,
           },
         },
       });
@@ -315,7 +333,7 @@ export default function AddVesselWithGearForm({
         variables: {
           data: {
             ...createImageInput.data,
-            gear_id: gears.data?.createGears[0].id,
+            gear_id: gears.data!.createGears[0].id,
           },
         },
       });

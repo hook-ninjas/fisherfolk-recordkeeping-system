@@ -1,4 +1,4 @@
-import { nonNull, queryField, list, intArg, arg } from 'nexus';
+import { nonNull, queryField, list, arg } from 'nexus';
 
 const Gears = queryField('gears', {
   type: nonNull(list(nonNull('Gear'))),
@@ -17,12 +17,8 @@ const QueryFisherfolkGears = queryField('fisherfolkGears',  {
     fisherfolkId: nonNull(arg({
       type: 'BigInt',
     })),
-    start: nonNull(intArg()),
-    count: nonNull(intArg())
   },
   resolve: (_, args, ctx) => ctx.prisma.gear.findMany({
-    skip: args.start,
-    take: args.count,
     where: {
       fisherfolkId: args.fisherfolkId
     }
