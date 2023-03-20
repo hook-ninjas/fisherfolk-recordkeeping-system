@@ -7,11 +7,10 @@ import Fisherfolk from '../../model/objecTypes/Fisherfolk';
 const CreateFisherfolk = mutationField('createFisherfolk', {
   type: Fisherfolk,
   args: {
-    data: nonNullArg(CreateFisherfolkInput),
+    data: CreateFisherfolkInput,
   },
-  resolve: (_, args, context) => {
-    const { data } = args;
-    return createFisherfolk(data, context);
+  resolve: async (_, { data }, context) => {
+    return await createFisherfolk(data, context);
   },
 });
 
@@ -21,7 +20,7 @@ const UpdateFisherfolk = mutationField('updateFisherfolk', {
     id: intArg(),
     data: nonNullArg(CreateFisherfolkInput),
   },
-  resolve: (_, args, ctx) => updateFisherfolk(args.id, args.data, ctx)
+  resolve: (_, args, ctx) => updateFisherfolk(args.id, args.data, ctx),
 });
 
 export { CreateFisherfolk, UpdateFisherfolk };
