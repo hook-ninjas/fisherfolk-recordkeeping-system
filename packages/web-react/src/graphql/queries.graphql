@@ -153,3 +153,13 @@ query FisherfolkCount{
 query FisherfolkGenderCount($gender: Gender!) {
   fisherfolkGender(gender: $gender)
 }
+
+query GovernmentAids {
+  govermentAids {
+    endDate
+    id
+    title
+    slot
+    startDate
+  }
+}

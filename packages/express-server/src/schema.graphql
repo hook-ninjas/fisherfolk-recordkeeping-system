@@ -276,6 +276,7 @@ type Query {
   fisherfolks: [Fisherfolk!]!
   fisherfolksWithUniqueBarangay: [Fisherfolk!]!
   gears: [Gear!]!
+  govermentAids: [GovernmentAid!]!
   livelihoodCount(activity: SourceOfIncome!): Int!
   totalFisherfolk: Int!
   totalFisherfolkGears(fisherfolkId: BigInt!): Int!

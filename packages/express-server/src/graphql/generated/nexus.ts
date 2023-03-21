@@ -441,6 +441,7 @@ export interface NexusGenFieldTypes {
     fisherfolks: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     fisherfolksWithUniqueBarangay: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     gears: NexusGenRootTypes['Gear'][]; // [Gear!]!
+    govermentAids: NexusGenRootTypes['GovernmentAid'][]; // [GovernmentAid!]!
     livelihoodCount: number; // Int!
     totalFisherfolk: number; // Int!
     totalFisherfolkGears: number; // Int!
@@ -624,6 +625,7 @@ export interface NexusGenFieldTypeNames {
     fisherfolks: 'Fisherfolk'
     fisherfolksWithUniqueBarangay: 'Fisherfolk'
     gears: 'Gear'
+    govermentAids: 'GovernmentAid'
     livelihoodCount: 'Int'
     totalFisherfolk: 'Int'
     totalFisherfolkGears: 'Int'

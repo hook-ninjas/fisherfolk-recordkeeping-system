@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
-import { styled } from '@mui/material/styles';
-import { Box, Grid, Paper, Stack, Typography, Tab, Tabs, Alert } from '@mui/material';
+import React from 'react';
+import { useState } from 'react';
+import {
+  Box,
+  Grid,
+  Stack,
+  Typography,
+  Alert,
+} from '@mui/material';
 import VesselTable from '../Table/VesselTable';
 import GearTable from '../Table/GearTable';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
@@ -14,14 +20,7 @@ import { useQuery } from '@apollo/client';
 import { splitUpperCase } from '../../utils/utils';
 import { CustomAddButton, CustomBtnText } from '../Buttons/CustomAddButton';
 import AddIcon from '@mui/icons-material/Add';
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'start',
-  color: theme.palette.text.secondary,
-}));
+import BasicTabs, { Item } from '../Tab/BasicTab';
 
 interface InfoProps {
   title: string;
@@ -55,95 +54,33 @@ function InfoTitle(input: InfoTitleProps) {
   );
 }
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
-function BasicTabs() {
-  const [addVesselGearBtn, setAddGearsBtn] = useState(false);
-  const handleAddMemberOpen = () => setAddGearsBtn(true);
-  const handleAddVesselGearClose = () => setAddGearsBtn(false);
-  const [value, setValue] = useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) =>
-    setValue(newValue);
-
-  return (
-    <Box sx={{ width: '100%' }}>
-      <Grid
-        container
-        justifyContent="space-between"
-        sx={{ borderBottom: 1, borderColor: 'divider' }}
-      >
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
-          <Tab label="Boats" {...a11yProps(0)} />
-          <Tab label="Gears" {...a11yProps(1)} />
-        </Tabs>
-        <Box m={1}>
-          <CustomAddButton
-            variant="contained"
-            endIcon={<AddIcon />}
-            onClick={handleAddMemberOpen}
-          >
-            <CustomBtnText> Add Boat/Gear</CustomBtnText>
-          </CustomAddButton>
-          {addVesselGearBtn && (
-            <AddVesselWithGearForm
-              handleClose={handleAddVesselGearClose}
-              open={addVesselGearBtn}
-            />
-          )}
-        </Box>
-      </Grid>
-      <TabPanel value={value} index={0}>
-        <VesselTable />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <GearTable />
-      </TabPanel>
-    </Box>
-  );
-}
-
 const FisherfolkViewProfile = () => {
   const { id } = useParams();
 
   if (id == undefined) {
     throw 'Ffolk does not exist';
   }
+  const [addVesselGearBtn, setAddGearsBtn] = useState(false);
+  const handleAddMemberOpen = () => setAddGearsBtn(true);
+  const handleAddVesselGearClose = () => setAddGearsBtn(false);
+
+  const AddBoatGearBtn = () => (
+    <Box m={1}>
+      <CustomAddButton
+        variant="contained"
+        endIcon={<AddIcon />}
+        onClick={handleAddMemberOpen}
+      >
+        <CustomBtnText> Add Boat/Gear</CustomBtnText>
+      </CustomAddButton>
+      {addVesselGearBtn && (
+        <AddVesselWithGearForm
+          handleClose={handleAddVesselGearClose}
+          open={addVesselGearBtn}
+        />
+      )}
+    </Box>
+  );
 
   const { loading, error, data } = useQuery(FisherfolkByIdDocument, {
     variables: {
@@ -154,7 +91,7 @@ const FisherfolkViewProfile = () => {
   if (error) {
     return <Alert severity="error">Something went wrong.</Alert>;
   }
-  
+
   if (loading) {
     return (
       <Grid container spacing={0.8}>
@@ -199,7 +136,13 @@ const FisherfolkViewProfile = () => {
         <Grid item xs={12} sm={7} md={9.2}>
           <Item sx={{ p: 0 }}>
             <Grid container>
-              <BasicTabs />
+              <BasicTabs
+                tab1Label="Boats"
+                tab2Label="Gears"
+                tabelPanel1={<VesselTable />}
+                tabelPanel2={<GearTable />}
+                button={<AddBoatGearBtn/>}
+              />
             </Grid>
           </Item>
         </Grid>
@@ -327,7 +270,13 @@ const FisherfolkViewProfile = () => {
       <Grid item xs={12} sm={7} md={9.2}>
         <Item sx={{ p: 0 }}>
           <Grid container>
-            <BasicTabs />
+            <BasicTabs
+              tab1Label="Boats"
+              tab2Label="Gears"
+              tabelPanel1={<VesselTable />}
+              tabelPanel2={<GearTable />}
+              button={<AddBoatGearBtn/>}
+            />
           </Grid>
         </Item>
       </Grid>
