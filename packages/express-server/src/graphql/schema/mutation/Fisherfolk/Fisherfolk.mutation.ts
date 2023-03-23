@@ -33,4 +33,4 @@ const ArchiveFisherfolk = mutationField('archiveFisherfolk', {
   resolve: (_, args, ctx) => archiveFisherfolk(args.id, ctx)
 });
 
-export { CreateFisherfolk, UpdateFisherfolk };
+export { CreateFisherfolk, UpdateFisherfolk, ArchiveFisherfolk };

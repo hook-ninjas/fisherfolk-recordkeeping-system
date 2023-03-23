@@ -20,7 +20,7 @@ const Archive = objectType({
     input: true,
     output: true,
   },
-  name: 'Fisherfolk',
+  name: 'Archive',
   definition(t) {
     t.bigInt('id');
     t.field('registrationDate', { type: 'DateTime' });

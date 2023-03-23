@@ -166,6 +166,37 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Archive: { // root type
+    age: number; // Int!
+    appellation: string; // String!
+    barangay: string; // String!
+    cityMunicipality: string; // String!
+    civilStatus: NexusGenEnums['CivilStatus']; // CivilStatus!
+    contactNum: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
+    educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
+    firstName: string; // String!
+    gender: NexusGenEnums['Gender']; // Gender!
+    id: NexusGenScalars['BigInt']; // BigInt!
+    isArchive: boolean; // Boolean!
+    lastName: string; // String!
+    middleName: string; // String!
+    nationality: string; // String!
+    numOfChildren: number; // Int!
+    personToNotify: string; // String!
+    placeOfBirth: string; // String!
+    province: string; // String!
+    ptnAddress: string; // String!
+    ptnContactNum: string; // String!
+    ptnRelationship: string; // String!
+    registrationDate: NexusGenScalars['DateTime']; // DateTime!
+    religion: string; // String!
+    residentYear: number; // Int!
+    salutation: NexusGenEnums['Salutation']; // Salutation!
+    status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
   AuthPayload: { // root type
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
@@ -309,6 +340,44 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  Archive: { // field return type
+    age: number; // Int!
+    appellation: string; // String!
+    barangay: string; // String!
+    cityMunicipality: string; // String!
+    civilStatus: NexusGenEnums['CivilStatus']; // CivilStatus!
+    contactNum: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
+    educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
+    firstName: string; // String!
+    gears: Array<NexusGenRootTypes['Gear'] | null> | null; // [Gear]
+    gender: NexusGenEnums['Gender']; // Gender!
+    governmentAid: Array<NexusGenRootTypes['Queue'] | null> | null; // [Queue]
+    id: NexusGenScalars['BigInt']; // BigInt!
+    images: Array<NexusGenRootTypes['Image'] | null> | null; // [Image]
+    isArchive: boolean; // Boolean!
+    lastName: string; // String!
+    livelihoods: Array<NexusGenRootTypes['Livelihood'] | null> | null; // [Livelihood]
+    middleName: string; // String!
+    nationality: string; // String!
+    numOfChildren: number; // Int!
+    organizations: Array<NexusGenRootTypes['Member'] | null> | null; // [Member]
+    permit: NexusGenRootTypes['Permit'] | null; // Permit
+    personToNotify: string; // String!
+    placeOfBirth: string; // String!
+    province: string; // String!
+    ptnAddress: string; // String!
+    ptnContactNum: string; // String!
+    ptnRelationship: string; // String!
+    registrationDate: NexusGenScalars['DateTime']; // DateTime!
+    religion: string; // String!
+    residentYear: number; // Int!
+    salutation: NexusGenEnums['Salutation']; // Salutation!
+    status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    vessels: Array<NexusGenRootTypes['Vessel'] | null> | null; // [Vessel]
+  }
   AuthPayload: { // field return type
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
@@ -492,6 +561,44 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  Archive: { // field return type name
+    age: 'Int'
+    appellation: 'String'
+    barangay: 'String'
+    cityMunicipality: 'String'
+    civilStatus: 'CivilStatus'
+    contactNum: 'String'
+    createdAt: 'DateTime'
+    dateOfBirth: 'DateTime'
+    educationalBackground: 'EducationalBackground'
+    firstName: 'String'
+    gears: 'Gear'
+    gender: 'Gender'
+    governmentAid: 'Queue'
+    id: 'BigInt'
+    images: 'Image'
+    isArchive: 'Boolean'
+    lastName: 'String'
+    livelihoods: 'Livelihood'
+    middleName: 'String'
+    nationality: 'String'
+    numOfChildren: 'Int'
+    organizations: 'Member'
+    permit: 'Permit'
+    personToNotify: 'String'
+    placeOfBirth: 'String'
+    province: 'String'
+    ptnAddress: 'String'
+    ptnContactNum: 'String'
+    ptnRelationship: 'String'
+    registrationDate: 'DateTime'
+    religion: 'String'
+    residentYear: 'Int'
+    salutation: 'Salutation'
+    status: 'FisherfolkStatus'
+    updatedAt: 'DateTime'
+    vessels: 'Vessel'
+  }
   AuthPayload: { // field return type name
     token: 'String'
     user: 'User'
