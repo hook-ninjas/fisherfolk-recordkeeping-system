@@ -6,44 +6,58 @@ import {
   CardContent,
   Typography,
 } from '@mui/material';
+import Divider from '@mui/material/Divider/Divider';
+import { Stack } from '@mui/system';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import DateRangeIcon from '@mui/icons-material/DateRange';
 
 interface Props {
   title: string;
   slot: number;
-  startDate: Date;
-  endDate: Date;
+  date: Date;
 }
 
 export default function FisherfolkProgramCard({
-  endDate,
   title,
   slot,
-  startDate,
+  date,
 }: Props) {
   return (
-    <Card
-      sx={{
-        minWidth: 250,
-        minHeight: 220,
-        padding: 0.5,
-        boxShadow: 2,
-        borderRadius: 3
-      }}
-    >
-      <CardContent >
-        <Typography sx={{ fontSize: 17.5 }}>{title}</Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5 }}>
-          {`Slot: ${slot}`}
+    <Card sx={{ borderRadius: 0 }}>
+      <CardContent>
+        <Typography
+          id="program-title"
+          fontSize={17}
+          color="#4a4b4d"
+          mb={1}
+          noWrap
+        >
+          {title}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {`Start Date: ${new Date(startDate).toLocaleDateString()}`}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {`End Date: ${new Date(endDate).toLocaleDateString()}`}
-        </Typography>
+        <Divider />
+        <Stack direction="row" justifyContent="space-between" mt={2} mb={-1.5}>
+          <PeopleAltIcon sx={{ color: 'gray' }} />
+          <Typography
+            id="program-slot"
+            variant="body1"
+            color="text.secondary"
+            ml={-12}
+          >
+            {`${slot}`}
+          </Typography>
+          <DateRangeIcon sx={{ color: 'gray' }} />
+          <Typography
+            id="program-date"
+            variant="body1"
+            color="text.secondary"
+            ml={-12}
+          >
+            {`${new Date(date).toLocaleDateString()}`}
+          </Typography>
+        </Stack>
       </CardContent>
       <CardActions>
-        <Button size='medium' sx={{ marginBottom: 2 }}>
+        <Button fullWidth size="small" variant="text">
           View Program
         </Button>
       </CardActions>
