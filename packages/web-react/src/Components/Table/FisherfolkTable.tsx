@@ -14,9 +14,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import moment from 'moment';
-import { ApolloError } from '@apollo/client';
-import { QueryFisherfolksQuery } from '../../graphql/generated';
+import { ApolloError, useMutation } from '@apollo/client';
+import { QueryFisherfolksQuery, MutationArchiveFisherfolkArgs, ArchiveFisherfolkDocument } from '../../graphql/generated';
 import UpdateFisherfolkForm from '../Forms/UpdateMemberForm';
+import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
 
 interface Props {
   error: ApolloError | undefined;
@@ -24,6 +25,22 @@ interface Props {
   data: QueryFisherfolksQuery | undefined;
 }
 
+const onArchive = (toArchiveId: number) => {
+  const archiveInput: MutationArchiveFisherfolkArgs = {
+    id: toArchiveId,
+  };
+
+  const [archiveFisherfolk] = useMutation(ArchiveFisherfolkDocument, {
+    onCompleted: () => {
+      showSuccessAlert();
+    },
+    onError: () => {
+      showFailAlert();
+    },
+  });
+
+};
+  
 const renderMoreActions = (id: number) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -80,7 +97,7 @@ const renderMoreActions = (id: number) => {
             open={updateFisherfolk}
           />
         )}
-        <MenuItem disableRipple>
+        <MenuItem onClick={() => onArchive(id)} disableRipple>
           <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
         </MenuItem>
       </Menu>

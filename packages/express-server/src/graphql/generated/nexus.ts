@@ -469,6 +469,7 @@ export interface NexusGenFieldTypes {
     yearJoined: number; // Int!
   }
   Mutation: { // field return type
+    archiveFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     createFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     createGears: NexusGenRootTypes['Gear'][]; // [Gear!]!
     createImage: NexusGenRootTypes['Image']; // Image!
@@ -499,6 +500,7 @@ export interface NexusGenFieldTypes {
     vessels: Array<NexusGenRootTypes['Vessel'] | null> | null; // [Vessel]
   }
   Query: { // field return type
+    ArchiveFisherfolk: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     activeFisherFolk: number; // Int!
     barangayCount: number; // Int!
     fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
@@ -691,6 +693,7 @@ export interface NexusGenFieldTypeNames {
     yearJoined: 'Int'
   }
   Mutation: { // field return type name
+    archiveFisherfolk: 'Fisherfolk'
     createFisherfolk: 'Fisherfolk'
     createGears: 'Gear'
     createImage: 'Image'
@@ -721,6 +724,7 @@ export interface NexusGenFieldTypeNames {
     vessels: 'Vessel'
   }
   Query: { // field return type name
+    ArchiveFisherfolk: 'Fisherfolk'
     activeFisherFolk: 'Int'
     barangayCount: 'Int'
     fisherfolk: 'Fisherfolk'
@@ -785,6 +789,9 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    archiveFisherfolk: { // args
+      id: number; // Int!
+    }
     createFisherfolk: { // args
       data: NexusGenInputs['CreateFisherfolkInput']; // CreateFisherfolkInput!
     }

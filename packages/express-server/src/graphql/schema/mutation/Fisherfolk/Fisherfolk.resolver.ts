@@ -169,9 +169,12 @@ const archiveFisherfolk = async (
   id: number,
   ctx: Context
 ) => {
-  ctx.prisma.fisherfolk.delete({
+  return ctx.prisma.fisherfolk.update({
     where: {
       id: id
+    }, 
+    data: {
+      isArchive: true 
     }
   });
 

@@ -60,3 +60,10 @@ export const queryFisherfolksWithUniqueBarangay = (ctx:Context)=>{
   });
 };
 
+export const queryArchivedFisherfolk = (ctx: Context) => {
+  return ctx.prisma.fisherfolk.findMany({
+    where: {
+      isArchive: true
+    }
+  });
+};

@@ -1,6 +1,6 @@
 # Write Graphql Queries here #
 
-  query QueryFisherfolks {
+query QueryFisherfolks {
   fisherfolks {
     id
     registrationDate
@@ -23,37 +23,37 @@
 }
 query FisherfolkById($fisherfolkId: BigInt!) {
   fisherfolk(id: $fisherfolkId) {
-    age,
-    appellation,
-    barangay,
-    cityMunicipality,
-    civilStatus,
-    contactNum,
-    dateOfBirth,
-    educationalBackground,
-    firstName,
-    gender,
-    id,
-    lastName,
-    middleName,
-    nationality,
-    numOfChildren,
-    personToNotify,
-    placeOfBirth,
-    province,
-    ptnAddress,
-    ptnContactNum,
-    ptnRelationship,
-    registrationDate,
-    religion,
-    residentYear,
-    salutation,
-    status,
-    livelihoods { 
+    age
+    appellation
+    barangay
+    cityMunicipality
+    civilStatus
+    contactNum
+    dateOfBirth
+    educationalBackground
+    firstName
+    gender
+    id
+    lastName
+    middleName
+    nationality
+    numOfChildren
+    personToNotify
+    placeOfBirth
+    province
+    ptnAddress
+    ptnContactNum
+    ptnRelationship
+    registrationDate
+    religion
+    residentYear
+    salutation
+    status
+    livelihoods {
       isMain
       type
       description
-    },
+    }
     organizations {
       organization {
         name
@@ -63,7 +63,7 @@ query FisherfolkById($fisherfolkId: BigInt!) {
     }
   }
   fisherfolkPhoto(fisherfolkId: $fisherfolkId) {
-    id,
+    id
     url
   }
 }
@@ -90,7 +90,7 @@ query FisherfolkVessels($fisherfolkId: BigInt!) {
     tonnageLength
     type
     yearBuilt
-  },
+  }
 }
 
 query FisherfolkGears($fisherfolkId: BigInt!) {
@@ -99,7 +99,7 @@ query FisherfolkGears($fisherfolkId: BigInt!) {
     createdAt
     id
     type
-  },
+  }
 }
 
 query VesselQuery {
@@ -134,15 +134,15 @@ query GearsQuery {
 
 query AuthUser {
   user {
-     id
+    id
   }
 }
 
 query LivelihoodCount($activity: SourceOfIncome!) {
-  livelihoodCount(activity: $activity) 
+  livelihoodCount(activity: $activity)
 }
 
-query FisherfolkCount{
+query FisherfolkCount {
   totalFisherfolk
   activeFisherFolk
   totalGears
@@ -161,5 +161,27 @@ query GovernmentAids {
     title
     slot
     startDate
+  }
+}
+
+query ArchiveFisherfolk {
+  ArchiveFisherfolk {
+    id
+    registrationDate
+    firstName
+    lastName
+    middleName
+    appellation
+    contactNum
+    livelihoods {
+      isMain
+      type
+    }
+    barangay
+    status
+  }
+  totalFisherfolk
+  fisherfolksWithUniqueBarangay {
+    barangay
   }
 }

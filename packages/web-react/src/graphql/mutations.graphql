@@ -33,9 +33,9 @@ mutation CreateImage($data: CreateImageInput!) {
   }
 }
 
-mutation CreateUser($data: CreateUserInput!){
+mutation CreateUser($data: CreateUserInput!) {
   createUser(data: $data) {
-    token,
+    token
     user {
       id
       username
@@ -46,7 +46,7 @@ mutation CreateUser($data: CreateUserInput!){
 
 mutation LoginUser($data: CreateUserInput!) {
   loginUser(data: $data) {
-    token,
+    token
     user {
       id
       username
@@ -57,7 +57,7 @@ mutation LoginUser($data: CreateUserInput!) {
 
 mutation UpdateMFVR($id: Int!, $mfvrNum: String!) {
   updateMfvr(id: $id, mfvrNum: $mfvrNum) {
-   id
+    id
     mfvrNumber
     createdAt
     name
@@ -76,9 +76,19 @@ mutation UpdateFisherfolk($fisherfolkId: Int!, $data: UpdateFisherfolkInput!) {
   }
 }
 
-mutation UpdateFisherfolkImage($data: CreateImageInput!, $updateFisherfolkImageId: String!, $url: String!) {
+mutation UpdateFisherfolkImage(
+  $data: CreateImageInput!
+  $updateFisherfolkImageId: String!
+  $url: String!
+) {
   updateFisherfolkImage(data: $data, id: $updateFisherfolkImageId, url: $url) {
-    id,
+    id
     url
+  }
+}
+
+mutation UpdateToArchiveFisherfolk($archiveFisherfolkId: Int!) {
+  archiveFisherfolk(id: $archiveFisherfolkId) {
+    id
   }
 }
