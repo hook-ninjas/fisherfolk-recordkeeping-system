@@ -177,10 +177,10 @@ enum Gender {
 
 type GovernmentAid {
   createdAt: DateTime!
-  endDate: DateTime!
+  date: DateTime!
+  description: String!
   id: Int!
   slot: Int!
-  startDate: DateTime!
   title: String!
   updatedAt: DateTime!
 }

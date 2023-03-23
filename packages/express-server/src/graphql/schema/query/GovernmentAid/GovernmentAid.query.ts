@@ -6,7 +6,7 @@ const GovernmentAids = queryField('govermentAids', {
     ctx.prisma.governmentAid.findMany({
       orderBy: [
         {
-          startDate: 'desc',
+          date: 'desc',
         },
       ],
     }),

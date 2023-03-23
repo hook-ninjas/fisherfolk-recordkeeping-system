@@ -210,10 +210,10 @@ export interface NexusGenObjects {
   }
   GovernmentAid: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    endDate: NexusGenScalars['DateTime']; // DateTime!
+    date: NexusGenScalars['DateTime']; // DateTime!
+    description: string; // String!
     id: number; // Int!
     slot: number; // Int!
-    startDate: NexusGenScalars['DateTime']; // DateTime!
     title: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
@@ -361,10 +361,10 @@ export interface NexusGenFieldTypes {
   }
   GovernmentAid: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    endDate: NexusGenScalars['DateTime']; // DateTime!
+    date: NexusGenScalars['DateTime']; // DateTime!
+    description: string; // String!
     id: number; // Int!
     slot: number; // Int!
-    startDate: NexusGenScalars['DateTime']; // DateTime!
     title: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
@@ -545,10 +545,10 @@ export interface NexusGenFieldTypeNames {
   }
   GovernmentAid: { // field return type name
     createdAt: 'DateTime'
-    endDate: 'DateTime'
+    date: 'DateTime'
+    description: 'String'
     id: 'Int'
     slot: 'Int'
-    startDate: 'DateTime'
     title: 'String'
     updatedAt: 'DateTime'
   }

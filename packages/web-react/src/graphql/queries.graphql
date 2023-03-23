@@ -156,10 +156,10 @@ query FisherfolkGenderCount($gender: Gender!) {
 
 query GovernmentAids {
   govermentAids {
-    endDate
     id
     title
     slot
-    startDate
+    date
+    description
   }
 }
