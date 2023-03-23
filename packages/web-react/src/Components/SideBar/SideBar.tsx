@@ -20,6 +20,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SailingOutlinedIcon from '@mui/icons-material/SailingOutlined';
 import PhishingRoundedIcon from '@mui/icons-material/PhishingRounded';
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import OfficeLogo from '../../Assets/city-agri-logo.png';
 
 const SidebarItemList = (
@@ -54,6 +55,13 @@ const SidebarItemList = (
           <PhishingRoundedIcon sx={{ color: 'white' }} />
         </ListItemIcon>
         <ListItemText primary="Gear Record" />
+      </ListItemButton>
+    </Link> <Link to="/fisherfolk-programs" className="nav-link">
+      <ListItemButton>
+        <ListItemIcon>
+          <VolunteerActivismIcon sx={{ color: 'white' }} />
+        </ListItemIcon>
+        <ListItemText primary="Fisherfolk Program" />
       </ListItemButton>
     </Link>
   </>

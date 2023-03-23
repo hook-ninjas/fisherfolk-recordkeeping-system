@@ -4,13 +4,13 @@ import { GearsQueryDocument } from '../../graphql/generated';
 import Loading from '../Loading/Loading';
 import { splitUpperCase } from '../../utils/utils';
 import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
-import { Button, Menu, MenuItem } from '@mui/material';
+import { Alert, Button, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import moment from 'moment';
 
-const renderMoreActions = () => {
+const RenderMoreActions = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -52,6 +52,46 @@ const renderMoreActions = () => {
   );
 };
 
+const  renderCell = () => <RenderMoreActions />;
+
+export default function FisherfolkGearTable() {
+  const { loading, error, data } = useQuery(GearsQueryDocument);
+  let rows: GridRowsProp = [];
+
+  if (error) {
+    return <Alert severity="error">Something went wrong.</Alert>;
+  }
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (!loading && data != undefined) {
+    rows =
+      data &&
+      data.gears.map((gear) => ({
+        id: gear.id,
+        dateRegistered: new Date(gear.createdAt),
+        classification: splitUpperCase(gear.classification),
+        type: splitUpperCase(gear.type),
+        operator: `${gear.fisherfolk.lastName}, ${gear.fisherfolk.firstName} ${gear.fisherfolk.middleName} ${gear.fisherfolk.appellation}`,
+        status: '',
+      }));
+  }
+
+  return (
+    <div style={{ height: '85vh', width: '100%' }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        disableVirtualization={true}
+        aria-label="gear-table"
+      />
+    </div>
+  );
+}
+
+
 const columns: GridColumns = [
   { field: 'id', headerName: 'ID', disableColumnMenu: true },
   {
@@ -92,44 +132,6 @@ const columns: GridColumns = [
     headerName: '',
     disableColumnMenu: true,
     sortable: false,
-    renderCell: renderMoreActions,
+    renderCell: renderCell,
   },
 ];
-
-export default function FisherfolkGearTable() {
-  const { loading, error, data } = useQuery(GearsQueryDocument);
-  let rows: GridRowsProp = [];
-
-  if (error) {
-    console.log(error);
-    return <h1>Error Failed to Fetch!!!</h1>;
-  }
-
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (!loading && data != undefined) {
-    rows =
-      data &&
-      data.gears.map((gear) => ({
-        id: gear.id,
-        dateRegistered: new Date(gear.createdAt),
-        classification: splitUpperCase(gear.classification),
-        type: gear.type,
-        operator: `${gear.fisherfolk.lastName}, ${gear.fisherfolk.firstName} ${gear.fisherfolk.middleName} ${gear.fisherfolk.appellation}`,
-        status: '',
-      }));
-  }
-
-  return (
-    <div style={{ height: '85vh', width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        disableVirtualization={true}
-        aria-label="gear-table"
-      />
-    </div>
-  );
-}

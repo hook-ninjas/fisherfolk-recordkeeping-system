@@ -126,6 +126,12 @@ export default function UpdateFisherfolkForm({
       handleComplete();
       showFailAlert();
     },
+    refetchQueries: [
+      {
+        query: FisherfolkByIdDocument,
+        variables: { fisherfolkId: id },
+      },
+    ],
   });
 
   if (loading) {
@@ -253,14 +259,14 @@ export default function UpdateFisherfolkForm({
             },
           })
       );
+    } else {
+      await updateFisherfolk({
+        variables: {
+          fisherfolkId: id,
+          data: updateFisherfolkInput.data,
+        },
+      });
     }
-
-    await updateFisherfolk({
-      variables: {
-        fisherfolkId: id,
-        data: updateFisherfolkInput.data,
-      },
-    });
   });
 
   const handleSubmitForm = (

@@ -269,13 +269,14 @@ type Query {
   barangayCount: Int!
   fisherfolk(id: BigInt!): Fisherfolk!
   fisherfolkByRange(count: Int!, start: Int!): [Fisherfolk!]!
-  fisherfolkGears(count: Int!, fisherfolkId: BigInt!, start: Int!): [Gear!]!
+  fisherfolkGears(fisherfolkId: BigInt!): [Gear!]!
   fisherfolkGender(gender: Gender!): Int!
   fisherfolkPhoto(fisherfolkId: BigInt!): [Image!]!
-  fisherfolkVessels(count: Int!, fisherfolkId: BigInt!, start: Int!): [Vessel!]!
+  fisherfolkVessels(fisherfolkId: BigInt!): [Vessel!]!
   fisherfolks: [Fisherfolk!]!
   fisherfolksWithUniqueBarangay: [Fisherfolk!]!
   gears: [Gear!]!
+  govermentAids: [GovernmentAid!]!
   livelihoodCount(activity: SourceOfIncome!): Int!
   totalFisherfolk: Int!
   totalFisherfolkGears(fisherfolkId: BigInt!): Int!
