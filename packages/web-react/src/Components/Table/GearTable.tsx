@@ -1,170 +1,139 @@
 import {
-  Paper,
-  TableRow,
-  TableCell,
-  TableContainer,
   Button,
   Menu,
   MenuItem,
-  Table,
-  TableBody,
-  TableHead,
-  TablePagination,
-  Typography,
+  Alert,
 } from '@mui/material';
-import React from 'react';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { FisherfolkGearsDocument } from '../../graphql/generated';
 import { useParams } from 'react-router-dom';
 import Loading from '../Loading/Loading';
 import { splitUpperCase } from '../../utils/utils';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import EditIcon from '@mui/icons-material/Edit';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import moment from 'moment';
+import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
 
-interface GearColumn {
-  id: 'id' | 'registrationDate' | 'classification' | 'name' | 'status';
-  label: string;
-  align?: 'left';
-}
+const RenderMoreActions = () => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => setAnchorEl(null);
 
-const gearColumns: readonly GearColumn[] = [
-  { id: 'id', label: 'Id' },
-  { id: 'registrationDate', label: 'Date Registered' },
-  { id: 'classification', label: 'Classification' },
-  { id: 'name', label: 'Name' },
-  { id: 'status', label: 'Status' },
-];
+  return (
+    <div>
+      <Button
+        id="action-btn"
+        aria-controls={open ? 'gear-action-btn' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        aria-label="gear-action-btn"
+        disableElevation
+        onClick={handleClick}
+        style={{ color: '#808080' }}
+      >
+        <MoreVertIcon />
+      </Button>
+      <Menu
+        id="gear-action-menu"
+        MenuListProps={{
+          'aria-labelledby': 'gear-action-menu-list',
+        }}
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+      >
+        <MenuItem disableRipple>
+          <EditIcon sx={{ width: 20, marginRight: 1.5 }} /> Edit
+        </MenuItem>
+        <MenuItem disableRipple>
+          <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
+        </MenuItem>
+      </Menu>
+    </div>
+  );
+};
+
+const  renderCell = () => <RenderMoreActions />;
 
 export default function GearTable() {
   const { id } = useParams();
 
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const handleChangePage = (event: unknown, newPage: number) =>
-    setPage(newPage);
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-  const [drop, setDropDown] = React.useState<null | HTMLElement>(null);
-  const handleDismissDropdown = () => setDropDown(null);
-  const open = Boolean(drop);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
-    setDropDown(event.currentTarget);
-
-  const { loading, error, data } = useQuery(FisherfolkGearsDocument, {
+  const {error, loading, data} = useQuery(FisherfolkGearsDocument, {
     variables: {
-      fisherfolkId: id,
-      start: page * rowsPerPage,
-      count: rowsPerPage,
-    },
+      fisherfolkId: id
+    }
   });
 
+  let rows: GridRowsProp = [];
+
   if (error) {
-    console.log(error);
-    return <h1>Error Failed to Fetch!!!</h1>;
+    return <Alert severity="error">Something went wrong.</Alert>;
   }
 
   if (loading) {
     return <Loading />;
   }
 
-  if (data && data?.totalFisherfolkGears === 0) {
-    return (
-      <TableContainer component={Paper}>
-        <Table stickyHeader size="small" aria-label="gear-table">
-          <TableHead>
-            <TableRow>
-              {gearColumns.map((gear) => (
-                <TableCell key={gear.id} align={gear.align}>
-                  <b>{gear.label}</b>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableRow
-            sx={{
-              height: 415,
-              width: '100%',
-              color: 'grey',
-            }}
-          >
-            <TableCell align="center" colSpan={5}>
-              <Typography variant="h6">No data recorded.</Typography>
-            </TableCell>
-          </TableRow>
-        </Table>
-      </TableContainer>
-    );
+  if (!loading && data != undefined) {
+    rows =
+      data &&
+      data.fisherfolkGears.map((gear) => ({
+        id: gear.id,
+        dateRegistered: new Date(gear.createdAt),
+        classification: splitUpperCase(gear.classification),
+        type: splitUpperCase(gear.type),
+      }));
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Table stickyHeader size="small" aria-label="gear-table">
-        <TableHead>
-          <TableRow>
-            {gearColumns.map((gear) => (
-              <TableCell key={gear.id} align={gear.align}>
-                <b>{gear.label}</b>
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data &&
-            data.fisherfolkGears.map((gear) => {
-              const { classification, createdAt, id, type } = gear;
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={id}>
-                  <TableCell>{id}</TableCell>
-                  <TableCell>
-                    {new Date(createdAt).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell>{splitUpperCase(classification)}</TableCell>
-                  <TableCell>{splitUpperCase(type)}</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell align="right">
-                    <Button
-                      id="basic-button"
-                      aria-controls={open ? 'basic-menu' : undefined}
-                      aria-haspopup="true"
-                      aria-expanded={open ? 'true' : undefined}
-                      onClick={(e) => {
-                        handleClick(e);
-                      }}
-                      style={{ color: '#808080' }}
-                    >
-                      <MoreVertIcon />
-                    </Button>{' '}
-                    <Menu
-                      id="dropdwown-menu"
-                      anchorEl={drop}
-                      open={open}
-                      onClose={handleDismissDropdown}
-                      MenuListProps={{
-                        'aria-labelledby': 'basic-button',
-                      }}
-                    >
-                      <MenuItem>Edit</MenuItem>
-                      <MenuItem>Archive</MenuItem>
-                    </Menu>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-        </TableBody>
-      </Table>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 50, 100]}
-        component="div"
-        count={data === undefined ? 0 : data.totalFisherfolkGears}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+    <div style={{ height: '85vh', width: '100%' }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        aria-label="fisherfolk-gear-table"
       />
-    </TableContainer>
+    </div>
   );
 }
+
+const columns: GridColumns = [
+  { field: 'id', headerName: 'ID', disableColumnMenu: true },
+  {
+    field: 'dateRegistered',
+    headerName: 'Date Registered',
+    type: 'date',
+    disableColumnMenu: true,
+    minWidth: 150,
+    valueFormatter: (params) => moment(params?.value).format('MM/DD/YYYY'),
+  },
+  {
+    field: 'classification',
+    headerName: 'Classification',
+    disableColumnMenu: true,
+    minWidth: 150,
+  },
+  {
+    field: 'type',
+    headerName: 'Type',
+    disableColumnMenu: true,
+    minWidth: 250,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    disableColumnMenu: true,
+    minWidth: 130,
+  },
+  {
+    field: 'actions',
+    headerName: '',
+    disableColumnMenu: true,
+    sortable: false,
+    renderCell: renderCell,
+  },
+];

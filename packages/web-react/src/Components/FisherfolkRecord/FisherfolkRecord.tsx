@@ -210,6 +210,7 @@ const FisherfolkRecord = () => {
                           {livelihoods.map((item) => (
                             <FormControlLabel
                               key={item.value}
+                              name={item.value}
                               value={item.value ?? ''}
                               label={splitUpperCase(item.label)}
                               control={<Radio />}
@@ -234,6 +235,7 @@ const FisherfolkRecord = () => {
                           {fisherfolkStatus.map((item) => (
                             <FormControlLabel
                               key={item.value}
+                              name={item.value}
                               value={item.value ?? ''}
                               label={splitUpperCase(item.label)}
                               control={<Radio />}
@@ -255,6 +257,7 @@ const FisherfolkRecord = () => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <Autocomplete
+                          id='barangay'
                           disableClearable
                           freeSolo
                           autoComplete
@@ -285,6 +288,7 @@ const FisherfolkRecord = () => {
                 </Box>
                 <Box p={8} sx={{ mb: 2, mt: -6 }} width="250" textAlign="start">
                   <Button
+                    id="apply-btn"
                     variant="contained"
                     fullWidth
                     sx={{
@@ -363,8 +367,8 @@ const FisherfolkRecord = () => {
             <Typography variant="body1">
               {data?.totalFisherfolk != undefined
                 ? isFiltered
-                  ? `Total: ${fisherfolks?.totalFisherfolk}`
-                  : `Total: ${data?.totalFisherfolk}`
+                  ? `Total: ${fisherfolks?.totalFisherfolk ?? ''}`
+                  : `Total: ${data?.totalFisherfolk ?? ''}`
                 : ''}
             </Typography>
           </Box>

@@ -19,6 +19,7 @@ import FisherfolkGearRecord from './Components/FisherfolkRecord/FisherfolkGearRe
 import FisherfolkArchiveRecord from './Components/FisherfolkRecord/FisherfolkArchiveRecord';
 import CreateAccount from './Components/Forms/CreateAccountForm';
 import ProtectedRoute from './Components/NotAuthorizedPage/ProtectedRoute';
+import FisherfolkProgram from './Components/FisherfolkRecord/FisherfolkProgram';
 
 const httpLink = createHttpLink({ uri: 'http://localhost:4000/graphql' });
 
@@ -63,6 +64,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               <Route
                 path="fisherfolk-archive"
                 element={<FisherfolkArchiveRecord />}
+              />
+              <Route
+                path="fisherfolk-programs"
+                element={<FisherfolkProgram />}
               />
             </Route>
           </Route>
