@@ -1,15 +1,17 @@
-import { list, nonNull, queryField } from 'nexus';
+import { intArg, list, nonNull, queryField } from 'nexus';
+import { queryGovernmentAid, queryGovernmentAids } from './GovernmentAid.resolver';
 
-const GovernmentAids = queryField('govermentAids', {
+const GovernmentAids = queryField('governmentAids', {
   type: nonNull(list('GovernmentAid')),
-  resolve: (_, __, ctx) =>
-    ctx.prisma.governmentAid.findMany({
-      orderBy: [
-        {
-          date: 'desc',
-        },
-      ],
-    }),
+  resolve: (_, __, ctx) => queryGovernmentAids(ctx),
 });
 
-export default [GovernmentAids];
+const GovernmentAid = queryField('governmentAid', {
+  type: nonNull('GovernmentAid'),
+  args: {
+    govtAidId: intArg(),
+  },
+  resolve: (_, args, ctx) => queryGovernmentAid(args.govtAidId, ctx),
+});
+
+export default [GovernmentAids, GovernmentAid];
