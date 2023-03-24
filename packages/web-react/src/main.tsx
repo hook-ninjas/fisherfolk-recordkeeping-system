@@ -18,7 +18,7 @@ import FisherfolkBoatRecord from './Components/FisherfolkRecord/FisherfolkBoatRe
 import FisherfolkGearRecord from './Components/FisherfolkRecord/FisherfolkGearRecord';
 import CreateAccount from './Components/Forms/CreateAccountForm';
 import ProtectedRoute from './Components/NotAuthorizedPage/ProtectedRoute';
-import FisherfolkProgram from './Components/FisherfolkRecord/FisherfolkProgram';
+import FisherfolkProgram from './Components/FisherfolkProgram/FisherfolkProgram';
 
 const httpLink = createHttpLink({ uri: 'http://localhost:4000/graphql' });
 

@@ -23,12 +23,13 @@ const FisherfolkProgram = () => {
           <Typography variant="h5">Fisherfolk Programs</Typography>
         </Box>
         <Grid item mt={3}>
-          <Grid container spacing={3}>
+          <Grid container spacing={2}>
             {data &&
-              data.govermentAids.map((aid) => {
+              data.governmentAids.map((aid) => {
                 return (
                   <Grid key={aid.id} item xs={12} sm={6} md={4}>
                     <FisherfolkProgramCard
+                      id={aid.id}
                       title={aid.title}
                       slot={aid.slot}
                       date={aid.date}
