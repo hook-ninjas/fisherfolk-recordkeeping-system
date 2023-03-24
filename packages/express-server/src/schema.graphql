@@ -55,8 +55,9 @@ input CreateGearInput {
 }
 
 input CreateImageInput {
-  fisherfolkId: BigInt!
+  fisherfolkId: BigInt
   gear_id: BigInt
+  government_aid_id: Int
   name: String!
   text: String!
   updated_at: DateTime!
@@ -276,7 +277,9 @@ type Query {
   fisherfolks: [Fisherfolk!]!
   fisherfolksWithUniqueBarangay: [Fisherfolk!]!
   gears: [Gear!]!
-  govermentAids: [GovernmentAid!]!
+  governmentAid(govtAidId: Int!): GovernmentAid!
+  governmentAidPhotos(govtAidId: Int!): [Image!]!
+  governmentAids: [GovernmentAid!]!
   livelihoodCount(activity: SourceOfIncome!): Int!
   totalFisherfolk: Int!
   totalFisherfolkGears(fisherfolkId: BigInt!): Int!
