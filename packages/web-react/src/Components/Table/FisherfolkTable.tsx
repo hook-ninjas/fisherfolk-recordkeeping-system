@@ -15,9 +15,9 @@ import ArchiveIcon from '@mui/icons-material/Archive';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import moment from 'moment';
 import { ApolloError, useMutation } from '@apollo/client';
-import { QueryFisherfolksQuery, MutationArchiveFisherfolkArgs, ArchiveFisherfolkDocument } from '../../graphql/generated';
+import { QueryFisherfolksQuery, UpdateToArchiveFisherfolkDocument } from '../../graphql/generated';
 import UpdateFisherfolkForm from '../Forms/UpdateMemberForm';
-import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
+import Backdrop from '@mui/material/Backdrop';
 
 interface Props {
   error: ApolloError | undefined;
@@ -25,21 +25,6 @@ interface Props {
   data: QueryFisherfolksQuery | undefined;
 }
 
-const onArchive = (toArchiveId: number) => {
-  const archiveInput: MutationArchiveFisherfolkArgs = {
-    id: toArchiveId,
-  };
-
-  const [archiveFisherfolk] = useMutation(ArchiveFisherfolkDocument, {
-    onCompleted: () => {
-      showSuccessAlert();
-    },
-    onError: () => {
-      showFailAlert();
-    },
-  });
-
-};
   
 const renderMoreActions = (id: number) => {
   const navigate = useNavigate();
@@ -50,6 +35,32 @@ const renderMoreActions = (id: number) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => setAnchorEl(null);
+
+  const [archiveFisherfolk, archiveResult] = useMutation(UpdateToArchiveFisherfolkDocument);
+  
+  const ArchiveAFisherfolk = () => {
+    archiveFisherfolk({
+      variables: {
+        archiveFisherfolkId: id
+      }
+    });
+  };
+
+  const { error, loading } = archiveResult;
+
+  if (loading) {
+    return (
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={true}
+      >
+      </Backdrop >
+    );
+  }
+  if (error) {
+    return <Alert severity="error">Something went wrong.</Alert>;
+  }
+  
 
   const handleProfileView = () => {
     navigate(`/fisherfolk-profile/${id}`);
@@ -97,7 +108,7 @@ const renderMoreActions = (id: number) => {
             open={updateFisherfolk}
           />
         )}
-        <MenuItem onClick={() => onArchive(id)} disableRipple>
+        <MenuItem onClick={ArchiveAFisherfolk} disableRipple>
           <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
         </MenuItem>
       </Menu>
@@ -106,6 +117,7 @@ const renderMoreActions = (id: number) => {
 };
 
 export default function FisherfolkTable({ error, loading, data }: Props) {
+
   let rows: GridRowsProp = [];
 
   if (error) {

@@ -11,7 +11,10 @@ const Fisherfolks = queryField('fisherfolks', {
       {
         registrationDate: 'desc'
       }
-    ]
+    ],
+    where: {
+      isArchive: false,
+    }
   })
 });
 
