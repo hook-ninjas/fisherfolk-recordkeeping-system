@@ -13,7 +13,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import moment from 'moment';
 import { ApolloError } from '@apollo/client';
-import { ArchiveFisherfolkQuery, MutationArchiveFisherfolkArgs } from '../../graphql/generated';
+import { ArchiveFisherfolkQuery } from '../../graphql/generated';
 
 interface Props {
   error: ApolloError | undefined;
