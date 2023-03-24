@@ -42,7 +42,6 @@ import {
 } from '../Containers/FormContainers';
 import { UpdateFisherfolkSchema } from './validation/schema';
 import { yupResolver } from '@hookform/resolvers/yup';
-import LinearProgress from '@mui/material/LinearProgress';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 
@@ -134,8 +133,8 @@ export default function UpdateFisherfolkForm({
     ],
   });
 
-  if (loading) {
-    return <LinearProgress />;
+  if (loading || !fisherfolk) {
+    return null;
   }
 
   if (!loading && !fisherfolk) {
