@@ -18,6 +18,7 @@ import { ApolloError, useMutation } from '@apollo/client';
 import { QueryFisherfolksQuery, UpdateToArchiveFisherfolkDocument } from '../../graphql/generated';
 import UpdateFisherfolkForm from '../Forms/UpdateMemberForm';
 import Backdrop from '@mui/material/Backdrop';
+import { showArchiveSuccess, showArchiveError } from '../ConfirmationDialog/Alerts';
 
 interface Props {
   error: ApolloError | undefined;
@@ -36,30 +37,31 @@ const renderMoreActions = (id: number) => {
   };
   const handleClose = () => setAnchorEl(null);
 
-  const [archiveFisherfolk, archiveResult] = useMutation(UpdateToArchiveFisherfolkDocument);
+  const [archiveFisherfolk, archiveResult ] = useMutation(UpdateToArchiveFisherfolkDocument);
   
   const ArchiveAFisherfolk = () => {
     archiveFisherfolk({
       variables: {
         archiveFisherfolkId: id
-      }
+      },
+      onCompleted: () => { showArchiveSuccess(); },
+      onError: () => { showArchiveError(); }
     });
   };
 
-  const { error, loading } = archiveResult;
-
-  if (loading) {
-    return (
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={true}
-      >
-      </Backdrop >
-    );
-  }
-  if (error) {
-    return <Alert severity="error">Something went wrong.</Alert>;
-  }
+  const archiveHandler = () => {
+    const { loading } = archiveResult;
+    if (loading) {
+      return (
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+        >
+        </Backdrop >
+      );
+    }
+  };
+  
   
 
   const handleProfileView = () => {
@@ -108,7 +110,7 @@ const renderMoreActions = (id: number) => {
             open={updateFisherfolk}
           />
         )}
-        <MenuItem onClick={ArchiveAFisherfolk} disableRipple>
+        <MenuItem onClick={() => { ArchiveAFisherfolk(); archiveHandler(); }} disableRipple>
           <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
         </MenuItem>
       </Menu>
