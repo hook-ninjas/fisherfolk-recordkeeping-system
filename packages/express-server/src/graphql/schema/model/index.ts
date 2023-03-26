@@ -10,7 +10,6 @@ import Permit from './objecTypes/Permit';
 import Gear from './objecTypes/Gear';
 import Vessel from './objecTypes/Vessel';
 import Member from './objecTypes/Member';
-import Archive from './objecTypes/Archive';
 
 const Models = [
   AuthPayload,
@@ -25,7 +24,6 @@ const Models = [
   Vessel,
   Gear,
   Member,
-  Archive
 ];
 
 export default Models;

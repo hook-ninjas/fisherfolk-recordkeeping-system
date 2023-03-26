@@ -2,45 +2,6 @@
 ### Do not make changes to this file directly
 
 
-type Archive {
-  age: Int!
-  appellation: String!
-  barangay: String!
-  cityMunicipality: String!
-  civilStatus: CivilStatus!
-  contactNum: String!
-  createdAt: DateTime!
-  dateOfBirth: DateTime!
-  educationalBackground: EducationalBackground!
-  firstName: String!
-  gears: [Gear]
-  gender: Gender!
-  governmentAid: [Queue]
-  id: BigInt!
-  images: [Image]
-  isArchive: Boolean!
-  lastName: String!
-  livelihoods: [Livelihood]
-  middleName: String!
-  nationality: String!
-  numOfChildren: Int!
-  organizations: [Member]
-  permit: Permit
-  personToNotify: String!
-  placeOfBirth: String!
-  province: String!
-  ptnAddress: String!
-  ptnContactNum: String!
-  ptnRelationship: String!
-  registrationDate: DateTime!
-  religion: String!
-  residentYear: Int!
-  salutation: Salutation!
-  status: FisherfolkStatus!
-  updatedAt: DateTime!
-  vessels: [Vessel]
-}
-
 type AuthPayload {
   token: String!
   user: User!
