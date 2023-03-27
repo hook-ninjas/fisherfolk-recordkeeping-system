@@ -175,19 +175,16 @@ const UpdateFisherfolkSchema = object().shape({
 const AddVesselWithGearSchema = object().shape({
   vesselGearPhoto: mixed()
     .test(
-      'uploadedPhoto',
-      'Must upload photo',
-      (value) => value && value instanceof FileList
-    )
-    .test(
       'fileSize',
       'File too large',
-      (value) => value instanceof FileList && value[0].size <= uploadLimit
+      (value) =>
+        !value || (value instanceof FileList && value[0].size <= uploadLimit)
     )
     .test(
       'fileFormat',
       'Unsupported Format, Format must be in .jpeg, .jpg, .png',
-      (value) => value && value[0].type.match(/^.*(image\/jpeg|jpg|png)$/gm)
+      (value) =>
+        !value || (value && value[0].type.match(/^.*(image\/jpeg|jpg|png)$/gm))
     ),
   yearBuilt: string().matches(/^$|\d{4}$/, 'Enter year.'),
 });
@@ -204,5 +201,5 @@ export {
   LoginSchema,
   UpdateFisherfolkSchema,
   AddVesselWithGearSchema,
-  FilterSchema
+  FilterSchema,
 };

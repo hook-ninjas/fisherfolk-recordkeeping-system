@@ -24,6 +24,7 @@ export async function uploadImage(
       fisherfolkId: image.fisherfolkId,
       gearId: image.gear_id,
       vesselId: image.vessel_id,
+      governmentAidId: image.government_aid_id,
       name: result.signature,
       url: result.url,
       updatedAt: result.created_at,

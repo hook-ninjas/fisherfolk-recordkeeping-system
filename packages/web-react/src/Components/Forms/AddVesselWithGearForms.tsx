@@ -29,12 +29,12 @@ import {
   CreateVessselWithGearDocument,
   GearClassification,
   MutationCreateVesselWithGearArgs,
-  MutationCreateImageArgs,
   CreateImageDocument,
   FisherfolkVesselsDocument,
   FisherfolkGearsDocument,
   VesselQueryDocument,
   GearsQueryDocument,
+  FisherfolkCountDocument,
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
@@ -59,6 +59,10 @@ export default function AddVesselWithGearForm({
   handleClose,
 }: AddVesselWithGearFormProps) {
   const { id } = useParams();
+  
+  if (id == undefined) {
+    throw 'Fisherfolk does not exist';
+  }
 
   const [complete, setComplete] = useState(false);
   const [image, setImage] = React.useState<
@@ -216,6 +220,7 @@ export default function AddVesselWithGearForm({
       { query: FisherfolkGearsDocument, variables: { fisherfolkId: id } },
       { query: VesselQueryDocument },
       { query: GearsQueryDocument },
+      { query: FisherfolkCountDocument }
     ],
   });
 
@@ -291,18 +296,6 @@ export default function AddVesselWithGearForm({
       gears: generateGears(gearTypes),
     };
 
-    const createImageInput: MutationCreateImageArgs = {
-      data: {
-        fisherfolkId: parseInt(id!),
-        url: image!.toString(),
-        gear_id: null,
-        vessel_id: null,
-        text: 'none',
-        name: '',
-        updated_at: new Date(),
-      },
-    };
-
     // create vessel only
     if (createVesselWithGearInput.gears.length == 0) {
       const vessel = await createVessel({
@@ -311,14 +304,21 @@ export default function AddVesselWithGearForm({
         },
       });
 
-      await createImage({
-        variables: {
-          data: {
-            ...createImageInput.data,
-            vessel_id: vessel.data!.createVessel.id,
+      if (image) {
+        await createImage({
+          variables: {
+            data: {
+              fisherfolkId: parseInt(id),
+              url: image.toString(),
+              gear_id: null,
+              vessel_id: vessel.data?.createVessel.id,
+              text: 'none',
+              name: `vessel-gear-image-${id}`,
+              updated_at: new Date(),
+            },
           },
-        },
-      });
+        });
+      }
     }
 
     // create gears only
@@ -329,14 +329,21 @@ export default function AddVesselWithGearForm({
         },
       });
 
-      await createImage({
-        variables: {
-          data: {
-            ...createImageInput.data,
-            gear_id: gears.data!.createGears[0].id,
+      if (image) {
+        await createImage({
+          variables: {
+            data: {
+              fisherfolkId: parseInt(id),
+              url: image.toString(),
+              gear_id: gears.data?.createGears[0].id,
+              vessel_id: null,
+              text: 'none',
+              name: `vessel-gear-image-${id}`,
+              updated_at: new Date(),
+            },
           },
-        },
-      });
+        });
+      }
     }
 
     // create both boat and gears
@@ -351,14 +358,21 @@ export default function AddVesselWithGearForm({
         },
       });
 
-      await createImage({
-        variables: {
-          data: {
-            ...createImageInput.data,
-            vessel_id: vessel.data?.createVesselWithGear.id,
+      if (image) {
+        await createImage({
+          variables: {
+            data: {
+              fisherfolkId: parseInt(id),
+              url: image.toString(),
+              gear_id: null,
+              vessel_id: vessel.data?.createVesselWithGear.id,
+              text: 'none',
+              name: `vessel-gear-image-${id}`,
+              updated_at: new Date(),
+            },
           },
-        },
-      });
+        });
+      }
     }
   });
 

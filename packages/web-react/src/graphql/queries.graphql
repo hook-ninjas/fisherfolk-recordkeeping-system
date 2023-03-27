@@ -155,12 +155,26 @@ query FisherfolkGenderCount($gender: Gender!) {
 }
 
 query GovernmentAids {
-  govermentAids {
-    endDate
+  governmentAids {
     id
     title
     slot
-    startDate
+    date
+    description
+  }
+}
+
+query GovernmentAid($govtAidId: Int!) {
+  governmentAid(govtAidId: $govtAidId) {
+    id
+    title
+    description
+    date
+    slot
+  }
+  governmentAidPhotos(govtAidId: $govtAidId) {
+    id
+    url
   }
 }
 

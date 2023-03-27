@@ -72,8 +72,9 @@ export interface NexusGenInputs {
     type: string; // String!
   }
   CreateImageInput: { // input type
-    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    fisherfolkId?: NexusGenScalars['BigInt'] | null; // BigInt
     gear_id?: NexusGenScalars['BigInt'] | null; // BigInt
+    government_aid_id?: number | null; // Int
     name: string; // String!
     text: string; // String!
     updated_at: NexusGenScalars['DateTime']; // DateTime!
@@ -210,10 +211,10 @@ export interface NexusGenObjects {
   }
   GovernmentAid: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    endDate: NexusGenScalars['DateTime']; // DateTime!
+    date: NexusGenScalars['DateTime']; // DateTime!
+    description: string; // String!
     id: number; // Int!
     slot: number; // Int!
-    startDate: NexusGenScalars['DateTime']; // DateTime!
     title: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
@@ -361,10 +362,10 @@ export interface NexusGenFieldTypes {
   }
   GovernmentAid: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    endDate: NexusGenScalars['DateTime']; // DateTime!
+    date: NexusGenScalars['DateTime']; // DateTime!
+    description: string; // String!
     id: number; // Int!
     slot: number; // Int!
-    startDate: NexusGenScalars['DateTime']; // DateTime!
     title: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
@@ -443,7 +444,9 @@ export interface NexusGenFieldTypes {
     fisherfolks: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     fisherfolksWithUniqueBarangay: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
     gears: NexusGenRootTypes['Gear'][]; // [Gear!]!
-    govermentAids: NexusGenRootTypes['GovernmentAid'][]; // [GovernmentAid!]!
+    governmentAid: NexusGenRootTypes['GovernmentAid']; // GovernmentAid!
+    governmentAidPhotos: NexusGenRootTypes['Image'][]; // [Image!]!
+    governmentAids: NexusGenRootTypes['GovernmentAid'][]; // [GovernmentAid!]!
     livelihoodCount: number; // Int!
     totalFisherfolk: number; // Int!
     totalFisherfolkGears: number; // Int!
@@ -547,10 +550,10 @@ export interface NexusGenFieldTypeNames {
   }
   GovernmentAid: { // field return type name
     createdAt: 'DateTime'
-    endDate: 'DateTime'
+    date: 'DateTime'
+    description: 'String'
     id: 'Int'
     slot: 'Int'
-    startDate: 'DateTime'
     title: 'String'
     updatedAt: 'DateTime'
   }
@@ -629,7 +632,9 @@ export interface NexusGenFieldTypeNames {
     fisherfolks: 'Fisherfolk'
     fisherfolksWithUniqueBarangay: 'Fisherfolk'
     gears: 'Gear'
-    govermentAids: 'GovernmentAid'
+    governmentAid: 'GovernmentAid'
+    governmentAidPhotos: 'Image'
+    governmentAids: 'GovernmentAid'
     livelihoodCount: 'Int'
     totalFisherfolk: 'Int'
     totalFisherfolkGears: 'Int'
@@ -740,6 +745,12 @@ export interface NexusGenArgTypes {
     }
     fisherfolkVessels: { // args
       fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    }
+    governmentAid: { // args
+      govtAidId: number; // Int!
+    }
+    governmentAidPhotos: { // args
+      govtAidId: number; // Int!
     }
     livelihoodCount: { // args
       activity: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
