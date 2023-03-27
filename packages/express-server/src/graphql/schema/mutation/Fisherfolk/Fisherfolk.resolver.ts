@@ -165,4 +165,20 @@ const updateFisherfolk = async (
   });
 };
 
-export { createFisherfolk, updateFisherfolk };
+const archiveFisherfolk = async (
+  id: number,
+  ctx: Context
+) => {
+  return ctx.prisma.fisherfolk.update({
+    where: {
+      id: id
+    }, 
+    data: {
+      isArchive: true 
+    }
+  });
+
+  // return ctx.prisma
+};
+
+export { createFisherfolk, updateFisherfolk, archiveFisherfolk };

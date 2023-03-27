@@ -4,7 +4,11 @@ import { FisherfolkStatus, Gender } from '@prisma/client';
 
 
 export const queryTotalFisherfolk = (ctx: Context) => {
-  return ctx.prisma.fisherfolk.count();
+  return ctx.prisma.fisherfolk.count({
+    where: {
+      isArchive: false,
+    }
+  });
 };
 
 export const queryByRange = (start: number, count: number, ctx: Context) => {
@@ -60,3 +64,10 @@ export const queryFisherfolksWithUniqueBarangay = (ctx:Context)=>{
   });
 };
 
+export const queryArchivedFisherfolk = (ctx: Context) => {
+  return ctx.prisma.fisherfolk.findMany({
+    where: {
+      isArchive: true
+    }
+  });
+};

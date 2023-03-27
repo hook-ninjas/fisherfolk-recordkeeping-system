@@ -70,6 +70,8 @@ const FisherfolkRecord = () => {
     setSearchKey(event.target.value);
   };
 
+
+
   const onSearchSubmit = (e: any) => {
     e.preventDefault();
     if (searchKey.trim().length == 0) {

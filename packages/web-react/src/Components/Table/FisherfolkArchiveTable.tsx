@@ -10,70 +10,31 @@ import {
 } from '@mui/x-data-grid';
 import { Alert, Button, Menu, MenuItem } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import EditIcon from '@mui/icons-material/Edit';
-import ArchiveIcon from '@mui/icons-material/Archive';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import moment from 'moment';
-import { ApolloError, useMutation } from '@apollo/client';
-import { QueryFisherfolksQuery, UpdateToArchiveFisherfolkDocument } from '../../graphql/generated';
-import UpdateFisherfolkForm from '../Forms/UpdateMemberForm';
-import Backdrop from '@mui/material/Backdrop';
-import { showArchiveSuccess, showArchiveError } from '../ConfirmationDialog/Alerts';
+import { ApolloError } from '@apollo/client';
+import { ArchiveFisherfolkQuery } from '../../graphql/generated';
 
 interface Props {
   error: ApolloError | undefined;
   loading: boolean;
-  data: QueryFisherfolksQuery | undefined;
+  data: ArchiveFisherfolkQuery | undefined;
 }
 
-  
 const renderMoreActions = (id: number) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [updateFisherfolk, setUpdateFisherfolk] = useState(false);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => setAnchorEl(null);
 
-  const [archiveFisherfolk, archiveResult ] = useMutation(UpdateToArchiveFisherfolkDocument);
-  
-  const ArchiveAFisherfolk = () => {
-    archiveFisherfolk({
-      variables: {
-        archiveFisherfolkId: id
-      },
-      onCompleted: () => { showArchiveSuccess(); },
-      onError: () => { showArchiveError(); }
-    });
-  };
-
-  const archiveHandler = () => {
-    const { loading } = archiveResult;
-    if (loading) {
-      return (
-        <Backdrop
-          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={true}
-        >
-        </Backdrop >
-      );
-    }
-  };
-  
-  
-
   const handleProfileView = () => {
     navigate(`/fisherfolk-profile/${id}`);
   };
 
-  const handleUpdateFormOpen = () => {
-    setUpdateFisherfolk(true);
-  };
-
-  const handleUpdateFormClose = () => setUpdateFisherfolk(false);
-
+  
   return (
     <div>
       <Button
@@ -100,26 +61,12 @@ const renderMoreActions = (id: number) => {
         <MenuItem onClick={handleProfileView} disableRipple>
           <VisibilityIcon sx={{ width: 20, marginRight: 1.5 }} /> View
         </MenuItem>
-        <MenuItem onClick={handleUpdateFormOpen} disableRipple>
-          <EditIcon sx={{ width: 20, marginRight: 1.5 }} /> Edit
-        </MenuItem>
-        {updateFisherfolk && (
-          <UpdateFisherfolkForm
-            id={id}
-            handleClose={handleUpdateFormClose}
-            open={updateFisherfolk}
-          />
-        )}
-        <MenuItem onClick={() => { ArchiveAFisherfolk(); archiveHandler(); }} disableRipple>
-          <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
-        </MenuItem>
       </Menu>
     </div>
   );
 };
 
-export default function FisherfolkTable({ error, loading, data }: Props) {
-
+export default function FisherfolkArchiveTable({ error, loading, data }: Props) {
   let rows: GridRowsProp = [];
 
   if (error) {
@@ -133,7 +80,7 @@ export default function FisherfolkTable({ error, loading, data }: Props) {
   if (!loading && data !== undefined) {
     rows =
       data &&
-      data.fisherfolks.map((fisherfolk) => ({
+      data.ArchiveFisherfolk.map((fisherfolk) => ({
         id: fisherfolk.id,
         dateRegistered: new Date(fisherfolk.registrationDate),
         name: `${fisherfolk.lastName}, ${fisherfolk.firstName} ${fisherfolk.appellation} ${fisherfolk.middleName}`,
