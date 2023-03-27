@@ -30,11 +30,13 @@ describe('Fisherfolk Record Page', () => {
 
     // get fisherfolk record page heading
     const heading = screen.getByRole('heading', { level: 6 });
+    const searchField = screen.getByPlaceholderText('Search a fisherfolk');
 
     const addFisherfolkBtn = screen.getByRole('button', {
       name: /add fisherfolk/i,
     });
 
+    expect(searchField).toBeTruthy();
     expect(heading.textContent).toBe('Fisherfolk Record');
     expect(addFisherfolkBtn.textContent).toBe('Add Fisherfolk');
   });

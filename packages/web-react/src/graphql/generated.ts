@@ -75,6 +75,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Archive: ResolverTypeWrapper<Archive>;
   AuthPayload: ResolverTypeWrapper<AuthPayload>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
@@ -115,6 +116,7 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Archive: Archive;
   AuthPayload: AuthPayload;
   BigInt: Scalars['BigInt'];
   Boolean: Scalars['Boolean'];
@@ -143,6 +145,46 @@ export type ResolversParentTypes = {
   User: User;
   Vessel: Vessel;
   livelihoodInput: LivelihoodInput;
+};
+
+export type ArchiveResolvers<ContextType = any, ParentType extends ResolversParentTypes['Archive'] = ResolversParentTypes['Archive']> = {
+  age?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  appellation?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  barangay?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  cityMunicipality?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  civilStatus?: Resolver<ResolversTypes['CivilStatus'], ParentType, ContextType>;
+  contactNum?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  dateOfBirth?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  educationalBackground?: Resolver<ResolversTypes['EducationalBackground'], ParentType, ContextType>;
+  firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  gears?: Resolver<Maybe<Array<Maybe<ResolversTypes['Gear']>>>, ParentType, ContextType>;
+  gender?: Resolver<ResolversTypes['Gender'], ParentType, ContextType>;
+  governmentAid?: Resolver<Maybe<Array<Maybe<ResolversTypes['Queue']>>>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  images?: Resolver<Maybe<Array<Maybe<ResolversTypes['Image']>>>, ParentType, ContextType>;
+  isArchive?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  livelihoods?: Resolver<Maybe<Array<Maybe<ResolversTypes['Livelihood']>>>, ParentType, ContextType>;
+  middleName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  nationality?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  numOfChildren?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  organizations?: Resolver<Maybe<Array<Maybe<ResolversTypes['Member']>>>, ParentType, ContextType>;
+  permit?: Resolver<Maybe<ResolversTypes['Permit']>, ParentType, ContextType>;
+  personToNotify?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  placeOfBirth?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  province?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  ptnAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  ptnContactNum?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  ptnRelationship?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  registrationDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  religion?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  residentYear?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  salutation?: Resolver<ResolversTypes['Salutation'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['FisherfolkStatus'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  vessels?: Resolver<Maybe<Array<Maybe<ResolversTypes['Vessel']>>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type AuthPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']> = {
@@ -258,6 +300,7 @@ export type MemberResolvers<ContextType = any, ParentType extends ResolversParen
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  archiveFisherfolk?: Resolver<ResolversTypes['Fisherfolk'], ParentType, ContextType, RequireFields<MutationArchiveFisherfolkArgs, 'id'>>;
   createFisherfolk?: Resolver<ResolversTypes['Fisherfolk'], ParentType, ContextType, RequireFields<MutationCreateFisherfolkArgs, 'data'>>;
   createGears?: Resolver<Array<ResolversTypes['Gear']>, ParentType, ContextType, RequireFields<MutationCreateGearsArgs, 'gears'>>;
   createImage?: Resolver<ResolversTypes['Image'], ParentType, ContextType, RequireFields<MutationCreateImageArgs, 'data'>>;
@@ -293,6 +336,7 @@ export type PermitResolvers<ContextType = any, ParentType extends ResolversParen
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  ArchiveFisherfolk?: Resolver<Array<ResolversTypes['Fisherfolk']>, ParentType, ContextType>;
   activeFisherFolk?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   barangayCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   fisherfolk?: Resolver<ResolversTypes['Fisherfolk'], ParentType, ContextType, RequireFields<QueryFisherfolkArgs, 'id'>>;
@@ -361,6 +405,7 @@ export type VesselResolvers<ContextType = any, ParentType extends ResolversParen
 };
 
 export type Resolvers<ContextType = any> = {
+  Archive?: ArchiveResolvers<ContextType>;
   AuthPayload?: AuthPayloadResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
   DateTime?: GraphQLScalarType;
@@ -389,6 +434,46 @@ export type Scalars = {
   Float: number;
   BigInt: any;
   DateTime: any;
+};
+
+export type Archive = {
+  __typename?: 'Archive';
+  age: Scalars['Int'];
+  appellation: Scalars['String'];
+  barangay: Scalars['String'];
+  cityMunicipality: Scalars['String'];
+  civilStatus: CivilStatus;
+  contactNum: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  dateOfBirth: Scalars['DateTime'];
+  educationalBackground: EducationalBackground;
+  firstName: Scalars['String'];
+  gears?: Maybe<Array<Maybe<Gear>>>;
+  gender: Gender;
+  governmentAid?: Maybe<Array<Maybe<Queue>>>;
+  id: Scalars['BigInt'];
+  images?: Maybe<Array<Maybe<Image>>>;
+  isArchive: Scalars['Boolean'];
+  lastName: Scalars['String'];
+  livelihoods?: Maybe<Array<Maybe<Livelihood>>>;
+  middleName: Scalars['String'];
+  nationality: Scalars['String'];
+  numOfChildren: Scalars['Int'];
+  organizations?: Maybe<Array<Maybe<Member>>>;
+  permit?: Maybe<Permit>;
+  personToNotify: Scalars['String'];
+  placeOfBirth: Scalars['String'];
+  province: Scalars['String'];
+  ptnAddress: Scalars['String'];
+  ptnContactNum: Scalars['String'];
+  ptnRelationship: Scalars['String'];
+  registrationDate: Scalars['DateTime'];
+  religion: Scalars['String'];
+  residentYear: Scalars['Int'];
+  salutation: Salutation;
+  status: FisherfolkStatus;
+  updatedAt: Scalars['DateTime'];
+  vessels?: Maybe<Array<Maybe<Vessel>>>;
 };
 
 export type AuthPayload = {
@@ -613,6 +698,7 @@ export type Member = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  archiveFisherfolk: Fisherfolk;
   createFisherfolk: Fisherfolk;
   createGears: Array<Gear>;
   createImage: Image;
@@ -623,6 +709,11 @@ export type Mutation = {
   updateFisherfolk: Fisherfolk;
   updateFisherfolkImage: Image;
   updateMfvr: Vessel;
+};
+
+
+export type MutationArchiveFisherfolkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -710,6 +801,7 @@ export type Permit = {
 
 export type Query = {
   __typename?: 'Query';
+  ArchiveFisherfolk: Array<Fisherfolk>;
   activeFisherFolk: Scalars['Int'];
   barangayCount: Scalars['Int'];
   fisherfolk: Fisherfolk;
@@ -946,6 +1038,13 @@ export type UpdateFisherfolkImageMutationVariables = Exact<{
 
 export type UpdateFisherfolkImageMutation = { __typename?: 'Mutation', updateFisherfolkImage: { __typename?: 'Image', id: string, url: string } };
 
+export type UpdateToArchiveFisherfolkMutationVariables = Exact<{
+  archiveFisherfolkId: Scalars['Int'];
+}>;
+
+
+export type UpdateToArchiveFisherfolkMutation = { __typename?: 'Mutation', archiveFisherfolk: { __typename?: 'Fisherfolk', id: any } };
+
 export type QueryFisherfolksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1011,6 +1110,11 @@ export type GovernmentAidsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GovernmentAidsQuery = { __typename?: 'Query', govermentAids: Array<{ __typename?: 'GovernmentAid', endDate: any, id: number, title: string, slot: number, startDate: any }> };
 
+export type ArchiveFisherfolkQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ArchiveFisherfolkQuery = { __typename?: 'Query', totalFisherfolk: number, ArchiveFisherfolk: Array<{ __typename?: 'Fisherfolk', id: any, registrationDate: any, firstName: string, lastName: string, middleName: string, appellation: string, contactNum: string, barangay: string, status: FisherfolkStatus, livelihoods: Array<{ __typename?: 'Livelihood', isMain: boolean, type: SourceOfIncome }> }>, fisherfolksWithUniqueBarangay: Array<{ __typename?: 'Fisherfolk', barangay: string }> };
+
 
 export const CreateFisherfolkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateFisherfolk"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateFisherfolkInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createFisherfolk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateFisherfolkMutation, CreateFisherfolkMutationVariables>;
 export const CreateVessselWithGearDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateVessselWithGear"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"vessel"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateVesselInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"gears"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateGearInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createVesselWithGear"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"vessel"},"value":{"kind":"Variable","name":{"kind":"Name","value":"vessel"}}},{"kind":"Argument","name":{"kind":"Name","value":"gears"},"value":{"kind":"Variable","name":{"kind":"Name","value":"gears"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateVessselWithGearMutation, CreateVessselWithGearMutationVariables>;
@@ -1022,6 +1126,7 @@ export const LoginUserDocument = {"kind":"Document","definitions":[{"kind":"Oper
 export const UpdateMfvrDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateMFVR"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"mfvrNum"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateMfvr"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"mfvrNum"},"value":{"kind":"Variable","name":{"kind":"Name","value":"mfvrNum"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"mfvrNumber"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"fisherfolk"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"middleName"}},{"kind":"Field","name":{"kind":"Name","value":"appellation"}}]}}]}}]}}]} as unknown as DocumentNode<UpdateMfvrMutation, UpdateMfvrMutationVariables>;
 export const UpdateFisherfolkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateFisherfolk"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fisherfolkId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateFisherfolkInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateFisherfolk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fisherfolkId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fisherfolkId"}}},{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateFisherfolkMutation, UpdateFisherfolkMutationVariables>;
 export const UpdateFisherfolkImageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateFisherfolkImage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateImageInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"updateFisherfolkImageId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"url"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateFisherfolkImage"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}},{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"updateFisherfolkImageId"}}},{"kind":"Argument","name":{"kind":"Name","value":"url"},"value":{"kind":"Variable","name":{"kind":"Name","value":"url"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]} as unknown as DocumentNode<UpdateFisherfolkImageMutation, UpdateFisherfolkImageMutationVariables>;
+export const UpdateToArchiveFisherfolkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateToArchiveFisherfolk"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"archiveFisherfolkId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"archiveFisherfolk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"archiveFisherfolkId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateToArchiveFisherfolkMutation, UpdateToArchiveFisherfolkMutationVariables>;
 export const QueryFisherfolksDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QueryFisherfolks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fisherfolks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"registrationDate"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"middleName"}},{"kind":"Field","name":{"kind":"Name","value":"appellation"}},{"kind":"Field","name":{"kind":"Name","value":"contactNum"}},{"kind":"Field","name":{"kind":"Name","value":"livelihoods"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isMain"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}},{"kind":"Field","name":{"kind":"Name","value":"barangay"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalFisherfolk"}},{"kind":"Field","name":{"kind":"Name","value":"fisherfolksWithUniqueBarangay"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"barangay"}}]}}]}}]} as unknown as DocumentNode<QueryFisherfolksQuery, QueryFisherfolksQueryVariables>;
 export const FisherfolkByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FisherfolkById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fisherfolkId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BigInt"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fisherfolk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fisherfolkId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"age"}},{"kind":"Field","name":{"kind":"Name","value":"appellation"}},{"kind":"Field","name":{"kind":"Name","value":"barangay"}},{"kind":"Field","name":{"kind":"Name","value":"cityMunicipality"}},{"kind":"Field","name":{"kind":"Name","value":"civilStatus"}},{"kind":"Field","name":{"kind":"Name","value":"contactNum"}},{"kind":"Field","name":{"kind":"Name","value":"dateOfBirth"}},{"kind":"Field","name":{"kind":"Name","value":"educationalBackground"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"middleName"}},{"kind":"Field","name":{"kind":"Name","value":"nationality"}},{"kind":"Field","name":{"kind":"Name","value":"numOfChildren"}},{"kind":"Field","name":{"kind":"Name","value":"personToNotify"}},{"kind":"Field","name":{"kind":"Name","value":"placeOfBirth"}},{"kind":"Field","name":{"kind":"Name","value":"province"}},{"kind":"Field","name":{"kind":"Name","value":"ptnAddress"}},{"kind":"Field","name":{"kind":"Name","value":"ptnContactNum"}},{"kind":"Field","name":{"kind":"Name","value":"ptnRelationship"}},{"kind":"Field","name":{"kind":"Name","value":"registrationDate"}},{"kind":"Field","name":{"kind":"Name","value":"religion"}},{"kind":"Field","name":{"kind":"Name","value":"residentYear"}},{"kind":"Field","name":{"kind":"Name","value":"salutation"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"livelihoods"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isMain"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}},{"kind":"Field","name":{"kind":"Name","value":"organizations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"yearJoined"}},{"kind":"Field","name":{"kind":"Name","value":"position"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"fisherfolkPhoto"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fisherfolkId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fisherfolkId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]} as unknown as DocumentNode<FisherfolkByIdQuery, FisherfolkByIdQueryVariables>;
 export const FisherfolkVesselsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FisherfolkVessels"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fisherfolkId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BigInt"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fisherfolkVessels"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fisherfolkId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fisherfolkId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"engineMake"}},{"kind":"Field","name":{"kind":"Name","value":"grossTonnage"}},{"kind":"Field","name":{"kind":"Name","value":"homeport"}},{"kind":"Field","name":{"kind":"Name","value":"horsepower"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"material"}},{"kind":"Field","name":{"kind":"Name","value":"mfvrNumber"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"netTonnage"}},{"kind":"Field","name":{"kind":"Name","value":"placeBuilt"}},{"kind":"Field","name":{"kind":"Name","value":"registeredBreadth"}},{"kind":"Field","name":{"kind":"Name","value":"registeredDepth"}},{"kind":"Field","name":{"kind":"Name","value":"registeredLength"}},{"kind":"Field","name":{"kind":"Name","value":"serialNumber"}},{"kind":"Field","name":{"kind":"Name","value":"tonnageBreadth"}},{"kind":"Field","name":{"kind":"Name","value":"tonnageDepth"}},{"kind":"Field","name":{"kind":"Name","value":"tonnageLength"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"yearBuilt"}}]}}]}}]} as unknown as DocumentNode<FisherfolkVesselsQuery, FisherfolkVesselsQueryVariables>;
@@ -1033,3 +1138,4 @@ export const LivelihoodCountDocument = {"kind":"Document","definitions":[{"kind"
 export const FisherfolkCountDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FisherfolkCount"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"totalFisherfolk"}},{"kind":"Field","name":{"kind":"Name","value":"activeFisherFolk"}},{"kind":"Field","name":{"kind":"Name","value":"totalGears"}},{"kind":"Field","name":{"kind":"Name","value":"totalVessels"}},{"kind":"Field","name":{"kind":"Name","value":"barangayCount"}}]}}]} as unknown as DocumentNode<FisherfolkCountQuery, FisherfolkCountQueryVariables>;
 export const FisherfolkGenderCountDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FisherfolkGenderCount"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"gender"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Gender"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fisherfolkGender"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gender"},"value":{"kind":"Variable","name":{"kind":"Name","value":"gender"}}}]}]}}]} as unknown as DocumentNode<FisherfolkGenderCountQuery, FisherfolkGenderCountQueryVariables>;
 export const GovernmentAidsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GovernmentAids"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"govermentAids"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slot"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}}]}}]}}]} as unknown as DocumentNode<GovernmentAidsQuery, GovernmentAidsQueryVariables>;
+export const ArchiveFisherfolkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ArchiveFisherfolk"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ArchiveFisherfolk"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"registrationDate"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"middleName"}},{"kind":"Field","name":{"kind":"Name","value":"appellation"}},{"kind":"Field","name":{"kind":"Name","value":"contactNum"}},{"kind":"Field","name":{"kind":"Name","value":"livelihoods"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isMain"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}},{"kind":"Field","name":{"kind":"Name","value":"barangay"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalFisherfolk"}},{"kind":"Field","name":{"kind":"Name","value":"fisherfolksWithUniqueBarangay"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"barangay"}}]}}]}}]} as unknown as DocumentNode<ArchiveFisherfolkQuery, ArchiveFisherfolkQueryVariables>;

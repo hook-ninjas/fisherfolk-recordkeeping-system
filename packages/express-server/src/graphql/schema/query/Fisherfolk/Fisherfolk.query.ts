@@ -1,5 +1,5 @@
 import { arg, intArg, list, nonNull, queryField } from 'nexus';
-import { queryById, queryByRange, queryFisherFolkByGender, querytActiveFisherFolk, queryTotalFisherfolk, queryUniqueBarangayCount, queryFisherfolksWithUniqueBarangay } from './Fisherfolk.resolver';
+import { queryById, queryByRange, queryFisherFolkByGender, querytActiveFisherFolk, queryTotalFisherfolk, queryUniqueBarangayCount, queryFisherfolksWithUniqueBarangay, queryArchivedFisherfolk } from './Fisherfolk.resolver';
 
 const Fisherfolks = queryField('fisherfolks', {
   type: nonNull(list(nonNull('Fisherfolk'))),
@@ -11,7 +11,10 @@ const Fisherfolks = queryField('fisherfolks', {
       {
         registrationDate: 'desc'
       }
-    ]
+    ],
+    where: {
+      isArchive: false,
+    }
   })
 });
 
@@ -62,6 +65,11 @@ const QueryFisherfolksWithUniqueBarangays = queryField('fisherfolksWithUniqueBar
   resolve: (_, args, ctx) => queryFisherfolksWithUniqueBarangay(ctx)
 });
 
+const QueryArchiveFisherfolk = queryField('ArchiveFisherfolk', {
+  type: nonNull(list(nonNull('Fisherfolk'))),
+  resolve: (_parent, _args, ctx) => queryArchivedFisherfolk(ctx)
+});
+
 
 export default [
   Fisherfolks,
@@ -71,5 +79,6 @@ export default [
   QueryFisherfolkByRange,
   QueryFisherfolkById,
   QueryUniqeBarangaysCount,
-  QueryFisherfolksWithUniqueBarangays
+  QueryFisherfolksWithUniqueBarangays,
+  QueryArchiveFisherfolk
 ];
