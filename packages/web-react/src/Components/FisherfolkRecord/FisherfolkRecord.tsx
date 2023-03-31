@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Autocomplete,
   Box,
@@ -35,6 +35,7 @@ import {
   QueryFisherfolksDocument,
 } from '../../graphql/generated';
 import { FilterSchema } from '../Forms/validation/schema';
+import debounce from 'lodash.debounce';
 
 export const CustomDrawer = styled(Drawer)(({ theme }) => ({
   padding: theme.spacing(1),
@@ -70,6 +71,15 @@ const FisherfolkRecord = () => {
     setSearchKey(event.target.value);
   };
 
+  const debouncedResults = useMemo(() => {
+    return debounce(handleSearch, 300);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      debouncedResults.cancel();
+    };
+  });
 
 
   const onSearchSubmit = (e: any) => {
@@ -86,6 +96,9 @@ const FisherfolkRecord = () => {
           const res = searchKeyArray.map((key: string) => {
             return completeName.toLowerCase().includes(key.toLowerCase());
           });
+
+          console.log(res);
+          console.log(searchKey);
 
           return res.every((element: boolean) => {
             return element === true;
@@ -107,6 +120,8 @@ const FisherfolkRecord = () => {
     setIsDrawOpen(false);
     reset(); // reset selected filter
   };
+
+
 
   const onSubmit = handleSubmit((fisherFolk) => {
     const filterValues = Object.values(fisherFolk).filter((a) => a != null);
@@ -339,7 +354,7 @@ const FisherfolkRecord = () => {
           </Box>
           <Box m={1} display="flex" justifyContent="space-between">
             <form
-              onSubmit={(e) => {
+              onChange={(e) => {
                 setIsFiltered(true);
                 onSearchSubmit(e);
                 setFisherfolks({
@@ -351,7 +366,16 @@ const FisherfolkRecord = () => {
               }}
             >
               <TextField
-                onChange={handleSearch}
+                onChange={(e) => {
+                  debouncedResults;
+                  handleSearch;
+                  // setFisherfolks({
+                  //   fisherfolks: onSearchSubmit(e)!,
+                  //   totalFisherfolk: onSearchSubmit(e)!.length,
+                  //   fisherfolksWithUniqueBarangay:
+                  //   data!.fisherfolksWithUniqueBarangay,
+                  // });
+                }}
                 variant="standard"
                 placeholder="Search a fisherfolk"
                 size="small"
