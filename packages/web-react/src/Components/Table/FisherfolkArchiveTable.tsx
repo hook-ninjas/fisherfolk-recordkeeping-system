@@ -99,7 +99,7 @@ export default function FisherfolkArchiveTable({ error, loading, data }: Props) 
         rows={rows}
         columns={columns}
         disableVirtualization={true}
-        aria-label="archive-fisherfolk-table"
+        aria-label="fisherfolk-table"
       />
     </div>
   );
