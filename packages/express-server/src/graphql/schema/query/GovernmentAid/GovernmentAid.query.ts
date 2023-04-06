@@ -1,5 +1,5 @@
 import { intArg, list, nonNull, queryField } from 'nexus';
-import { queryGovernmentAid, queryGovernmentAids } from './GovernmentAid.resolver';
+import { queryGovernmentAid, queryGovernmentAids, queryTotalProgram } from './GovernmentAid.resolver';
 
 const GovernmentAids = queryField('governmentAids', {
   type: nonNull(list('GovernmentAid')),
@@ -14,4 +14,10 @@ const GovernmentAid = queryField('governmentAid', {
   resolve: (_, args, ctx) => queryGovernmentAid(args.govtAidId, ctx),
 });
 
-export default [GovernmentAids, GovernmentAid];
+
+const TotalPrograms = queryField('totalPrograms', {
+  type: 'Int',
+  resolve: (_, args, ctx) => queryTotalProgram(ctx),
+});
+
+export default [GovernmentAids, GovernmentAid, TotalPrograms];
