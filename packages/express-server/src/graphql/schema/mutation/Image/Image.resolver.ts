@@ -5,17 +5,20 @@ import cloudinary from 'cloudinary';
 type CreateImageInput = NexusGenInputs['CreateImageInput'];
 type UploadImageInput = NexusGenInputs['UploadImageInput'];
 
-const cloudURL = async (imageURI: string) => {
-  const result = await cloudinary.v2.uploader.upload(imageURI, {
-    folder: 'fisherfolk-recordkeeping-system',
-  });
+const cloudURL = async (
+  imageURI: string,
+  options: cloudinary.UploadApiOptions
+) => {
+  const result = await cloudinary.v2.uploader.upload(imageURI, options);
 
   return result.url;
 };
 
 const createImage = async (uploadImageInput: UploadImageInput) => {
   const { name, size, type, uri, isProfileImage } = uploadImageInput;
-  const cloudinaryURL = await cloudURL(uri);
+  const cloudinaryURL = await cloudURL(uri, {
+    folder: 'fisherfolk-recordkeeping-system',
+  });
 
   return {
     name: name,
@@ -47,4 +50,4 @@ async function uploadImage(image: CreateImageInput, ctx: Context) {
   });
 }
 
-export { createImage, createImages, uploadImage };
+export { createImage, createImages, uploadImage, cloudURL };
