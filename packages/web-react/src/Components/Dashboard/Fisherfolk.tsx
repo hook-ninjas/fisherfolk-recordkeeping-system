@@ -19,15 +19,16 @@ import Barangay from '../../Assets/barangay.png';
 import Vessel from '../../Assets/vessel.png';
 import Female from '../../Assets/female.png';
 import Male from '../../Assets/male.png';
+import Program from '../../Assets/program.png';
 
 export const FisherfolkInfoPaper = styled(Paper)(({ theme }) => ({
-  height: 110,
-  padding: 15,
+  height: 120,
+  padding: 8,
   borderRadius: 10,
   margin: 2,
   marginTop: 20,
   [theme.breakpoints.up('sm')]: {
-    width: 220,
+    width: 180,
   },
   [theme.breakpoints.down('sm')]: {
     width: 250,
@@ -37,11 +38,12 @@ export const FisherfolkInfoPaper = styled(Paper)(({ theme }) => ({
 
 export const GenderPaper = styled(Paper)(({ theme }) => ({
   height: 150,
-  padding: 15,
+  padding: 10,
   borderRadius: 10,
   margin: 2,
   [theme.breakpoints.up('sm')]: {
-    width: 170,
+    width: 150,
+    paddingTop: 25,
   },
   [theme.breakpoints.down('sm')]: {
     width: 250,
@@ -81,9 +83,10 @@ export default function FisherfolkInfo() {
   };
 
   const fisherfolkInfo: Record<string, any[]> = {
-    'Total Barangays': [Barangay, fisherfolkQuery.data?.barangayCount],
     'Total Vessels': [Vessel, fisherfolkQuery.data?.totalVessels],
     'Total Gears': [Gear, fisherfolkQuery.data?.totalGears],
+    'Total Programs' : [Program, fisherfolkQuery.data?.totalPrograms],
+    'Total Barangays': [Barangay, fisherfolkQuery.data?.barangayCount],
   };
 
   const getCount = (value: string, info: Record<string, any[]>) => {
@@ -108,12 +111,12 @@ export default function FisherfolkInfo() {
                 <Box
                   component="img"
                   src={gender[item][0]}
-                  sx={{ width: 50, borderRadius: 15 }}
+                  sx={{ width: 45}}
                   mt={2}
                 ></Box>
               </Grid>
               <Grid item sm={9}>
-                <Typography color="#71797E" mt={1} variant="h5">
+                <Typography color="#71797E" mt={1} variant="h6">
                   {item}
                 </Typography>
                 <Typography
@@ -133,17 +136,17 @@ export default function FisherfolkInfo() {
         ))}
         {Object.keys(fisherfolkInfo).map((item) => (
           <FisherfolkInfoPaper key={item} elevation={2}>
-            <Stack direction="row" spacing={1.8} alignItems="center">
-              <Grid item sm={3}>
+            <Stack direction="row" spacing={2.5} alignItems="center">
+              <Grid item sm={3.5}>
                 <Box
                   component="img"
                   src={fisherfolkInfo[item][0]}
-                  sx={{ width: 50, borderRadius: 15 }}
+                  sx={{ width: 40 }}
                   mt={2}
                 ></Box>
               </Grid>
               <Grid item sm={9}>
-                <Typography color="#71797E" mt={1} fontSize={17}>
+                <Typography color="#71797E" mt={1} fontSize={16}>
                   {item}
                 </Typography>
                 <Typography
