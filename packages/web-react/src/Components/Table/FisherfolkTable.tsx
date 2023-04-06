@@ -3,11 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Loading from '../Loading/Loading';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { splitUpperCase } from '../../utils/utils';
-import {
-  DataGrid,
-  GridColumns,
-  GridRowsProp,
-} from '@mui/x-data-grid';
+import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
 import { Alert, Button, Menu, MenuItem } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
@@ -15,10 +11,18 @@ import ArchiveIcon from '@mui/icons-material/Archive';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import moment from 'moment';
 import { ApolloError, useMutation } from '@apollo/client';
-import { QueryFisherfolksQuery, UpdateToArchiveFisherfolkDocument } from '../../graphql/generated';
+import {
+  ArchiveFisherfolkDocument,
+  QueryFisherfolksDocument,
+  QueryFisherfolksQuery,
+  UpdateToArchiveFisherfolkDocument,
+} from '../../graphql/generated';
 import UpdateFisherfolkForm from '../Forms/UpdateMemberForm';
 import Backdrop from '@mui/material/Backdrop';
-import { showArchiveSuccess, showArchiveError } from '../ConfirmationDialog/Alerts';
+import {
+  showArchiveSuccess,
+  showArchiveError,
+} from '../ConfirmationDialog/Alerts';
 
 interface Props {
   error: ApolloError | undefined;
@@ -26,7 +30,6 @@ interface Props {
   data: QueryFisherfolksQuery | undefined;
 }
 
-  
 const renderMoreActions = (id: number) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -37,15 +40,31 @@ const renderMoreActions = (id: number) => {
   };
   const handleClose = () => setAnchorEl(null);
 
-  const [archiveFisherfolk, archiveResult ] = useMutation(UpdateToArchiveFisherfolkDocument);
-  
+  const [archiveFisherfolk, archiveResult] = useMutation(
+    UpdateToArchiveFisherfolkDocument,
+    {
+      refetchQueries: [
+        {
+          query: QueryFisherfolksDocument,
+        },
+        {
+          query: ArchiveFisherfolkDocument,
+        },
+      ],
+    }
+  );
+
   const ArchiveAFisherfolk = () => {
     archiveFisherfolk({
       variables: {
-        archiveFisherfolkId: id
+        archiveFisherfolkId: id,
       },
-      onCompleted: () => { showArchiveSuccess(); },
-      onError: () => { showArchiveError(); }
+      onCompleted: () => {
+        showArchiveSuccess();
+      },
+      onError: () => {
+        showArchiveError();
+      },
     });
   };
 
@@ -56,13 +75,10 @@ const renderMoreActions = (id: number) => {
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={true}
-        >
-        </Backdrop >
+        ></Backdrop>
       );
     }
   };
-  
-  
 
   const handleProfileView = () => {
     navigate(`/fisherfolk-profile/${id}`);
@@ -110,7 +126,13 @@ const renderMoreActions = (id: number) => {
             open={updateFisherfolk}
           />
         )}
-        <MenuItem onClick={() => { ArchiveAFisherfolk(); archiveHandler(); }} disableRipple>
+        <MenuItem
+          onClick={() => {
+            ArchiveAFisherfolk();
+            archiveHandler();
+          }}
+          disableRipple
+        >
           <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
         </MenuItem>
       </Menu>
@@ -119,7 +141,6 @@ const renderMoreActions = (id: number) => {
 };
 
 export default function FisherfolkTable({ error, loading, data }: Props) {
-
   let rows: GridRowsProp = [];
 
   if (error) {
