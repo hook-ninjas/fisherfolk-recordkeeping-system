@@ -81,6 +81,12 @@ export interface NexusGenInputs {
     url: string; // String!
     vessel_id?: NexusGenScalars['BigInt'] | null; // BigInt
   }
+  CreateProgramInput: { // input type
+    date: NexusGenScalars['DateTime']; // DateTime!
+    description: string; // String!
+    slot: number; // Int!
+    title: string; // String!
+  }
   CreateUserInput: { // input type
     password: string; // String!
     username: string; // String!
@@ -405,6 +411,8 @@ export interface NexusGenFieldTypes {
     createFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     createGears: NexusGenRootTypes['Gear'][]; // [Gear!]!
     createImage: NexusGenRootTypes['Image']; // Image!
+    createMultipleImage: NexusGenRootTypes['Image'][]; // [Image!]!
+    createProgram: NexusGenRootTypes['GovernmentAid']; // GovernmentAid!
     createUser: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     createVessel: NexusGenRootTypes['Vessel']; // Vessel!
     createVesselWithGear: NexusGenRootTypes['Vessel']; // Vessel!
@@ -452,6 +460,7 @@ export interface NexusGenFieldTypes {
     totalFisherfolkGears: number; // Int!
     totalFisherfolkVessels: number; // Int!
     totalGears: number; // Int!
+    totalPrograms: number; // Int!
     totalVessels: number; // Int!
     user: NexusGenRootTypes['User'] | null; // User
     vessels: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
@@ -593,6 +602,8 @@ export interface NexusGenFieldTypeNames {
     createFisherfolk: 'Fisherfolk'
     createGears: 'Gear'
     createImage: 'Image'
+    createMultipleImage: 'Image'
+    createProgram: 'GovernmentAid'
     createUser: 'AuthPayload'
     createVessel: 'Vessel'
     createVesselWithGear: 'Vessel'
@@ -640,6 +651,7 @@ export interface NexusGenFieldTypeNames {
     totalFisherfolkGears: 'Int'
     totalFisherfolkVessels: 'Int'
     totalGears: 'Int'
+    totalPrograms: 'Int'
     totalVessels: 'Int'
     user: 'User'
     vessels: 'Vessel'
@@ -698,6 +710,12 @@ export interface NexusGenArgTypes {
     }
     createImage: { // args
       data: NexusGenInputs['CreateImageInput']; // CreateImageInput!
+    }
+    createMultipleImage: { // args
+      images: NexusGenInputs['CreateImageInput'][]; // [CreateImageInput!]!
+    }
+    createProgram: { // args
+      data: NexusGenInputs['CreateProgramInput']; // CreateProgramInput!
     }
     createUser: { // args
       data: NexusGenInputs['CreateUserInput']; // CreateUserInput!
