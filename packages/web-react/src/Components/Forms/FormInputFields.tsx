@@ -74,6 +74,11 @@ interface FormInputTextProps {
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
   shouldUnregister?: boolean;
+  multiline?: boolean;
+  rows?: number;
+  maxRows?: number;
+  fullWidth?: boolean;
+
 }
 interface FormInputNumberProps {
   name: string;
@@ -89,6 +94,8 @@ interface FormInputNumberProps {
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
   shouldUnregister?: boolean;
+  fullWidth?: boolean;
+  sx? :  SxProps<Theme> | undefined,
 }
 
 interface FormInputDateProps {
@@ -186,6 +193,10 @@ export const FormInputText = ({
   handleChange,
   errors,
   shouldUnregister,
+  multiline,
+  rows,
+  maxRows,
+  fullWidth,
 }: FormInputTextProps) => (
   <Controller
     name={name}
@@ -196,8 +207,12 @@ export const FormInputText = ({
       <TextField
         id={id}
         value={value}
-        sx={{ marginTop: -0.3, width: 250 }}
+        fullWidth={fullWidth}
+        sx={{ marginTop: -0.3, width: fullWidth ? null || undefined : 250 }}
         label={label}
+        multiline={multiline}
+        rows={rows}
+        maxRows={maxRows}
         onChange={(e) => {
           if (handleChange) {
             const newValue = handleChange(e.target.value);
@@ -229,6 +244,8 @@ export const FormInputNumber = ({
   defaultValue,
   shouldUnregister,
   errors,
+  fullWidth,
+  sx
 }: FormInputNumberProps) => (
   <Controller
     name={name}
@@ -239,14 +256,15 @@ export const FormInputNumber = ({
       <TextField
         type="number"
         value={value}
-        sx={{ marginTop: -0.3, width: 250 }}
+        sx={sx}
         label={label}
+        fullWidth
         onChange={onChange}
         helperText={errors[name]?.message}
         error={!!errors[name]}
         placeholder={placeholder}
         InputProps={{
-          style: { fontSize: 14, margin: 10 },
+          style: { fontSize: 14, margin: 5 },
           inputMode: numericOnly ? 'numeric' : undefined,
           inputProps: { max: max, min: min },
         }}
@@ -289,6 +307,7 @@ export const FormInputDate = ({
                 {...params}
                 helperText={errors[name]?.message}
                 error={!!errors[name]}
+                fullWidth
               />
             )}
           />
