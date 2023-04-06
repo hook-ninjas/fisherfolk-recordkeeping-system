@@ -70,7 +70,7 @@ export default function Livelihood() {
                 <Box
                   component="img"
                   src={images[item]}
-                  sx={{ width: 45, borderRadius: 15 }}
+                  sx={{ width: 45 }}
                 ></Box>
               </Grid>
               <Grid item sm={9}>

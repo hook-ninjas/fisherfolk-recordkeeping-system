@@ -10,7 +10,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { FisherfolkCountDocument } from '../../graphql/generated';
-import Total from '../../Assets/total.jpg';
+import Total from '../../Assets/total.png';
 import Active from '../../Assets/active.png';
 
 export const FisherfolkInfoPaper = styled(Paper)(({ theme }) => ({
@@ -78,7 +78,7 @@ export default function Fisherfolk() {
                 <Box
                   component="img"
                   src={fisherfolkInfo[item][0]}
-                  sx={{ width: 70, borderRadius: 15 }}
+                  sx={{ width: 70 }}
                   mt={1}
                 ></Box>
               </Grid>
