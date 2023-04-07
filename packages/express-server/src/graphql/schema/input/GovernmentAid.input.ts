@@ -5,7 +5,7 @@ const CreateProgramInput = inputObjectType({
   definition(t) {
     t.string('title'),
     t.int('slot'),
-    t.field('date', {type:  'DateTime'}),
+    t.field('date', { type: 'DateTime' }),
     t.string('description');
   },
 });
