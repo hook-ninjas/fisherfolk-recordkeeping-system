@@ -201,7 +201,7 @@ const CreateProgramSchema = object().shape({
     .required('Enter program title.')
     .max(60, 'Title cannot exceed 60 characters'),
   slot: string().required('Enter program slot.'),
-  date: date().typeError('Select date').required('Enter distribution date.'),
+  date: date().typeError('Select date').required('Enter date.'),
   programImages: mixed()
     .test('fileCount', 'Please select up to 3 images only.', (value) => {
       if (value.length <= 3) {

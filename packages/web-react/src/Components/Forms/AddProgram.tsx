@@ -191,6 +191,7 @@ function CreateProgramForm({ open, handleClose }: CreateProgramFormProps) {
               control={control}
               openTo="year"
               defaultValue={new Date()}
+              onSavedValue={null}
               label="Date"
               register={register}
               errors={errors}

@@ -78,7 +78,6 @@ interface FormInputTextProps {
   rows?: number;
   maxRows?: number;
   fullWidth?: boolean;
-
 }
 interface FormInputNumberProps {
   name: string;
@@ -95,14 +94,14 @@ interface FormInputNumberProps {
   errors: FieldValues;
   shouldUnregister?: boolean;
   fullWidth?: boolean;
-  sx? :  SxProps<Theme> | undefined,
+  sx?: SxProps<Theme> | undefined;
 }
 
 interface FormInputDateProps {
   name: string;
   label: string;
   defaultValue?: string | Date | null;
-  onSavedValue?: string | Date;
+  onSavedValue?: string | Date | null;
   openTo?: CalendarPickerView;
   min?: Date | string;
   max?: Date | string;
@@ -205,7 +204,7 @@ export const FormInputText = ({
     shouldUnregister={shouldUnregister}
     render={({ field: { value, onChange } }) => (
       <TextField
-        id={id}
+        id={name}
         value={value}
         fullWidth={fullWidth}
         sx={{ marginTop: -0.3, width: fullWidth ? null || undefined : 250 }}
@@ -244,8 +243,7 @@ export const FormInputNumber = ({
   defaultValue,
   shouldUnregister,
   errors,
-  fullWidth,
-  sx
+  sx,
 }: FormInputNumberProps) => (
   <Controller
     name={name}
@@ -254,6 +252,7 @@ export const FormInputNumber = ({
     shouldUnregister={shouldUnregister}
     render={({ field: { value, onChange } }) => (
       <TextField
+        id={name}
         type="number"
         value={value}
         sx={sx}
@@ -304,6 +303,8 @@ export const FormInputDate = ({
             renderInput={(params) => (
               <TextField
                 sx={sx}
+                id={name}
+                label={label}
                 {...params}
                 helperText={errors[name]?.message}
                 error={!!errors[name]}
