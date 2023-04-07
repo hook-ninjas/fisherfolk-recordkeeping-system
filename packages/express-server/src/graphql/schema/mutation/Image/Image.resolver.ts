@@ -17,6 +17,7 @@ export const createImage = async (
   const { name, size, type, uri, isProfileImage } = uploadImageInput;
   const cloudinaryURL = await cloudURL(uri, {
     folder: 'fisherfolk-recordkeeping-system',
+    use_filename: true,
   });
 
   return {
