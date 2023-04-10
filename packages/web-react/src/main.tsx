@@ -19,7 +19,7 @@ import FisherfolkGearRecord from './Components/FisherfolkRecord/FisherfolkGearRe
 import CreateAccount from './Components/Forms/CreateAccountForm';
 import ProtectedRoute from './Components/NotAuthorizedPage/ProtectedRoute';
 import FisherfolkProgram from './Components/FisherfolkRecord/FisherfolkProgram';
-
+import url from './utils/config';
 const httpLink = createHttpLink({ uri: 'http://localhost:4000/graphql' });
 
 const authLink = setContext((_, { headers }) => {
@@ -37,6 +37,7 @@ const link = authLink.concat(httpLink as any);
 const client = new ApolloClient({
   link: link as any,
   cache: new InMemoryCache(),
+  uri: url
 });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
