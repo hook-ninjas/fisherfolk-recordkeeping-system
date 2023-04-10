@@ -39,12 +39,10 @@ interface FisherFolkInfo {
 }
 
 type CreateFisherfolkInput = NexusGenInputs['CreateFisherfolkInput'];
-type OrganizationInput = NexusGenInputs['OrganizationInput'];
-type CreateFfolkVesselInput = NexusGenInputs['CreateFfolkVesselInput'];
 
 const createFfolkWithOrg = async (
   ffolkInfo: FisherFolkInfo,
-  organization: OrganizationInput,
+  organization: NexusGenInputs['OrganizationInput'],
   livelihoods: Livelihood[],
   images: Image[],
   context: Context
@@ -90,7 +88,7 @@ const createFfolkWithOrg = async (
 
 const createFfolkWithOrgAndGear = async (
   ffolkInfo: FisherFolkInfo,
-  organization: OrganizationInput,
+  organization: NexusGenInputs['OrganizationInput'],
   livelihoods: Livelihood[],
   images: Image[],
   gearTypes: string[],
@@ -145,10 +143,10 @@ const createFfolkWithOrgAndGear = async (
 
 const createFfolkWithOrgAndVessel = async (
   ffolkInfo: FisherFolkInfo,
-  organization: OrganizationInput,
+  organization: NexusGenInputs['OrganizationInput'],
   livelihoods: Livelihood[],
   images: Image[],
-  vessel: CreateFfolkVesselInput,
+  vessel: NexusGenInputs['CreateFfolkVesselInput'],
   context: Context
 ) => {
   const { name, yearJoined, position } = organization;
@@ -206,11 +204,11 @@ const createFfolkWithOrgAndVessel = async (
 
 const createFfolkWithOrgGearAndVessel = async (
   ffolkInfo: FisherFolkInfo,
-  organization: OrganizationInput,
+  organization: NexusGenInputs['OrganizationInput'],
   livelihoods: Livelihood[],
   images: Image[],
   gearTypes: string[],
-  vessel: CreateFfolkVesselInput,
+  vessel: NexusGenInputs['CreateFfolkVesselInput'],
   context: Context
 ) => {
   const { name, yearJoined, position } = organization;
@@ -315,7 +313,7 @@ const createFfolkWithVessel = async (
   ffolkInfo: FisherFolkInfo,
   livelihoods: Livelihood[],
   images: Image[],
-  vessel: CreateFfolkVesselInput,
+  vessel: NexusGenInputs['CreateFfolkVesselInput'],
   context: Context
 ) => {
   const vesselInfo = getVesselInfo(vessel);
@@ -359,7 +357,7 @@ const createFfolkWithGearAndVessel = async (
   livelihoods: Livelihood[],
   images: Image[],
   gearTypes: string[],
-  vessel: CreateFfolkVesselInput,
+  vessel: NexusGenInputs['CreateFfolkVesselInput'],
   context: Context
 ) => {
   const gears = determineGears(gearTypes);
@@ -407,7 +405,7 @@ const createFfolkWithGearAndVessel = async (
 };
 
 const createFisherfolk = async (
-  input: CreateFisherfolkInput,
+  input: NexusGenInputs['CreateFisherfolkInput'],
   context: Context
 ) => {
   const {
@@ -489,6 +487,14 @@ const createFisherfolk = async (
         context
       );
     }
+
+    return createFfolkWithOrg(
+      ffolkInfo,
+      organization,
+      livelihoods,
+      images,
+      context
+    );
   }
 
   if (gears != null && gears.length != 0) {

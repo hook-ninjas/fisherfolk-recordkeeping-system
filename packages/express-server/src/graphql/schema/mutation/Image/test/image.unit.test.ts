@@ -21,24 +21,18 @@ const mockUpload = jest.fn(
       };
     }
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(value);
-      }, 1000);
-    });
+    return Promise.resolve(value);
   }
 );
 
-beforeEach(() => {
-  (cloudinary.v2.uploader.upload as jest.Mock).mockImplementation(mockUpload);
-});
+(cloudinary.v2.uploader.upload as jest.Mock).mockImplementation(mockUpload);
 
 afterEach(() => {
   mockUpload.mockClear();
 });
 
 describe('Create Cloudinary cloud URL', () => {
-  test('Should create a cloudinary URL from a dataURI input', async () => {
+  it('Should create a cloudinary URL from a dataURI input', async () => {
     const { image } = faker;
     const dataURI = image.dataUri();
     const cloudinaryOptions = {
@@ -48,7 +42,7 @@ describe('Create Cloudinary cloud URL', () => {
 
     const result = await cloudURL(dataURI, cloudinaryOptions);
 
-    expect(typeof result == 'string').toBe(true);
+    expect(result).toMatch(/^https?:\/\/res.cloudinary.com\//);
 
     expect(cloudinary.v2.uploader.upload).toHaveReturned();
 
@@ -60,7 +54,7 @@ describe('Create Cloudinary cloud URL', () => {
 });
 
 describe('Create an prisma image object', () => {
-  test('Should create a single prisma image object', async () => {
+  it('Should create a single prisma image object', async () => {
     const { word, datatype, image } = faker;
     const cloudinaryOptions = {
       folder: 'fisherfolk-recordkeeping-system',
@@ -95,7 +89,7 @@ describe('Create an prisma image object', () => {
 });
 
 describe('Create an array prisma image object', () => {
-  test('Should create an array of prisma image objects', async () => {
+  it('Should create an array of prisma image objects', async () => {
     const { word, datatype, image } = faker;
     const cloudinaryOptions = {
       folder: 'fisherfolk-recordkeeping-system',
