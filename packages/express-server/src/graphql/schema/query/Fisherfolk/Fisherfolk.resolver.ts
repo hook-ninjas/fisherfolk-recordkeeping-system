@@ -35,7 +35,10 @@ export const queryUniqueBarangayCount = async (ctx: Context) => {
       barangay: true
     },
 
-    distinct: ['barangay']
+    distinct: ['barangay'],
+    where: {
+      isArchive: false
+    }
   });
 
   // returns the number of unique barangay
@@ -45,7 +48,8 @@ export const queryUniqueBarangayCount = async (ctx: Context) => {
 export const querytActiveFisherFolk = (ctx:Context)=>{
   return ctx.prisma.fisherfolk.count({
     where:{
-      status: FisherfolkStatus.Active
+      status: FisherfolkStatus.Active,
+      isArchive: false
     }
   });
 };
@@ -53,14 +57,18 @@ export const querytActiveFisherFolk = (ctx:Context)=>{
 export const queryFisherFolkByGender = (gender:Gender,ctx:Context)=>{
   return ctx.prisma.fisherfolk.count({
     where:{
-      gender:gender
+      gender:gender,
+      isArchive: false 
     }
   });
 };
 
 export const queryFisherfolksWithUniqueBarangay = (ctx:Context)=>{
   return ctx.prisma.fisherfolk.findMany({
-    distinct: 'barangay' 
+    distinct: 'barangay',
+    where: {
+      isArchive: false
+    }
   });
 };
 

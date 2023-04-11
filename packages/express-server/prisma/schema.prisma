@@ -87,7 +87,7 @@ model Member {
 }
 
 model GovernmentAid {
-  id          Int      @id
+  id          Int      @id @default(autoincrement())
   title       String
   description String 
   slot        Int

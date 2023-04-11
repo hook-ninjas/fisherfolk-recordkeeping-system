@@ -6,7 +6,7 @@ import { FisherfolkStatus, SourceOfIncome } from '../../../graphql/generated';
 import data from '../../Forms/iloilo-city-brgys.json';
 
 const maxBirthDate = sub({ years: 19 })(new Date());
-const uploadLimit = 10000000;
+const uploadLimit = 1_000_000;
 const barangays = data.barangays.sort();
 
 const FfolkValidation = object().shape({
@@ -133,7 +133,8 @@ const FfolkValidation = object().shape({
 const CreateAccountSchema = object().shape({
   username: string()
     .required('Enter username.')
-    .min(6, 'Username must be atleast 6 characters.'),
+    .min(6, 'Username must be atleast 6 characters.')
+    .max(20, 'Username cannot exceed 20 characters.'),
   password: string()
     .required('Enter password.')
     .matches(
@@ -195,6 +196,47 @@ const FilterSchema = object().shape({
   barangay: string().nullable().oneOf(barangays),
 });
 
+const CreateProgramSchema = object().shape({
+  title: string()
+    .required('Enter program title.')
+    .max(60, 'Title cannot exceed 60 characters'),
+  slot: string().required('Enter program slot.'),
+  date: date().typeError('Select date').required('Enter date.'),
+  programImages: mixed()
+    .test('fileCount', 'Please select up to 3 images only.', (value) => {
+      if (value.length <= 3) {
+        return true;
+      }
+      return false;
+    })
+    .test('fileSize', 'File too large', (value) => {
+      if (value && value.length !== 0) {
+        for (let i = 0; i < value.length; i++) {
+          if (value[i].size > uploadLimit) {
+            return false;
+          }
+        }
+        return true;
+      }
+      return true;
+    })
+    .test(
+      'fileFormat',
+      'Unsupported Format: Format must be in .jpeg, .jpg, .png',
+      (value) => {
+        if (value) {
+          for (let i = 0; i < value.length; i++) {
+            if (!value[i].type.match(/^.*(image\/jpeg|jpg|png)$/gm)) {
+              return false;
+            }
+          }
+          return true;
+        }
+        return false;
+      }
+    ),
+});
+
 export {
   FfolkValidation,
   CreateAccountSchema,
@@ -202,4 +244,5 @@ export {
   UpdateFisherfolkSchema,
   AddVesselWithGearSchema,
   FilterSchema,
+  CreateProgramSchema,
 };

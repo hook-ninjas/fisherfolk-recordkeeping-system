@@ -65,6 +65,13 @@ input CreateImageInput {
   vessel_id: BigInt
 }
 
+input CreateProgramInput {
+  date: DateTime!
+  description: String!
+  slot: Int!
+  title: String!
+}
+
 input CreateUserInput {
   password: String!
   username: String!
@@ -231,6 +238,8 @@ type Mutation {
   createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
   createGears(gears: [CreateGearInput!]!): [Gear!]!
   createImage(data: CreateImageInput!): Image!
+  createMultipleImage(images: [CreateImageInput!]!): [Image!]!
+  createProgram(data: CreateProgramInput!): GovernmentAid!
   createUser(data: CreateUserInput!): AuthPayload!
   createVessel(vessel: CreateVesselInput!): Vessel!
   createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
@@ -287,6 +296,7 @@ type Query {
   totalFisherfolkGears(fisherfolkId: BigInt!): Int!
   totalFisherfolkVessels(fisherfolkId: BigInt!): Int!
   totalGears: Int!
+  totalPrograms: Int!
   totalVessels: Int!
   user: User
   vessels: [Vessel!]!

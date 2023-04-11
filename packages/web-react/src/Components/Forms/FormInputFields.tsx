@@ -74,6 +74,10 @@ interface FormInputTextProps {
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
   shouldUnregister?: boolean;
+  multiline?: boolean;
+  rows?: number;
+  maxRows?: number;
+  fullWidth?: boolean;
 }
 interface FormInputNumberProps {
   name: string;
@@ -89,13 +93,15 @@ interface FormInputNumberProps {
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
   shouldUnregister?: boolean;
+  fullWidth?: boolean;
+  sx?: SxProps<Theme> | undefined;
 }
 
 interface FormInputDateProps {
   name: string;
   label: string;
   defaultValue?: string | Date | null;
-  onSavedValue?: string | Date;
+  onSavedValue?: string | Date | null;
   openTo?: CalendarPickerView;
   min?: Date | string;
   max?: Date | string;
@@ -186,6 +192,10 @@ export const FormInputText = ({
   handleChange,
   errors,
   shouldUnregister,
+  multiline,
+  rows,
+  maxRows,
+  fullWidth,
 }: FormInputTextProps) => (
   <Controller
     name={name}
@@ -194,10 +204,14 @@ export const FormInputText = ({
     shouldUnregister={shouldUnregister}
     render={({ field: { value, onChange } }) => (
       <TextField
-        id={id}
+        id={name}
         value={value}
-        sx={{ marginTop: -0.3, width: 250 }}
+        fullWidth={fullWidth}
+        sx={{ marginTop: -0.3, width: fullWidth ? null || undefined : 250 }}
         label={label}
+        multiline={multiline}
+        rows={rows}
+        maxRows={maxRows}
         onChange={(e) => {
           if (handleChange) {
             const newValue = handleChange(e.target.value);
@@ -229,6 +243,7 @@ export const FormInputNumber = ({
   defaultValue,
   shouldUnregister,
   errors,
+  sx,
 }: FormInputNumberProps) => (
   <Controller
     name={name}
@@ -237,16 +252,18 @@ export const FormInputNumber = ({
     shouldUnregister={shouldUnregister}
     render={({ field: { value, onChange } }) => (
       <TextField
+        id={name}
         type="number"
         value={value}
-        sx={{ marginTop: -0.3, width: 250 }}
+        sx={sx}
         label={label}
+        fullWidth
         onChange={onChange}
         helperText={errors[name]?.message}
         error={!!errors[name]}
         placeholder={placeholder}
         InputProps={{
-          style: { fontSize: 14, margin: 10 },
+          style: { fontSize: 14, margin: 5 },
           inputMode: numericOnly ? 'numeric' : undefined,
           inputProps: { max: max, min: min },
         }}
@@ -286,9 +303,12 @@ export const FormInputDate = ({
             renderInput={(params) => (
               <TextField
                 sx={sx}
+                id={name}
+                label={label}
                 {...params}
                 helperText={errors[name]?.message}
                 error={!!errors[name]}
+                fullWidth
               />
             )}
           />

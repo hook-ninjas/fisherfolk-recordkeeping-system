@@ -29,7 +29,7 @@ const SidebarItemList = (
     <Link to="/dashboard" className="nav-link">
       <ListItemButton>
         <ListItemIcon>
-          <GridViewOutlinedIcon sx={{color: 'white'}}/>
+          <GridViewOutlinedIcon sx={{ color: 'white' }} />
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
       </ListItemButton>
@@ -57,20 +57,13 @@ const SidebarItemList = (
         </ListItemIcon>
         <ListItemText primary="Gear Record" />
       </ListItemButton>
-    </Link> <Link to="/fisherfolk-programs" className="nav-link">
+    </Link>
+    <Link to="/fisherfolk-programs" className="nav-link">
       <ListItemButton>
         <ListItemIcon>
           <VolunteerActivismIcon sx={{ color: 'white' }} />
         </ListItemIcon>
         <ListItemText primary="Fisherfolk Program" />
-      </ListItemButton>
-    </Link>
-    <Link to="/fisherfolk-archive" className="nav-link">
-      <ListItemButton>
-        <ListItemIcon>
-          <ArchiveIcon sx={{ color: 'white' }} />
-        </ListItemIcon>
-        <ListItemText primary="Archive" />
       </ListItemButton>
     </Link>
   </>
@@ -146,7 +139,7 @@ function Sidebar() {
             width: openDrawer ? 100 : 40,
             marginLeft: openDrawer ? 5 : 1.22,
             marginTop: 2,
-            borderRadius: 15
+            borderRadius: 15,
           }}
           src={OfficeLogo}
         />
@@ -154,6 +147,16 @@ function Sidebar() {
       <List component="nav" style={{ height: '100%' }}>
         {SidebarItemList}
       </List>
+      <Link to="/fisherfolk-archive" className="nav-link">
+        <ListItemButton
+          sx={{ position: 'absolute', bottom: 50, width: '100%' }}
+        >
+          <ListItemIcon>
+            <ArchiveIcon sx={{ color: 'white' }} />
+          </ListItemIcon>
+          <ListItemText primary="Archive" />
+        </ListItemButton>
+      </Link>
       <ListItemButton
         onClick={handleClickOpen}
         sx={{ position: 'absolute', bottom: 3, width: '100%' }}
