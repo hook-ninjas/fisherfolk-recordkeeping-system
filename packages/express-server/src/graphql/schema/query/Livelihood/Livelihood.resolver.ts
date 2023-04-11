@@ -8,6 +8,9 @@ export const queryTotalByType = (
   return ctx.prisma.livelihood.count({
     where: {
       type: type,
+      fisherfolk: {
+        isArchive: false
+      }
     },
   });
 };

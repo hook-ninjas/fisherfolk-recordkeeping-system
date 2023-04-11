@@ -35,6 +35,7 @@ import {
   VesselQueryDocument,
   GearsQueryDocument,
   FisherfolkCountDocument,
+  GovernmentAidDocument,
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
@@ -310,7 +311,6 @@ export default function AddVesselWithGearForm({
             data: {
               fisherfolkId: parseInt(id),
               url: image.toString(),
-              gear_id: null,
               vessel_id: vessel.data?.createVessel.id,
               text: 'none',
               name: `vessel-gear-image-${id}`,
@@ -336,7 +336,6 @@ export default function AddVesselWithGearForm({
               fisherfolkId: parseInt(id),
               url: image.toString(),
               gear_id: gears.data?.createGears[0].id,
-              vessel_id: null,
               text: 'none',
               name: `vessel-gear-image-${id}`,
               updated_at: new Date(),
@@ -364,7 +363,6 @@ export default function AddVesselWithGearForm({
             data: {
               fisherfolkId: parseInt(id),
               url: image.toString(),
-              gear_id: null,
               vessel_id: vessel.data?.createVesselWithGear.id,
               text: 'none',
               name: `vessel-gear-image-${id}`,
