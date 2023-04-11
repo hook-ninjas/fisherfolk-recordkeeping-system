@@ -147,6 +147,7 @@ query FisherfolkCount {
   activeFisherFolk
   totalGears
   totalVessels
+  totalPrograms
   barangayCount
 }
 

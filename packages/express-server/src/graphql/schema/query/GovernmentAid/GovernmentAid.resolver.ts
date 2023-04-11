@@ -15,3 +15,6 @@ export const queryGovernmentAid = (id: number, ctx: Context) =>
       id: id,
     },
   });
+
+export const queryTotalProgram = (ctx: Context) =>
+  ctx.prisma.governmentAid.count();

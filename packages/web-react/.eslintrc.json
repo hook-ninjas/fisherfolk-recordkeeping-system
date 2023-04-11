@@ -30,7 +30,7 @@
   "ignorePatterns": ["**/*.json", "/src/graphql/*.ts"],
   "rules": {
     "indent": [1, 2, { "SwitchCase": 1 }],
-    "quotes": ["error", "single"],
+    // "quotes": ["error", "single"],
     "semi": ["error", "always"],
     "@typescript-eslint/ban-types": [
       "error",

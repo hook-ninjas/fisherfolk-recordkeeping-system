@@ -92,3 +92,17 @@ mutation UpdateToArchiveFisherfolk($archiveFisherfolkId: Int!) {
     id
   }
 }
+
+mutation CreateProgram($data: CreateProgramInput!) {
+  createProgram(data: $data) {
+    id
+    title
+  }
+}
+
+mutation CreateMultipleProgramImage($images: [CreateImageInput!]!) {
+  createMultipleImage(images: $images) {
+    id
+    url
+  }
+}
