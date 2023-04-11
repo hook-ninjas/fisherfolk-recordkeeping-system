@@ -75,7 +75,6 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Archive: ResolverTypeWrapper<Archive>;
   AuthPayload: ResolverTypeWrapper<AuthPayload>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
@@ -116,7 +115,6 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Archive: Archive;
   AuthPayload: AuthPayload;
   BigInt: Scalars['BigInt'];
   Boolean: Scalars['Boolean'];
@@ -145,46 +143,6 @@ export type ResolversParentTypes = {
   User: User;
   Vessel: Vessel;
   livelihoodInput: LivelihoodInput;
-};
-
-export type ArchiveResolvers<ContextType = any, ParentType extends ResolversParentTypes['Archive'] = ResolversParentTypes['Archive']> = {
-  age?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  appellation?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  barangay?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  cityMunicipality?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  civilStatus?: Resolver<ResolversTypes['CivilStatus'], ParentType, ContextType>;
-  contactNum?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  dateOfBirth?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  educationalBackground?: Resolver<ResolversTypes['EducationalBackground'], ParentType, ContextType>;
-  firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  gears?: Resolver<Maybe<Array<Maybe<ResolversTypes['Gear']>>>, ParentType, ContextType>;
-  gender?: Resolver<ResolversTypes['Gender'], ParentType, ContextType>;
-  governmentAid?: Resolver<Maybe<Array<Maybe<ResolversTypes['Queue']>>>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  images?: Resolver<Maybe<Array<Maybe<ResolversTypes['Image']>>>, ParentType, ContextType>;
-  isArchive?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  livelihoods?: Resolver<Maybe<Array<Maybe<ResolversTypes['Livelihood']>>>, ParentType, ContextType>;
-  middleName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  nationality?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  numOfChildren?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  organizations?: Resolver<Maybe<Array<Maybe<ResolversTypes['Member']>>>, ParentType, ContextType>;
-  permit?: Resolver<Maybe<ResolversTypes['Permit']>, ParentType, ContextType>;
-  personToNotify?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  placeOfBirth?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  province?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  ptnAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  ptnContactNum?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  ptnRelationship?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  registrationDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  religion?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  residentYear?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  salutation?: Resolver<ResolversTypes['Salutation'], ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['FisherfolkStatus'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  vessels?: Resolver<Maybe<Array<Maybe<ResolversTypes['Vessel']>>>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type AuthPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']> = {
@@ -407,7 +365,6 @@ export type VesselResolvers<ContextType = any, ParentType extends ResolversParen
 };
 
 export type Resolvers<ContextType = any> = {
-  Archive?: ArchiveResolvers<ContextType>;
   AuthPayload?: AuthPayloadResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
   DateTime?: GraphQLScalarType;
@@ -436,46 +393,6 @@ export type Scalars = {
   Float: number;
   BigInt: any;
   DateTime: any;
-};
-
-export type Archive = {
-  __typename?: 'Archive';
-  age: Scalars['Int'];
-  appellation: Scalars['String'];
-  barangay: Scalars['String'];
-  cityMunicipality: Scalars['String'];
-  civilStatus: CivilStatus;
-  contactNum: Scalars['String'];
-  createdAt: Scalars['DateTime'];
-  dateOfBirth: Scalars['DateTime'];
-  educationalBackground: EducationalBackground;
-  firstName: Scalars['String'];
-  gears?: Maybe<Array<Maybe<Gear>>>;
-  gender: Gender;
-  governmentAid?: Maybe<Array<Maybe<Queue>>>;
-  id: Scalars['BigInt'];
-  images?: Maybe<Array<Maybe<Image>>>;
-  isArchive: Scalars['Boolean'];
-  lastName: Scalars['String'];
-  livelihoods?: Maybe<Array<Maybe<Livelihood>>>;
-  middleName: Scalars['String'];
-  nationality: Scalars['String'];
-  numOfChildren: Scalars['Int'];
-  organizations?: Maybe<Array<Maybe<Member>>>;
-  permit?: Maybe<Permit>;
-  personToNotify: Scalars['String'];
-  placeOfBirth: Scalars['String'];
-  province: Scalars['String'];
-  ptnAddress: Scalars['String'];
-  ptnContactNum: Scalars['String'];
-  ptnRelationship: Scalars['String'];
-  registrationDate: Scalars['DateTime'];
-  religion: Scalars['String'];
-  residentYear: Scalars['Int'];
-  salutation: Salutation;
-  status: FisherfolkStatus;
-  updatedAt: Scalars['DateTime'];
-  vessels?: Maybe<Array<Maybe<Vessel>>>;
 };
 
 export type AuthPayload = {
