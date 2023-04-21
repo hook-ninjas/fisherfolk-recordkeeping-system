@@ -23,11 +23,20 @@ import {
   showArchiveSuccess,
   showArchiveError,
 } from '../ConfirmationDialog/Alerts';
+import { GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
 
 interface Props {
   error: ApolloError | undefined;
   loading: boolean;
   data: QueryFisherfolksQuery | undefined;
+}
+
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer style={{ justifyContent: 'flex-end' }}>
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
 }
 
 const renderMoreActions = (id: number) => {
@@ -174,6 +183,9 @@ export default function FisherfolkTable({ error, loading, data }: Props) {
         columns={columns}
         disableVirtualization={true}
         aria-label="fisherfolk-table"
+        components={{
+          Toolbar: CustomToolbar,
+        }}
       />
     </div>
   );
