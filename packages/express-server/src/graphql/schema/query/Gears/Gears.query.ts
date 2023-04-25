@@ -7,7 +7,9 @@ const Gears = queryField('gears', {
       {
         id: 'desc'
       }
-    ]
+    ], where: {
+      isArchive: false
+    }
   })
 });
 
