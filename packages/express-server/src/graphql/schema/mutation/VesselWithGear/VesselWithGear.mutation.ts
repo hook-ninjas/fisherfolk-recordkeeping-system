@@ -1,9 +1,12 @@
 import { list, nonNull, mutationField, intArg, stringArg } from 'nexus';
 import CreateGearInput from '../../input/Gear.input';
 import CreateVesselInput from '../../input/Vessel.input';
-import { createGear, createVessel, createVesselWithGear, updateMfvr } from './VesselWithGear.resolver';
+import {
+  createGear, createVessel, createVesselWithGear, updateMfvr,
+  archiveGear, archiveVessel} from './VesselWithGear.resolver';
 import Vessel from '../../model/objecTypes/Vessel';
 import Gear from '../../model/objecTypes/Gear';
+import { context } from '../../../context';
 
 export const CreateVessel = mutationField('createVessel', {
   type: Vessel,
@@ -41,4 +44,20 @@ export const UpdateMFVR = mutationField('updateMfvr', {
   },
   resolve: async (_, args, context) =>
     updateMfvr(args.id, args.mfvrNum, context),
+});
+
+export const ArchiveGear = mutationField('archiveGear', {
+  type: Vessel,
+  args: {
+    id: nonNull(intArg())
+  },
+  resolve: async (_, args, context) => archiveGear(args.id, context)
+});
+
+export const ArchiveVessel = mutationField('archiveVessel', {
+  type: Gear,
+  args: {
+    id: nonNull(intArg())
+  },
+  resolve: async (_, args, context) => archiveVessel(args.id, context)
 });
