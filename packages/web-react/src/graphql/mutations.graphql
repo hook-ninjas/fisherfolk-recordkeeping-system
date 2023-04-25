@@ -107,7 +107,7 @@ mutation CreateMultipleProgramImage($images: [CreateImageInput!]!) {
   }
 }
 
-mutation RestreFisherfolk($restreFisherfolkId: Int!) {
+mutation UpdateRestreFisherfolk($restreFisherfolkId: Int!) {
   restreFisherfolk(id: $restreFisherfolkId) {
     id
   }
