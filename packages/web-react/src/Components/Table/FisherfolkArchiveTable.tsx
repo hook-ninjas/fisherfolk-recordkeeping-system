@@ -9,7 +9,7 @@ import {
   GridRowsProp,
 } from '@mui/x-data-grid';
 import { Alert, Button, Menu, MenuItem } from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import RestoreIcon from '@mui/icons-material/Restore';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import moment from 'moment';
 import { ApolloError } from '@apollo/client';
@@ -59,7 +59,7 @@ const renderMoreActions = (id: number) => {
         onClose={handleClose}
       >
         <MenuItem onClick={handleProfileView} disableRipple>
-          <VisibilityIcon sx={{ width: 20, marginRight: 1.5 }} /> View
+          <RestoreIcon sx={{ width: 20, marginRight: 1.5 }} /> Restore
         </MenuItem>
       </Menu>
     </div>
