@@ -7,7 +7,9 @@ const Vessels = queryField('vessels', {
       {
         id: 'desc'
       }
-    ]
+    ], where: {
+      isArchive: false
+    }
   })
 });
 
