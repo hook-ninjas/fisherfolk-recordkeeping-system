@@ -118,3 +118,9 @@ mutation UpdateToArchiveGear($archiveGearId: Int!) {
     id
   }
 }
+
+mutation UpdateToArchiveVessel($archiveVesselId: Int!) {
+  archiveVessel(id: $archiveVesselId) {
+    id
+  }
+}
