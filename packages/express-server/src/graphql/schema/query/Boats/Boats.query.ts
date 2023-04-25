@@ -44,9 +44,19 @@ const QueryAllVessels = queryField('totalVessels', {
   resolve: (_, _args, ctx) => ctx.prisma.vessel.count()
 });
 
+const QueryArchiveVessel = queryField('ArchiveVessel', {
+  type: nonNull(list(nonNull('Vessel'))),
+  resolve: (_parent, _args, ctx) => ctx.prisma.vessel.findMany({
+    where: {
+      isArchive: true
+    }
+  })
+});
+
 export default [
   Vessels,
   QueryFisherfolkVessels,
   QueryAllFisherfolkVessels,
-  QueryAllVessels
+  QueryAllVessels,
+  QueryArchiveVessel
 ];
