@@ -44,9 +44,19 @@ const QueryAllGears = queryField('totalGears', {
   resolve: (_, _args, ctx) => ctx.prisma.gear.count()
 });
 
+const QueryArchiveGear = queryField('ArchiveGear', {
+  type: nonNull(list(nonNull('Gear'))),
+  resolve: (_parent, _args, ctx) => ctx.prisma.gear.findMany({
+    where: {
+      isArchive: true
+    }
+  })
+});
+
 export default [
   Gears,
   QueryFisherfolkGears,
   QueryAllFisherfolkGears,
-  QueryAllGears
+  QueryAllGears,
+  QueryArchiveGear
 ];
