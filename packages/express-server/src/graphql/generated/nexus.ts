@@ -411,6 +411,8 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     archiveFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
+    archiveGear: NexusGenRootTypes['Vessel']; // Vessel!
+    archiveVessel: NexusGenRootTypes['Gear']; // Gear!
     createFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     createGears: NexusGenRootTypes['Gear'][]; // [Gear!]!
     createImage: NexusGenRootTypes['Image']; // Image!
@@ -445,6 +447,8 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     ArchiveFisherfolk: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
+    ArchiveGear: NexusGenRootTypes['Gear'][]; // [Gear!]!
+    ArchiveVessel: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
     activeFisherFolk: number; // Int!
     barangayCount: number; // Int!
     fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
@@ -605,6 +609,8 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     archiveFisherfolk: 'Fisherfolk'
+    archiveGear: 'Vessel'
+    archiveVessel: 'Gear'
     createFisherfolk: 'Fisherfolk'
     createGears: 'Gear'
     createImage: 'Image'
@@ -639,6 +645,8 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     ArchiveFisherfolk: 'Fisherfolk'
+    ArchiveGear: 'Gear'
+    ArchiveVessel: 'Vessel'
     activeFisherFolk: 'Int'
     barangayCount: 'Int'
     fisherfolk: 'Fisherfolk'
@@ -708,6 +716,12 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     archiveFisherfolk: { // args
+      id: number; // Int!
+    }
+    archiveGear: { // args
+      id: number; // Int!
+    }
+    archiveVessel: { // args
       id: number; // Int!
     }
     createFisherfolk: { // args

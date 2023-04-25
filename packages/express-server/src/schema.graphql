@@ -236,6 +236,8 @@ type Member {
 
 type Mutation {
   archiveFisherfolk(id: Int!): Fisherfolk!
+  archiveGear(id: Int!): Vessel!
+  archiveVessel(id: Int!): Gear!
   createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
   createGears(gears: [CreateGearInput!]!): [Gear!]!
   createImage(data: CreateImageInput!): Image!
@@ -279,6 +281,8 @@ type Permit {
 
 type Query {
   ArchiveFisherfolk: [Fisherfolk!]!
+  ArchiveGear: [Gear!]!
+  ArchiveVessel: [Vessel!]!
   activeFisherFolk: Int!
   barangayCount: Int!
   fisherfolk(id: BigInt!): Fisherfolk!
