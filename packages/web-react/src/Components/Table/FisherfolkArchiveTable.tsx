@@ -8,12 +8,13 @@ import {
   GridColumns,
   GridRowsProp,
 } from '@mui/x-data-grid';
-import { Alert, Button, Menu, MenuItem } from '@mui/material';
+import { Alert, Backdrop, Button, Menu, MenuItem } from '@mui/material';
 import RestoreIcon from '@mui/icons-material/Restore';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import moment from 'moment';
-import { ApolloError } from '@apollo/client';
-import { ArchiveFisherfolkQuery } from '../../graphql/generated';
+import { ApolloError, useMutation } from '@apollo/client';
+import { ArchiveFisherfolkDocument, ArchiveFisherfolkQuery, QueryFisherfolksDocument, UpdateRestreFisherfolkDocument } from '../../graphql/generated';
+import { showRestoreSuccess, showRestoreError } from '../ConfirmationDialog/Alerts';
 
 interface Props {
   error: ApolloError | undefined;
@@ -30,10 +31,45 @@ const renderMoreActions = (id: number) => {
   };
   const handleClose = () => setAnchorEl(null);
 
-  const handleProfileView = () => {
-    navigate(`/fisherfolk-profile/${id}`);
+  const [restoreFisherfolk, restoreResult] = useMutation(
+    UpdateRestreFisherfolkDocument,
+    {
+      refetchQueries: [
+        {
+          query: QueryFisherfolksDocument,
+        },
+        {
+          query: ArchiveFisherfolkDocument,
+        },
+      ],
+    }
+  );
+
+  const RestoreAFsiherfolk = () => {
+    restoreFisherfolk({
+      variables: {
+        restreFisherfolkId: id,
+      },
+      onCompleted: () => {
+        showRestoreSuccess();
+      },
+      onError: () => {
+        showRestoreError();
+      },
+    });
   };
 
+  const restoreHandler = () => {
+    const { loading } = restoreResult;
+    if (loading) {
+      return (
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+        ></Backdrop>
+      );
+    }
+  };
   
   return (
     <div>
@@ -58,7 +94,10 @@ const renderMoreActions = (id: number) => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleProfileView} disableRipple>
+        <MenuItem onClick={() => {
+          RestoreAFsiherfolk();
+          restoreHandler();
+        }} disableRipple>
           <RestoreIcon sx={{ width: 20, marginRight: 1.5 }} /> Restore
         </MenuItem>
       </Menu>
