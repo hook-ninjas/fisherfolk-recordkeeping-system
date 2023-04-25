@@ -162,6 +162,7 @@ type Gear {
   createdAt: DateTime!
   fisherfolk: Fisherfolk!
   id: BigInt!
+  isArchive: Boolean!
   type: String!
   updatedAt: DateTime!
 }
@@ -370,6 +371,7 @@ type Vessel {
   homeport: String!
   horsepower: Float
   id: BigInt!
+  isArchive: Boolean!
   material: Material
   mfvrNumber: String!
   name: String!

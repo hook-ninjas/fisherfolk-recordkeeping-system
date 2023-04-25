@@ -212,6 +212,7 @@ export interface NexusGenObjects {
     classification: NexusGenEnums['GearClassification']; // GearClassification!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: NexusGenScalars['BigInt']; // BigInt!
+    isArchive: boolean; // Boolean!
     type: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
@@ -287,6 +288,7 @@ export interface NexusGenObjects {
     homeport: string; // String!
     horsepower?: number | null; // Float
     id: NexusGenScalars['BigInt']; // BigInt!
+    isArchive: boolean; // Boolean!
     material?: NexusGenEnums['Material'] | null; // Material
     mfvrNumber: string; // String!
     name: string; // String!
@@ -363,6 +365,7 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     id: NexusGenScalars['BigInt']; // BigInt!
+    isArchive: boolean; // Boolean!
     type: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
@@ -489,6 +492,7 @@ export interface NexusGenFieldTypes {
     homeport: string; // String!
     horsepower: number | null; // Float
     id: NexusGenScalars['BigInt']; // BigInt!
+    isArchive: boolean; // Boolean!
     material: NexusGenEnums['Material'] | null; // Material
     mfvrNumber: string; // String!
     name: string; // String!
@@ -555,6 +559,7 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'DateTime'
     fisherfolk: 'Fisherfolk'
     id: 'BigInt'
+    isArchive: 'Boolean'
     type: 'String'
     updatedAt: 'DateTime'
   }
@@ -681,6 +686,7 @@ export interface NexusGenFieldTypeNames {
     homeport: 'String'
     horsepower: 'Float'
     id: 'BigInt'
+    isArchive: 'Boolean'
     material: 'Material'
     mfvrNumber: 'String'
     name: 'String'
