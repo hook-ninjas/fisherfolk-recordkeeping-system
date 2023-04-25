@@ -20,7 +20,8 @@ const QueryFisherfolkVessels = queryField('fisherfolkVessels', {
   },
   resolve: (_parent, args, ctx) => ctx.prisma.vessel.findMany({
     where: {
-      fisherfolkId: args.fisherfolkId
+      fisherfolkId: args.fisherfolkId,
+      isArchive: false
     }
   }) 
 });
@@ -34,7 +35,8 @@ const QueryAllFisherfolkVessels = queryField('totalFisherfolkVessels', {
   },
   resolve: (_, args, ctx) => ctx.prisma.vessel.count({
     where: {
-      fisherfolkId: args.fisherfolkId
+      fisherfolkId: args.fisherfolkId,
+      isArchive: false
     }
   })
 });

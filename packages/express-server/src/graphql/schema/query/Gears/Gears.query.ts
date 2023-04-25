@@ -20,7 +20,8 @@ const QueryFisherfolkGears = queryField('fisherfolkGears',  {
   },
   resolve: (_, args, ctx) => ctx.prisma.gear.findMany({
     where: {
-      fisherfolkId: args.fisherfolkId
+      fisherfolkId: args.fisherfolkId,
+      isArchive: false
     }
   })
 });
@@ -34,7 +35,8 @@ const QueryAllFisherfolkGears = queryField('totalFisherfolkGears', {
   },
   resolve: (_, args, ctx) => ctx.prisma.gear.count({
     where: {
-      fisherfolkId: args.fisherfolkId
+      fisherfolkId: args.fisherfolkId,
+      isArchive: false
     }
   })
 });
