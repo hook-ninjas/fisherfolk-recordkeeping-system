@@ -212,6 +212,7 @@ export interface NexusGenObjects {
     classification: NexusGenEnums['GearClassification']; // GearClassification!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: NexusGenScalars['BigInt']; // BigInt!
+    isArchive: boolean; // Boolean!
     type: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
@@ -287,6 +288,7 @@ export interface NexusGenObjects {
     homeport: string; // String!
     horsepower?: number | null; // Float
     id: NexusGenScalars['BigInt']; // BigInt!
+    isArchive: boolean; // Boolean!
     material?: NexusGenEnums['Material'] | null; // Material
     mfvrNumber: string; // String!
     name: string; // String!
@@ -363,6 +365,7 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     id: NexusGenScalars['BigInt']; // BigInt!
+    isArchive: boolean; // Boolean!
     type: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
@@ -408,6 +411,8 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     archiveFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
+    archiveGear: NexusGenRootTypes['Gear']; // Gear!
+    archiveVessel: NexusGenRootTypes['Vessel']; // Vessel!
     createFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     createGears: NexusGenRootTypes['Gear'][]; // [Gear!]!
     createImage: NexusGenRootTypes['Image']; // Image!
@@ -442,6 +447,8 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     ArchiveFisherfolk: NexusGenRootTypes['Fisherfolk'][]; // [Fisherfolk!]!
+    ArchiveGear: NexusGenRootTypes['Gear'][]; // [Gear!]!
+    ArchiveVessel: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
     activeFisherFolk: number; // Int!
     barangayCount: number; // Int!
     fisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
@@ -489,6 +496,7 @@ export interface NexusGenFieldTypes {
     homeport: string; // String!
     horsepower: number | null; // Float
     id: NexusGenScalars['BigInt']; // BigInt!
+    isArchive: boolean; // Boolean!
     material: NexusGenEnums['Material'] | null; // Material
     mfvrNumber: string; // String!
     name: string; // String!
@@ -555,6 +563,7 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'DateTime'
     fisherfolk: 'Fisherfolk'
     id: 'BigInt'
+    isArchive: 'Boolean'
     type: 'String'
     updatedAt: 'DateTime'
   }
@@ -600,6 +609,8 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     archiveFisherfolk: 'Fisherfolk'
+    archiveGear: 'Gear'
+    archiveVessel: 'Vessel'
     createFisherfolk: 'Fisherfolk'
     createGears: 'Gear'
     createImage: 'Image'
@@ -634,6 +645,8 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     ArchiveFisherfolk: 'Fisherfolk'
+    ArchiveGear: 'Gear'
+    ArchiveVessel: 'Vessel'
     activeFisherFolk: 'Int'
     barangayCount: 'Int'
     fisherfolk: 'Fisherfolk'
@@ -681,6 +694,7 @@ export interface NexusGenFieldTypeNames {
     homeport: 'String'
     horsepower: 'Float'
     id: 'BigInt'
+    isArchive: 'Boolean'
     material: 'Material'
     mfvrNumber: 'String'
     name: 'String'
@@ -702,6 +716,12 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     archiveFisherfolk: { // args
+      id: number; // Int!
+    }
+    archiveGear: { // args
+      id: number; // Int!
+    }
+    archiveVessel: { // args
       id: number; // Int!
     }
     createFisherfolk: { // args

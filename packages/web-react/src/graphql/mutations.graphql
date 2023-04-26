@@ -112,3 +112,15 @@ mutation UpdateRestreFisherfolk($restreFisherfolkId: Int!) {
     id
   }
 }
+
+mutation UpdateToArchiveGear($archiveGearId: Int!) {
+  archiveGear(id: $archiveGearId) {
+    id
+  }
+}
+
+mutation UpdateToArchiveVessel($archiveVesselId: Int!) {
+  archiveVessel(id: $archiveVesselId) {
+    id
+  }
+}

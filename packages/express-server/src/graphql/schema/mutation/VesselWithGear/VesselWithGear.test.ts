@@ -36,6 +36,7 @@ test('should create vessel with gear record', async () => {
     type: 'Motorized',
     updatedAt: new Date('2022-08-18'),
     yearBuilt: 2019,
+    isArchive: false,
   };
 
   const gears: Gear[] = [
@@ -98,6 +99,7 @@ test('should create vessel only', async () => {
     type: 'Motorized',
     updatedAt: new Date('2022-08-18'),
     yearBuilt: 2019,
+    isArchive: false,
   };
 
   mockCtx.prisma.vessel.create.mockResolvedValue(vessel);

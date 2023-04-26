@@ -7,7 +7,9 @@ const Vessels = queryField('vessels', {
       {
         id: 'desc'
       }
-    ]
+    ], where: {
+      isArchive: false
+    }
   })
 });
 
@@ -20,7 +22,8 @@ const QueryFisherfolkVessels = queryField('fisherfolkVessels', {
   },
   resolve: (_parent, args, ctx) => ctx.prisma.vessel.findMany({
     where: {
-      fisherfolkId: args.fisherfolkId
+      fisherfolkId: args.fisherfolkId,
+      isArchive: false
     }
   }) 
 });
@@ -34,7 +37,8 @@ const QueryAllFisherfolkVessels = queryField('totalFisherfolkVessels', {
   },
   resolve: (_, args, ctx) => ctx.prisma.vessel.count({
     where: {
-      fisherfolkId: args.fisherfolkId
+      fisherfolkId: args.fisherfolkId,
+      isArchive: false
     }
   })
 });
@@ -44,9 +48,19 @@ const QueryAllVessels = queryField('totalVessels', {
   resolve: (_, _args, ctx) => ctx.prisma.vessel.count()
 });
 
+const QueryArchiveVessel = queryField('ArchiveVessel', {
+  type: nonNull(list(nonNull('Vessel'))),
+  resolve: (_parent, _args, ctx) => ctx.prisma.vessel.findMany({
+    where: {
+      isArchive: true
+    }
+  })
+});
+
 export default [
   Vessels,
   QueryFisherfolkVessels,
   QueryAllFisherfolkVessels,
-  QueryAllVessels
+  QueryAllVessels,
+  QueryArchiveVessel
 ];

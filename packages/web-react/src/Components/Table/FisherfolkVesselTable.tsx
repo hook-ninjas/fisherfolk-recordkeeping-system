@@ -7,13 +7,16 @@ import {
 } from '@mui/x-data-grid';
 import {
   UpdateMfvrDocument,
+  UpdateToArchiveVesselDocument,
   VesselQueryDocument,
+  ArchiveGearDocument
 } from '../../graphql/generated';
 import { useMutation, useQuery } from '@apollo/client';
 import Loading from '../Loading/Loading';
 import {
   Alert,
   AlertProps,
+  Backdrop,
   Button,
   Dialog,
   DialogActions,
@@ -27,14 +30,53 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import moment from 'moment';
+import { showArchiveError, showArchiveSuccess } from '../ConfirmationDialog/Alerts';
 
-const RenderMoreActions = () => {
+const RenderMoreActions = (id: number) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => setAnchorEl(null);
+
+  const [archiveGear, archiveResult] = useMutation(
+    UpdateToArchiveVesselDocument,
+    {
+      refetchQueries: [
+        {
+          query: ArchiveGearDocument,
+        },
+      ],
+    }
+  );
+
+  const ArchiveAVessel = () => {
+    archiveGear({
+      variables: {
+        archiveVesselId: id,
+      },
+      onCompleted: () => {
+        showArchiveSuccess();
+      },
+      onError: () => {
+        showArchiveError();
+      },
+    });
+  };
+
+  const archiveHandler = () => {
+    const { loading } = archiveResult;
+    if (loading) {
+      return (
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+        ></Backdrop>
+      );
+    }
+  };
+
 
   return (
     <div>
@@ -62,7 +104,10 @@ const RenderMoreActions = () => {
         <MenuItem disableRipple>
           <EditIcon sx={{ width: 20, marginRight: 1.5 }} /> Edit
         </MenuItem>
-        <MenuItem disableRipple>
+        <MenuItem onClick={() => {
+          ArchiveAVessel();
+          archiveHandler();
+        }} disableRipple>
           <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
         </MenuItem>
       </Menu>
@@ -70,7 +115,7 @@ const RenderMoreActions = () => {
   );
 };
 
-const  renderCell = () => <RenderMoreActions />;
+// const  renderCell = () => <RenderMoreActions />;
 
 const computeMutation = (newRow: GridRowModel, oldRow: GridRowModel) => {
   if (newRow.mfvrNum !== oldRow.mfvrNum) {
@@ -259,6 +304,11 @@ const columns: GridColumns = [
     headerName: '',
     disableColumnMenu: true,
     sortable: false,
-    renderCell: renderCell,
+    valueGetter(params) {
+      return params.row.id;
+    },
+    renderCell(params) {
+      return RenderMoreActions(params.row.id);
+    },
   },
 ];

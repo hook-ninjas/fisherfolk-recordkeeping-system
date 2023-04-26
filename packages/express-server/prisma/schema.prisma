@@ -89,7 +89,7 @@ model Member {
 model GovernmentAid {
   id          Int      @id @default(autoincrement())
   title       String
-  description String 
+  description String
   slot        Int
   date        DateTime
   images      Image[]
@@ -190,6 +190,7 @@ model Vessel {
   serialNumber      String     @map("serial_number")
   horsepower        Float?
   images            Image[]
+  isArchive         Boolean    @default(false) @map("is_archive")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
