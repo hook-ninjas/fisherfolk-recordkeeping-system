@@ -411,8 +411,8 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     archiveFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
-    archiveGear: NexusGenRootTypes['Vessel']; // Vessel!
-    archiveVessel: NexusGenRootTypes['Gear']; // Gear!
+    archiveGear: NexusGenRootTypes['Gear']; // Gear!
+    archiveVessel: NexusGenRootTypes['Vessel']; // Vessel!
     createFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     createGears: NexusGenRootTypes['Gear'][]; // [Gear!]!
     createImage: NexusGenRootTypes['Image']; // Image!
@@ -609,8 +609,8 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     archiveFisherfolk: 'Fisherfolk'
-    archiveGear: 'Vessel'
-    archiveVessel: 'Gear'
+    archiveGear: 'Gear'
+    archiveVessel: 'Vessel'
     createFisherfolk: 'Fisherfolk'
     createGears: 'Gear'
     createImage: 'Image'

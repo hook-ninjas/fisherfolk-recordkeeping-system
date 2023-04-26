@@ -236,8 +236,8 @@ type Member {
 
 type Mutation {
   archiveFisherfolk(id: Int!): Fisherfolk!
-  archiveGear(id: Int!): Vessel!
-  archiveVessel(id: Int!): Gear!
+  archiveGear(id: Int!): Gear!
+  archiveVessel(id: Int!): Vessel!
   createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
   createGears(gears: [CreateGearInput!]!): [Gear!]!
   createImage(data: CreateImageInput!): Image!

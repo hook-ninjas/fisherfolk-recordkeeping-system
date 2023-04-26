@@ -6,7 +6,6 @@ import {
   archiveGear, archiveVessel} from './VesselWithGear.resolver';
 import Vessel from '../../model/objecTypes/Vessel';
 import Gear from '../../model/objecTypes/Gear';
-import { context } from '../../../context';
 
 export const CreateVessel = mutationField('createVessel', {
   type: Vessel,
@@ -47,17 +46,17 @@ export const UpdateMFVR = mutationField('updateMfvr', {
 });
 
 export const ArchiveGear = mutationField('archiveGear', {
-  type: Vessel,
-  args: {
-    id: nonNull(intArg())
-  },
-  resolve: async (_, args, context) => archiveGear(args.id, context)
-});
-
-export const ArchiveVessel = mutationField('archiveVessel', {
   type: Gear,
   args: {
     id: nonNull(intArg())
   },
-  resolve: async (_, args, context) => archiveVessel(args.id, context)
+  resolve: async (_, args, context) => archiveGear(args.id, context),
+});
+
+export const ArchiveVessel = mutationField('archiveVessel', {
+  type: Vessel,
+  args: {
+    id: nonNull(intArg())
+  },
+  resolve: async (_, args, context) => archiveVessel(args.id, context),
 });
