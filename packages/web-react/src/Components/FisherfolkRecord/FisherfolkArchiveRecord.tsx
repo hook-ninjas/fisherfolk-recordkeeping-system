@@ -21,18 +21,30 @@ const FisherfolkArchiveRecord = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Item sx={{ p: 0 }}>
-          <Grid container>
-            <BasicTabs
-              tab1Label="Fisherfolks"
-              tab2Label="Gears"
-              tab3Label="Boats"
-              tabelPanel1={<FisherfolkArchiveTable error={error} loading={loading} data={data} />}
-              tabelPanel2={<GearArchiveTable error={gear.error} loading={gear.loading} data={gear.data} />}
-              tablePanel3= {<VesselArchiveTable error={vessel.error} loading={vessel.loading} data={vessel.data} />}
-            />
-          </Grid>
-        </Item>
+        <Paper
+          sx={{
+            p: .5,
+            display: 'flex',
+            flexDirection: 'column',
+            boxShadow: 2,
+          }}
+        >
+          <Box m={1}>
+            <Typography variant="h6">Archive Records</Typography>
+          </Box>
+          <Item sx={{ p: 0 }}>
+            <Grid container>
+              <BasicTabs
+                tab1Label="Fisherfolks"
+                tab2Label="Gears"
+                tab3Label="Boats"
+                tabelPanel1={<FisherfolkArchiveTable error={error} loading={loading} data={data} />}
+                tabelPanel2={<GearArchiveTable error={gear.error} loading={gear.loading} data={gear.data} />}
+                tablePanel3= {<VesselArchiveTable error={vessel.error} loading={vessel.loading} data={vessel.data} />}
+              />
+            </Grid>
+          </Item>
+        </Paper>
       </Grid>
     </Grid>
   );
