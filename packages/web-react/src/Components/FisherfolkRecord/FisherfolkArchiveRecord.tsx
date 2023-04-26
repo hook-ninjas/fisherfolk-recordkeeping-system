@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import FisherfolkArchiveTable from '../Table/FisherfolkArchiveTable';
 import {
-  ArchiveFisherfolkDocument, ArchiveFisherfolkQuery,
+  ArchiveFisherfolkDocument,
   ArchiveGearDocument, ArchiveVesselDocument} from '../../graphql/generated';
 import { useQuery } from '@apollo/client';
 import BasicTabs, { Item } from '../Tab/BasicTab';
@@ -13,10 +13,6 @@ const FisherfolkArchiveRecord = () => {
   const { loading, error, data, refetch } = useQuery(ArchiveFisherfolkDocument);
   const gear = useQuery(ArchiveGearDocument);
   const vessel = useQuery(ArchiveVesselDocument);
-
-  const [fisherfolks, setFisherfolks] = useState<
-    ArchiveFisherfolkQuery | undefined
-    >();
   
   return (
     <Grid container spacing={2}>

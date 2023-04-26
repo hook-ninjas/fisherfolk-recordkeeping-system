@@ -10,12 +10,11 @@ import {
 } from '@mui/x-data-grid';
 import { Alert, Backdrop, Button, Menu, MenuItem } from '@mui/material';
 import RestoreIcon from '@mui/icons-material/Restore';
-import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import moment from 'moment';
 import { ApolloError, useMutation } from '@apollo/client';
 import {
-  ArchiveFisherfolkDocument, ArchiveFisherfolkQuery, QueryFisherfolksDocument, UpdateRestreFisherfolkDocument,
-  ArchiveGearQuery, ArchiveGearDocument
+  ArchiveFisherfolkDocument, QueryFisherfolksDocument, UpdateRestreFisherfolkDocument,
+  ArchiveGearQuery, 
 } from '../../graphql/generated';
 import { showRestoreSuccess, showRestoreError } from '../ConfirmationDialog/Alerts';
 
@@ -26,7 +25,6 @@ interface Props {
 }
 
 const renderMoreActions = (id: number) => {
-  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
