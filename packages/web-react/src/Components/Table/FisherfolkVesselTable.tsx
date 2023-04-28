@@ -9,7 +9,7 @@ import {
   UpdateMfvrDocument,
   UpdateToArchiveVesselDocument,
   VesselQueryDocument,
-  ArchiveGearDocument
+  ArchiveVesselDocument
 } from '../../graphql/generated';
 import { useMutation, useQuery } from '@apollo/client';
 import Loading from '../Loading/Loading';
@@ -40,19 +40,19 @@ const RenderMoreActions = (id: number) => {
   };
   const handleClose = () => setAnchorEl(null);
 
-  const [archiveGear, archiveResult] = useMutation(
+  const [archiveVessel, archiveResult] = useMutation(
     UpdateToArchiveVesselDocument,
     {
       refetchQueries: [
         {
-          query: ArchiveGearDocument,
+          query: ArchiveVesselDocument,
         },
       ],
     }
   );
 
   const ArchiveAVessel = () => {
-    archiveGear({
+    archiveVessel({
       variables: {
         archiveVesselId: id,
       },
