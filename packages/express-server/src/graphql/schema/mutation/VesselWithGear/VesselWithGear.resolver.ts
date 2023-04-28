@@ -2,6 +2,7 @@ import { Context } from '../../../context';
 import { NexusGenInputs } from '../../../generated/nexus';
 
 type CreateVesselInput = NexusGenInputs['CreateVesselInput'];
+type UpdateVesselInput = NexusGenInputs['UpdateVesselInput'];
 type CreateGearInput = NexusGenInputs['CreateGearInput'];
 
 export function createVessel(vessel: CreateVesselInput, ctx: Context) {
@@ -28,11 +29,7 @@ export async function createGears(gears: CreateGearInput[], ctx: Context) {
   });
 }
 
-export async function createVesselWithGear(
-  vessel: CreateVesselInput,
-  gears: CreateGearInput[],
-  ctx: Context
-) {
+export async function createVesselWithGear(vessel: CreateVesselInput, gears: CreateGearInput[], ctx: Context) {
   await createGears(gears, ctx);
 
   return createVessel(vessel, ctx);
@@ -45,6 +42,17 @@ export async function updateMfvr(id: number, mfvr: string, ctx: Context) {
     },
     data: {
       mfvrNumber: mfvr,
+    },
+  });
+}
+
+export async function updateVessel(id: number, vessel: UpdateVesselInput, ctx: Context) {
+  return ctx.prisma.vessel.update({
+    where: {
+      id: id,
+    },
+    data: {
+      ...vessel,
     },
   });
 }
