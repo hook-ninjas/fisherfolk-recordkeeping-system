@@ -96,6 +96,7 @@ export default function GearTable() {
         rows={rows}
         columns={columns}
         aria-label="fisherfolk-gear-table"
+        disableVirtualization={true}
       />
     </div>
   );
