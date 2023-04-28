@@ -34,6 +34,9 @@ const renderMoreActions = (id: number) => {
   const [archiveVessel, archiveResult] = useMutation(UpdateToArchiveVesselDocument, {
     refetchQueries: [
       {
+        query: VesselQueryDocument
+      },
+      {
         query: ArchiveGearDocument,
       },
     ],
