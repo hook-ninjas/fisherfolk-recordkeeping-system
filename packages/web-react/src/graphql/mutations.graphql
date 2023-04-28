@@ -106,3 +106,9 @@ mutation CreateMultipleProgramImage($images: [CreateImageInput!]!) {
     url
   }
 }
+
+mutation UpdateVessel($updateVesselId: Int!, $vessel: UpdateVesselInput!) {
+  updateVessel(id: $updateVesselId, vessel: $vessel) {
+    id
+  }
+}

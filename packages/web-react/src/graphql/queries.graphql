@@ -200,3 +200,31 @@ query ArchiveFisherfolk {
     barangay
   }
 }
+
+query Vessel ($vesselId: BigInt!){
+  vessel(id: $vesselId) {
+     createdAt
+    engineMake
+    grossTonnage
+    homeport
+    horsepower
+    id
+    fisherfolk {
+      id
+    }
+    material
+    mfvrNumber
+    name
+    netTonnage
+    placeBuilt
+    registeredBreadth
+    registeredDepth
+    registeredLength
+    serialNumber
+    tonnageBreadth
+    tonnageDepth
+    tonnageLength
+    type
+    yearBuilt
+  }
+}
