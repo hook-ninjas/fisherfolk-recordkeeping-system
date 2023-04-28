@@ -247,6 +247,7 @@ type Mutation {
   updateFisherfolk(data: UpdateFisherfolkInput!, fisherfolkId: Int!): Fisherfolk!
   updateFisherfolkImage(data: CreateImageInput!, id: String!, url: String!): Image!
   updateMfvr(id: Int!, mfvrNum: String!): Vessel!
+  updateVessel(id: Int!, vessel: UpdateVesselInput!): Vessel!
 }
 
 type Organization {
@@ -299,6 +300,7 @@ type Query {
   totalPrograms: Int!
   totalVessels: Int!
   user: User
+  vessel(id: BigInt!): Vessel!
   vessels: [Vessel!]!
 }
 
@@ -353,6 +355,28 @@ input UpdateFisherfolkInput {
   religion: String!
   residentYear: Int!
   salutation: Salutation!
+}
+
+input UpdateVesselInput {
+  engineMake: String!
+  fisherfolkId: BigInt!
+  grossTonnage: Float
+  homeport: String!
+  horsepower: Float
+  material: Material
+  mfvrNumber: String!
+  name: String!
+  netTonnage: Float
+  placeBuilt: String!
+  registeredBreadth: Float
+  registeredDepth: Float
+  registeredLength: Float
+  serialNumber: String!
+  tonnageBreadth: Float
+  tonnageDepth: Float
+  tonnageLength: Float
+  type: String!
+  yearBuilt: Int
 }
 
 type User {
