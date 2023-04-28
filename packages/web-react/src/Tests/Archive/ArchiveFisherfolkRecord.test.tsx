@@ -100,7 +100,7 @@ describe('Archive Fisherfolk Record Page', () => {
     userEvent.click(actionBtn);
 
     const viewMenu = await screen.findByRole('menuitem', {
-      name: /view/i,
+      name: /restore/i,
     });
 
     expect(viewMenu).toBeInTheDocument();

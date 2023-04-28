@@ -112,3 +112,20 @@ mutation UpdateVessel($updateVesselId: Int!, $vessel: UpdateVesselInput!) {
     id
   }
 }
+mutation UpdateRestreFisherfolk($restreFisherfolkId: Int!) {
+  restreFisherfolk(id: $restreFisherfolkId) {
+    id
+  }
+}
+
+mutation UpdateToArchiveGear($archiveGearId: Int!) {
+  archiveGear(id: $archiveGearId) {
+    id
+  }
+}
+
+mutation UpdateToArchiveVessel($archiveVesselId: Int!) {
+  archiveVessel(id: $archiveVesselId) {
+    id
+  }
+}

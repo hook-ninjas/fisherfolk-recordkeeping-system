@@ -1,5 +1,5 @@
 import { intArg, mutationField } from 'nexus';
-import { createFisherfolk, updateFisherfolk, archiveFisherfolk } from './Fisherfolk.resolver';
+import { createFisherfolk, updateFisherfolk, archiveFisherfolk, restoreFisherfolk} from './Fisherfolk.resolver';
 import {CreateFisherfolkInput, UpdateFisherfolkInput} from '../../input/Fisherfolk.input';
 import { nonNullArg } from '../../../../utils/utils';
 import Fisherfolk from '../../model/objecTypes/Fisherfolk';
@@ -33,4 +33,12 @@ const ArchiveFisherfolk = mutationField('archiveFisherfolk', {
   resolve: (_, args, ctx) => archiveFisherfolk(args.id, ctx)
 });
 
-export { CreateFisherfolk, UpdateFisherfolk, ArchiveFisherfolk };
+const RestoreFisherfolk = mutationField('restreFisherfolk', {
+  type: Fisherfolk,
+  args: {
+    id: intArg(),
+  },
+  resolve: (_, args, ctx) => restoreFisherfolk(args.id, ctx),
+});
+
+export { CreateFisherfolk, UpdateFisherfolk, ArchiveFisherfolk, RestoreFisherfolk };

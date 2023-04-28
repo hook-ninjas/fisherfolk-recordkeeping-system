@@ -46,6 +46,29 @@ export async function updateMfvr(id: number, mfvr: string, ctx: Context) {
   });
 }
 
+export async function archiveGear(id: number, ctx: Context) {
+  return ctx.prisma.gear.update({
+    where: {
+      id: id,
+    },
+    data: {
+      isArchive: true
+    }
+  });
+}
+
+
+export async function archiveVessel(id: number, ctx: Context) {
+  return ctx.prisma.vessel.update({
+    where: {
+      id: id,
+    },
+    data: {
+      isArchive: true
+    }
+  });
+}
+
 export async function updateVessel(id: number, vessel: UpdateVesselInput, ctx: Context) {
   return ctx.prisma.vessel.update({
     where: {

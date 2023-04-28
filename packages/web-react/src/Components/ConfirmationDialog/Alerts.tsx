@@ -31,3 +31,19 @@ export const showArchiveError = () =>
     showConfirmButton: false,
     timer: 4000,
   });
+
+export const showRestoreError = () =>
+  Swal.fire({
+    icon: 'error',
+    title: 'Record has not been restored',
+    showConfirmButton: false,
+    timer: 4000,
+  });
+
+export const showRestoreSuccess = () =>
+  Swal.fire({
+    icon: 'success',
+    title: 'Record has been restored',
+    showConfirmButton: false,
+    timer: 4000,
+  });

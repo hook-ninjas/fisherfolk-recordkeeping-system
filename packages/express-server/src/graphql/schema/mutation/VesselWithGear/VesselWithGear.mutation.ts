@@ -1,16 +1,9 @@
 import { list, nonNull, mutationField, intArg, stringArg } from 'nexus';
 import CreateGearInput from '../../input/Gear.input';
-
-import {
-  createGear,
-  createVessel,
-  createVesselWithGear,
-  updateMfvr,
-  updateVessel,
-} from './VesselWithGear.resolver';
 import Vessel from '../../model/objecTypes/Vessel';
 import Gear from '../../model/objecTypes/Gear';
-import {CreateVesselInput, UpdateVesselInput } from '../../input/Vessel.input';
+import { CreateVesselInput, UpdateVesselInput } from '../../input/Vessel.input';
+import { archiveGear, archiveVessel, createGear, createVessel, createVesselWithGear, updateMfvr, updateVessel } from './VesselWithGear.resolver';
 
 export const CreateVessel = mutationField('createVessel', {
   type: Vessel,
@@ -25,8 +18,7 @@ export const CreateGears = mutationField('createGears', {
   args: {
     gears: list(nonNull(CreateGearInput)),
   },
-  resolve: async (_, args, context) =>
-    args.gears.map((gear) => createGear(gear, context)),
+  resolve: async (_, args, context) => args.gears.map((gear) => createGear(gear, context)),
 });
 
 export const CreateVesselWithGear = mutationField('createVesselWithGear', {
@@ -35,8 +27,7 @@ export const CreateVesselWithGear = mutationField('createVesselWithGear', {
     vessel: nonNull(CreateVesselInput),
     gears: list(nonNull(CreateGearInput)),
   },
-  resolve: async (_, args, context) =>
-    createVesselWithGear(args.vessel, args.gears, context),
+  resolve: async (_, args, context) => createVesselWithGear(args.vessel, args.gears, context),
 });
 
 export const UpdateMFVR = mutationField('updateMfvr', {
@@ -45,8 +36,7 @@ export const UpdateMFVR = mutationField('updateMfvr', {
     id: nonNull(intArg()),
     mfvrNum: nonNull(stringArg()),
   },
-  resolve: async (_, args, context) =>
-    updateMfvr(args.id, args.mfvrNum, context),
+  resolve: async (_, args, context) => updateMfvr(args.id, args.mfvrNum, context),
 });
 
 export const UpdateVessel = mutationField('updateVessel', {
@@ -55,5 +45,21 @@ export const UpdateVessel = mutationField('updateVessel', {
     id: nonNull(intArg()),
     vessel: nonNull(UpdateVesselInput),
   },
-  resolve: async(_, args, context) => updateVessel(args.id, args.vessel, context)
+  resolve: async (_, args, context) => updateVessel(args.id, args.vessel, context),
+});
+
+export const ArchiveGear = mutationField('archiveGear', {
+  type: Gear,
+  args: {
+    id: nonNull(intArg()),
+  },
+  resolve: async (_, args, context) => archiveGear(args.id, context),
+});
+
+export const ArchiveVessel = mutationField('archiveVessel', {
+  type: Vessel,
+  args: {
+    id: nonNull(intArg()),
+  },
+  resolve: async (_, args, context) => archiveVessel(args.id, context),
 });

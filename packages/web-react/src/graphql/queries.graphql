@@ -228,3 +228,41 @@ query Vessel ($vesselId: BigInt!){
     yearBuilt
   }
 }
+
+query ArchiveGear {
+  ArchiveGear {
+    id
+    classification
+    type
+    createdAt
+    updatedAt
+    isArchive
+  }
+}
+
+query ArchiveVessel {
+  ArchiveVessel {
+    id
+    mfvrNumber
+    homeport
+    name
+    type
+    placeBuilt
+    yearBuilt
+    material
+    registeredLength
+    registeredBreadth
+    registeredDepth
+    tonnageLength
+    tonnageBreadth
+    tonnageDepth
+    grossTonnage
+    netTonnage
+    engineMake
+    serialNumber
+    horsepower
+    createdAt
+    updatedAt
+    isArchive
+  }
+}

@@ -1,6 +1,7 @@
 import { Context } from '../../../context';
 import { NexusGenInputs } from '../../../generated/nexus';
 import 'dotenv/config';
+import Fisherfolk from '../../model/objecTypes/Fisherfolk';
 
 type CreateFisherfolkInput = NexusGenInputs['CreateFisherfolkInput'];
 type UpdateFisherfolkInput = NexusGenInputs['UpdateFisherfolkInput'];
@@ -181,4 +182,18 @@ const archiveFisherfolk = async (
   // return ctx.prisma
 };
 
-export { createFisherfolk, updateFisherfolk, archiveFisherfolk };
+const restoreFisherfolk = async (
+  id: number,
+  ctx: Context
+) => {
+  return ctx.prisma.fisherfolk.update({
+    where: {
+      id: id
+    },
+    data: {
+      isArchive: false
+    }
+  });
+};
+
+export { createFisherfolk, updateFisherfolk, archiveFisherfolk, restoreFisherfolk };

@@ -1,14 +1,17 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { DataGrid, GridColumns, GridRowModel, GridRowsProp } from '@mui/x-data-grid';
-import { UpdateMfvrDocument, VesselQueryDocument, VesselQueryQuery } from '../../graphql/generated';
+import { UpdateMfvrDocument, VesselQueryDocument, ArchiveGearDocument, UpdateToArchiveGearDocument } from '../../graphql/generated';
 import { ApolloError, useMutation } from '@apollo/client';
 import Loading from '../Loading/Loading';
-import { Alert, AlertProps, Button, Dialog, DialogActions, DialogContent, DialogTitle, Menu, MenuItem, Snackbar } from '@mui/material';
+import { Alert, AlertProps, Backdrop, Button, Dialog, DialogActions, DialogContent, DialogTitle, Menu, MenuItem, Snackbar } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import moment from 'moment';
+import { showArchiveError, showArchiveSuccess } from '../ConfirmationDialog/Alerts';
 import UpdateVesselForm from '../Forms/UpdateVesselForm';
+import { VesselQueryQuery } from '../../graphql/generated';
+import { UpdateToArchiveVesselDocument } from '../../graphql/generated';
 
 interface Props {
   error: ApolloError | undefined;
@@ -28,6 +31,34 @@ const renderMoreActions = (id: number) => {
   const handleUpdateFormOpen = () => setUpdateVessel(true);
 
   const handleUpdateFormClose = () => setUpdateVessel(false);
+  const [archiveVessel, archiveResult] = useMutation(UpdateToArchiveVesselDocument, {
+    refetchQueries: [
+      {
+        query: ArchiveGearDocument,
+      },
+    ],
+  });
+
+  const ArchiveAVessel = () => {
+    archiveVessel({
+      variables: {
+        archiveVesselId: id,
+      },
+      onCompleted: () => {
+        showArchiveSuccess();
+      },
+      onError: () => {
+        showArchiveError();
+      },
+    });
+  };
+
+  const archiveHandler = () => {
+    const { loading } = archiveResult;
+    if (loading) {
+      return <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}></Backdrop>;
+    }
+  };
 
   return (
     <div>
@@ -46,8 +77,14 @@ const renderMoreActions = (id: number) => {
         <MenuItem onClick={handleUpdateFormOpen} disableRipple>
           <EditIcon sx={{ width: 20, marginRight: 1.5 }} /> Edit
         </MenuItem>
-        {updateVessel && <UpdateVesselForm id={id} handleClose={handleUpdateFormClose} open={updateVessel}  />}
-        <MenuItem disableRipple>
+        {updateVessel && <UpdateVesselForm id={id} handleClose={handleUpdateFormClose} open={updateVessel} />}
+        <MenuItem
+          onClick={() => {
+            ArchiveAVessel();
+            archiveHandler();
+          }}
+          disableRipple
+        >
           <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
         </MenuItem>
       </Menu>
@@ -55,7 +92,7 @@ const renderMoreActions = (id: number) => {
   );
 };
 
-// const renderCell = () => <RenderMoreActions />;
+// const  renderCell = () => <RenderMoreActions />;
 
 const computeMutation = (newRow: GridRowModel, oldRow: GridRowModel) => {
   if (newRow.mfvrNum !== oldRow.mfvrNum) {

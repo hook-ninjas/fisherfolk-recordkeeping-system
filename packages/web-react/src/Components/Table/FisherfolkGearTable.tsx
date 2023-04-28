@@ -1,22 +1,64 @@
 import React, { useState } from 'react';
-import { useQuery } from '@apollo/client';
-import { GearsQueryDocument } from '../../graphql/generated';
+import { useMutation, useQuery } from '@apollo/client';
+import {
+  GearsQueryDocument,
+  UpdateToArchiveGearDocument,
+  ArchiveGearDocument,
+} from '../../graphql/generated';
 import Loading from '../Loading/Loading';
 import { splitUpperCase } from '../../utils/utils';
 import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
-import { Alert, Button, Menu, MenuItem } from '@mui/material';
+import { Alert, Backdrop, Button, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import moment from 'moment';
+import { showArchiveError, showArchiveSuccess } from '../ConfirmationDialog/Alerts';
 
-const RenderMoreActions = () => {
+const RenderMoreActions = (id: number) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => setAnchorEl(null);
+
+  const [archiveGear, archiveResult] = useMutation(
+    UpdateToArchiveGearDocument,
+    {
+      refetchQueries: [
+        {
+          query: ArchiveGearDocument,
+        },
+      ],
+    }
+  );
+
+  const ArchiveAGear = () => {
+    archiveGear({
+      variables: {
+        archiveGearId: id,
+      },
+      onCompleted: () => {
+        showArchiveSuccess();
+      },
+      onError: () => {
+        showArchiveError();
+      },
+    });
+  };
+
+  const archiveHandler = () => {
+    const { loading } = archiveResult;
+    if (loading) {
+      return (
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+        ></Backdrop>
+      );
+    }
+  };
 
   return (
     <div>
@@ -44,7 +86,10 @@ const RenderMoreActions = () => {
         <MenuItem disableRipple>
           <EditIcon sx={{ width: 20, marginRight: 1.5 }} /> Edit
         </MenuItem>
-        <MenuItem disableRipple>
+        <MenuItem onClick={() => {
+          ArchiveAGear();
+          archiveHandler();
+        }} disableRipple>
           <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
         </MenuItem>
       </Menu>
@@ -52,7 +97,7 @@ const RenderMoreActions = () => {
   );
 };
 
-const  renderCell = () => <RenderMoreActions />;
+// const renderCell = () => <RenderMoreActions  />;
 
 export default function FisherfolkGearTable() {
   const { loading, error, data } = useQuery(GearsQueryDocument);
@@ -132,6 +177,11 @@ const columns: GridColumns = [
     headerName: '',
     disableColumnMenu: true,
     sortable: false,
-    renderCell: renderCell,
+    valueGetter(params) {
+      return params.row.id;
+    },
+    renderCell(params) {
+      return RenderMoreActions(params.row.id);
+    },
   },
 ];
