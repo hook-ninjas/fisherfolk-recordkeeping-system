@@ -29,7 +29,7 @@ describe('Archive Fisherfolk Record Page', () => {
     renderPage();
     const heading = screen.getByRole('heading', { level: 6 });
     
-    expect(heading.textContent).toBe('Fisherfolk Archive Record');
+    expect(heading.textContent).toBe('Archive Records');
   });
 
   it('verifies that necessary information is displayed on the Archive Record', async () => {

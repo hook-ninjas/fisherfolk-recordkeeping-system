@@ -18,9 +18,11 @@ interface TabPanelProps {
 interface BasicTabProps {
   tabelPanel1: React.ReactNode;
   tabelPanel2: React.ReactNode;
+  tablePanel3?: React.ReactNode;
   button?: React.ReactNode;
   tab1Label: string;
   tab2Label: string;
+  tab3Label?: string;
 }
 
 export const Item = styled(Paper)(({ theme }) => ({
@@ -61,8 +63,10 @@ function a11yProps(index: number) {
 export default function BasicTabs({
   tab1Label,
   tab2Label,
+  tab3Label,
   tabelPanel1,
   tabelPanel2,
+  tablePanel3,
   button,
 }: BasicTabProps) {
   const [value, setValue] = useState(0);
@@ -84,6 +88,8 @@ export default function BasicTabs({
         >
           <Tab label={tab1Label} {...a11yProps(0)} />
           <Tab label={tab2Label} {...a11yProps(1)} />
+          <Tab label={tab3Label} {...a11yProps(2)} />
+
         </Tabs>
         {button}
       </Grid>
@@ -92,6 +98,9 @@ export default function BasicTabs({
       </TabPanel>
       <TabPanel value={value} index={1}>
         <div style={{ minHeight: '85vh', width: '100%' }}>{tabelPanel2}</div>
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <div style={{ minHeight: '85vh', width: '100%' }}>{tablePanel3}</div>
       </TabPanel>
     </Box>
   );
