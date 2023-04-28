@@ -32,6 +32,7 @@ import {
   CivilStatus,
   EducationalBackground,
   Gender,
+  Material,
   Salutation,
   SourceOfIncome,
 } from '../../graphql/generated';
@@ -134,7 +135,7 @@ interface FormInputAutoProps {
 interface FormInputSelectProps {
   name: string;
   label: string;
-  onSavedValue?: CivilStatus | SourceOfIncome | EducationalBackground;
+  onSavedValue?: CivilStatus | SourceOfIncome | EducationalBackground | Material;
   defaultValue?: string;
   handleChange?: (value: string) => void;
   data: Option[] | string[];
