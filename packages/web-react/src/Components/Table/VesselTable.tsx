@@ -1,6 +1,8 @@
 import { Button, Menu, MenuItem, Alert, Backdrop } from '@mui/material';
 import React, { useState } from 'react';
-import { ArchiveVesselDocument, FisherfolkVesselsDocument, UpdateToArchiveVesselDocument } from '../../graphql/generated';
+import {
+  ArchiveVesselDocument, FisherfolkVesselsDocument, UpdateToArchiveVesselDocument,
+  VesselQueryDocument } from '../../graphql/generated';
 import { useMutation, useQuery } from '@apollo/client';
 import Loading from '../Loading/Loading';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -26,6 +28,9 @@ const RenderMoreActions = (id: number) => {
         {
           query: ArchiveVesselDocument,
         },
+        {
+          query: VesselQueryDocument,
+        }
       ],
     }
   );

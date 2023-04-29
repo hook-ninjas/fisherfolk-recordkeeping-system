@@ -7,7 +7,9 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { ArchiveGearDocument, FisherfolkGearsDocument, UpdateToArchiveGearDocument } from '../../graphql/generated';
+import {
+  ArchiveGearDocument, FisherfolkGearsDocument, UpdateToArchiveGearDocument,
+  GearsQueryDocument } from '../../graphql/generated';
 import { useParams } from 'react-router-dom';
 import Loading from '../Loading/Loading';
 import { splitUpperCase } from '../../utils/utils';
@@ -33,6 +35,9 @@ const RenderMoreActions = (id: number) => {
         {
           query: ArchiveGearDocument,
         },
+        {
+          query: GearsQueryDocument,
+        }
       ],
     }
   );
