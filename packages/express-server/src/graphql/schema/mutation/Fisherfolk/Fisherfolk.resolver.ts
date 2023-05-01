@@ -9,9 +9,12 @@ import {
 import { Context } from '../../../context';
 import { NexusGenInputs } from '../../../generated/nexus';
 import { createImage, createImages } from '../Image/Image.resolver';
-import { convertActivities } from '../../../helpers/livelihood';
-import { determineGears } from '../../../helpers/gear';
-import { getVesselInfo } from '../../../helpers/vessel';
+import {
+  convertActivities,
+  determineGears,
+  getVesselInfo,
+} from '../../../helpers/helpers';
+
 interface FisherFolkInfo {
   lastName: string;
   firstName: string;
@@ -454,6 +457,17 @@ const createFisherfolk = async (
   const images = [profilePhoto, ...files] as Image[];
 
   if (organization != null || organization != undefined) {
+    if (vessel != null && gears != null && gears.length != 0) {
+      return await createFfolkWithOrgGearAndVessel(
+        ffolkInfo,
+        organization,
+        livelihoods,
+        images,
+        gears,
+        vessel,
+        context
+      );
+    }
     if (gears != null && gears.length != 0) {
       return await createFfolkWithOrgAndGear(
         ffolkInfo,
@@ -476,23 +490,22 @@ const createFisherfolk = async (
       );
     }
 
-    if (vessel != null && gears != null && gears.length != 0) {
-      return await createFfolkWithOrgGearAndVessel(
-        ffolkInfo,
-        organization,
-        livelihoods,
-        images,
-        gears,
-        vessel,
-        context
-      );
-    }
-
     return createFfolkWithOrg(
       ffolkInfo,
       organization,
       livelihoods,
       images,
+      context
+    );
+  }
+
+  if (vessel != null && gears != null && gears.length != 0) {
+    return await createFfolkWithGearAndVessel(
+      ffolkInfo,
+      livelihoods,
+      images,
+      gears,
+      vessel,
       context
     );
   }
@@ -512,17 +525,6 @@ const createFisherfolk = async (
       ffolkInfo,
       livelihoods,
       images,
-      vessel,
-      context
-    );
-  }
-
-  if (vessel != null && gears != null && gears.length != 0) {
-    return await createFfolkWithGearAndVessel(
-      ffolkInfo,
-      livelihoods,
-      images,
-      gears,
       vessel,
       context
     );
