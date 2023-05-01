@@ -144,6 +144,27 @@ export interface NexusGenInputs {
     residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
   }
+  UpdateVesselInput: { // input type
+    engineMake: string; // String!
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    grossTonnage?: number | null; // Float
+    homeport: string; // String!
+    horsepower?: number | null; // Float
+    material?: NexusGenEnums['Material'] | null; // Material
+    mfvrNumber: string; // String!
+    name: string; // String!
+    netTonnage?: number | null; // Float
+    placeBuilt: string; // String!
+    registeredBreadth?: number | null; // Float
+    registeredDepth?: number | null; // Float
+    registeredLength?: number | null; // Float
+    serialNumber: string; // String!
+    tonnageBreadth?: number | null; // Float
+    tonnageDepth?: number | null; // Float
+    tonnageLength?: number | null; // Float
+    type: string; // String!
+    yearBuilt?: number | null; // Int
+  }
   livelihoodInput: { // input type
     description: string; // String!
     isMain: boolean; // Boolean!
@@ -426,6 +447,7 @@ export interface NexusGenFieldTypes {
     updateFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     updateFisherfolkImage: NexusGenRootTypes['Image']; // Image!
     updateMfvr: NexusGenRootTypes['Vessel']; // Vessel!
+    updateVessel: NexusGenRootTypes['Vessel']; // Vessel!
   }
   Organization: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -471,6 +493,7 @@ export interface NexusGenFieldTypes {
     totalPrograms: number; // Int!
     totalVessels: number; // Int!
     user: NexusGenRootTypes['User'] | null; // User
+    vessel: NexusGenRootTypes['Vessel']; // Vessel!
     vessels: NexusGenRootTypes['Vessel'][]; // [Vessel!]!
   }
   Queue: { // field return type
@@ -624,6 +647,7 @@ export interface NexusGenFieldTypeNames {
     updateFisherfolk: 'Fisherfolk'
     updateFisherfolkImage: 'Image'
     updateMfvr: 'Vessel'
+    updateVessel: 'Vessel'
   }
   Organization: { // field return type name
     createdAt: 'DateTime'
@@ -669,6 +693,7 @@ export interface NexusGenFieldTypeNames {
     totalPrograms: 'Int'
     totalVessels: 'Int'
     user: 'User'
+    vessel: 'Vessel'
     vessels: 'Vessel'
   }
   Queue: { // field return type name
@@ -768,6 +793,10 @@ export interface NexusGenArgTypes {
       id: number; // Int!
       mfvrNum: string; // String!
     }
+    updateVessel: { // args
+      id: number; // Int!
+      vessel: NexusGenInputs['UpdateVesselInput']; // UpdateVesselInput!
+    }
   }
   Query: {
     fisherfolk: { // args
@@ -803,6 +832,9 @@ export interface NexusGenArgTypes {
     }
     totalFisherfolkVessels: { // args
       fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    }
+    vessel: { // args
+      id: NexusGenScalars['BigInt']; // BigInt!
     }
   }
 }

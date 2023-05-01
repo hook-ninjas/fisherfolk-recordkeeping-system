@@ -28,8 +28,11 @@ const RenderMoreActions = (id: number) => {
     {
       refetchQueries: [
         {
-          query: ArchiveGearDocument,
+          query: GearsQueryDocument
         },
+        {
+          query: ArchiveGearDocument,
+        }   
       ],
     }
   );
