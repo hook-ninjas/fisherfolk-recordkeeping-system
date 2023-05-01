@@ -19,6 +19,28 @@ enum CivilStatus {
   Widowed
 }
 
+input CreateFfolkVesselInput {
+  engineMake: String!
+  files: [UploadImageInput!]!
+  grossTonnage: Float
+  homeport: String!
+  horsepower: Float
+  material: Material
+  mfvrNumber: String!
+  name: String!
+  netTonnage: Float
+  placeBuilt: String!
+  registeredBreadth: Float
+  registeredDepth: Float
+  registeredLength: Float
+  serialNumber: String!
+  tonnageBreadth: Float
+  tonnageDepth: Float
+  tonnageLength: Float
+  type: String!
+  yearBuilt: Int
+}
+
 input CreateFisherfolkInput {
   age: Int!
   appellation: String!
@@ -28,49 +50,29 @@ input CreateFisherfolkInput {
   contactNum: String!
   dateOfBirth: DateTime!
   educationalBackground: EducationalBackground!
-  engineMake: String
-  files: [CreateImageInput!]!
+  files: [UploadImageInput!]!
   firstName: String!
   gears: [String!]
   gender: Gender!
-  grossTonnage: Float
-  hasGear: Boolean!
-  hasVessel: Boolean!
-  homeport: String
-  horsepower: Float
   lastName: String!
   mainFishingActivity: SourceOfIncome!
-  material: Material
-  mfvrNumber: String
   middleName: String!
-  name: String
   nationality: String!
-  netTonnage: Float
-  numOfChildren: Int
+  numOfChildren: Int!
   organization: OrganizationInput
-  otherFishingActivity: [SourceOfIncome!]
-  otherSourceOfIncome: String
+  otherFishingActivity: [SourceOfIncome!]!
+  otherSourceOfIncome: String!
   personToNotify: String!
-  placeBuilt: String
   placeOfBirth: String!
-  profilePhoto: CreateImageInput!
+  profilePhoto: UploadImageInput!
   province: String!
   ptnAddress: String!
   ptnContactNum: String!
   ptnRelationship: String!
-  registeredBreadth: Float
-  registeredDepth: Float
-  registeredLength: Float
   religion: String!
-  residentYear: Int
+  residentYear: Int!
   salutation: Salutation!
-  serialNumber: String
-  tonnageBreadth: Float
-  tonnageDepth: Float
-  tonnageLength: Float
-  type: String
-  vesselFiles: [CreateImageInput!]
-  yearBuilt: Int
+  vessel: CreateFfolkVesselInput
 }
 
 input CreateGearInput {
@@ -86,7 +88,6 @@ input CreateImageInput {
   name: String!
   size: Int
   type: String
-  updated_at: DateTime!
   url: String!
   vessel_id: BigInt
 }
@@ -333,6 +334,14 @@ enum SourceOfIncome {
   FishProcessing
   FishVending
   Others
+}
+
+input UploadImageInput {
+  isProfileImage: Boolean!
+  name: String!
+  size: Int!
+  type: String!
+  uri: String!
 }
 
 type User {

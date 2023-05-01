@@ -38,6 +38,27 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  CreateFfolkVesselInput: { // input type
+    engineMake: string; // String!
+    files: NexusGenInputs['UploadImageInput'][]; // [UploadImageInput!]!
+    grossTonnage?: number | null; // Float
+    homeport: string; // String!
+    horsepower?: number | null; // Float
+    material?: NexusGenEnums['Material'] | null; // Material
+    mfvrNumber: string; // String!
+    name: string; // String!
+    netTonnage?: number | null; // Float
+    placeBuilt: string; // String!
+    registeredBreadth?: number | null; // Float
+    registeredDepth?: number | null; // Float
+    registeredLength?: number | null; // Float
+    serialNumber: string; // String!
+    tonnageBreadth?: number | null; // Float
+    tonnageDepth?: number | null; // Float
+    tonnageLength?: number | null; // Float
+    type: string; // String!
+    yearBuilt?: number | null; // Int
+  }
   CreateFisherfolkInput: { // input type
     age: number; // Int!
     appellation: string; // String!
@@ -47,49 +68,29 @@ export interface NexusGenInputs {
     contactNum: string; // String!
     dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
-    engineMake?: string | null; // String
-    files: NexusGenInputs['CreateImageInput'][]; // [CreateImageInput!]!
+    files: NexusGenInputs['UploadImageInput'][]; // [UploadImageInput!]!
     firstName: string; // String!
     gears?: string[] | null; // [String!]
     gender: NexusGenEnums['Gender']; // Gender!
-    grossTonnage?: number | null; // Float
-    hasGear: boolean; // Boolean!
-    hasVessel: boolean; // Boolean!
-    homeport?: string | null; // String
-    horsepower?: number | null; // Float
     lastName: string; // String!
     mainFishingActivity: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
-    material?: NexusGenEnums['Material'] | null; // Material
-    mfvrNumber?: string | null; // String
     middleName: string; // String!
-    name?: string | null; // String
     nationality: string; // String!
-    netTonnage?: number | null; // Float
-    numOfChildren?: number | null; // Int
+    numOfChildren: number; // Int!
     organization?: NexusGenInputs['OrganizationInput'] | null; // OrganizationInput
-    otherFishingActivity?: NexusGenEnums['SourceOfIncome'][] | null; // [SourceOfIncome!]
-    otherSourceOfIncome?: string | null; // String
+    otherFishingActivity: NexusGenEnums['SourceOfIncome'][]; // [SourceOfIncome!]!
+    otherSourceOfIncome: string; // String!
     personToNotify: string; // String!
-    placeBuilt?: string | null; // String
     placeOfBirth: string; // String!
-    profilePhoto: NexusGenInputs['CreateImageInput']; // CreateImageInput!
+    profilePhoto: NexusGenInputs['UploadImageInput']; // UploadImageInput!
     province: string; // String!
     ptnAddress: string; // String!
     ptnContactNum: string; // String!
     ptnRelationship: string; // String!
-    registeredBreadth?: number | null; // Float
-    registeredDepth?: number | null; // Float
-    registeredLength?: number | null; // Float
     religion: string; // String!
-    residentYear?: number | null; // Int
+    residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
-    serialNumber?: string | null; // String
-    tonnageBreadth?: number | null; // Float
-    tonnageDepth?: number | null; // Float
-    tonnageLength?: number | null; // Float
-    type?: string | null; // String
-    vesselFiles?: NexusGenInputs['CreateImageInput'][] | null; // [CreateImageInput!]
-    yearBuilt?: number | null; // Int
+    vessel?: NexusGenInputs['CreateFfolkVesselInput'] | null; // CreateFfolkVesselInput
   }
   CreateGearInput: { // input type
     classification: NexusGenEnums['GearClassification']; // GearClassification!
@@ -103,7 +104,6 @@ export interface NexusGenInputs {
     name: string; // String!
     size?: number | null; // Int
     type?: string | null; // String
-    updated_at: NexusGenScalars['DateTime']; // DateTime!
     url: string; // String!
     vessel_id?: NexusGenScalars['BigInt'] | null; // BigInt
   }
@@ -136,6 +136,13 @@ export interface NexusGenInputs {
     name: string; // String!
     position: string; // String!
     yearJoined: number; // Int!
+  }
+  UploadImageInput: { // input type
+    isProfileImage: boolean; // Boolean!
+    name: string; // String!
+    size: number; // Int!
+    type: string; // String!
+    uri: string; // String!
   }
 }
 
