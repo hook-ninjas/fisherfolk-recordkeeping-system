@@ -37,6 +37,7 @@
     "@mui/styled-engine-sc": "^5.11.0",
     "@mui/x-data-grid": "^5.17.20",
     "date-fns": "^2.29.3",
+    "dotenv": "^16.0.3",
     "formik": "^2.2.9",
     "jsonwebtoken": "^9.0.0",
     "netlify-cli": "^13.2.1",

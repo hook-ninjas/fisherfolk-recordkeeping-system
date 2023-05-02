@@ -61,6 +61,7 @@ const startServer = async (
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
     schema,
+    introspection: true,
     context: createContext,
     csrfPrevention: true,
     cache: 'bounded',
