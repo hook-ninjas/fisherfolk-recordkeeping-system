@@ -19,8 +19,8 @@ import FisherfolkGearRecord from './Components/FisherfolkRecord/FisherfolkGearRe
 import CreateAccount from './Components/Forms/CreateAccountForm';
 import ProtectedRoute from './Components/NotAuthorizedPage/ProtectedRoute';
 import FisherfolkProgram from './Components/FisherfolkRecord/FisherfolkProgram';
-
-const httpLink = createHttpLink({ uri: 'http://localhost:4000/graphql' });
+console.log(`${import.meta.env.VITE_APP_API}`)
+const httpLink = createHttpLink({ uri: `${import.meta.env.VITE_APP_API}/graphql`});      
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token');
