@@ -9,7 +9,6 @@ import {
   Typography,
   Container,
   Stack,
-  Link,
   IconButton,
   InputAdornment,
 } from '@mui/material';
@@ -39,6 +38,7 @@ function Login() {
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleSubmitting = () => setIsSubmitting(true);
   const navigate = useNavigate();
+
   const handleCreateAccount = () => {
     navigate('/create-account');
   };
@@ -208,21 +208,6 @@ function Login() {
             )}
             <Grid container></Grid>
           </Box>
-          <Stack direction="row" spacing={0.5}>
-            <Typography variant="subtitle2">
-              {'Do not have an account?'}
-            </Typography>
-            <Link
-              component="button"
-              variant="subtitle2"
-              color="#28c181"
-              fontWeight={600}
-              underline="none"
-              onClick={handleCreateAccount}
-            >
-              Create account
-            </Link>
-          </Stack>
         </Box>
       </Container>
     </ThemeProvider>
