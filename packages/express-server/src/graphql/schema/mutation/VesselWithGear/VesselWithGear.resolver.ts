@@ -79,3 +79,31 @@ export async function updateVessel(id: number, vessel: UpdateVesselInput, ctx: C
     },
   });
 }
+
+export const restoreGear= async (
+  id: number,
+  ctx: Context
+) => {
+  return ctx.prisma.gear.update({
+    where: {
+      id: id
+    },
+    data: {
+      isArchive: false
+    }
+  });
+};
+
+export const restoreVessel= async (
+  id: number,
+  ctx: Context
+) => {
+  return ctx.prisma.vessel.update({
+    where: {
+      id: id
+    },
+    data: {
+      isArchive: false
+    }
+  });
+};
