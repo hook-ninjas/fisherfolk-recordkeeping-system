@@ -103,10 +103,6 @@ function Sidebar() {
     setAnchorEl(event.currentTarget);
   };
 
-  // const handleCloseAccSetting = () => {
-  //   setAnchorEl(null);
-  // };
-
   const handleOpen = () => {
     setOpen(true);
   };
@@ -173,7 +169,7 @@ function Sidebar() {
             <ListItemIcon>
               <ArchiveIcon sx={{ color: 'white' }} />
             </ListItemIcon>
-            <ListItemText primary="Archive" />
+            <ListItemText primary="Archived Record" />
           </ListItemButton>
         </Link>
         <ListItemButton onClick={handleOpen} sx={{ position: 'absolute', bottom: 3, width: '100%' }}>
