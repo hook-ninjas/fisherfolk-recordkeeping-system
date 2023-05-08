@@ -6,10 +6,7 @@ mutation CreateFisherfolk($data: CreateFisherfolkInput!) {
   }
 }
 
-mutation CreateVessselWithGear(
-  $vessel: CreateVesselInput!
-  $gears: [CreateGearInput!]!
-) {
+mutation CreateVessselWithGear($vessel: CreateVesselInput!, $gears: [CreateGearInput!]!) {
   createVesselWithGear(vessel: $vessel, gears: $gears) {
     id
   }
@@ -76,11 +73,7 @@ mutation UpdateFisherfolk($fisherfolkId: Int!, $data: UpdateFisherfolkInput!) {
   }
 }
 
-mutation UpdateFisherfolkImage(
-  $data: CreateImageInput!
-  $updateFisherfolkImageId: String!
-  $url: String!
-) {
+mutation UpdateFisherfolkImage($data: CreateImageInput!, $updateFisherfolkImageId: String!, $url: String!) {
   updateFisherfolkImage(data: $data, id: $updateFisherfolkImageId, url: $url) {
     id
     url
@@ -126,6 +119,18 @@ mutation UpdateToArchiveGear($archiveGearId: Int!) {
 
 mutation UpdateToArchiveVessel($archiveVesselId: Int!) {
   archiveVessel(id: $archiveVesselId) {
+    id
+  }
+}
+
+mutation RestoreGear($restoreGearId: Int!) {
+  restoreGear(id: $restoreGearId) {
+    id
+  }
+}
+
+mutation RestoreVessel($restoreVesselId: Int!) {
+  restoreVessel(id: $restoreVesselId) {
     id
   }
 }
