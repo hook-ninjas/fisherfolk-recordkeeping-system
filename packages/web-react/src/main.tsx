@@ -72,7 +72,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             </Route>
           </Route>
           <Route path="login" element={<Login />} />
-          <Route path="create-account" element={<CreateAccount />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
