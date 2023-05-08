@@ -13,7 +13,7 @@ import moment from 'moment';
 import { ApolloError, useMutation } from '@apollo/client';
 import {
   ArchiveFisherfolkDocument, QueryFisherfolksDocument, UpdateRestreFisherfolkDocument,
-  ArchiveVesselQuery
+  ArchiveVesselQuery, RestoreVesselDocument, ArchiveVesselDocument
 } from '../../graphql/generated';
 import { showRestoreSuccess, showRestoreError } from '../ConfirmationDialog/Alerts';
 
@@ -31,24 +31,24 @@ const renderMoreActions = (id: number) => {
   };
   const handleClose = () => setAnchorEl(null);
 
-  const [restoreFisherfolk, restoreResult] = useMutation(
-    UpdateRestreFisherfolkDocument,
+  const [restoreVessel, restoreResult] = useMutation(
+    RestoreVesselDocument,
     {
       refetchQueries: [
         {
           query: QueryFisherfolksDocument,
         },
         {
-          query: ArchiveFisherfolkDocument,
+          query: ArchiveVesselDocument,
         },
       ],
     }
   );
 
   const RestoreAFsiherfolk = () => {
-    restoreFisherfolk({
+    restoreVessel({
       variables: {
-        restreFisherfolkId: id,
+        restoreVesselId: id,
       },
       onCompleted: () => {
         showRestoreSuccess();
