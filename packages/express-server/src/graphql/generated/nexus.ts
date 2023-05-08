@@ -443,6 +443,8 @@ export interface NexusGenFieldTypes {
     createVessel: NexusGenRootTypes['Vessel']; // Vessel!
     createVesselWithGear: NexusGenRootTypes['Vessel']; // Vessel!
     loginUser: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    restoreGear: NexusGenRootTypes['Gear']; // Gear!
+    restoreVessel: NexusGenRootTypes['Vessel']; // Vessel!
     restreFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     updateFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     updateFisherfolkImage: NexusGenRootTypes['Image']; // Image!
@@ -643,6 +645,8 @@ export interface NexusGenFieldTypeNames {
     createVessel: 'Vessel'
     createVesselWithGear: 'Vessel'
     loginUser: 'AuthPayload'
+    restoreGear: 'Gear'
+    restoreVessel: 'Vessel'
     restreFisherfolk: 'Fisherfolk'
     updateFisherfolk: 'Fisherfolk'
     updateFisherfolkImage: 'Image'
@@ -776,6 +780,12 @@ export interface NexusGenArgTypes {
     }
     loginUser: { // args
       data: NexusGenInputs['CreateUserInput']; // CreateUserInput!
+    }
+    restoreGear: { // args
+      id: number; // Int!
+    }
+    restoreVessel: { // args
+      id: number; // Int!
     }
     restreFisherfolk: { // args
       id: number; // Int!

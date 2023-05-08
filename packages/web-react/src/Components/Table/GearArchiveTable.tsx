@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Loading from '../Loading/Loading';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { splitUpperCase } from '../../utils/utils';
@@ -13,8 +12,8 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import moment from 'moment';
 import { ApolloError, useMutation } from '@apollo/client';
 import {
-  ArchiveFisherfolkDocument, QueryFisherfolksDocument, UpdateRestreFisherfolkDocument,
-  ArchiveGearQuery, 
+  QueryFisherfolksDocument,
+  ArchiveGearQuery, RestoreGearDocument, ArchiveGearDocument
 } from '../../graphql/generated';
 import { showRestoreSuccess, showRestoreError } from '../ConfirmationDialog/Alerts';
 
@@ -32,24 +31,24 @@ const renderMoreActions = (id: number) => {
   };
   const handleClose = () => setAnchorEl(null);
 
-  const [restoreFisherfolk, restoreResult] = useMutation(
-    UpdateRestreFisherfolkDocument,
+  const [restoreGear, restoreResult] = useMutation(
+    RestoreGearDocument,
     {
       refetchQueries: [
         {
           query: QueryFisherfolksDocument,
         },
         {
-          query: ArchiveFisherfolkDocument,
+          query: ArchiveGearDocument,
         },
       ],
     }
   );
 
   const RestoreAFsiherfolk = () => {
-    restoreFisherfolk({
+    restoreGear({
       variables: {
-        restreFisherfolkId: id,
+        restoreGearId: id,
       },
       onCompleted: () => {
         showRestoreSuccess();

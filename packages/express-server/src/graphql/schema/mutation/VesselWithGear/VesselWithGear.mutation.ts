@@ -3,7 +3,7 @@ import CreateGearInput from '../../input/Gear.input';
 import Vessel from '../../model/objecTypes/Vessel';
 import Gear from '../../model/objecTypes/Gear';
 import { CreateVesselInput, UpdateVesselInput } from '../../input/Vessel.input';
-import { archiveGear, archiveVessel, createGear, createVessel, createVesselWithGear, updateMfvr, updateVessel } from './VesselWithGear.resolver';
+import { archiveGear, archiveVessel, createGear, createVessel, createVesselWithGear, restoreGear, restoreVessel, updateMfvr, updateVessel } from './VesselWithGear.resolver';
 
 export const CreateVessel = mutationField('createVessel', {
   type: Vessel,
@@ -62,4 +62,20 @@ export const ArchiveVessel = mutationField('archiveVessel', {
     id: nonNull(intArg()),
   },
   resolve: async (_, args, context) => archiveVessel(args.id, context),
+});
+
+export const RestoreGear = mutationField('restoreGear', {
+  type: Gear,
+  args: {
+    id: intArg(),
+  },
+  resolve: (_, args, ctx) => restoreGear(args.id, ctx),
+});
+
+export const RestoreVessel = mutationField('restoreVessel', {
+  type: Vessel,
+  args: {
+    id: intArg(),
+  },
+  resolve: (_, args, ctx) => restoreVessel(args.id, ctx),
 });

@@ -1,7 +1,9 @@
-import { Button, Menu, MenuItem, Alert } from '@mui/material';
+import { Button, Menu, MenuItem, Alert, Backdrop } from '@mui/material';
 import React, { useState } from 'react';
-import { FisherfolkVesselsDocument } from '../../graphql/generated';
-import { useQuery } from '@apollo/client';
+import {
+  ArchiveVesselDocument, FisherfolkVesselsDocument, UpdateToArchiveVesselDocument,
+  VesselQueryDocument } from '../../graphql/generated';
+import { useMutation, useQuery } from '@apollo/client';
 import Loading from '../Loading/Loading';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
@@ -9,6 +11,9 @@ import ArchiveIcon from '@mui/icons-material/Archive';
 import moment from 'moment';
 import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
 import { useParams } from 'react-router-dom';
+import { showArchiveError, showArchiveSuccess } from '../ConfirmationDialog/Alerts';
+
+
 import UpdateVesselForm from '../Forms/UpdateVesselForm';
 
 const renderMoreActions = (id: number) => {
@@ -21,6 +26,49 @@ const renderMoreActions = (id: number) => {
   const handleClose = () => setAnchorEl(null);
   const handleUpdateFormOpen = () => setUpdateVessel(true);
   const handleUpdateFormClose = () => setUpdateVessel(false);
+
+  const [archiveVessel, archiveResult] = useMutation(
+    UpdateToArchiveVesselDocument,
+    {
+      refetchQueries: [
+        {
+          query: ArchiveVesselDocument,
+        },
+        {
+          query: VesselQueryDocument,
+        }
+      ],
+    }
+  );
+
+  const ArchiveAVessel = () => {
+    archiveVessel({
+      variables: {
+        archiveVesselId: id,
+      },
+      onCompleted: () => {
+        showArchiveSuccess();
+      },
+      onError: () => {
+        showArchiveError();
+      },
+    });
+  };
+
+
+  const archiveHandler = () => {
+    const { loading } = archiveResult;
+    if (loading) {
+      return (
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+        ></Backdrop>
+      );
+    }
+  };
+  
+
 
   return (
     <div>
@@ -39,8 +87,11 @@ const renderMoreActions = (id: number) => {
         <MenuItem onClick={handleUpdateFormOpen} disableRipple>
           <EditIcon sx={{ width: 20, marginRight: 1.5 }} /> Edit
         </MenuItem>
-        {updateVessel && <UpdateVesselForm id={id} handleClose={handleUpdateFormClose} open={updateVessel} />}
-        <MenuItem disableRipple>
+      {updateVessel && <UpdateVesselForm id={id} handleClose={handleUpdateFormClose} open={updateVessel} />}
+        <MenuItem onClick={() => {
+          ArchiveAVessel();
+          archiveHandler();
+        }} disableRipple>
           <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
         </MenuItem>
       </Menu>
@@ -58,6 +109,7 @@ export default function VesselTable() {
       fisherfolkId: id,
     },
   });
+
 
   let rows: GridRowsProp = [];
 

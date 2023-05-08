@@ -1,7 +1,17 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { DataGrid, GridColumns, GridRowModel, GridRowsProp } from '@mui/x-data-grid';
-import { UpdateMfvrDocument, VesselQueryDocument, ArchiveGearDocument, UpdateToArchiveGearDocument } from '../../graphql/generated';
-import { ApolloError, useMutation } from '@apollo/client';
+import {
+  DataGrid,
+  GridColumns,
+  GridRowModel,
+  GridRowsProp,
+} from '@mui/x-data-grid';
+import {
+  UpdateMfvrDocument,
+  UpdateToArchiveVesselDocument,
+  VesselQueryDocument,
+  ArchiveVesselDocument, UpdateToArchiveGearDocument, ArchiveGearDocument
+} from '../../graphql/generated';
+import { useMutation, useQuery, ApolloError } from '@apollo/client';
 import Loading from '../Loading/Loading';
 import { Alert, AlertProps, Backdrop, Button, Dialog, DialogActions, DialogContent, DialogTitle, Menu, MenuItem, Snackbar } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -11,7 +21,6 @@ import moment from 'moment';
 import { showArchiveError, showArchiveSuccess } from '../ConfirmationDialog/Alerts';
 import UpdateVesselForm from '../Forms/UpdateVesselForm';
 import { VesselQueryQuery } from '../../graphql/generated';
-import { UpdateToArchiveVesselDocument } from '../../graphql/generated';
 
 interface Props {
   error: ApolloError | undefined;
@@ -27,6 +36,7 @@ const renderMoreActions = (id: number) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => setAnchorEl(null);
+
 
   const handleUpdateFormOpen = () => setUpdateVessel(true);
 
