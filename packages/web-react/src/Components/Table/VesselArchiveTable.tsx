@@ -12,7 +12,7 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import moment from 'moment';
 import { ApolloError, useMutation } from '@apollo/client';
 import {
-  ArchiveFisherfolkDocument, QueryFisherfolksDocument, UpdateRestreFisherfolkDocument,
+  QueryFisherfolksDocument,
   ArchiveVesselQuery, RestoreVesselDocument, ArchiveVesselDocument
 } from '../../graphql/generated';
 import { showRestoreSuccess, showRestoreError } from '../ConfirmationDialog/Alerts';
