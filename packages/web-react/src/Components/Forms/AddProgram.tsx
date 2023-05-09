@@ -16,6 +16,7 @@ import { useMutation } from '@apollo/client';
 import {
   CreateMultipleProgramImageDocument,
   CreateProgramDocument,
+  GovernmentAidDocument,
   GovernmentAidsDocument,
   MutationCreateMultipleImageArgs,
   MutationCreateProgramArgs,
@@ -132,7 +133,7 @@ function CreateProgramForm({ open, handleClose }: CreateProgramFormProps) {
             query: GovernmentAidsDocument,
           },
           {
-            query: GovernmentAidsDocument,
+            query: GovernmentAidDocument,
             variables: { govtAidId: id },
           },
         ],

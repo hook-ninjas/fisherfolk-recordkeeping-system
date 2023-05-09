@@ -15,7 +15,7 @@ vi.mock('react-router-dom', () => ({
   useNavigate: () => mockUsedNavigate,
 }));
 
-describe('Archive Fisherfolk Record Page', () => {
+describe('Archived Fisherfolk Record Page', () => {
   const renderPage = () =>
     act(() => {
       render(
@@ -29,10 +29,10 @@ describe('Archive Fisherfolk Record Page', () => {
     renderPage();
     const heading = screen.getByRole('heading', { level: 6 });
     
-    expect(heading.textContent).toBe('Archive Records');
+    expect(heading.textContent).toBe('Archived Record');
   });
 
-  it('verifies that necessary information is displayed on the Archive Record', async () => {
+  it('verifies that necessary information is displayed on the Archived Record', async () => {
     renderPage();
 
     const firstRecord = (

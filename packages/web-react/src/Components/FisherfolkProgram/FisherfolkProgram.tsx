@@ -27,7 +27,7 @@ const FisherfolkProgram = () => {
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Box m={1} display="flex" justifyContent="space-between">
-          <Typography variant="h5">Fisherfolk Programs</Typography>
+          <Typography variant="h6">Fisherfolk Program</Typography>
           <Box display="flex" justifyContent="end">
             <CustomAddButton
               variant="contained"

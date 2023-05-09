@@ -10,7 +10,7 @@ import GearArchiveTable from '../Table/GearArchiveTable';
 import VesselArchiveTable from '../Table/VesselArchiveTable';
 
 const FisherfolkArchiveRecord = () => {
-  const { loading, error, data, refetch } = useQuery(ArchiveFisherfolkDocument);
+  const { loading, error, data } = useQuery(ArchiveFisherfolkDocument);
   const gear = useQuery(ArchiveGearDocument);
   const vessel = useQuery(ArchiveVesselDocument);
   
@@ -26,7 +26,7 @@ const FisherfolkArchiveRecord = () => {
           }}
         >
           <Box m={1}>
-            <Typography variant="h6">Archive Records</Typography>
+            <Typography variant="h6">Archived Record</Typography>
           </Box>
           <Item sx={{ p: 0 }}>
             <Grid container>
