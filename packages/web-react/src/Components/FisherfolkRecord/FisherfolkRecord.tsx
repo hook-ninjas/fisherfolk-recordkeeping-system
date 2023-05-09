@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Autocomplete,
   Box,
@@ -35,7 +35,6 @@ import {
   QueryFisherfolksDocument,
 } from '../../graphql/generated';
 import { FilterSchema } from '../Forms/validation/schema';
-import debounce from 'lodash.debounce';
 
 export const CustomDrawer = styled(Drawer)(({ theme }) => ({
   padding: theme.spacing(1),
@@ -50,6 +49,8 @@ export const CustomDrawer = styled(Drawer)(({ theme }) => ({
     },
   },
 }));
+
+let timer: ReturnType<typeof setTimeout>;;
 
 const FisherfolkRecord = () => {
   const [addFisherfolkBtn, setFisherfolkBtn] = useState(false);
@@ -67,46 +68,58 @@ const FisherfolkRecord = () => {
       ? data.fisherfolksWithUniqueBarangay.map((a) => a.barangay).sort()
       : [];
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchKey(event.target.value);
-  };
+  useEffect(() => {
+    if (searchKey != '') {
+      const searchResult = () => {
+        if (searchKey.trim().length == 0) {
+          return data?.fisherfolks;
+        } else {
+          return data?.fisherfolks.filter(
+            ({ firstName, middleName, lastName, appellation }) => {
+              const searchKeyArray = searchKey.split(' ');
+              const completeName =
+                firstName + ' ' + middleName + ' ' + lastName + ' ' + appellation;
 
-  const debouncedResults = useMemo(() => {
-    return debounce(handleSearch, 300);
-  }, []);
+              const res = searchKeyArray.map((key: string) => {
+                return completeName.toLowerCase().includes(key.toLowerCase());
+              });
+
+              return res.every((element: boolean) => {
+                return element === true;
+              });
+            }
+          );
+        }
+      };
+
+      setFisherfolks({
+        fisherfolks: searchResult()!,
+        totalFisherfolk: searchResult()?.length as number,
+        fisherfolksWithUniqueBarangay: data!.fisherfolksWithUniqueBarangay,
+      });
+    }
+    else if(searchKey == '' && !loading){
+      setFisherfolks({
+        fisherfolks: data!.fisherfolks,
+        totalFisherfolk: data!.totalFisherfolk,
+        fisherfolksWithUniqueBarangay: data!.fisherfolksWithUniqueBarangay,
+      });
+    }
+  }, [searchKey]);
 
   useEffect(() => {
-    return () => {
-      debouncedResults.cancel();
-    };
-  });
+    data;
+  }, [searchKey]);
 
-
-  const onSearchSubmit = (e: any) => {
-    e.preventDefault();
-    if (searchKey.trim().length == 0) {
-      return data?.fisherfolks;
-    } else {
-      return data?.fisherfolks.filter(
-        ({ firstName, middleName, lastName, appellation }) => {
-          const searchKeyArray = searchKey.split(' ');
-          const completeName =
-            firstName + ' ' + middleName + ' ' + lastName + ' ' + appellation;
-
-          const res = searchKeyArray.map((key: string) => {
-            return completeName.toLowerCase().includes(key.toLowerCase());
-          });
-
-          console.log(res);
-          console.log(searchKey);
-
-          return res.every((element: boolean) => {
-            return element === true;
-          });
-        }
-      );
+  const handleSearchKey = (e: any) => {
+    if (timer) {
+      clearTimeout(timer);
     }
+    timer = setTimeout(() => {
+      setSearchKey(e.target.value);
+    }, 1000);
   };
+
 
   const [fisherfolks, setFisherfolks] = useState<
     QueryFisherfolksQuery | undefined
@@ -353,28 +366,10 @@ const FisherfolkRecord = () => {
             </Box>
           </Box>
           <Box m={1} display="flex" justifyContent="space-between">
-            <form
-              onChange={(e) => {
-                setIsFiltered(true);
-                onSearchSubmit(e);
-                setFisherfolks({
-                  fisherfolks: onSearchSubmit(e)!,
-                  totalFisherfolk: onSearchSubmit(e)!.length,
-                  fisherfolksWithUniqueBarangay:
-                    data!.fisherfolksWithUniqueBarangay,
-                });
-              }}
-            >
+            <form>
               <TextField
                 onChange={(e) => {
-                  debouncedResults;
-                  handleSearch;
-                  // setFisherfolks({
-                  //   fisherfolks: onSearchSubmit(e)!,
-                  //   totalFisherfolk: onSearchSubmit(e)!.length,
-                  //   fisherfolksWithUniqueBarangay:
-                  //   data!.fisherfolksWithUniqueBarangay,
-                  // });
+                  handleSearchKey(e);
                 }}
                 variant="standard"
                 placeholder="Search a fisherfolk"
