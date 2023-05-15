@@ -12,7 +12,7 @@ export const knownRequestErrors: PrismaClientKnownRequestErrors = {
 
 export function getErrorMessage(error: unknown) {
     let errorMessage = '';
-  if (error instanceof PrismaClientInitializationError && error.message.includes('Can\'t reach database server at')) {
+  if (error instanceof PrismaClientInitializationError && error.errorCode  == 'P1001') {
     errorMessage = 'Sorry, server is currently unavailable. Please try again later.';
   } else if (error instanceof PrismaClientKnownRequestError) {
     errorMessage = knownRequestErrors[error.code];
