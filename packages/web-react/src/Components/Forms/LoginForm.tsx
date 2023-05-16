@@ -39,10 +39,6 @@ function Login() {
   const handleSubmitting = () => setIsSubmitting(true);
   const navigate = useNavigate();
 
-  const handleCreateAccount = () => {
-    navigate('/create-account');
-  };
-
   const [loginUser] = useMutation(LoginUserDocument, {
     onCompleted: () => {
       navigate('/dashboard', { replace: true });
