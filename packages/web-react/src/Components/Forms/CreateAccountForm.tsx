@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Button, TextField, Box, IconButton, InputAdornment, Snackbar, DialogContent } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Alert from '@mui/material/Alert';
@@ -25,7 +24,6 @@ function CreateAccount({ open, handleClose }: CreateAccountFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleSubmitting = () => setIsSubmitting(true);
-  const navigate = useNavigate();
 
   const handleOpenSnackbar = () => {
     setOpenSnackbar(true);
@@ -46,7 +44,6 @@ function CreateAccount({ open, handleClose }: CreateAccountFormProps) {
 
   const handleLogin = async () => {
     await wait(1_500);
-    navigate('/login');
   };
 
   const [createUser] = useMutation(CreateUserDocument, {
@@ -54,6 +51,7 @@ function CreateAccount({ open, handleClose }: CreateAccountFormProps) {
       handleOpenSnackbar();
       handleLogin();
       setIsSubmitting(false);
+      handleClose();
     },
     onError: (err) => {
       setError(err.message);
