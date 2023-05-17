@@ -109,6 +109,7 @@ export type ResolversTypes = {
   SourceOfIncome: SourceOfIncome;
   String: ResolverTypeWrapper<Scalars['String']>;
   UpdateFisherfolkInput: UpdateFisherfolkInput;
+  UpdateProgramInput: UpdateProgramInput;
   UpdateVesselInput: UpdateVesselInput;
   User: ResolverTypeWrapper<User>;
   Vessel: ResolverTypeWrapper<Vessel>;
@@ -143,6 +144,7 @@ export type ResolversParentTypes = {
   Queue: Queue;
   String: Scalars['String'];
   UpdateFisherfolkInput: UpdateFisherfolkInput;
+  UpdateProgramInput: UpdateProgramInput;
   UpdateVesselInput: UpdateVesselInput;
   User: User;
   Vessel: Vessel;
@@ -281,6 +283,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateFisherfolk?: Resolver<ResolversTypes['Fisherfolk'], ParentType, ContextType, RequireFields<MutationUpdateFisherfolkArgs, 'data' | 'fisherfolkId'>>;
   updateFisherfolkImage?: Resolver<ResolversTypes['Image'], ParentType, ContextType, RequireFields<MutationUpdateFisherfolkImageArgs, 'data' | 'id' | 'url'>>;
   updateMfvr?: Resolver<ResolversTypes['Vessel'], ParentType, ContextType, RequireFields<MutationUpdateMfvrArgs, 'id' | 'mfvrNum'>>;
+  updateProgram?: Resolver<ResolversTypes['GovernmentAid'], ParentType, ContextType, RequireFields<MutationUpdateProgramArgs, 'data' | 'governmentAidId'>>;
   updateVessel?: Resolver<ResolversTypes['Vessel'], ParentType, ContextType, RequireFields<MutationUpdateVesselArgs, 'id' | 'vessel'>>;
 };
 
@@ -662,6 +665,7 @@ export type Mutation = {
   updateFisherfolk: Fisherfolk;
   updateFisherfolkImage: Image;
   updateMfvr: Vessel;
+  updateProgram: GovernmentAid;
   updateVessel: Vessel;
 };
 
@@ -758,6 +762,12 @@ export type MutationUpdateFisherfolkImageArgs = {
 export type MutationUpdateMfvrArgs = {
   id: Scalars['Int'];
   mfvrNum: Scalars['String'];
+};
+
+
+export type MutationUpdateProgramArgs = {
+  data: UpdateProgramInput;
+  governmentAidId: Scalars['Int'];
 };
 
 
@@ -940,6 +950,13 @@ export type UpdateFisherfolkInput = {
   salutation: Salutation;
 };
 
+export type UpdateProgramInput = {
+  date: Scalars['DateTime'];
+  description: Scalars['String'];
+  slot: Scalars['Int'];
+  title: Scalars['String'];
+};
+
 export type UpdateVesselInput = {
   engineMake: Scalars['String'];
   fisherfolkId: Scalars['BigInt'];
@@ -1098,6 +1115,14 @@ export type CreateMultipleProgramImageMutationVariables = Exact<{
 
 export type CreateMultipleProgramImageMutation = { __typename?: 'Mutation', createMultipleImage: Array<{ __typename?: 'Image', id: string, url: string }> };
 
+export type UpdateProgramMutationVariables = Exact<{
+  governmentAidId: Scalars['Int'];
+  data: UpdateProgramInput;
+}>;
+
+
+export type UpdateProgramMutation = { __typename?: 'Mutation', updateProgram: { __typename?: 'GovernmentAid', id: number } };
+
 export type UpdateVesselMutationVariables = Exact<{
   updateVesselId: Scalars['Int'];
   vessel: UpdateVesselInput;
@@ -1249,6 +1274,7 @@ export const UpdateFisherfolkImageDocument = {"kind":"Document","definitions":[{
 export const UpdateToArchiveFisherfolkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateToArchiveFisherfolk"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"archiveFisherfolkId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"archiveFisherfolk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"archiveFisherfolkId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateToArchiveFisherfolkMutation, UpdateToArchiveFisherfolkMutationVariables>;
 export const CreateProgramDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateProgram"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateProgramInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createProgram"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}}]}}]}}]} as unknown as DocumentNode<CreateProgramMutation, CreateProgramMutationVariables>;
 export const CreateMultipleProgramImageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateMultipleProgramImage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"images"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateImageInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createMultipleImage"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"images"},"value":{"kind":"Variable","name":{"kind":"Name","value":"images"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]} as unknown as DocumentNode<CreateMultipleProgramImageMutation, CreateMultipleProgramImageMutationVariables>;
+export const UpdateProgramDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateProgram"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"governmentAidId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateProgramInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateProgram"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"governmentAidId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"governmentAidId"}}},{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateProgramMutation, UpdateProgramMutationVariables>;
 export const UpdateVesselDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateVessel"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"updateVesselId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"vessel"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateVesselInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateVessel"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"updateVesselId"}}},{"kind":"Argument","name":{"kind":"Name","value":"vessel"},"value":{"kind":"Variable","name":{"kind":"Name","value":"vessel"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateVesselMutation, UpdateVesselMutationVariables>;
 export const UpdateRestreFisherfolkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateRestreFisherfolk"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"restreFisherfolkId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"restreFisherfolk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"restreFisherfolkId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateRestreFisherfolkMutation, UpdateRestreFisherfolkMutationVariables>;
 export const UpdateToArchiveGearDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateToArchiveGear"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"archiveGearId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"archiveGear"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"archiveGearId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateToArchiveGearMutation, UpdateToArchiveGearMutationVariables>;

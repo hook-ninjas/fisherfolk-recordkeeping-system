@@ -100,6 +100,12 @@ mutation CreateMultipleProgramImage($images: [CreateImageInput!]!) {
   }
 }
 
+mutation UpdateProgram($governmentAidId: Int!, $data: UpdateProgramInput!) {
+  updateProgram(governmentAidId: $governmentAidId, data: $data) {
+    id
+  }
+}
+
 mutation UpdateVessel($updateVesselId: Int!, $vessel: UpdateVesselInput!) {
   updateVessel(id: $updateVesselId, vessel: $vessel) {
     id

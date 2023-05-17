@@ -144,6 +144,12 @@ export interface NexusGenInputs {
     residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
   }
+  UpdateProgramInput: { // input type
+    date: NexusGenScalars['DateTime']; // DateTime!
+    description: string; // String!
+    slot: number; // Int!
+    title: string; // String!
+  }
   UpdateVesselInput: { // input type
     engineMake: string; // String!
     fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
@@ -449,6 +455,7 @@ export interface NexusGenFieldTypes {
     updateFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     updateFisherfolkImage: NexusGenRootTypes['Image']; // Image!
     updateMfvr: NexusGenRootTypes['Vessel']; // Vessel!
+    updateProgram: NexusGenRootTypes['GovernmentAid']; // GovernmentAid!
     updateVessel: NexusGenRootTypes['Vessel']; // Vessel!
   }
   Organization: { // field return type
@@ -651,6 +658,7 @@ export interface NexusGenFieldTypeNames {
     updateFisherfolk: 'Fisherfolk'
     updateFisherfolkImage: 'Image'
     updateMfvr: 'Vessel'
+    updateProgram: 'GovernmentAid'
     updateVessel: 'Vessel'
   }
   Organization: { // field return type name
@@ -802,6 +810,10 @@ export interface NexusGenArgTypes {
     updateMfvr: { // args
       id: number; // Int!
       mfvrNum: string; // String!
+    }
+    updateProgram: { // args
+      data: NexusGenInputs['UpdateProgramInput']; // UpdateProgramInput!
+      governmentAidId: number; // Int!
     }
     updateVessel: { // args
       id: number; // Int!

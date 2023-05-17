@@ -14,7 +14,7 @@ import DateRangeIcon from '@mui/icons-material/DateRange';
 import ViewFisherfolkProgram from '../FisherfolkProgram/ViewProgram';
 import { useQuery } from '@apollo/client';
 import { GovernmentAidDocument } from '../../graphql/generated';
-
+import UpdateProgram from '../Forms/UpdateProgramForms';
 interface Props {
   id: number;
   title: string;
@@ -31,6 +31,10 @@ export default function FisherfolkProgramCard({
   const [viewProgramBtn, setViewProgramBtn] = useState(false);
   const handleViewProgramOpen = () => setViewProgramBtn(true);
   const handleViewProgramClose = () => setViewProgramBtn(false);
+  const [updateBtn, SetUpdateBtn] = useState(false);
+ const handleUpdateOpen = () => SetUpdateBtn(true);
+ const handleUpdateClose  = () => SetUpdateBtn(false);
+
 
   const { loading, data } = useQuery(GovernmentAidDocument, {
     variables: {
@@ -100,11 +104,26 @@ export default function FisherfolkProgramCard({
           fullWidth
           size="small"
           variant="text"
-          // onClick={handleViewProgramOpen}
+          onClick={handleUpdateOpen}
         >
           Edit
         </Button>
+        {updateBtn && (
+              <UpdateProgram
+                handleClose={handleUpdateClose}
+                open={updateBtn}
+                id={id}
+              />
+            )}
       </CardActions>
     </Card>
   );
 }
+
+
+
+
+
+
+
+
