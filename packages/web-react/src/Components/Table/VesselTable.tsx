@@ -25,7 +25,10 @@ const renderMoreActions = (id: number) => {
   };
   const handleClose = () => setAnchorEl(null);
   const handleUpdateFormOpen = () => setUpdateVessel(true);
-  const handleUpdateFormClose = () => setUpdateVessel(false);
+  const handleUpdateFormClose = () => {
+    setUpdateVessel(false);
+    handleClose();
+  };
 
   const [archiveVessel, archiveResult] = useMutation(
     UpdateToArchiveVesselDocument,
@@ -48,6 +51,7 @@ const renderMoreActions = (id: number) => {
       },
       onCompleted: () => {
         showArchiveSuccess();
+        handleClose();
       },
       onError: () => {
         showArchiveError();

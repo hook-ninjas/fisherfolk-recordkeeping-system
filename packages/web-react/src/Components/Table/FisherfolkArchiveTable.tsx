@@ -23,7 +23,6 @@ interface Props {
 }
 
 const renderMoreActions = (id: number) => {
-  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -52,6 +51,7 @@ const renderMoreActions = (id: number) => {
       },
       onCompleted: () => {
         showRestoreSuccess();
+        handleClose();
       },
       onError: () => {
         showRestoreError();

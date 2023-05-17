@@ -117,6 +117,7 @@ function Sidebar() {
 
   const handleCloseAddAccount = () => {
     setOpenAddAccount(false);
+    handleClose();
   };
 
   const handleOpenLogout = () => {
@@ -182,14 +183,14 @@ function Sidebar() {
         </ListItemButton>
       </Drawer>
       <Menu anchorEl={anchorEl} id="account-menu" open={open} onClose={handleClose}>
-        <MenuItem onClick={handleOpenAddAccount}>
+        <MenuItem onClick={handleOpenAddAccount} disableRipple>
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
           Add account
         </MenuItem>
         {openAddAccount && <CreateAccount handleClose={handleCloseAddAccount} open={openAddAccount} />}
-        <MenuItem onClick={handleOpenLogout}>
+        <MenuItem onClick={handleOpenLogout} disableRipple>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

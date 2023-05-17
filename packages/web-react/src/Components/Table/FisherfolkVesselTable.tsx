@@ -1,16 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
-import {
-  DataGrid,
-  GridColumns,
-  GridRowModel,
-  GridRowsProp,
-} from '@mui/x-data-grid';
-import {
-  UpdateMfvrDocument,
-  UpdateToArchiveVesselDocument,
-  VesselQueryDocument,
-  ArchiveVesselDocument, UpdateToArchiveGearDocument, ArchiveGearDocument
-} from '../../graphql/generated';
+import { DataGrid, GridColumns, GridRowModel, GridRowsProp } from '@mui/x-data-grid';
+import { UpdateMfvrDocument, UpdateToArchiveVesselDocument, VesselQueryDocument, ArchiveVesselDocument, UpdateToArchiveGearDocument, ArchiveGearDocument } from '../../graphql/generated';
 import { useMutation, useQuery, ApolloError } from '@apollo/client';
 import Loading from '../Loading/Loading';
 import { Alert, AlertProps, Backdrop, Button, Dialog, DialogActions, DialogContent, DialogTitle, Menu, MenuItem, Snackbar } from '@mui/material';
@@ -37,14 +27,17 @@ const renderMoreActions = (id: number) => {
   };
   const handleClose = () => setAnchorEl(null);
 
-
   const handleUpdateFormOpen = () => setUpdateVessel(true);
 
-  const handleUpdateFormClose = () => setUpdateVessel(false);
+  const handleUpdateFormClose = () => {
+    setUpdateVessel(false);
+    handleClose();
+  };
+  
   const [archiveVessel, archiveResult] = useMutation(UpdateToArchiveVesselDocument, {
     refetchQueries: [
       {
-        query: VesselQueryDocument
+        query: VesselQueryDocument,
       },
       {
         query: ArchiveGearDocument,

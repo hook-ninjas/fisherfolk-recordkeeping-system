@@ -52,6 +52,7 @@ const renderMoreActions = (id: number) => {
       },
       onCompleted: () => {
         showRestoreSuccess();
+        handleClose();
       },
       onError: () => {
         showRestoreError();

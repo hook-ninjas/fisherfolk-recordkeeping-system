@@ -44,6 +44,7 @@ const RenderMoreActions = (id: number) => {
       },
       onCompleted: () => {
         showArchiveSuccess();
+        handleClose();
       },
       onError: () => {
         showArchiveError();
