@@ -70,6 +70,7 @@ const renderMoreActions = (id: number) => {
       },
       onCompleted: () => {
         showArchiveSuccess();
+        handleClose();
       },
       onError: () => {
         showArchiveError();
@@ -97,7 +98,10 @@ const renderMoreActions = (id: number) => {
     setUpdateFisherfolk(true);
   };
 
-  const handleUpdateFormClose = () => setUpdateFisherfolk(false);
+  const handleUpdateFormClose = () => {
+    setUpdateFisherfolk(false);
+    handleClose();
+  };
 
   return (
     <div>
