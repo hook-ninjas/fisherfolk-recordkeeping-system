@@ -1,5 +1,5 @@
-import { CreateProgram } from './Program.mutation';
+import { CreateProgram, UpdateProgram } from './Program.mutation';
 
-const Mutations = [CreateProgram];
+const Mutations = [CreateProgram,UpdateProgram];
 
 export default Mutations;
