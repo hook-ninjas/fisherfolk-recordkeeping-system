@@ -6,48 +6,31 @@ import cloudinary from 'cloudinary';
 import { Context, createMockContext } from '../../../../context';
 import { MockContext } from '../../../../../types/types';
 import { NexusGenInputs } from '../../../../generated/nexus';
-import {
-  convertActivities,
-  determineGears,
-  getVesselInfo,
-} from '../../../../helpers/helpers';
+import { convertActivities, determineGears, getVesselInfo } from '../../../../helpers/helpers';
 import { createImage, createImages } from '../../Image/Image.resolver';
 import { createFisherfolk } from '../Fisherfolk.resolver';
 
 let mockCtx: MockContext;
 let ctx: Context;
 
-const {
-  name,
-  address,
-  phone,
-  datatype,
-  date,
-  image,
-  word,
-  company,
-  random,
-  vehicle,
-} = faker;
+const { name, address, phone, datatype, date, image, word, company, random, vehicle } = faker;
 
 jest.mock('cloudinary');
 
-const mockUpload = jest.fn(
-  async (imageURI: string, options?: cloudinary.UploadApiOptions) => {
-    let value = {
-      url: 'http://res.cloudinary.com/<cloudName>/image/upload/<version>/test-image.svg',
+const mockUpload = jest.fn(async (imageURI: string, options?: cloudinary.UploadApiOptions) => {
+  let value = {
+    url: 'http://res.cloudinary.com/<cloudName>/image/upload/<version>/test-image.svg',
+  };
+
+  if (options != undefined) {
+    const { folder } = options;
+    value = {
+      url: `http://res.cloudinary.com/<cloudName>/image/upload/<version>/${folder}/test-image.svg`,
     };
-
-    if (options != undefined) {
-      const { folder } = options;
-      value = {
-        url: `http://res.cloudinary.com/<cloudName>/image/upload/<version>/${folder}/test-image.svg`,
-      };
-    }
-
-    return Promise.resolve(value);
   }
-);
+
+  return Promise.resolve(value);
+});
 
 beforeEach(() => {
   mockCtx = createMockContext();
@@ -286,73 +269,61 @@ describe('createFisherfolk Resolver', () => {
     },
   ];
 
-  it.each(fisherfolkInputs)(
-    'should call Prisma client API create method with nexus generated fisherfolk as an argument',
-    async (input) => {
-      const expectedFfolkInfo = {
-        lastName: input.lastName,
-        firstName: input.firstName,
-        middleName: input.middleName,
-        appellation: input.appellation,
-        age: input.age,
-        salutation: input.salutation,
-        barangay: input.barangay,
-        cityMunicipality: input.cityMunicipality,
-        province: input.province,
-        contactNum: input.contactNum,
-        residentYear: input.residentYear,
-        dateOfBirth: input.dateOfBirth,
-        placeOfBirth: input.placeOfBirth,
-        religion: input.religion,
-        gender: input.gender,
-        civilStatus: input.civilStatus,
-        numOfChildren: input.numOfChildren,
-        nationality: input.nationality,
-        educationalBackground: input.educationalBackground,
-        personToNotify: input.personToNotify,
-        ptnRelationship: input.ptnRelationship,
-        ptnAddress: input.ptnAddress,
-        ptnContactNum: input.ptnContactNum,
-      };
+  it.each(fisherfolkInputs)('should call Prisma client API create method with nexus generated fisherfolk as an argument', async (input) => {
+    const expectedFfolkInfo = {
+      lastName: input.lastName,
+      firstName: input.firstName,
+      middleName: input.middleName,
+      appellation: input.appellation,
+      age: input.age,
+      salutation: input.salutation,
+      barangay: input.barangay,
+      cityMunicipality: input.cityMunicipality,
+      province: input.province,
+      contactNum: input.contactNum,
+      residentYear: input.residentYear,
+      dateOfBirth: input.dateOfBirth,
+      placeOfBirth: input.placeOfBirth,
+      religion: input.religion,
+      gender: input.gender,
+      civilStatus: input.civilStatus,
+      numOfChildren: input.numOfChildren,
+      nationality: input.nationality,
+      educationalBackground: input.educationalBackground,
+      personToNotify: input.personToNotify,
+      ptnRelationship: input.ptnRelationship,
+      ptnAddress: input.ptnAddress,
+      ptnContactNum: input.ptnContactNum,
+    };
 
-      const expectedLivelihoods = convertActivities(
-        input.mainFishingActivity,
-        input.otherFishingActivity,
-        input.otherSourceOfIncome
-      );
+    const expectedLivelihoods = convertActivities(input.mainFishingActivity, input.otherFishingActivity, input.otherSourceOfIncome);
 
-      const expectedImages = [
-        await createImage(input.profilePhoto),
-        ...(await createImages(input.files)),
-      ];
+    const expectedImages = [await createImage(input.profilePhoto), ...(await createImages(input.files))];
 
-      const expectedPrismaArg = {
-        data: {
-          ...expectedFfolkInfo,
-          livelihoods: {
-            createMany: {
-              data: {
-                ...expectedLivelihoods,
-              },
-            },
-          },
-          images: {
-            createMany: {
-              data: {
-                ...expectedImages,
-              },
+    const expectedPrismaArg = {
+      data: {
+        ...expectedFfolkInfo,
+        livelihoods: {
+          createMany: {
+            data: {
+              ...expectedLivelihoods,
             },
           },
         },
-      };
+        images: {
+          createMany: {
+            data: {
+              ...expectedImages,
+            },
+          },
+        },
+      },
+    };
 
-      await createFisherfolk(input, ctx);
-      expect(mockCtx.prisma.fisherfolk.create).toHaveReturned();
-      expect(mockCtx.prisma.fisherfolk.create).toHaveBeenCalledWith(
-        expectedPrismaArg
-      );
-    }
-  );
+    await createFisherfolk(input, ctx);
+    expect(mockCtx.prisma.fisherfolk.create).toHaveReturned();
+    expect(mockCtx.prisma.fisherfolk.create).toHaveBeenCalledWith(expectedPrismaArg);
+  });
 
   it('should call Prisma client API create method with nexus generated fisherfolk w/ gear as an argument', async () => {
     const input: NexusGenInputs['CreateFisherfolkInput'] = {
@@ -415,16 +386,7 @@ describe('createFisherfolk Resolver', () => {
           isProfileImage: false,
         },
       ],
-      gears: [
-        'Simple Hand Line',
-        'Surface Set Gill Net',
-        'Crab Lift Nets/Bintol',
-        'CrabPots',
-        'BeachSeine',
-        'ManPushNets',
-        'CastNet',
-        'Spear',
-      ],
+      gears: ['Simple Hand Line', 'Surface Set Gill Net', 'Crab Lift Nets/Bintol', 'CrabPots', 'BeachSeine', 'ManPushNets', 'CastNet', 'Spear'],
     };
 
     const expectedFfolkInfo = {
@@ -453,16 +415,9 @@ describe('createFisherfolk Resolver', () => {
       ptnContactNum: input.ptnContactNum,
     };
 
-    const expectedLivelihoods = convertActivities(
-      input.mainFishingActivity,
-      input.otherFishingActivity,
-      input.otherSourceOfIncome
-    );
+    const expectedLivelihoods = convertActivities(input.mainFishingActivity, input.otherFishingActivity, input.otherSourceOfIncome);
 
-    const expectedImages = [
-      await createImage(input.profilePhoto),
-      ...(await createImages(input.files)),
-    ];
+    const expectedImages = [await createImage(input.profilePhoto), ...(await createImages(input.files))];
 
     const expectedGears = determineGears(input.gears!);
 
@@ -495,9 +450,7 @@ describe('createFisherfolk Resolver', () => {
     await createFisherfolk(input, ctx);
 
     expect(mockCtx.prisma.fisherfolk.create).toHaveReturned();
-    expect(mockCtx.prisma.fisherfolk.create).toHaveBeenCalledWith(
-      expectedPrismaArg
-    );
+    expect(mockCtx.prisma.fisherfolk.create).toHaveBeenCalledWith(expectedPrismaArg);
   });
 
   it('should call Prisma client API create method with nexus generated fisherfolk w/ vessel as an argument', async () => {
@@ -631,16 +584,9 @@ describe('createFisherfolk Resolver', () => {
       ptnContactNum: input.ptnContactNum,
     };
 
-    const expectedLivelihoods = convertActivities(
-      input.mainFishingActivity,
-      input.otherFishingActivity,
-      input.otherSourceOfIncome
-    );
+    const expectedLivelihoods = convertActivities(input.mainFishingActivity, input.otherFishingActivity, input.otherSourceOfIncome);
 
-    const expectedImages = [
-      await createImage(input.profilePhoto),
-      ...(await createImages(input.files)),
-    ];
+    const expectedImages = [await createImage(input.profilePhoto), ...(await createImages(input.files))];
 
     const expectedVesselInfo = getVesselInfo(input.vessel!);
 
@@ -681,9 +627,7 @@ describe('createFisherfolk Resolver', () => {
     await createFisherfolk(input, ctx);
 
     expect(mockCtx.prisma.fisherfolk.create).toHaveReturned();
-    expect(mockCtx.prisma.fisherfolk.create).toHaveBeenCalledWith(
-      expectedPrismaArg
-    );
+    expect(mockCtx.prisma.fisherfolk.create).toHaveBeenCalledWith(expectedPrismaArg);
   });
 
   it('should call Prisma client API create method with nexus generated fisherfolk w/ gear and vessel as an argument', async () => {
@@ -733,16 +677,7 @@ describe('createFisherfolk Resolver', () => {
           isProfileImage: false,
         },
       ],
-      gears: [
-        'Simple Hand Line',
-        'Surface Set Gill Net',
-        'Crab Lift Nets/Bintol',
-        'CrabPots',
-        'BeachSeine',
-        'ManPushNets',
-        'CastNet',
-        'Spear',
-      ],
+      gears: ['Simple Hand Line', 'Surface Set Gill Net', 'Crab Lift Nets/Bintol', 'CrabPots', 'BeachSeine', 'ManPushNets', 'CastNet', 'Spear'],
       vessel: {
         mfvrNumber: random.alphaNumeric(20),
         homeport: address.city(),
@@ -799,16 +734,9 @@ describe('createFisherfolk Resolver', () => {
       ptnContactNum: input.ptnContactNum,
     };
 
-    const expectedLivelihoods = convertActivities(
-      input.mainFishingActivity,
-      input.otherFishingActivity,
-      input.otherSourceOfIncome
-    );
+    const expectedLivelihoods = convertActivities(input.mainFishingActivity, input.otherFishingActivity, input.otherSourceOfIncome);
 
-    const expectedImages = [
-      await createImage(input.profilePhoto),
-      ...(await createImages(input.files)),
-    ];
+    const expectedImages = [await createImage(input.profilePhoto), ...(await createImages(input.files))];
 
     const expectedGears = determineGears(input.gears!);
 
@@ -858,9 +786,7 @@ describe('createFisherfolk Resolver', () => {
     await createFisherfolk(input, ctx);
 
     expect(mockCtx.prisma.fisherfolk.create).toHaveReturned();
-    expect(mockCtx.prisma.fisherfolk.create).toHaveBeenCalledWith(
-      expectedPrismaArg
-    );
+    expect(mockCtx.prisma.fisherfolk.create).toHaveBeenCalledWith(expectedPrismaArg);
   });
 
   it('should call Prisma client API create method with nexus generated fisherfolk w/ an organization as an argument', async () => {
@@ -960,16 +886,9 @@ describe('createFisherfolk Resolver', () => {
       ptnContactNum: input.ptnContactNum,
     };
 
-    const expectedLivelihoods = convertActivities(
-      input.mainFishingActivity,
-      input.otherFishingActivity,
-      input.otherSourceOfIncome
-    );
+    const expectedLivelihoods = convertActivities(input.mainFishingActivity, input.otherFishingActivity, input.otherSourceOfIncome);
 
-    const expectedImages = [
-      await createImage(input.profilePhoto),
-      ...(await createImages(input.files)),
-    ];
+    const expectedImages = [await createImage(input.profilePhoto), ...(await createImages(input.files))];
 
     const expectedPrismaArg = {
       data: {
@@ -1009,9 +928,7 @@ describe('createFisherfolk Resolver', () => {
     await createFisherfolk(input, ctx);
 
     expect(mockCtx.prisma.fisherfolk.create).toHaveReturned();
-    expect(mockCtx.prisma.fisherfolk.create).toHaveBeenCalledWith(
-      expectedPrismaArg
-    );
+    expect(mockCtx.prisma.fisherfolk.create).toHaveBeenCalledWith(expectedPrismaArg);
   });
 
   it('should call Prisma client API create method with nexus generated fisherfolk w/ an organization and gear as an argument', async () => {
@@ -1083,16 +1000,7 @@ describe('createFisherfolk Resolver', () => {
           isProfileImage: false,
         },
       ],
-      gears: [
-        'Simple Hand Line',
-        'Surface Set Gill Net',
-        'Crab Lift Nets/Bintol',
-        'CrabPots',
-        'BeachSeine',
-        'ManPushNets',
-        'CastNet',
-        'Spear',
-      ],
+      gears: ['Simple Hand Line', 'Surface Set Gill Net', 'Crab Lift Nets/Bintol', 'CrabPots', 'BeachSeine', 'ManPushNets', 'CastNet', 'Spear'],
     };
 
     const expectedFfolkInfo = {
@@ -1121,16 +1029,9 @@ describe('createFisherfolk Resolver', () => {
       ptnContactNum: input.ptnContactNum,
     };
 
-    const expectedLivelihoods = convertActivities(
-      input.mainFishingActivity,
-      input.otherFishingActivity,
-      input.otherSourceOfIncome
-    );
+    const expectedLivelihoods = convertActivities(input.mainFishingActivity, input.otherFishingActivity, input.otherSourceOfIncome);
 
-    const expectedImages = [
-      await createImage(input.profilePhoto),
-      ...(await createImages(input.files)),
-    ];
+    const expectedImages = [await createImage(input.profilePhoto), ...(await createImages(input.files))];
 
     const expectedGears = determineGears(input.gears!);
 
@@ -1179,9 +1080,7 @@ describe('createFisherfolk Resolver', () => {
     await createFisherfolk(input, ctx);
 
     expect(mockCtx.prisma.fisherfolk.create).toHaveReturned();
-    expect(mockCtx.prisma.fisherfolk.create).toHaveBeenCalledWith(
-      expectedPrismaArg
-    );
+    expect(mockCtx.prisma.fisherfolk.create).toHaveBeenCalledWith(expectedPrismaArg);
   });
 
   it('should call Prisma client API create method with nexus generated fisherfolk w/ an organization and vessel as an argument', async () => {
@@ -1323,16 +1222,9 @@ describe('createFisherfolk Resolver', () => {
       ptnContactNum: input.ptnContactNum,
     };
 
-    const expectedLivelihoods = convertActivities(
-      input.mainFishingActivity,
-      input.otherFishingActivity,
-      input.otherSourceOfIncome
-    );
+    const expectedLivelihoods = convertActivities(input.mainFishingActivity, input.otherFishingActivity, input.otherSourceOfIncome);
 
-    const expectedImages = [
-      await createImage(input.profilePhoto),
-      ...(await createImages(input.files)),
-    ];
+    const expectedImages = [await createImage(input.profilePhoto), ...(await createImages(input.files))];
 
     const expectedVesselInfo = getVesselInfo(input.vessel!);
 
@@ -1389,9 +1281,7 @@ describe('createFisherfolk Resolver', () => {
     await createFisherfolk(input, ctx);
 
     expect(mockCtx.prisma.fisherfolk.create).toHaveReturned();
-    expect(mockCtx.prisma.fisherfolk.create).toHaveBeenCalledWith(
-      expectedPrismaArg
-    );
+    expect(mockCtx.prisma.fisherfolk.create).toHaveBeenCalledWith(expectedPrismaArg);
   });
 
   it('should call Prisma client API create method with nexus generated fisherfolk w/ an organization, gear and vessel as an argument', async () => {
@@ -1463,16 +1353,7 @@ describe('createFisherfolk Resolver', () => {
           isProfileImage: false,
         },
       ],
-      gears: [
-        'Simple Hand Line',
-        'Surface Set Gill Net',
-        'Crab Lift Nets/Bintol',
-        'CrabPots',
-        'BeachSeine',
-        'ManPushNets',
-        'CastNet',
-        'Spear',
-      ],
+      gears: ['Simple Hand Line', 'Surface Set Gill Net', 'Crab Lift Nets/Bintol', 'CrabPots', 'BeachSeine', 'ManPushNets', 'CastNet', 'Spear'],
       vessel: {
         mfvrNumber: random.alphaNumeric(),
         homeport: address.city(),
@@ -1544,16 +1425,9 @@ describe('createFisherfolk Resolver', () => {
       ptnContactNum: input.ptnContactNum,
     };
 
-    const expectedLivelihoods = convertActivities(
-      input.mainFishingActivity,
-      input.otherFishingActivity,
-      input.otherSourceOfIncome
-    );
+    const expectedLivelihoods = convertActivities(input.mainFishingActivity, input.otherFishingActivity, input.otherSourceOfIncome);
 
-    const expectedImages = [
-      await createImage(input.profilePhoto),
-      ...(await createImages(input.files)),
-    ];
+    const expectedImages = [await createImage(input.profilePhoto), ...(await createImages(input.files))];
 
     const expectedGears = determineGears(input.gears!);
 
@@ -1619,8 +1493,6 @@ describe('createFisherfolk Resolver', () => {
     await createFisherfolk(input, ctx);
 
     expect(mockCtx.prisma.fisherfolk.create).toHaveReturned();
-    expect(mockCtx.prisma.fisherfolk.create).toHaveBeenCalledWith(
-      expectedPrismaArg
-    );
+    expect(mockCtx.prisma.fisherfolk.create).toHaveBeenCalledWith(expectedPrismaArg);
   });
 });
