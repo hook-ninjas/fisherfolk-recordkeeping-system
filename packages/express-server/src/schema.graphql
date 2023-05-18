@@ -253,6 +253,7 @@ type Mutation {
   updateFisherfolk(data: UpdateFisherfolkInput!, fisherfolkId: Int!): Fisherfolk!
   updateFisherfolkImage(data: CreateImageInput!, id: String!, url: String!): Image!
   updateMfvr(id: Int!, mfvrNum: String!): Vessel!
+  updateProgram(data: UpdateProgramInput!, governmentAidId: Int!): GovernmentAid!
   updateVessel(id: Int!, vessel: UpdateVesselInput!): Vessel!
 }
 
@@ -363,6 +364,13 @@ input UpdateFisherfolkInput {
   religion: String!
   residentYear: Int!
   salutation: Salutation!
+}
+
+input UpdateProgramInput {
+  date: DateTime!
+  description: String!
+  slot: Int!
+  title: String!
 }
 
 input UpdateVesselInput {

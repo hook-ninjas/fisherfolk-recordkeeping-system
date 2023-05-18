@@ -237,6 +237,16 @@ const CreateProgramSchema = object().shape({
     ),
 });
 
+
+const UpdateProgramSchema = object().shape({
+  title: string()
+    .required('Enter program title.')
+    .max(60, 'Title cannot exceed 60 characters'),
+  slot: string().required('Enter program slot.'),
+  date: date().typeError('Select date').required('Enter date.')
+});
+
+
 export {
   FfolkValidation,
   CreateAccountSchema,
@@ -245,4 +255,5 @@ export {
   AddVesselWithGearSchema,
   FilterSchema,
   CreateProgramSchema,
+  UpdateProgramSchema
 };
