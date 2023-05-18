@@ -18,7 +18,6 @@ interface GearFormProps {
 interface GearCheckboxProps {
   name: string;
   keyId: string;
-  classification: string;
   type: string;
   register: UseFormRegister<FieldValues>;
   shouldUnregister?: boolean;
@@ -66,19 +65,17 @@ const gearOptions = {
 const createGearCheckBox = ({
   name,
   keyId,
-  classification,
   type,
   defaultValue,
   register,
   shouldUnregister,
 }: GearCheckboxProps) => {
-  const value = JSON.stringify({ classification: classification, type: type });
   return (
     <FormInputCheckbox
       keyId={keyId}
       name={name}
       label={type}
-      value={value}
+      value={type}
       defaultValue={defaultValue}
       register={register}
       shouldUnregister={shouldUnregister}
@@ -91,7 +88,6 @@ function GearForm({ control, register, errors }: GearFormProps) {
     createGearCheckBox({
       name: 'gears.hookAndLine',
       keyId: `${type}-${index}`,
-      classification: 'HookAndLine',
       defaultValue: '',
       type: type,
       register: register,
@@ -103,7 +99,6 @@ function GearForm({ control, register, errors }: GearFormProps) {
     createGearCheckBox({
       name: 'gears.Nets',
       keyId: `${type}-${index}`,
-      classification: 'GillNets',
       defaultValue: '',
       type: type,
       register: register,
@@ -115,7 +110,6 @@ function GearForm({ control, register, errors }: GearFormProps) {
     createGearCheckBox({
       name: 'gears.LiftNets',
       keyId: `${type}-${index}`,
-      classification: 'LiftNets',
       defaultValue: '',
       type: type,
       register: register,
@@ -128,7 +122,6 @@ function GearForm({ control, register, errors }: GearFormProps) {
       createGearCheckBox({
         name: 'gears.potsAndTraps',
         keyId: `${type}-${index}`,
-        classification: 'PotsAndTraps',
         defaultValue: '',
         type: type,
         register: register,
@@ -140,7 +133,6 @@ function GearForm({ control, register, errors }: GearFormProps) {
     createGearCheckBox({
       name: 'gears.seineNets',
       keyId: `${type}-${index}`,
-      classification: 'SeineNets',
       defaultValue: '',
       type: type,
       register: register,
@@ -152,7 +144,6 @@ function GearForm({ control, register, errors }: GearFormProps) {
     createGearCheckBox({
       name: 'gears.scoopNets',
       keyId: `${type}-${index}`,
-      classification: 'ScoopNets',
       defaultValue: '',
       type: type,
       register: register,
@@ -164,7 +155,6 @@ function GearForm({ control, register, errors }: GearFormProps) {
     createGearCheckBox({
       name: 'gears.fallingGear',
       keyId: `${type}-${index}`,
-      classification: 'FallingGear',
       defaultValue: '',
       type: type,
       register: register,
@@ -177,7 +167,6 @@ function GearForm({ control, register, errors }: GearFormProps) {
       createGearCheckBox({
         name: 'gears.miscellaneous',
         keyId: `${type}-${index}`,
-        classification: 'Miscellaneous',
         defaultValue: '',
         type: type,
         register: register,
