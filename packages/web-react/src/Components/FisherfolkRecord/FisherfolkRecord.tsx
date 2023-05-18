@@ -366,25 +366,26 @@ const FisherfolkRecord = () => {
             </Box>
           </Box>
           <Box m={1} display="flex" justifyContent="space-between">
-            <form>
-              <TextField
-                onChange={(e) => {
-                  handleSearchKey(e);
-                }}
-                variant="standard"
-                placeholder="Search a fisherfolk"
-                size="small"
-                color="success"
-                sx={{ width: 180 }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PersonSearchIcon style={{ fill: 'grey' }} />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </form>
+            <TextField
+              onChange={(e) => {
+                handleSearchKey(e);
+              }}
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+              variant="standard"
+              placeholder="Search a fisherfolk"
+              size="small"
+              color="success"
+              sx={{ width: 180 }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <PersonSearchIcon style={{ fill: 'grey' }} />
+                  </InputAdornment>
+                ),
+              }}
+            />
             <Typography variant="body1">
               {data?.totalFisherfolk != undefined
                 ? isFiltered
