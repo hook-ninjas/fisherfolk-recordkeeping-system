@@ -14,7 +14,6 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import { useMutation } from '@apollo/client';
 import {
-  CreateMultipleProgramImageDocument,
   GovernmentAidDocument,
   GovernmentAidsDocument,
   UpdateProgramDocument,
@@ -22,8 +21,7 @@ import {
 import { useQuery } from '@apollo/client';
 import { showFailAlert, showSuccessAlert } from '../ConfirmationDialog/Alerts';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CreateProgramSchema } from './validation/schema';
-import MultiImageUpload from '../Input/MultiImageUpload';
+import { UpdateProgramSchema } from './validation/schema';
 import { MutationUpdateProgramArgs } from '../../graphql/generated';
 
 interface UpdateProgramProps {
@@ -37,11 +35,8 @@ interface UpdateProgramProps {
 function UpdateProgram({ open, handleClose,id }: UpdateProgramProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [complete, setComplete] = useState(false);
-  const [images, setImages] = useState<string[] | undefined>([]);
-  
-  const handleImageChange = (newImages: string[] | undefined) => {
-    setImages(newImages);
-  };
+
+
 
 
   const { loading, data } = useQuery(GovernmentAidDocument, {
@@ -67,18 +62,7 @@ function UpdateProgram({ open, handleClose,id }: UpdateProgramProps) {
     marginLeft: 'auto',
   };
 
-  // const [createProgram] = useMutation(CreateProgramDocument, {
-  //   onCompleted: () => {
-  //     handleClose();
-  //     handleComplete();
-  //     showSuccessAlert();
-  //   },
-  //   onError: () => {
-  //     handleClose();
-  //     handleComplete();
-  //     showFailAlert();
-  //   },
-  // });
+
 
   const [updateProgram] = useMutation(UpdateProgramDocument,{
     onCompleted: () => {
@@ -93,16 +77,7 @@ function UpdateProgram({ open, handleClose,id }: UpdateProgramProps) {
     },
   });
 
-  const [createProgamImages] = useMutation(CreateMultipleProgramImageDocument, {
-    onCompleted: () => {
-      handleClose();
-      handleComplete();
-    },
-    onError: () => {
-      handleClose();
-      handleComplete();
-    },
-  });
+
 
   const {
     register,
@@ -111,7 +86,7 @@ function UpdateProgram({ open, handleClose,id }: UpdateProgramProps) {
     formState: { errors },
   } = useForm({
     mode: 'onChange',
-    resolver: yupResolver(CreateProgramSchema),
+    resolver: yupResolver(UpdateProgramSchema),
   });
 
   const onSubmit = handleSubmit(async (input) => {
@@ -136,36 +111,6 @@ function UpdateProgram({ open, handleClose,id }: UpdateProgramProps) {
         }
       ],
     });
-    // if (images) {
-
-
-    //   const id = program.data?.createProgram.id;
-
-    //   const createProgramImagesInput: MutationCreateMultipleImageArgs = {
-    //     images: images.map((image) => ({
-    //       name: `program-image-${id}`,
-    //       text: '',
-    //       updated_at: new Date(),
-    //       url: image.toString(),
-    //       government_aid_id: id,
-    //     })),
-    //   };
-
-    //   await createProgamImages({
-    //     variables: {
-    //       images: createProgramImagesInput.images,
-    //     },
-    //     refetchQueries: [
-    //       {
-    //         query: GovernmentAidsDocument,
-    //       },
-    //       {
-    //         query: GovernmentAidsDocument,
-    //         variables: { govtAidId: id },
-    //       },
-    //     ],
-    //   });
-    // }
   });
 
   const handleSubmitUpdateProgramForm = (
@@ -247,8 +192,7 @@ function UpdateProgram({ open, handleClose,id }: UpdateProgramProps) {
             />
           </Grid>
         </Grid>
-        <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-        </Grid>
+
         {isSubmitting ? (
           <LoadingButton
             loading
