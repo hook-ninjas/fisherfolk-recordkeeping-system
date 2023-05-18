@@ -1,19 +1,8 @@
-import {
-  Salutation,
-  Gender,
-  CivilStatus,
-  EducationalBackground,
-  Image,
-  Livelihood,
-} from '@prisma/client';
+import { Salutation, Gender, CivilStatus, EducationalBackground, Image, Livelihood } from '@prisma/client';
 import { Context } from '../../../context';
 import { NexusGenInputs } from '../../../generated/nexus';
 import { createImage, createImages } from '../Image/Image.resolver';
-import {
-  convertActivities,
-  determineGears,
-  getVesselInfo,
-} from '../../../helpers/helpers';
+import { convertActivities, determineGears, getVesselInfo } from '../../../helpers/helpers';
 
 interface FisherFolkInfo {
   lastName: string;
@@ -43,13 +32,7 @@ interface FisherFolkInfo {
 
 type CreateFisherfolkInput = NexusGenInputs['CreateFisherfolkInput'];
 
-const createFfolkWithOrg = async (
-  ffolkInfo: FisherFolkInfo,
-  organization: NexusGenInputs['OrganizationInput'],
-  livelihoods: Livelihood[],
-  images: Image[],
-  context: Context
-) => {
+const createFfolkWithOrg = async (ffolkInfo: FisherFolkInfo, organization: NexusGenInputs['OrganizationInput'], livelihoods: Livelihood[], images: Image[], context: Context) => {
   const { name, yearJoined, position } = organization;
 
   return await context.prisma.fisherfolk.create({
@@ -89,14 +72,7 @@ const createFfolkWithOrg = async (
   });
 };
 
-const createFfolkWithOrgAndGear = async (
-  ffolkInfo: FisherFolkInfo,
-  organization: NexusGenInputs['OrganizationInput'],
-  livelihoods: Livelihood[],
-  images: Image[],
-  gearTypes: string[],
-  context: Context
-) => {
+const createFfolkWithOrgAndGear = async (ffolkInfo: FisherFolkInfo, organization: NexusGenInputs['OrganizationInput'], livelihoods: Livelihood[], images: Image[], gearTypes: string[], context: Context) => {
   const { name, yearJoined, position } = organization;
   const gears = determineGears(gearTypes);
 
@@ -144,14 +120,7 @@ const createFfolkWithOrgAndGear = async (
   });
 };
 
-const createFfolkWithOrgAndVessel = async (
-  ffolkInfo: FisherFolkInfo,
-  organization: NexusGenInputs['OrganizationInput'],
-  livelihoods: Livelihood[],
-  images: Image[],
-  vessel: NexusGenInputs['CreateFfolkVesselInput'],
-  context: Context
-) => {
+const createFfolkWithOrgAndVessel = async (ffolkInfo: FisherFolkInfo, organization: NexusGenInputs['OrganizationInput'], livelihoods: Livelihood[], images: Image[], vessel: NexusGenInputs['CreateFfolkVesselInput'], context: Context) => {
   const { name, yearJoined, position } = organization;
   const vesselInfo = getVesselInfo(vessel);
   const vesselImages = await createImages(vessel.files);
@@ -205,15 +174,7 @@ const createFfolkWithOrgAndVessel = async (
   });
 };
 
-const createFfolkWithOrgGearAndVessel = async (
-  ffolkInfo: FisherFolkInfo,
-  organization: NexusGenInputs['OrganizationInput'],
-  livelihoods: Livelihood[],
-  images: Image[],
-  gearTypes: string[],
-  vessel: NexusGenInputs['CreateFfolkVesselInput'],
-  context: Context
-) => {
+const createFfolkWithOrgGearAndVessel = async (ffolkInfo: FisherFolkInfo, organization: NexusGenInputs['OrganizationInput'], livelihoods: Livelihood[], images: Image[], gearTypes: string[], vessel: NexusGenInputs['CreateFfolkVesselInput'], context: Context) => {
   const { name, yearJoined, position } = organization;
   const gears = determineGears(gearTypes);
   const vesselInfo = getVesselInfo(vessel);
@@ -275,13 +236,7 @@ const createFfolkWithOrgGearAndVessel = async (
   });
 };
 
-const createFfolkWithGear = async (
-  ffolkInfo: FisherFolkInfo,
-  livelihoods: Livelihood[],
-  images: Image[],
-  gearTypes: string[],
-  context: Context
-) => {
+const createFfolkWithGear = async (ffolkInfo: FisherFolkInfo, livelihoods: Livelihood[], images: Image[], gearTypes: string[], context: Context) => {
   const gears = determineGears(gearTypes);
 
   return await context.prisma.fisherfolk.create({
@@ -312,13 +267,7 @@ const createFfolkWithGear = async (
   });
 };
 
-const createFfolkWithVessel = async (
-  ffolkInfo: FisherFolkInfo,
-  livelihoods: Livelihood[],
-  images: Image[],
-  vessel: NexusGenInputs['CreateFfolkVesselInput'],
-  context: Context
-) => {
+const createFfolkWithVessel = async (ffolkInfo: FisherFolkInfo, livelihoods: Livelihood[], images: Image[], vessel: NexusGenInputs['CreateFfolkVesselInput'], context: Context) => {
   const vesselInfo = getVesselInfo(vessel);
   const vesselImages = await createImages(vessel.files);
 
@@ -355,14 +304,7 @@ const createFfolkWithVessel = async (
   });
 };
 
-const createFfolkWithGearAndVessel = async (
-  ffolkInfo: FisherFolkInfo,
-  livelihoods: Livelihood[],
-  images: Image[],
-  gearTypes: string[],
-  vessel: NexusGenInputs['CreateFfolkVesselInput'],
-  context: Context
-) => {
+const createFfolkWithGearAndVessel = async (ffolkInfo: FisherFolkInfo, livelihoods: Livelihood[], images: Image[], gearTypes: string[], vessel: NexusGenInputs['CreateFfolkVesselInput'], context: Context) => {
   const gears = determineGears(gearTypes);
   const vesselInfo = getVesselInfo(vessel);
   const vesselImages = await createImages(vessel.files);
@@ -407,18 +349,8 @@ const createFfolkWithGearAndVessel = async (
   });
 };
 
-const createFisherfolk = async (
-  input: NexusGenInputs['CreateFisherfolkInput'],
-  context: Context
-) => {
-  const {
-    organization,
-    mainFishingActivity,
-    otherFishingActivity,
-    otherSourceOfIncome,
-    gears,
-    vessel,
-  } = input;
+const createFisherfolk = async (input: NexusGenInputs['CreateFisherfolkInput'], context: Context) => {
+  const { organization, mainFishingActivity, otherFishingActivity, otherSourceOfIncome, gears, vessel } = input;
 
   const ffolkInfo = {
     lastName: input.lastName,
@@ -446,88 +378,37 @@ const createFisherfolk = async (
     ptnContactNum: input.ptnContactNum,
   };
 
-  const livelihoods = convertActivities(
-    mainFishingActivity,
-    otherFishingActivity,
-    otherSourceOfIncome
-  ) as Livelihood[];
+  const livelihoods = convertActivities(mainFishingActivity, otherFishingActivity, otherSourceOfIncome) as Livelihood[];
 
   const profilePhoto = await createImage(input.profilePhoto);
   const files = await createImages(input.files);
-  const images = [profilePhoto, ...files] as Image[];
+  const images = [profilePhoto, ...files] as unknown as Image[];
 
   if (organization != null || organization != undefined) {
     if (vessel != null && gears != null && gears.length != 0) {
-      return await createFfolkWithOrgGearAndVessel(
-        ffolkInfo,
-        organization,
-        livelihoods,
-        images,
-        gears,
-        vessel,
-        context
-      );
+      return await createFfolkWithOrgGearAndVessel(ffolkInfo, organization, livelihoods, images, gears, vessel, context);
     }
     if (gears != null && gears.length != 0) {
-      return await createFfolkWithOrgAndGear(
-        ffolkInfo,
-        organization,
-        livelihoods,
-        images,
-        gears,
-        context
-      );
+      return await createFfolkWithOrgAndGear(ffolkInfo, organization, livelihoods, images, gears, context);
     }
 
     if (vessel != null) {
-      return await createFfolkWithOrgAndVessel(
-        ffolkInfo,
-        organization,
-        livelihoods,
-        images,
-        vessel,
-        context
-      );
+      return await createFfolkWithOrgAndVessel(ffolkInfo, organization, livelihoods, images, vessel, context);
     }
 
-    return createFfolkWithOrg(
-      ffolkInfo,
-      organization,
-      livelihoods,
-      images,
-      context
-    );
+    return createFfolkWithOrg(ffolkInfo, organization, livelihoods, images, context);
   }
 
   if (vessel != null && gears != null && gears.length != 0) {
-    return await createFfolkWithGearAndVessel(
-      ffolkInfo,
-      livelihoods,
-      images,
-      gears,
-      vessel,
-      context
-    );
+    return await createFfolkWithGearAndVessel(ffolkInfo, livelihoods, images, gears, vessel, context);
   }
 
   if (gears != null && gears.length != 0) {
-    return await createFfolkWithGear(
-      ffolkInfo,
-      livelihoods,
-      images,
-      gears,
-      context
-    );
+    return await createFfolkWithGear(ffolkInfo, livelihoods, images, gears, context);
   }
 
   if (vessel != null) {
-    return await createFfolkWithVessel(
-      ffolkInfo,
-      livelihoods,
-      images,
-      vessel,
-      context
-    );
+    return await createFfolkWithVessel(ffolkInfo, livelihoods, images, vessel, context);
   }
 
   return await context.prisma.fisherfolk.create({
@@ -551,30 +432,30 @@ const createFisherfolk = async (
   });
 };
 
-const updateFisherfolk = async (
-  id: number,
-  input: CreateFisherfolkInput,
-  ctx: Context
-) => {
-  return ctx.prisma.fisherfolk.update({
-    where: {
-      id: id,
-    },
-    data: {
-      ...input,
-      livelihoods: {
-        updateMany: {
-          data: {
-            ...input.livelihoods[0],
-            // updates main fishing activity only
-          },
-          where: {
-            fisherfolkId: id,
-          },
-        },
-      },
-    },
-  });
-};
+// const updateFisherfolk = async (
+//   id: number,
+//   input: CreateFisherfolkInput,
+//   ctx: Context
+// ) => {
+//   return ctx.prisma.fisherfolk.update({
+//     where: {
+//       id: id,
+//     },
+//     data: {
+//       ...input,
+//       livelihoods: {
+//         updateMany: {
+//           data: {
+//             ...input.livelihoods[0],
+//             // updates main fishing activity only
+//           },
+//           where: {
+//             fisherfolkId: id,
+//           },
+//         },
+//       },
+//     },
+//   });
+// };
 
-export { createFisherfolk, updateFisherfolk };
+export { createFisherfolk };
