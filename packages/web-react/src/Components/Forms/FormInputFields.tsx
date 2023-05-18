@@ -31,7 +31,13 @@ import {
   CalendarPickerView,
 } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { CivilStatus, EducationalBackground, Gender, Salutation, SourceOfIncome } from '../../graphql/generated';
+import {
+  CivilStatus,
+  EducationalBackground,
+  Gender,
+  Salutation,
+  SourceOfIncome,
+} from '../../graphql/generated';
 export interface Option {
   label: string;
   value: string;
@@ -476,6 +482,7 @@ export const FormInputCheckbox = ({
     label={label}
     disabled={disabled}
     defaultValue={defaultValue}
+    value={value}
     control={
       <Checkbox
         key={`${keyId}-checkbox`}
@@ -483,7 +490,6 @@ export const FormInputCheckbox = ({
           shouldUnregister: shouldUnregister,
         })}
         checked={checked}
-        value={value}
       />
     }
   />
