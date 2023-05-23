@@ -1,12 +1,7 @@
 import { SourceOfIncome } from './../enums/index';
 import { nullable, list, inputObjectType } from 'nexus';
-import {
-  CivilStatus,
-  EducationalBackground,
-  Gender,
-  Salutation,
-} from '../enums/';
-import OrganizationInput from './Organization.input';
+import { CivilStatus, EducationalBackground, Gender, Salutation } from '../enums/';
+import { OrganizationInput } from './Organization.input';
 import { UploadImageInput } from './Image.input';
 import { CreateFfolkVesselInput } from './Vessel.input';
 
