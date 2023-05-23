@@ -1,14 +1,22 @@
-import { inputObjectType } from 'nexus';
+import { inputObjectType, list } from 'nexus';
 import { GearClassification } from '../enums';
 
 const CreateGearInput = inputObjectType({
   name: 'CreateGearInput',
   definition(t) {
-    t.field('fisherfolkId', {type: 'BigInt'});
-    t.field('classification', {type: GearClassification});
+    t.field('fisherfolkId', { type: 'BigInt' });
+    t.field('classification', { type: GearClassification });
     t.string('type');
     t.nullable.string('photo');
   },
 });
 
-export default CreateGearInput;
+const CreateFfolkGearInput = inputObjectType({
+  name: 'CreateFfolkGearInput',
+  definition(t) {
+    t.field('fisherfolkId', { type: 'BigInt' });
+    t.field('types', { type: list('String') });
+  },
+});
+
+export { CreateGearInput, CreateFfolkGearInput };
