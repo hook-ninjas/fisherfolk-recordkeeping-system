@@ -3,11 +3,14 @@ import { inputObjectType } from 'nexus';
 const UploadImageInput = inputObjectType({
   name: 'UploadImageInput',
   definition(t) {
+    t.nullable.field('fisherfolkId', { type: 'BigInt' });
+    t.nullable.field('gearId', { type: 'BigInt' });
+    t.nullable.field('vesselId', { type: 'BigInt' });
     t.string('uri');
     t.string('name');
-    t.int('size');
-    t.string('type');
-    t.boolean('isProfileImage');
+    t.nullable.int('size');
+    t.nullable.string('type');
+    t.nullable.boolean('isProfileImage');
   },
 });
 
