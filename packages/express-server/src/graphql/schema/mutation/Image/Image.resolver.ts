@@ -2,29 +2,64 @@ import { Context } from '../../../context';
 import { NexusGenInputs } from '../../../generated/nexus';
 import cloudinary from 'cloudinary';
 
-export const cloudURL = async (imageURI: string, options: cloudinary.UploadApiOptions) => {
+export const uploadToCloud = async (imageURI: string, options: cloudinary.UploadApiOptions) => {
   const result = await cloudinary.v2.uploader.upload(imageURI, options);
 
   return result.url;
 };
 
-export const createImage = async (uploadImageInput: NexusGenInputs['UploadImageInput']) => {
-  const { name, size, type, uri, isProfileImage } = uploadImageInput;
-  const cloudinaryURL = await cloudURL(uri, {
+export const createImage = async (input: NexusGenInputs['UploadImageInput'], context: Context) => {
+  const { fisherfolkId, gearId, vesselId, name, size, type, uri, isProfileImage } = input;
+  const url = await uploadToCloud(uri, {
     folder: 'fisherfolk-recordkeeping-system',
     use_filename: true,
   });
 
-  return {
-    name: name,
-    size: size,
-    type: type,
-    url: cloudinaryURL,
-    isProfileImage: isProfileImage,
-  };
-};
+  if (fisherfolkId) {
+    return await context.prisma.image.create({
+      data: {
+        name,
+        size,
+        type,
+        url,
+        isProfileImage,
+        fisherfolk: {
+          connect: { id: fisherfolkId },
+        },
+      },
+    });
+  }
 
-export const createImages = async (files: NexusGenInputs['UploadImageInput'][]) => await Promise.all(files.map(createImage));
+  if (gearId) {
+    return await context.prisma.image.create({
+      data: {
+        name,
+        size,
+        type,
+        url,
+        isProfileImage,
+        gear: {
+          connect: { id: gearId },
+        },
+      },
+    });
+  }
+
+  if (vesselId) {
+    return await context.prisma.image.create({
+      data: {
+        name,
+        size,
+        type,
+        url,
+        isProfileImage,
+        vessel: {
+          connect: { id: vesselId },
+        },
+      },
+    });
+  }
+};
 
 export async function uploadImage(image: NexusGenInputs['CreateImageInput'], ctx: Context) {
   const result = await cloudinary.v2.uploader.upload(image.url, {
