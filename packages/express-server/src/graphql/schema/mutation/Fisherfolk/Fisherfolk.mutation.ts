@@ -1,14 +1,9 @@
 import { intArg, mutationField } from 'nexus';
-import { createFisherfolk, updateFisherfolk } from './Fisherfolk.resolver';
+import { createFisherfolk } from './Fisherfolk.resolver';
 import CreateFisherfolkInput from '../../input/Fisherfolk.input';
 import { nonNullArg } from '../../../../utils/utils';
 import Fisherfolk from '../../model/objecTypes/Fisherfolk';
-import {
-  EducationalBackground,
-  Gender,
-  Salutation,
-  SourceOfIncome,
-} from '@prisma/client';
+import { EducationalBackground, Gender, Salutation, SourceOfIncome } from '@prisma/client';
 import { sub } from 'date-fns/fp';
 
 const CreateFisherfolk = mutationField('createFisherfolk', {
@@ -16,11 +11,7 @@ const CreateFisherfolk = mutationField('createFisherfolk', {
   args: {
     data: CreateFisherfolkInput,
   },
-  validate: (
-    { string, date, number, array, object, boolean },
-    { data },
-    context
-  ) => {
+  validate: ({ string, date, number, array, object, boolean }, { data }, context) => {
     const maxBirthDate = sub({ years: 19 })(new Date());
     const uploadLimit = 10000000;
     const salutations = Object.values(Salutation);
@@ -29,38 +20,28 @@ const CreateFisherfolk = mutationField('createFisherfolk', {
     const sourceOfIncome = Object.values(SourceOfIncome);
 
     return {
-      lastName: string()
-        .matches(/^[a-zA-Z]+$/)
-        .required(),
-      firstName: string()
-        .matches(/^[a-zA-Z]+$/)
-        .required(),
-      middleName: string()
-        .matches(/^[a-zA-Z]+$/)
-        .required(),
-      salutation: string().oneOf(salutations).required(),
-      contactNumber: string()
-        .required()
-        .matches(/^(09|\+639)\d{9}$/),
-      barangay: string().required(),
-      cityMunicipality: string().required(),
-      province: string().required(),
+      lastName: string().matches(/^[a-zA-Z]+$/),
+      firstName: string().matches(/^[a-zA-Z]+$/),
+      middleName: string().matches(/^[a-zA-Z]+$/),
+      salutation: string().oneOf(salutations),
+      contactNumber: string().matches(/^(09|\+639)\d{9}$/),
+      barangay: string(),
+      cityMunicipality: string(),
+      province: string(),
       residentYear: number().moreThan(1500),
-      gender: string().oneOf(gender).required(),
+      gender: string().oneOf(gender),
       age: number().moreThan(17),
-      dateOfBirth: date().max(maxBirthDate).required(),
-      placeOfBirth: string().required(),
-      civilStatus: string().required(),
-      educationalBackground: string().oneOf(educationalBackground).required(),
+      dateOfBirth: date().max(maxBirthDate),
+      placeOfBirth: string(),
+      civilStatus: string(),
+      educationalBackground: string().oneOf(educationalBackground),
       numOfChildren: number(),
-      nationality: string().required(),
-      personToNotify: string().required(),
-      ptnRelationship: string().required(),
-      ptnContactNum: string()
-        .required()
-        .matches(/^(09|\+639)\d{9}$/),
-      ptnAddress: string().required(),
-      mainFishingActivity: string().oneOf(sourceOfIncome).required(),
+      nationality: string(),
+      personToNotify: string(),
+      ptnRelationship: string(),
+      ptnContactNum: string().matches(/^(09|\+639)\d{9}$/),
+      ptnAddress: string(),
+      mainFishingActivity: string().oneOf(sourceOfIncome),
       otherFishingActivity: array().of(string().oneOf(sourceOfIncome)).max(3),
       otherSourceOfIncome: string().matches(/^[a-zA-Z]+$/),
       orgName: string().matches(/^[a-zA-Z]+$/),
@@ -85,12 +66,12 @@ const CreateFisherfolk = mutationField('createFisherfolk', {
       gears: array().of(string().matches(/^[a-zA-Z0-9]+$/)),
       vessel: object().shape({
         registrationType: string(),
-        mfvrNumber: string().required(),
-        homeport: string().required(),
-        name: string().required(),
-        material: string().required(),
-        type: string().required(),
-        placeBuilt: string().required(),
+        mfvrNumber: string(),
+        homeport: string(),
+        name: string(),
+        material: string(),
+        type: string(),
+        placeBuilt: string(),
         yearBuilt: string().matches(/^$|\d{4}$/),
         registeredLength: string().matches(/^[0-9]\d*(\.\d+)?$/),
         registeredDepth: string().matches(/^[0-9]\d*(\.\d+)?$/),
@@ -100,8 +81,8 @@ const CreateFisherfolk = mutationField('createFisherfolk', {
         tonnageBreadth: string().matches(/^[0-9]\d*(\.\d+)?$/),
         grossTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/),
         netTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/),
-        engineMake: string().required(),
-        serialNumber: string().required(),
+        engineMake: string(),
+        serialNumber: string(),
         horsepower: string(),
       }),
     };
@@ -111,13 +92,13 @@ const CreateFisherfolk = mutationField('createFisherfolk', {
   },
 });
 
-const UpdateFisherfolk = mutationField('updateFisherfolk', {
-  type: Fisherfolk,
-  args: {
-    id: intArg(),
-    data: nonNullArg(CreateFisherfolkInput),
-  },
-  resolve: (_, args, ctx) => updateFisherfolk(args.id, args.data, ctx),
-});
+// const UpdateFisherfolk = mutationField('updateFisherfolk', {
+//   type: Fisherfolk,
+//   args: {
+//     id: intArg(),
+//     data: nonNullArg(CreateFisherfolkInput),
+//   },
+//   resolve: (_, args, ctx) => updateFisherfolk(args.id, args.data, ctx),
+// });
 
-export { CreateFisherfolk, UpdateFisherfolk };
+export { CreateFisherfolk };
