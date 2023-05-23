@@ -10,7 +10,7 @@ const OrganizationInput = inputObjectType({
 });
 
 const CreateFfolkOrganizationInput = inputObjectType({
-  name: 'OrganizationInput',
+  name: 'CreateFfolkOrganizationInput',
   definition(t) {
     t.field('fisherfolkId', { type: 'BigInt' });
     t.string('name');
