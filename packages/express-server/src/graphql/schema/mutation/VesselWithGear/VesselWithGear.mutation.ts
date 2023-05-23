@@ -1,12 +1,7 @@
 import { list, nonNull, mutationField, intArg, stringArg } from 'nexus';
-import CreateGearInput from '../../input/Gear.input';
+import { CreateGearInput } from '../../input/Gear.input';
 import { CreateVesselInput } from '../../input/Vessel.input';
-import {
-  createGear,
-  createVessel,
-  createVesselWithGear,
-  updateMfvr,
-} from './VesselWithGear.resolver';
+import { createGear, createVessel, createVesselWithGear, updateMfvr } from './VesselWithGear.resolver';
 import Vessel from '../../model/objecTypes/Vessel';
 import Gear from '../../model/objecTypes/Gear';
 
@@ -23,8 +18,7 @@ export const CreateGears = mutationField('createGears', {
   args: {
     gears: list(nonNull(CreateGearInput)),
   },
-  resolve: async (_, args, context) =>
-    args.gears.map((gear) => createGear(gear, context)),
+  resolve: async (_, args, context) => args.gears.map((gear) => createGear(gear, context)),
 });
 
 export const CreateVesselWithGear = mutationField('createVesselWithGear', {
@@ -33,8 +27,7 @@ export const CreateVesselWithGear = mutationField('createVesselWithGear', {
     vessel: nonNull(CreateVesselInput),
     gears: list(nonNull(CreateGearInput)),
   },
-  resolve: async (_, args, context) =>
-    createVesselWithGear(args.vessel, args.gears, context),
+  resolve: async (_, args, context) => createVesselWithGear(args.vessel, args.gears, context),
 });
 
 export const UpdateMFVR = mutationField('updateMfvr', {
@@ -43,6 +36,5 @@ export const UpdateMFVR = mutationField('updateMfvr', {
     id: nonNull(intArg()),
     mfvrNum: nonNull(stringArg()),
   },
-  resolve: async (_, args, context) =>
-    updateMfvr(args.id, args.mfvrNum, context),
+  resolve: async (_, args, context) => updateMfvr(args.id, args.mfvrNum, context),
 });
