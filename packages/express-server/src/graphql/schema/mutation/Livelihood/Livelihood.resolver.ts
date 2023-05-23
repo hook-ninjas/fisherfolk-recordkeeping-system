@@ -63,11 +63,11 @@ export const createLivelihood = async (input: CreateLivelihoodInput, context: Co
 
 export const createFisherfolkLivelihood = async (input: CreateFFolkLivelihoodInput, context: Context) => {
   const fisherfolkLivelihoods: Livelihood[] = [];
-  const { mainFishingActivity, otherFishingActivity, otherSourceOfIncome } = input;
+  const { fisherfolkId, mainFishingActivity, otherFishingActivity, otherSourceOfIncome } = input;
   const livelihoods = convertActivities(mainFishingActivity, otherFishingActivity, otherSourceOfIncome);
 
   for (const livelihood in livelihoods) {
-    const result = await createLivelihood(livelihoods[livelihood], context);
+    const result = await createLivelihood({ ...livelihoods[livelihood], fisherfolkId: fisherfolkId }, context);
     fisherfolkLivelihoods.push(result);
   }
 
