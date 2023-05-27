@@ -6,10 +6,7 @@ mutation CreateFisherfolk($data: CreateFisherfolkInput!) {
   }
 }
 
-mutation CreateVessselWithGear(
-  $vessel: CreateVesselInput!
-  $gears: [CreateGearInput!]!
-) {
+mutation CreateVessselWithGear($vessel: CreateVesselInput!, $gears: [CreateGearInput!]!) {
   createVesselWithGear(vessel: $vessel, gears: $gears) {
     id
   }
@@ -33,9 +30,9 @@ mutation CreateImage($data: CreateImageInput!) {
   }
 }
 
-mutation CreateUser($data: CreateUserInput!){
+mutation CreateUser($data: CreateUserInput!) {
   createUser(data: $data) {
-    token,
+    token
     user {
       id
       username
@@ -46,7 +43,7 @@ mutation CreateUser($data: CreateUserInput!){
 
 mutation LoginUser($data: CreateUserInput!) {
   loginUser(data: $data) {
-    token,
+    token
     user {
       id
       username
@@ -57,7 +54,7 @@ mutation LoginUser($data: CreateUserInput!) {
 
 mutation UpdateMFVR($id: Int!, $mfvrNum: String!) {
   updateMfvr(id: $id, mfvrNum: $mfvrNum) {
-   id
+    id
     mfvrNumber
     createdAt
     name
@@ -70,8 +67,8 @@ mutation UpdateMFVR($id: Int!, $mfvrNum: String!) {
   }
 }
 
-mutation UpdateFisherfolk($updateFisherfolkId: Int!, $data: CreateFisherfolkInput!) {
-  updateFisherfolk(id: $updateFisherfolkId, data: $data) {
-    id
-  }
-}
+# mutation UpdateFisherfolk($updateFisherfolkId: Int!, $data: CreateFisherfolkInput!) {
+#   updateFisherfolk(id: $updateFisherfolkId, data: $data) {
+#     id
+#   }
+# }
