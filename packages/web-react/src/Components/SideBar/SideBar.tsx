@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, Divider, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, Toolbar } from '@mui/material';
+import {
+  Box,
+  Divider,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Toolbar,
+} from '@mui/material';
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import FolderCopyOutlinedIcon from '@mui/icons-material/FolderCopyOutlined';
 import '../../Styles/SideBar.css';
@@ -70,7 +81,8 @@ const Drawer = styled(MuiDrawer, {
   '& .MuiDrawer-paper': {
     position: 'relative',
     width: drawerWidth,
-    background: 'radial-gradient(circle, rgba(40,193,129,.8) 40%, rgba(209,221,85,.7) 100%)',
+    background:
+      'radial-gradient(circle, rgba(40,193,129,.8) 40%, rgba(209,221,85,.7) 100%)',
     color: 'white',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -166,37 +178,69 @@ function Sidebar() {
           {SidebarItemList}
         </List>
         <Link to="/fisherfolk-archive" className="nav-link">
-          <ListItemButton sx={{ position: 'absolute', bottom: 50, width: '100%' }}>
+          <ListItemButton
+            sx={{ position: 'absolute', bottom: 50, width: '100%' }}
+          >
             <ListItemIcon>
               <ArchiveIcon sx={{ color: 'white' }} />
             </ListItemIcon>
             <ListItemText primary="Archived Record" />
           </ListItemButton>
         </Link>
-        <ListItemButton onClick={handleOpen} sx={{ position: 'absolute', bottom: 3, width: '100%' }}>
+        <ListItemButton
+          onClick={handleOpen}
+          sx={{ position: 'absolute', bottom: 3, width: '100%' }}
+        >
           <ListItemIcon>
-            <IconButton onClick={handleOpenAccSetting} size="small" sx={{ ml: 2 }} aria-controls={openAcc ? 'account-menu' : undefined} aria-haspopup="true" aria-expanded={openAcc ? 'true' : undefined}>
+            <IconButton
+              onClick={handleOpenAccSetting}
+              size="small"
+              sx={{ ml: 2 }}
+              aria-controls={openAcc ? 'account-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={openAcc ? 'true' : undefined}
+            >
               <AccountCircleIcon style={{ color: 'white', marginLeft: -21 }} />
             </IconButton>
           </ListItemIcon>
           <ListItemText primary="Account" />
         </ListItemButton>
       </Drawer>
-      <Menu anchorEl={anchorEl} id="account-menu" open={open} onClose={handleClose}>
+      <Menu
+        anchorEl={anchorEl}
+        id="account-menu"
+        open={open}
+        onClose={handleClose}
+      >
         <MenuItem onClick={handleOpenAddAccount} disableRipple>
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
           Add account
         </MenuItem>
-        {openAddAccount && <CreateAccount handleClose={handleCloseAddAccount} open={openAddAccount} />}
+        {openAddAccount && (
+          <CreateAccount
+            handleClose={handleCloseAddAccount}
+            open={openAddAccount}
+          />
+        )}
         <MenuItem onClick={handleOpenLogout} disableRipple>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
           Logout
         </MenuItem>
-        {openLogout && <CustomizedDialogs open={openLogout} handleClose={handleCloseLogout} handleLogout={handleLogout} title="Logout" message="Are you sure you want to logout?" leftBtnMsg="Cancel" rightBtnMsg="Logout" />}
+        {openLogout && (
+          <CustomizedDialogs
+            open={openLogout}
+            handleClose={handleCloseLogout}
+            handleLogout={handleLogout}
+            title="Logout"
+            message="Are you sure you want to logout?"
+            leftBtnMsg="Cancel"
+            rightBtnMsg="Logout"
+          />
+        )}
       </Menu>
     </>
   );

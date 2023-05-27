@@ -31,7 +31,7 @@ export const FisherfolkInfoPaper = styled(Paper)(({ theme }) => ({
 export const CustomTitleFont = styled(Typography)(({ theme }) => ({
   color: '#71797E',
   [theme.breakpoints.up('sm')]: {
-    display: 'inline'
+    display: 'inline',
   },
   [theme.breakpoints.down('sm')]: {
     fontSize: 20,
@@ -41,7 +41,7 @@ export const CustomTitleFont = styled(Typography)(({ theme }) => ({
 export const CustomCountFont = styled(Typography)(({ theme }) => ({
   color: '#71797E',
   [theme.breakpoints.up('sm')]: {
-    display: 'inline'
+    display: 'inline',
   },
   [theme.breakpoints.down('sm')]: {
     fontSize: 36,

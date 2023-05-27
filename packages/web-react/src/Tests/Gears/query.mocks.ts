@@ -1,4 +1,7 @@
-import { GearClassification, GearsQueryDocument } from '../../graphql/generated';
+import {
+  GearClassification,
+  GearsQueryDocument,
+} from '../../graphql/generated';
 import { MockedResponse } from '@apollo/client/testing';
 
 export const GearsQueryMock: MockedResponse[] = [
@@ -33,8 +36,8 @@ export const GearsQueryMock: MockedResponse[] = [
               middleName: 'Cruz',
             },
           },
-        ]
-      }
-    }
-  }
+        ],
+      },
+    },
+  },
 ];

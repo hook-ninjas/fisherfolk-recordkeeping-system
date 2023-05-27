@@ -201,9 +201,9 @@ query ArchiveFisherfolk {
   }
 }
 
-query Vessel ($vesselId: BigInt!){
+query Vessel($vesselId: BigInt!) {
   vessel(id: $vesselId) {
-     createdAt
+    createdAt
     engineMake
     grossTonnage
     homeport

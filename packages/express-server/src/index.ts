@@ -8,12 +8,19 @@ import {
 import http from 'http';
 import express, { Express, json, Request, Response } from 'express';
 import cors from 'cors';
+import cloudinary from 'cloudinary';
 import { context, createContext } from './graphql/context';
 import { schema } from './graphql/schema';
 import { Context } from './types/types';
 import { NexusGraphQLSchema } from 'nexus/dist/core';
 
 const app: Express = express();
+
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const isNan = (obj: any) => {
   return obj != null;
@@ -91,7 +98,7 @@ const startServer = async (
 
 startServer(context, schema, port, app);
 
-app.use(cors()).use(json());
+app.use(cors()).use(json({ limit: '50mb' }));
 
 app.get('/', (req: Request, res: Response) => res.send('HELLO HOOK NINJAS!!!'));
 

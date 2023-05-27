@@ -108,7 +108,7 @@ function CreateProgramForm({ open, handleClose }: CreateProgramFormProps) {
         refetchQueries: [
           {
             query: GovernmentAidsDocument,
-          }
+          },
         ],
       });
 

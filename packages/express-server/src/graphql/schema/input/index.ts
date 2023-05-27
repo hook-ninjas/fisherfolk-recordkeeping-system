@@ -1,10 +1,37 @@
 import CreateUserInput from './User.input';
-import { CreateFisherfolkInput, UpdateFisherfolkInput } from './Fisherfolk.input';
-import { CreateVesselInput } from './Vessel.input';
-import CreateGearInput from './Gear.input';
-import CreateImageInput from './Image.input';
+import { CreateFfolkVesselInput, CreateVesselInput } from './Vessel.input';
+import { CreateGearInput, CreateFfolkGearInput } from './Gear.input';
+import { ImageInput, UploadImageInput } from './Image.input';
+import {
+  CreateFfolkLivelihoodInput,
+  CreateLivelihoodInput,
+} from './Livelihood.input';
+import {
+  CreateFfolkOrganizationInput,
+  OrganizationInput,
+} from './Organization.input';
+import {
+  CreateFisherfolkInput,
+  UpdateFisherfolkInput,
+} from './Fisherfolk.input';
 import { CreateProgramInput, UpdateProgramInput } from './GovernmentAid.input';
 
-const Inputs = [CreateUserInput, CreateFisherfolkInput, CreateVesselInput, CreateGearInput, CreateImageInput, UpdateFisherfolkInput, CreateProgramInput, UpdateProgramInput];
+const Inputs = [
+  CreateUserInput,
+  CreateFisherfolkInput,
+  CreateFfolkLivelihoodInput,
+  CreateFfolkOrganizationInput,
+  OrganizationInput,
+  CreateLivelihoodInput,
+  CreateVesselInput,
+  CreateFfolkVesselInput,
+  CreateGearInput,
+  CreateFfolkGearInput,
+  UploadImageInput,
+  ImageInput,
+  UpdateFisherfolkInput,
+  CreateProgramInput,
+  UpdateProgramInput,
+];
 
 export default Inputs;

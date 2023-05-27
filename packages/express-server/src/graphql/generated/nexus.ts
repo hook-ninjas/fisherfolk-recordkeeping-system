@@ -38,6 +38,44 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  CreateFfolkGearInput: { // input type
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    types: string[]; // [String!]!
+  }
+  CreateFfolkLivelihoodInput: { // input type
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    mainFishingActivity: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
+    otherFishingActivity: NexusGenEnums['SourceOfIncome'][]; // [SourceOfIncome!]!
+    otherSourceOfIncome: string; // String!
+  }
+  CreateFfolkOrganizationInput: { // input type
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    name: string; // String!
+    position: string; // String!
+    yearJoined: number; // Int!
+  }
+  CreateFfolkVesselInput: { // input type
+    engineMake: string; // String!
+    files: NexusGenInputs['UploadImageInput'][]; // [UploadImageInput!]!
+    fisherfolkId?: NexusGenScalars['BigInt'] | null; // BigInt
+    grossTonnage?: number | null; // Float
+    homeport: string; // String!
+    horsepower?: number | null; // Float
+    material?: NexusGenEnums['Material'] | null; // Material
+    mfvrNumber: string; // String!
+    name: string; // String!
+    netTonnage?: number | null; // Float
+    placeBuilt: string; // String!
+    registeredBreadth?: number | null; // Float
+    registeredDepth?: number | null; // Float
+    registeredLength?: number | null; // Float
+    serialNumber: string; // String!
+    tonnageBreadth?: number | null; // Float
+    tonnageDepth?: number | null; // Float
+    tonnageLength?: number | null; // Float
+    type: string; // String!
+    yearBuilt?: number | null; // Int
+  }
   CreateFisherfolkInput: { // input type
     age: number; // Int!
     appellation: string; // String!
@@ -47,16 +85,21 @@ export interface NexusGenInputs {
     contactNum: string; // String!
     dateOfBirth: NexusGenScalars['DateTime']; // DateTime!
     educationalBackground: NexusGenEnums['EducationalBackground']; // EducationalBackground!
+    files: NexusGenInputs['UploadImageInput'][]; // [UploadImageInput!]!
     firstName: string; // String!
+    gears?: string[] | null; // [String!]
     gender: NexusGenEnums['Gender']; // Gender!
     lastName: string; // String!
-    livelihoods: NexusGenInputs['livelihoodInput'][]; // [livelihoodInput!]!
+    mainFishingActivity: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
     middleName: string; // String!
     nationality: string; // String!
     numOfChildren: number; // Int!
     organization?: NexusGenInputs['OrganizationInput'] | null; // OrganizationInput
+    otherFishingActivity: NexusGenEnums['SourceOfIncome'][]; // [SourceOfIncome!]!
+    otherSourceOfIncome: string; // String!
     personToNotify: string; // String!
     placeOfBirth: string; // String!
+    profilePhoto: NexusGenInputs['UploadImageInput']; // UploadImageInput!
     province: string; // String!
     ptnAddress: string; // String!
     ptnContactNum: string; // String!
@@ -64,6 +107,7 @@ export interface NexusGenInputs {
     religion: string; // String!
     residentYear: number; // Int!
     salutation: NexusGenEnums['Salutation']; // Salutation!
+    vessel?: NexusGenInputs['CreateFfolkVesselInput'] | null; // CreateFfolkVesselInput
   }
   CreateGearInput: { // input type
     classification: NexusGenEnums['GearClassification']; // GearClassification!
@@ -76,10 +120,18 @@ export interface NexusGenInputs {
     gear_id?: NexusGenScalars['BigInt'] | null; // BigInt
     government_aid_id?: number | null; // Int
     name: string; // String!
+    size?: number | null; // Int
     text: string; // String!
+    type?: string | null; // String
     updated_at: NexusGenScalars['DateTime']; // DateTime!
     url: string; // String!
     vessel_id?: NexusGenScalars['BigInt'] | null; // BigInt
+  }
+  CreateLivelihoodInput: { // input type
+    description: string; // String!
+    fisherfolkId?: NexusGenScalars['BigInt'] | null; // BigInt
+    isMain: boolean; // Boolean!
+    type: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
   }
   CreateProgramInput: { // input type
     date: NexusGenScalars['DateTime']; // DateTime!
@@ -129,7 +181,7 @@ export interface NexusGenInputs {
     firstName: string; // String!
     gender: NexusGenEnums['Gender']; // Gender!
     lastName: string; // String!
-    livelihoods: NexusGenInputs['livelihoodInput'][]; // [livelihoodInput!]!
+    livelihoods: NexusGenInputs['CreateLivelihoodInput'][]; // [CreateLivelihoodInput!]!
     middleName: string; // String!
     nationality: string; // String!
     numOfChildren: number; // Int!
@@ -171,10 +223,15 @@ export interface NexusGenInputs {
     type: string; // String!
     yearBuilt?: number | null; // Int
   }
-  livelihoodInput: { // input type
-    description: string; // String!
-    isMain: boolean; // Boolean!
-    type: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
+  UploadImageInput: { // input type
+    fisherfolkId?: NexusGenScalars['BigInt'] | null; // BigInt
+    gearId?: NexusGenScalars['BigInt'] | null; // BigInt
+    isProfileImage?: boolean | null; // Boolean
+    name: string; // String!
+    size?: number | null; // Int
+    type?: string | null; // String
+    uri: string; // String!
+    vesselId?: NexusGenScalars['BigInt'] | null; // BigInt
   }
 }
 

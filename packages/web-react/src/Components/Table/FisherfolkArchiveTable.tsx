@@ -3,18 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import Loading from '../Loading/Loading';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { splitUpperCase } from '../../utils/utils';
-import {
-  DataGrid,
-  GridColumns,
-  GridRowsProp,
-} from '@mui/x-data-grid';
+import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
 import { Alert, Backdrop, Button, Menu, MenuItem } from '@mui/material';
 import RestoreIcon from '@mui/icons-material/Restore';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import moment from 'moment';
 import { ApolloError, useMutation } from '@apollo/client';
-import { ArchiveFisherfolkDocument, ArchiveFisherfolkQuery, QueryFisherfolksDocument, UpdateRestreFisherfolkDocument } from '../../graphql/generated';
-import { showRestoreSuccess, showRestoreError } from '../ConfirmationDialog/Alerts';
+import {
+  ArchiveFisherfolkDocument,
+  ArchiveFisherfolkQuery,
+  QueryFisherfolksDocument,
+  UpdateRestreFisherfolkDocument,
+} from '../../graphql/generated';
+import {
+  showRestoreSuccess,
+  showRestoreError,
+} from '../ConfirmationDialog/Alerts';
 
 interface Props {
   error: ApolloError | undefined;
@@ -70,7 +74,7 @@ const renderMoreActions = (id: number) => {
       );
     }
   };
-  
+
   return (
     <div>
       <Button
@@ -94,10 +98,13 @@ const renderMoreActions = (id: number) => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => {
-          RestoreAFsiherfolk();
-          restoreHandler();
-        }} disableRipple>
+        <MenuItem
+          onClick={() => {
+            RestoreAFsiherfolk();
+            restoreHandler();
+          }}
+          disableRipple
+        >
           <RestoreIcon sx={{ width: 20, marginRight: 1.5 }} /> Restore
         </MenuItem>
       </Menu>
@@ -105,7 +112,11 @@ const renderMoreActions = (id: number) => {
   );
 };
 
-export default function FisherfolkArchiveTable({ error, loading, data }: Props) {
+export default function FisherfolkArchiveTable({
+  error,
+  loading,
+  data,
+}: Props) {
   let rows: GridRowsProp = [];
 
   if (error) {

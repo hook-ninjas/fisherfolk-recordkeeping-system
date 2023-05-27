@@ -1,4 +1,8 @@
-import { CreateImage, CreateMultipleImage, UpdateFisherfolkImage } from './Image.mutation';
+import {
+  CreateImage,
+  CreateMultipleImage,
+  UpdateFisherfolkImage,
+} from './Image.mutation';
 
 const Mutations = [CreateImage, UpdateFisherfolkImage, CreateMultipleImage];
 

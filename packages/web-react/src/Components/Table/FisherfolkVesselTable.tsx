@@ -1,14 +1,41 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { DataGrid, GridColumns, GridRowModel, GridRowsProp } from '@mui/x-data-grid';
-import { UpdateMfvrDocument, UpdateToArchiveVesselDocument, VesselQueryDocument, ArchiveVesselDocument, UpdateToArchiveGearDocument, ArchiveGearDocument } from '../../graphql/generated';
+import {
+  DataGrid,
+  GridColumns,
+  GridRowModel,
+  GridRowsProp,
+} from '@mui/x-data-grid';
+import {
+  UpdateMfvrDocument,
+  UpdateToArchiveVesselDocument,
+  VesselQueryDocument,
+  ArchiveVesselDocument,
+  UpdateToArchiveGearDocument,
+  ArchiveGearDocument,
+} from '../../graphql/generated';
 import { useMutation, useQuery, ApolloError } from '@apollo/client';
 import Loading from '../Loading/Loading';
-import { Alert, AlertProps, Backdrop, Button, Dialog, DialogActions, DialogContent, DialogTitle, Menu, MenuItem, Snackbar } from '@mui/material';
+import {
+  Alert,
+  AlertProps,
+  Backdrop,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Menu,
+  MenuItem,
+  Snackbar,
+} from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import moment from 'moment';
-import { showArchiveError, showArchiveSuccess } from '../ConfirmationDialog/Alerts';
+import {
+  showArchiveError,
+  showArchiveSuccess,
+} from '../ConfirmationDialog/Alerts';
 import UpdateVesselForm from '../Forms/UpdateVesselForm';
 import { VesselQueryQuery } from '../../graphql/generated';
 
@@ -33,17 +60,20 @@ const renderMoreActions = (id: number) => {
     setUpdateVessel(false);
     handleClose();
   };
-  
-  const [archiveVessel, archiveResult] = useMutation(UpdateToArchiveVesselDocument, {
-    refetchQueries: [
-      {
-        query: VesselQueryDocument,
-      },
-      {
-        query: ArchiveGearDocument,
-      },
-    ],
-  });
+
+  const [archiveVessel, archiveResult] = useMutation(
+    UpdateToArchiveVesselDocument,
+    {
+      refetchQueries: [
+        {
+          query: VesselQueryDocument,
+        },
+        {
+          query: ArchiveGearDocument,
+        },
+      ],
+    }
+  );
 
   const ArchiveAVessel = () => {
     archiveVessel({
@@ -62,13 +92,27 @@ const renderMoreActions = (id: number) => {
   const archiveHandler = () => {
     const { loading } = archiveResult;
     if (loading) {
-      return <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}></Backdrop>;
+      return (
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+        ></Backdrop>
+      );
     }
   };
 
   return (
     <div>
-      <Button id="vessel-action-btn" aria-controls={open ? 'vessel-action-btn' : undefined} aria-haspopup="true" aria-expanded={open ? 'true' : undefined} aria-label="vessel-action-btn" disableElevation onClick={handleClick} style={{ color: '#808080' }}>
+      <Button
+        id="vessel-action-btn"
+        aria-controls={open ? 'vessel-action-btn' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        aria-label="vessel-action-btn"
+        disableElevation
+        onClick={handleClick}
+        style={{ color: '#808080' }}
+      >
         <MoreVertIcon />
       </Button>
       <Menu
@@ -83,7 +127,13 @@ const renderMoreActions = (id: number) => {
         <MenuItem onClick={handleUpdateFormOpen} disableRipple>
           <EditIcon sx={{ width: 20, marginRight: 1.5 }} /> Edit
         </MenuItem>
-        {updateVessel && <UpdateVesselForm id={id} handleClose={handleUpdateFormClose} open={updateVessel} />}
+        {updateVessel && (
+          <UpdateVesselForm
+            id={id}
+            handleClose={handleUpdateFormClose}
+            open={updateVessel}
+          />
+        )}
         <MenuItem
           onClick={() => {
             ArchiveAVessel();
@@ -119,7 +169,10 @@ export default function FisherfolkVesselTable({ error, loading, data }: Props) {
   const noButtonRef = useRef<HTMLButtonElement>(null);
   const [promiseArguments, setPromiseArguments] = useState<any>(null);
 
-  const [snackbar, setSnackbar] = React.useState<Pick<AlertProps, 'children' | 'severity'> | null>(null);
+  const [snackbar, setSnackbar] = React.useState<Pick<
+    AlertProps,
+    'children' | 'severity'
+  > | null>(null);
 
   const handleCloseSnackbar = () => setSnackbar(null);
 
@@ -179,9 +232,15 @@ export default function FisherfolkVesselTable({ error, loading, data }: Props) {
     const mutation = computeMutation(newRow, oldRow);
 
     return (
-      <Dialog maxWidth="xs" TransitionProps={{ onEntered: handleEntered }} open={!!promiseArguments}>
+      <Dialog
+        maxWidth="xs"
+        TransitionProps={{ onEntered: handleEntered }}
+        open={!!promiseArguments}
+      >
         <DialogTitle>Are you sure?</DialogTitle>
-        <DialogContent dividers>{`Pressing YES will change ${mutation}.`}</DialogContent>
+        <DialogContent
+          dividers
+        >{`Pressing YES will change ${mutation}.`}</DialogContent>
         <DialogActions>
           <Button ref={noButtonRef} onClick={handleNo}>
             No
@@ -218,7 +277,14 @@ export default function FisherfolkVesselTable({ error, loading, data }: Props) {
   return (
     <div style={{ height: '85vh', width: '100%' }}>
       {renderConfirmDialog()}
-      <DataGrid rows={rows} columns={columns} experimentalFeatures={{ newEditingApi: true }} disableVirtualization={true} processRowUpdate={processRowUpdate} aria-label="vessel-table" />
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        experimentalFeatures={{ newEditingApi: true }}
+        disableVirtualization={true}
+        processRowUpdate={processRowUpdate}
+        aria-label="vessel-table"
+      />
       {!!snackbar && (
         <Snackbar open onClose={handleCloseSnackbar} autoHideDuration={6000}>
           <Alert {...snackbar} onClose={handleCloseSnackbar} />

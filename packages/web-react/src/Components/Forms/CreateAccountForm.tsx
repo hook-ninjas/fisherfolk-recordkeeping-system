@@ -1,16 +1,30 @@
 import React, { useState } from 'react';
-import { Button, TextField, Box, IconButton, InputAdornment, Snackbar, DialogContent } from '@mui/material';
+import {
+  Button,
+  TextField,
+  Box,
+  IconButton,
+  InputAdornment,
+  Snackbar,
+  DialogContent,
+} from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Alert from '@mui/material/Alert';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CreateUserDocument, MutationCreateUserArgs } from '../../graphql/generated';
+import {
+  CreateUserDocument,
+  MutationCreateUserArgs,
+} from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { CreateAccountSchema } from './validation/schema';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
-import { FormContainer, FormContainerTitle } from '../Containers/FormContainers';
+import {
+  FormContainer,
+  FormContainerTitle,
+} from '../Containers/FormContainers';
 
 interface CreateAccountFormProps {
   open: boolean;
@@ -29,7 +43,10 @@ function CreateAccount({ open, handleClose }: CreateAccountFormProps) {
     setOpenSnackbar(true);
   };
 
-  const handleCloseSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+  const handleCloseSnackbar = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -85,22 +102,46 @@ function CreateAccount({ open, handleClose }: CreateAccountFormProps) {
     });
 
     //set token to local storage
-    localStorage.setItem('token', result.data ? result.data.createUser.token : '');
+    localStorage.setItem(
+      'token',
+      result.data ? result.data.createUser.token : ''
+    );
   });
 
-  const handleSubmitCreateAccountForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleSubmitCreateAccountForm = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     onSubmit();
   };
 
   return (
     <FormContainer onClose={close} aria-labelledby="form-container" open={open}>
-      <FormContainerTitle aria-labelledby="form-container-title" onClose={handleClose}>
+      <FormContainerTitle
+        aria-labelledby="form-container-title"
+        onClose={handleClose}
+      >
         Add Account
       </FormContainerTitle>
       <DialogContent dividers>
         <Box component="form" sx={{ mt: 1 }}>
-          <Controller name="username" control={control} render={({ field: { value } }) => <TextField autoComplete="new-email" margin="normal" fullWidth id="username" label="Username" value={value} {...register('username')} helperText={errors['username']?.message?.toString()} error={!!errors['username']} />} />
+          <Controller
+            name="username"
+            control={control}
+            render={({ field: { value } }) => (
+              <TextField
+                autoComplete="new-email"
+                margin="normal"
+                fullWidth
+                id="username"
+                label="Username"
+                value={value}
+                {...register('username')}
+                helperText={errors['username']?.message?.toString()}
+                error={!!errors['username']}
+              />
+            )}
+          />
           <Controller
             name="password"
             control={control}
@@ -119,7 +160,10 @@ function CreateAccount({ open, handleClose }: CreateAccountFormProps) {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton aria-label="pwd-visibility" onClick={handleClickShowPassword}>
+                      <IconButton
+                        aria-label="pwd-visibility"
+                        onClick={handleClickShowPassword}
+                      >
                         {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </InputAdornment>
@@ -164,8 +208,16 @@ function CreateAccount({ open, handleClose }: CreateAccountFormProps) {
             </Button>
           )}
           {!isSubmitting ? (
-            <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={handleCloseSnackbar}>
-              <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%', background: '#98FB98' }}>
+            <Snackbar
+              open={openSnackbar}
+              autoHideDuration={2000}
+              onClose={handleCloseSnackbar}
+            >
+              <Alert
+                onClose={handleCloseSnackbar}
+                severity="success"
+                sx={{ width: '100%', background: '#98FB98' }}
+              >
                 Success! Your account has been created.
               </Alert>
             </Snackbar>

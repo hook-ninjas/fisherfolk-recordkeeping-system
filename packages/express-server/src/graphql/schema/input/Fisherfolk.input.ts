@@ -1,3 +1,4 @@
+import { SourceOfIncome } from './../enums/index';
 import { nullable, list, inputObjectType } from 'nexus';
 import {
   CivilStatus,
@@ -5,8 +6,10 @@ import {
   Gender,
   Salutation,
 } from '../enums/';
-import LivelihoodInput from './Livelihood.input';
-import OrganizationInput from './Organization.input';
+import { OrganizationInput } from './Organization.input';
+import { UploadImageInput } from './Image.input';
+import { CreateFfolkVesselInput } from './Vessel.input';
+import { CreateLivelihoodInput } from './Livelihood.input';
 
 const CreateFisherfolkInput = inputObjectType({
   name: 'CreateFisherfolkInput',
@@ -34,8 +37,14 @@ const CreateFisherfolkInput = inputObjectType({
     t.string('ptnRelationship');
     t.string('ptnAddress');
     t.string('ptnContactNum');
-    t.field('livelihoods', { type: list(LivelihoodInput) });
-    t.field('organization', { type: nullable(OrganizationInput) });
+    t.field('mainFishingActivity', { type: SourceOfIncome });
+    t.field('otherFishingActivity', { type: list(SourceOfIncome) });
+    t.string('otherSourceOfIncome');
+    t.nullable.field('organization', { type: nullable(OrganizationInput) });
+    t.field('profilePhoto', { type: UploadImageInput });
+    t.field('files', { type: list(UploadImageInput) });
+    t.nullable.field('gears', { type: list('String') });
+    t.nullable.field('vessel', { type: CreateFfolkVesselInput });
   },
 });
 
@@ -65,7 +74,7 @@ const UpdateFisherfolkInput = inputObjectType({
     t.string('ptnRelationship');
     t.string('ptnAddress');
     t.string('ptnContactNum');
-    t.field('livelihoods', { type: list(LivelihoodInput) });
+    t.field('livelihoods', { type: list(CreateLivelihoodInput) });
     t.field('organizations', { type: list(nullable(OrganizationInput)) });
   },
 });

@@ -1,55 +1,96 @@
 import { Context } from '../../../context';
 import { NexusGenInputs } from '../../../generated/nexus';
+import { createImage } from '../Image/Image.resolver';
+import { createFisherfolkLivelihood } from '../Livelihood/Livelihood.resolver';
+import { createFisherfolkOrganization } from '../Organization/Organization.resolver';
+import { createFfolkGears } from '../Gears/Gears.resolver';
+import { createFfolkVessel } from '../Vessel/Vessel.resolver';
 import 'dotenv/config';
 import Fisherfolk from '../../model/objecTypes/Fisherfolk';
 
 type CreateFisherfolkInput = NexusGenInputs['CreateFisherfolkInput'];
 type UpdateFisherfolkInput = NexusGenInputs['UpdateFisherfolkInput'];
 
-const createFisherfolk = (input: CreateFisherfolkInput, ctx: Context) => {
-  const { organization, livelihoods } = input;
+const createFisherfolk = async (
+  input: NexusGenInputs['CreateFisherfolkInput'],
+  context: Context
+) => {
+  const {
+    organization,
+    mainFishingActivity,
+    otherFishingActivity,
+    otherSourceOfIncome,
+    gears,
+    vessel,
+    profilePhoto,
+    files,
+  } = input;
 
-  if (organization != null || organization != undefined) {
-    const { yearJoined, position, name } = organization;
+  const ffolkInfo = {
+    lastName: input.lastName,
+    firstName: input.firstName,
+    middleName: input.middleName,
+    appellation: input.appellation,
+    age: input.age,
+    salutation: input.salutation,
+    barangay: input.barangay,
+    cityMunicipality: input.cityMunicipality,
+    province: input.province,
+    contactNum: input.contactNum,
+    residentYear: input.residentYear,
+    dateOfBirth: input.dateOfBirth,
+    placeOfBirth: input.placeOfBirth,
+    religion: input.religion,
+    gender: input.gender,
+    civilStatus: input.civilStatus,
+    numOfChildren: input.numOfChildren,
+    nationality: input.nationality,
+    educationalBackground: input.educationalBackground,
+    personToNotify: input.personToNotify,
+    ptnRelationship: input.ptnRelationship,
+    ptnAddress: input.ptnAddress,
+    ptnContactNum: input.ptnContactNum,
+  };
 
-    return ctx.prisma.fisherfolk.create({
-      data: {
-        ...input,
-        livelihoods: {
-          createMany: {
-            data: [...livelihoods],
-          },
-        },
-        organizations: {
-          create: {
-            yearJoined,
-            position,
-            organization: {
-              connectOrCreate: {
-                create: {
-                  name,
-                },
-                where: {
-                  name: name,
-                },
-              },
-            },
-          },
-        },
-      },
-    });
-  }
-
-  return ctx.prisma.fisherfolk.create({
+  const fisherfolk = await context.prisma.fisherfolk.create({
     data: {
-      ...input,
-      livelihoods: {
-        createMany: {
-          data: [...livelihoods],
-        },
-      },
+      ...ffolkInfo,
     },
   });
+
+  const { id } = fisherfolk;
+
+  const livelihoods: NexusGenInputs['CreateFfolkLivelihoodInput'] = {
+    fisherfolkId: id,
+    mainFishingActivity: mainFishingActivity,
+    otherFishingActivity: otherFishingActivity,
+    otherSourceOfIncome: otherSourceOfIncome,
+  };
+
+  createFisherfolkLivelihood(livelihoods, context);
+
+  const images = [profilePhoto, ...files];
+
+  for (const image in images) {
+    await createImage({ fisherfolkId: id, ...images[image] }, context);
+  }
+
+  if (organization) {
+    await createFisherfolkOrganization(
+      { fisherfolkId: id, ...organization },
+      context
+    );
+  }
+
+  if (gears) {
+    await createFfolkGears({ fisherfolkId: id, types: gears }, context);
+  }
+
+  if (vessel) {
+    await createFfolkVessel({ fisherfolkId: id, ...vessel }, context);
+  }
+
+  return fisherfolk;
 };
 
 const updateFisherfolk = async (
@@ -166,34 +207,33 @@ const updateFisherfolk = async (
   });
 };
 
-const archiveFisherfolk = async (
-  id: number,
-  ctx: Context
-) => {
+const archiveFisherfolk = async (id: number, ctx: Context) => {
   return ctx.prisma.fisherfolk.update({
     where: {
-      id: id
-    }, 
+      id: id,
+    },
     data: {
-      isArchive: true 
-    }
+      isArchive: true,
+    },
   });
 
   // return ctx.prisma
 };
 
-const restoreFisherfolk = async (
-  id: number,
-  ctx: Context
-) => {
+const restoreFisherfolk = async (id: number, ctx: Context) => {
   return ctx.prisma.fisherfolk.update({
     where: {
-      id: id
+      id: id,
     },
     data: {
-      isArchive: false
-    }
+      isArchive: false,
+    },
   });
 };
 
-export { createFisherfolk, updateFisherfolk, archiveFisherfolk, restoreFisherfolk };
+export {
+  createFisherfolk,
+  updateFisherfolk,
+  archiveFisherfolk,
+  restoreFisherfolk,
+};

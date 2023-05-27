@@ -23,7 +23,11 @@ const FisherfolkBoatRecord = () => {
           </Box>
           <Grid item>
             <Box m={1}>
-              <FisherfolkVesselTable loading={loading} error={error} data={data} />
+              <FisherfolkVesselTable
+                loading={loading}
+                error={error}
+                data={data}
+              />
             </Box>
           </Grid>
         </Paper>

@@ -24,11 +24,11 @@ describe('Archived Fisherfolk Record Page', () => {
         </MockedProvider>
       );
     });
-  
+
   it('checks the default state', async () => {
     renderPage();
     const heading = screen.getByRole('heading', { level: 6 });
-    
+
     expect(heading.textContent).toBe('Archived Record');
   });
 
@@ -42,7 +42,7 @@ describe('Archived Fisherfolk Record Page', () => {
     )[1];
 
     expect(firstRecord).toBeInTheDocument();
-    
+
     const id = await within(firstRecord).findByRole('cell', {
       name: /19/i,
     });
@@ -78,7 +78,6 @@ describe('Archived Fisherfolk Record Page', () => {
     expect(livelihood).toBeInTheDocument();
     expect(barangay).toBeInTheDocument();
     expect(status).toBeInTheDocument();
-    
   }, 20_000);
 
   it('check if user is able to view a record', async () => {

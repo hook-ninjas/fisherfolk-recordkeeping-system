@@ -15,8 +15,8 @@ export const CreateUser = mutationField('createUser', {
     // check if username already exist
     const existingUser = await context.prisma.user.findFirst({
       where: {
-        username: username
-      }
+        username: username,
+      },
     });
 
     // throw error if user exists;

@@ -49,11 +49,11 @@ describe('Create Program', () => {
     cy.get('[id=description]')
       .click()
       .type(
-        'Fisherfolk Cash Assistance is a government event aimed at providing financial aid to fishermen and their families who have been severely affected by the COVID-19 pandemic. The cash assistance program aims to help them cope with the loss of income due to the pandemic, which has greatly impacted their livelihoods. The government\'s goal is to assist over a million fisherfolk across the country, with each family receiving a one-time cash grant of Php 5,000. The program is being implemented by the Department of Agriculture - Bureau of Fisheries and Aquatic Resources (DA-BFAR) in collaboration with local government units and fisherfolk associations.'
+        "Fisherfolk Cash Assistance is a government event aimed at providing financial aid to fishermen and their families who have been severely affected by the COVID-19 pandemic. The cash assistance program aims to help them cope with the loss of income due to the pandemic, which has greatly impacted their livelihoods. The government's goal is to assist over a million fisherfolk across the country, with each family receiving a one-time cash grant of Php 5,000. The program is being implemented by the Department of Agriculture - Bureau of Fisheries and Aquatic Resources (DA-BFAR) in collaboration with local government units and fisherfolk associations."
       )
       .should(
         'have.value',
-        'Fisherfolk Cash Assistance is a government event aimed at providing financial aid to fishermen and their families who have been severely affected by the COVID-19 pandemic. The cash assistance program aims to help them cope with the loss of income due to the pandemic, which has greatly impacted their livelihoods. The government\'s goal is to assist over a million fisherfolk across the country, with each family receiving a one-time cash grant of Php 5,000. The program is being implemented by the Department of Agriculture - Bureau of Fisheries and Aquatic Resources (DA-BFAR) in collaboration with local government units and fisherfolk associations.'
+        "Fisherfolk Cash Assistance is a government event aimed at providing financial aid to fishermen and their families who have been severely affected by the COVID-19 pandemic. The cash assistance program aims to help them cope with the loss of income due to the pandemic, which has greatly impacted their livelihoods. The government's goal is to assist over a million fisherfolk across the country, with each family receiving a one-time cash grant of Php 5,000. The program is being implemented by the Department of Agriculture - Bureau of Fisheries and Aquatic Resources (DA-BFAR) in collaboration with local government units and fisherfolk associations."
       );
   });
 
@@ -66,7 +66,9 @@ describe('Create Program', () => {
   });
 
   it('should check newly added program', () => {
-    cy.get('[id=program-title]')
-      .should('contain', 'Fisherfolk Cash Assistance');
+    cy.get('[id=program-title]').should(
+      'contain',
+      'Fisherfolk Cash Assistance'
+    );
   });
 });

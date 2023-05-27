@@ -12,7 +12,11 @@ export const createProgram = (data: CreateProgramInput, ctx: Context) => {
   });
 };
 
-export const updateProgram = async (governmentAidID: number, input: UpdateProgramInput, ctx: Context) => {
+export const updateProgram = async (
+  governmentAidID: number,
+  input: UpdateProgramInput,
+  ctx: Context
+) => {
   return ctx.prisma.governmentAid.update({
     where: {
       id: governmentAidID,

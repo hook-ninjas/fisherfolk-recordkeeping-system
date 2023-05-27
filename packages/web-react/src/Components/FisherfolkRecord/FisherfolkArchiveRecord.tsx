@@ -3,7 +3,9 @@ import { Box, Grid, Paper, Typography } from '@mui/material';
 import FisherfolkArchiveTable from '../Table/FisherfolkArchiveTable';
 import {
   ArchiveFisherfolkDocument,
-  ArchiveGearDocument, ArchiveVesselDocument} from '../../graphql/generated';
+  ArchiveGearDocument,
+  ArchiveVesselDocument,
+} from '../../graphql/generated';
 import { useQuery } from '@apollo/client';
 import BasicTabs, { Item } from '../Tab/BasicTab';
 import GearArchiveTable from '../Table/GearArchiveTable';
@@ -13,13 +15,13 @@ const FisherfolkArchiveRecord = () => {
   const { loading, error, data } = useQuery(ArchiveFisherfolkDocument);
   const gear = useQuery(ArchiveGearDocument);
   const vessel = useQuery(ArchiveVesselDocument);
-  
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Paper
           sx={{
-            p: .5,
+            p: 0.5,
             display: 'flex',
             flexDirection: 'column',
             boxShadow: 2,
@@ -34,9 +36,27 @@ const FisherfolkArchiveRecord = () => {
                 tab1Label="Fisherfolks"
                 tab2Label="Gears"
                 tab3Label="Boats"
-                tabelPanel1={<FisherfolkArchiveTable error={error} loading={loading} data={data} />}
-                tabelPanel2={<GearArchiveTable error={gear.error} loading={gear.loading} data={gear.data} />}
-                tablePanel3= {<VesselArchiveTable error={vessel.error} loading={vessel.loading} data={vessel.data} />}
+                tabelPanel1={
+                  <FisherfolkArchiveTable
+                    error={error}
+                    loading={loading}
+                    data={data}
+                  />
+                }
+                tabelPanel2={
+                  <GearArchiveTable
+                    error={gear.error}
+                    loading={gear.loading}
+                    data={gear.data}
+                  />
+                }
+                tablePanel3={
+                  <VesselArchiveTable
+                    error={vessel.error}
+                    loading={vessel.loading}
+                    data={vessel.data}
+                  />
+                }
               />
             </Grid>
           </Item>

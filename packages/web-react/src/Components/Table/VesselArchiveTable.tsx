@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../Loading/Loading';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {
-  DataGrid,
-  GridColumns,
-  GridRowsProp,
-} from '@mui/x-data-grid';
+import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
 import { Alert, Backdrop, Button, Menu, MenuItem } from '@mui/material';
 import RestoreIcon from '@mui/icons-material/Restore';
 import moment from 'moment';
 import { ApolloError, useMutation } from '@apollo/client';
 import {
   QueryFisherfolksDocument,
-  ArchiveVesselQuery, RestoreVesselDocument, ArchiveVesselDocument
+  ArchiveVesselQuery,
+  RestoreVesselDocument,
+  ArchiveVesselDocument,
 } from '../../graphql/generated';
-import { showRestoreSuccess, showRestoreError } from '../ConfirmationDialog/Alerts';
+import {
+  showRestoreSuccess,
+  showRestoreError,
+} from '../ConfirmationDialog/Alerts';
 
 interface Props {
   error: ApolloError | undefined;
@@ -31,19 +32,16 @@ const renderMoreActions = (id: number) => {
   };
   const handleClose = () => setAnchorEl(null);
 
-  const [restoreVessel, restoreResult] = useMutation(
-    RestoreVesselDocument,
-    {
-      refetchQueries: [
-        {
-          query: QueryFisherfolksDocument,
-        },
-        {
-          query: ArchiveVesselDocument,
-        },
-      ],
-    }
-  );
+  const [restoreVessel, restoreResult] = useMutation(RestoreVesselDocument, {
+    refetchQueries: [
+      {
+        query: QueryFisherfolksDocument,
+      },
+      {
+        query: ArchiveVesselDocument,
+      },
+    ],
+  });
 
   const RestoreAFsiherfolk = () => {
     restoreVessel({
@@ -71,7 +69,7 @@ const renderMoreActions = (id: number) => {
       );
     }
   };
-  
+
   return (
     <div>
       <Button
@@ -95,10 +93,13 @@ const renderMoreActions = (id: number) => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => {
-          RestoreAFsiherfolk();
-          restoreHandler();
-        }} disableRipple>
+        <MenuItem
+          onClick={() => {
+            RestoreAFsiherfolk();
+            restoreHandler();
+          }}
+          disableRipple
+        >
           <RestoreIcon sx={{ width: 20, marginRight: 1.5 }} /> Restore
         </MenuItem>
       </Menu>

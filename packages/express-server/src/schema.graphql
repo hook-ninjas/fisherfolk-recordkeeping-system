@@ -19,6 +19,48 @@ enum CivilStatus {
   Widowed
 }
 
+input CreateFfolkGearInput {
+  fisherfolkId: BigInt!
+  types: [String!]!
+}
+
+input CreateFfolkLivelihoodInput {
+  fisherfolkId: BigInt!
+  mainFishingActivity: SourceOfIncome!
+  otherFishingActivity: [SourceOfIncome!]!
+  otherSourceOfIncome: String!
+}
+
+input CreateFfolkOrganizationInput {
+  fisherfolkId: BigInt!
+  name: String!
+  position: String!
+  yearJoined: Int!
+}
+
+input CreateFfolkVesselInput {
+  engineMake: String!
+  files: [UploadImageInput!]!
+  fisherfolkId: BigInt
+  grossTonnage: Float
+  homeport: String!
+  horsepower: Float
+  material: Material
+  mfvrNumber: String!
+  name: String!
+  netTonnage: Float
+  placeBuilt: String!
+  registeredBreadth: Float
+  registeredDepth: Float
+  registeredLength: Float
+  serialNumber: String!
+  tonnageBreadth: Float
+  tonnageDepth: Float
+  tonnageLength: Float
+  type: String!
+  yearBuilt: Int
+}
+
 input CreateFisherfolkInput {
   age: Int!
   appellation: String!
@@ -28,16 +70,21 @@ input CreateFisherfolkInput {
   contactNum: String!
   dateOfBirth: DateTime!
   educationalBackground: EducationalBackground!
+  files: [UploadImageInput!]!
   firstName: String!
+  gears: [String!]
   gender: Gender!
   lastName: String!
-  livelihoods: [livelihoodInput!]!
+  mainFishingActivity: SourceOfIncome!
   middleName: String!
   nationality: String!
   numOfChildren: Int!
   organization: OrganizationInput
+  otherFishingActivity: [SourceOfIncome!]!
+  otherSourceOfIncome: String!
   personToNotify: String!
   placeOfBirth: String!
+  profilePhoto: UploadImageInput!
   province: String!
   ptnAddress: String!
   ptnContactNum: String!
@@ -45,6 +92,7 @@ input CreateFisherfolkInput {
   religion: String!
   residentYear: Int!
   salutation: Salutation!
+  vessel: CreateFfolkVesselInput
 }
 
 input CreateGearInput {
@@ -59,10 +107,19 @@ input CreateImageInput {
   gear_id: BigInt
   government_aid_id: Int
   name: String!
+  size: Int
   text: String!
+  type: String
   updated_at: DateTime!
   url: String!
   vessel_id: BigInt
+}
+
+input CreateLivelihoodInput {
+  description: String!
+  fisherfolkId: BigInt
+  isMain: Boolean!
+  type: SourceOfIncome!
 }
 
 input CreateProgramInput {
@@ -350,7 +407,7 @@ input UpdateFisherfolkInput {
   firstName: String!
   gender: Gender!
   lastName: String!
-  livelihoods: [livelihoodInput!]!
+  livelihoods: [CreateLivelihoodInput!]!
   middleName: String!
   nationality: String!
   numOfChildren: Int!
@@ -395,6 +452,17 @@ input UpdateVesselInput {
   yearBuilt: Int
 }
 
+input UploadImageInput {
+  fisherfolkId: BigInt
+  gearId: BigInt
+  isProfileImage: Boolean
+  name: String!
+  size: Int
+  type: String
+  uri: String!
+  vesselId: BigInt
+}
+
 type User {
   id: Int!
   password: String!
@@ -425,10 +493,4 @@ type Vessel {
   type: String!
   updatedAt: DateTime!
   yearBuilt: Int
-}
-
-input livelihoodInput {
-  description: String!
-  isMain: Boolean!
-  type: SourceOfIncome!
 }

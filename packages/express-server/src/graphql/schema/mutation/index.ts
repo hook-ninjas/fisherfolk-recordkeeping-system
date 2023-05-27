@@ -4,4 +4,10 @@ import VesselWithGearMutation from './VesselWithGear';
 import ImageMutation from './Image';
 import ProgramMutation from './Program';
 
-export default [UserMutation, FisherfolkMutation, VesselWithGearMutation, ImageMutation, ProgramMutation];
+export default [
+  UserMutation,
+  FisherfolkMutation,
+  VesselWithGearMutation,
+  ImageMutation,
+  ProgramMutation,
+];

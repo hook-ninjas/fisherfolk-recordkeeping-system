@@ -13,7 +13,6 @@ import {
   FormInputText,
   FormInputAutoText,
   FormInputDate,
-  FormInputNumber,
 } from './FormInputFields';
 import {
   UseFormResetField,
@@ -232,8 +231,8 @@ function FfolkInfoForm({
   resetField,
 }: FfolkInfoFormProps) {
   const watchMainFishAct = watch('mainFishingActivity');
-
   const watchOtherFishAct = watch('otherFishingActivities');
+  const withOrg = watch('withOrg');
 
   const mainFishAct = {
     aquaculture: watchMainFishAct == 'Aquaculture',
@@ -396,7 +395,12 @@ function FfolkInfoForm({
           />
         </Grid>
         <Grid item sm={6}>
-          <FormInputNumber
+          <FormInputText
+            inputMode="numeric"
+            inputProps={{
+              type: 'number',
+              pattern: 'd*',
+            }}
             name="residentYear"
             control={control}
             label="Resident of Municipality since"
@@ -408,18 +412,27 @@ function FfolkInfoForm({
       </Grid>
       <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
         <Grid item sm={6}>
-          <FormInputNumber
+          <FormInputText
             name="age"
             control={control}
             label="Age"
             placeholder=""
+            inputMode="numeric"
             register={register}
             errors={errors}
+            inputProps={{
+              type: 'number',
+              pattern: 'd*',
+            }}
           />
         </Grid>
         <Grid item sm={6}>
           <FormInputText
             inputMode="numeric"
+            inputProps={{
+              type: 'number',
+              pattern: 'd*',
+            }}
             name="contactNumber"
             control={control}
             label="Contact Number"
@@ -506,6 +519,7 @@ function FfolkInfoForm({
           <FormInputSelect
             name="civilStatus"
             label="Select Civil Status"
+            defaultValue=""
             data={civilStatusOptions}
             control={control}
             register={register}
@@ -518,6 +532,7 @@ function FfolkInfoForm({
           <FormInputSelect
             name="educationalBackground"
             label="Select Educational Background"
+            defaultValue=""
             data={educationalBackgroundOptions}
             control={control}
             register={register}
@@ -525,8 +540,13 @@ function FfolkInfoForm({
           />
         </Grid>
         <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
-          <FormInputNumber
+          <FormInputText
+            inputProps={{
+              type: 'number',
+              pattern: 'd*',
+            }}
             name="numOfChildren"
+            defaultValue=""
             control={control}
             label="Number of Children"
             placeholder=""
@@ -565,6 +585,10 @@ function FfolkInfoForm({
           <FormInputText
             name="ptnContactNum"
             inputMode="numeric"
+            inputProps={{
+              type: 'number',
+              pattern: 'd*',
+            }}
             control={control}
             label="Contact Number"
             placeholder=""
@@ -661,41 +685,63 @@ function FfolkInfoForm({
       </Grid>
       <Typography variant="h6" color="GrayText" mb={-1} ml={2}>
         Organization
+        <FormControlLabel
+          label=""
+          control={<Checkbox {...register('withOrg')} sx={{ ml: 1 }} />}
+        />
       </Typography>
-      <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
-        <Grid item sm={6}>
-          <FormInputText
-            name="orgName"
-            control={control}
-            label="Name"
-            placeholder=""
-            register={register}
-            errors={errors}
-          />
-        </Grid>
-        <Grid item sm={6}>
-          <FormInputNumber
-            name="orgMemberSince"
-            control={control}
-            label="Member Since"
-            placeholder="e.g. 2015"
-            register={register}
-            errors={errors}
-          />
-        </Grid>
-      </Grid>
-      <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
-        <Grid item sm={6}>
-          <FormInputText
-            name="orgPosition"
-            control={control}
-            label="Position/Official Designation"
-            placeholder=""
-            register={register}
-            errors={errors}
-          />
-        </Grid>
-      </Grid>
+      {withOrg && (
+        <>
+          <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
+            <Grid item sm={6}>
+              <FormInputText
+                name="org.name"
+                control={control}
+                label="Name"
+                placeholder=""
+                register={register}
+                errors={errors}
+                errorMessage={errors.org?.name?.message}
+                errorState={!!errors.org?.name}
+                shouldUnregister={!withOrg}
+              />
+            </Grid>
+            <Grid item sm={6}>
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
+                name="org.memberSince"
+                control={control}
+                label="Member Since"
+                placeholder="e.g. 2015"
+                register={register}
+                errors={errors}
+                errorMessage={errors.org?.memberSince?.message}
+                errorState={!!errors.org?.memberSince}
+                shouldUnregister={!withOrg}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+            <Grid item sm={6}>
+              <FormInputText
+                name="org.position"
+                control={control}
+                label="Position/Official Designation"
+                placeholder=""
+                register={register}
+                errors={errors}
+                errorMessage={errors.org?.position?.message}
+                errorState={!!errors.org?.position}
+                shouldUnregister={!withOrg}
+              />
+            </Grid>
+          </Grid>
+        </>
+      )}
       <Grid container spacing={-2} sx={{ ml: 1, mt: 2 }}>
         <FormHelperText required>Upload required images here:</FormHelperText>
         <MultiFileUpload

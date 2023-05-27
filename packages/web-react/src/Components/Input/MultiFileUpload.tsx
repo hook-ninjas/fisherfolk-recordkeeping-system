@@ -26,12 +26,17 @@ interface MultiFileUploadProps {
   control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  errorState?: boolean;
+  errorMessage?: string;
+  hideError?: boolean;
   sx?: SxProps<Theme> | undefined;
 }
 
-interface fileThumbnailProps {
-  src: string | undefined;
-  index: string | number;
+interface Data {
+  uri: string;
+  name: string;
+  size: number;
+  type: string;
 }
 
 const thumbnails = (srcs: string[]) => {
@@ -63,37 +68,42 @@ function MultiFileUpload({
   control,
   register,
   errors,
+  errorState,
+  errorMessage,
+  hideError,
   onChange = undefined,
   sx,
 }: MultiFileUploadProps) {
   const [preview, setPreview] = useState<JSX.Element[] | undefined>([]);
+  const [datas, setDatas] = useState<Data[]>([]);
 
-  const createSrcs = (files: File[]) => {
-    const results: string[] = [];
+  const createData = (files: File[], onChange: (value: any) => void) => {
+    const srcs: string[] = [];
+    const datas: Data[] = [];
+
     files.forEach((file) => {
       const reader = new FileReader();
+      const { name, size, type } = file;
 
       reader.onload = (ev) => {
         if (ev.target) {
           if (ev.target.result) {
             const src = ev.target.result.toString();
-            results.push(src);
+            srcs.push(src);
+            datas.push({ uri: src, name: name, size: size, type: type });
           } else {
             throw 'File is null';
           }
         }
-        setPreview(thumbnails(results));
+        setPreview(thumbnails(srcs));
+        onChange(datas);
       };
       reader.readAsDataURL(file);
     });
   };
 
   const handleUpload =
-    (
-      onChange?: (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-      ) => void
-    ) =>
+    (onChange: (value: any) => void) =>
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const uploadedFiles: File[] = [];
       if (event.target instanceof HTMLInputElement) {
@@ -103,10 +113,7 @@ function MultiFileUpload({
             const file = files[i];
             uploadedFiles.push(file);
           }
-          createSrcs(uploadedFiles);
-        }
-        if (onChange !== undefined) {
-          onChange(event);
+          createData(uploadedFiles, onChange);
         }
       } else {
         throw 'Not Valid Input';
@@ -117,11 +124,11 @@ function MultiFileUpload({
     <>
       <Box id={id} sx={sx} data-cy={dataCy}>
         <FormHelperText
-          error={!!errors[name]}
-          hidden={!errors[name]}
+          error={errorState ?? !!errors[name]}
+          hidden={hideError ?? !errors[name]}
           sx={{ ml: 2, mt: 2 }}
         >
-          {errors[name]?.message}
+          {errorMessage ?? errors[name]?.message}
         </FormHelperText>
         <Grid
           id="file-thumbnail-container"
@@ -134,7 +141,7 @@ function MultiFileUpload({
           name={name}
           control={control}
           defaultValue=""
-          render={({ field: { value } }) => (
+          render={({ field: { value, onChange } }) => (
             <Button
               fullWidth
               id={label}
@@ -148,9 +155,7 @@ function MultiFileUpload({
                 multiple
                 type="file"
                 hidden
-                {...register(name, {
-                  onChange: (e) => handleUpload(onChange)(e),
-                })}
+                onChange={handleUpload(onChange)}
               />
               Upload
             </Button>

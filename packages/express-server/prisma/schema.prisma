@@ -226,7 +226,10 @@ model Image {
   governmentAid   GovernmentAid? @relation(fields: [governmentAidId], references: [id])
   governmentAidId Int?           @map("government_aid_id")
   name            String
+  type            String?
+  size            Int?
   url             String
+  isProfileImage  Boolean?       @default(false) @map("is_profile_image")
   isArchive       Boolean        @default(false) @map("is_archive")
 
   createdAt DateTime @default(now()) @map("created_at")

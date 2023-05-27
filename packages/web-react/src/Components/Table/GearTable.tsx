@@ -1,15 +1,12 @@
-import {
-  Button,
-  Menu,
-  MenuItem,
-  Alert,
-  Backdrop,
-} from '@mui/material';
+import { Button, Menu, MenuItem, Alert, Backdrop } from '@mui/material';
 import React, { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import {
-  ArchiveGearDocument, FisherfolkGearsDocument, UpdateToArchiveGearDocument,
-  GearsQueryDocument } from '../../graphql/generated';
+  ArchiveGearDocument,
+  FisherfolkGearsDocument,
+  UpdateToArchiveGearDocument,
+  GearsQueryDocument,
+} from '../../graphql/generated';
 import { useParams } from 'react-router-dom';
 import Loading from '../Loading/Loading';
 import { splitUpperCase } from '../../utils/utils';
@@ -18,7 +15,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import moment from 'moment';
 import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
-import { showArchiveError, showArchiveSuccess } from '../ConfirmationDialog/Alerts';
+import {
+  showArchiveError,
+  showArchiveSuccess,
+} from '../ConfirmationDialog/Alerts';
 
 const RenderMoreActions = (id: number) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -37,7 +37,7 @@ const RenderMoreActions = (id: number) => {
         },
         {
           query: GearsQueryDocument,
-        }
+        },
       ],
     }
   );
@@ -69,7 +69,6 @@ const RenderMoreActions = (id: number) => {
     }
   };
 
-
   return (
     <div>
       <Button
@@ -96,10 +95,13 @@ const RenderMoreActions = (id: number) => {
         <MenuItem disableRipple>
           <EditIcon sx={{ width: 20, marginRight: 1.5 }} /> Edit
         </MenuItem>
-        <MenuItem onClick={() => {
-          ArchiveAGear();
-          archiveHandler();
-        }} disableRipple>
+        <MenuItem
+          onClick={() => {
+            ArchiveAGear();
+            archiveHandler();
+          }}
+          disableRipple
+        >
           <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
         </MenuItem>
       </Menu>
@@ -112,10 +114,10 @@ const RenderMoreActions = (id: number) => {
 export default function GearTable() {
   const { id } = useParams();
 
-  const {error, loading, data} = useQuery(FisherfolkGearsDocument, {
+  const { error, loading, data } = useQuery(FisherfolkGearsDocument, {
     variables: {
-      fisherfolkId: id
-    }
+      fisherfolkId: id,
+    },
   });
 
   let rows: GridRowsProp = [];

@@ -9,4 +9,14 @@ const OrganizationInput = inputObjectType({
   },
 });
 
-export default OrganizationInput;
+const CreateFfolkOrganizationInput = inputObjectType({
+  name: 'CreateFfolkOrganizationInput',
+  definition(t) {
+    t.field('fisherfolkId', { type: 'BigInt' });
+    t.string('name');
+    t.int('yearJoined');
+    t.string('position');
+  },
+});
+
+export { OrganizationInput, CreateFfolkOrganizationInput };

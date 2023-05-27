@@ -13,7 +13,10 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import moment from 'moment';
-import { showArchiveError, showArchiveSuccess } from '../ConfirmationDialog/Alerts';
+import {
+  showArchiveError,
+  showArchiveSuccess,
+} from '../ConfirmationDialog/Alerts';
 
 const RenderMoreActions = (id: number) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -28,11 +31,11 @@ const RenderMoreActions = (id: number) => {
     {
       refetchQueries: [
         {
-          query: GearsQueryDocument
+          query: GearsQueryDocument,
         },
         {
           query: ArchiveGearDocument,
-        }   
+        },
       ],
     }
   );
@@ -90,10 +93,13 @@ const RenderMoreActions = (id: number) => {
         <MenuItem disableRipple>
           <EditIcon sx={{ width: 20, marginRight: 1.5 }} /> Edit
         </MenuItem>
-        <MenuItem onClick={() => {
-          ArchiveAGear();
-          archiveHandler();
-        }} disableRipple>
+        <MenuItem
+          onClick={() => {
+            ArchiveAGear();
+            archiveHandler();
+          }}
+          disableRipple
+        >
           <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
         </MenuItem>
       </Menu>
@@ -140,7 +146,6 @@ export default function FisherfolkGearTable() {
   );
 }
 
-
 const columns: GridColumns = [
   { field: 'id', headerName: 'ID', disableColumnMenu: true },
   {
@@ -149,8 +154,7 @@ const columns: GridColumns = [
     type: 'date',
     disableColumnMenu: true,
     minWidth: 150,
-    valueFormatter: params =>
-      moment(params?.value).format('MM/DD/YYYY'),
+    valueFormatter: (params) => moment(params?.value).format('MM/DD/YYYY'),
   },
   {
     field: 'classification',

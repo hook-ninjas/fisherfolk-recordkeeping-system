@@ -20,4 +20,20 @@ const isValidUserName = (username: string) =>
 const isValidPassword = (password: string) =>
   /^(?=.*\d)[a-zA-Z\d]{7,}$/.test(password);
 
-export { nonNullArg, nullableList, isValidPassword, isValidUserName };
+// function to encode file data to base64 encoded string
+const convertToUri = (
+  base64: string | Buffer,
+  options: { type: string; format: string }
+) => {
+  const { format, type } = options;
+  const result = `data:${type}/${format};base64,${base64}`;
+  return result;
+};
+
+export {
+  nonNullArg,
+  nullableList,
+  isValidPassword,
+  isValidUserName,
+  convertToUri,
+};

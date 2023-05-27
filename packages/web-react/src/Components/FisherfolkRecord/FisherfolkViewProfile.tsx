@@ -1,12 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import {
-  Box,
-  Grid,
-  Stack,
-  Typography,
-  Alert,
-} from '@mui/material';
+import { Box, Grid, Stack, Typography, Alert } from '@mui/material';
 import VesselTable from '../Table/VesselTable';
 import GearTable from '../Table/GearTable';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
@@ -141,7 +135,7 @@ const FisherfolkViewProfile = () => {
                 tab2Label="Gears"
                 tabelPanel1={<VesselTable />}
                 tabelPanel2={<GearTable />}
-                button={<AddBoatGearBtn/>}
+                button={<AddBoatGearBtn />}
               />
             </Grid>
           </Item>
@@ -275,7 +269,7 @@ const FisherfolkViewProfile = () => {
               tab2Label="Gears"
               tabelPanel1={<VesselTable />}
               tabelPanel2={<GearTable />}
-              button={<AddBoatGearBtn/>}
+              button={<AddBoatGearBtn />}
             />
           </Grid>
         </Item>

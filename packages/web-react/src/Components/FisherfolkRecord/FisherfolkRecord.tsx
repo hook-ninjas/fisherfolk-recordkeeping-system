@@ -50,7 +50,7 @@ export const CustomDrawer = styled(Drawer)(({ theme }) => ({
   },
 }));
 
-let timer: ReturnType<typeof setTimeout>;;
+let timer: ReturnType<typeof setTimeout>;
 
 const FisherfolkRecord = () => {
   const [addFisherfolkBtn, setFisherfolkBtn] = useState(false);
@@ -78,7 +78,13 @@ const FisherfolkRecord = () => {
             ({ firstName, middleName, lastName, appellation }) => {
               const searchKeyArray = searchKey.split(' ');
               const completeName =
-                firstName + ' ' + middleName + ' ' + lastName + ' ' + appellation;
+                firstName +
+                ' ' +
+                middleName +
+                ' ' +
+                lastName +
+                ' ' +
+                appellation;
 
               const res = searchKeyArray.map((key: string) => {
                 return completeName.toLowerCase().includes(key.toLowerCase());
@@ -97,8 +103,7 @@ const FisherfolkRecord = () => {
         totalFisherfolk: searchResult()?.length as number,
         fisherfolksWithUniqueBarangay: data!.fisherfolksWithUniqueBarangay,
       });
-    }
-    else if(searchKey == '' && !loading){
+    } else if (searchKey == '' && !loading) {
       setFisherfolks({
         fisherfolks: data!.fisherfolks,
         totalFisherfolk: data!.totalFisherfolk,
@@ -120,7 +125,6 @@ const FisherfolkRecord = () => {
     }, 1000);
   };
 
-
   const [fisherfolks, setFisherfolks] = useState<
     QueryFisherfolksQuery | undefined
   >();
@@ -133,8 +137,6 @@ const FisherfolkRecord = () => {
     setIsDrawOpen(false);
     reset(); // reset selected filter
   };
-
-
 
   const onSubmit = handleSubmit((fisherFolk) => {
     const filterValues = Object.values(fisherFolk).filter((a) => a != null);
@@ -287,7 +289,7 @@ const FisherfolkRecord = () => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <Autocomplete
-                          id='barangay'
+                          id="barangay"
                           disableClearable
                           freeSolo
                           autoComplete

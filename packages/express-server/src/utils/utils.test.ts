@@ -45,4 +45,3 @@ describe('isValidPassword', () => {
     expect(isValidPassword(password)).toBeTruthy();
   });
 });
-

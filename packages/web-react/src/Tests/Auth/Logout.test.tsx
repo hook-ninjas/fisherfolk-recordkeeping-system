@@ -13,7 +13,6 @@ vi.mock('react-router-dom', () => ({
 }));
 
 describe('Logout', () => {
-
   const handleLogout = () => {
     localStorage.removeItem('token');
     mockUsedNavigate('/login');
@@ -29,7 +28,7 @@ describe('Logout', () => {
         message="Are you sure you want to logout?"
         leftBtnMsg="Cancel"
         rightBtnMsg="Logout"
-      />,
+      />
     );
 
     const closeBtn = screen.getByRole('button', {
@@ -50,7 +49,7 @@ describe('Logout', () => {
         message="Are you sure you want to logout?"
         leftBtnMsg="Cancel"
         rightBtnMsg="Logout"
-      />,
+      />
     );
 
     const cancelLogoutBtn = screen.getByRole('button', {
@@ -71,7 +70,7 @@ describe('Logout', () => {
         message="Are you sure you want to logout?"
         leftBtnMsg="Cancel"
         rightBtnMsg="Logout"
-      />,
+      />
     );
 
     const logoutBtn = screen.getByRole('button', {

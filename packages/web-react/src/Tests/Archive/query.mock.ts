@@ -1,5 +1,9 @@
 import { MockedResponse } from '@apollo/client/testing';
-import { ArchiveFisherfolkDocument, FisherfolkStatus, SourceOfIncome } from '../../graphql/generated';
+import {
+  ArchiveFisherfolkDocument,
+  FisherfolkStatus,
+  SourceOfIncome,
+} from '../../graphql/generated';
 
 export const ArchiveFisherfolksQueryMock: MockedResponse[] = [
   {
@@ -55,8 +59,8 @@ export const ArchiveFisherfolksQueryMock: MockedResponse[] = [
           {
             barangay: 'Brgy. Kauswagan',
           },
-        ]
-      }
-    }
-  }
+        ],
+      },
+    },
+  },
 ];

@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Grid,
-  Paper,
-  Tab,
-  Tabs,
-  Typography,
-  styled,
-} from '@mui/material';
+import { Box, Grid, Paper, Tab, Tabs, Typography, styled } from '@mui/material';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -89,7 +81,6 @@ export default function BasicTabs({
           <Tab label={tab1Label} {...a11yProps(0)} />
           <Tab label={tab2Label} {...a11yProps(1)} />
           <Tab label={tab3Label} {...a11yProps(2)} />
-
         </Tabs>
         {button}
       </Grid>

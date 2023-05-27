@@ -41,9 +41,7 @@ describe('Login User', () => {
   });
 
   it('should successfuly login user', () => {
-    cy.get('[type=submit]')
-      .should('contain', 'Continue')
-      .click();
+    cy.get('[type=submit]').should('contain', 'Continue').click();
   });
 
   it('should direct to dashboard page', () => {

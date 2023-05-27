@@ -5,7 +5,7 @@ const CreateUserInput = inputObjectType({
   definition(t) {
     t.nonNull.string('username');
     t.nonNull.string('password');
-  }
+  },
 });
 
 export default CreateUserInput;

@@ -8,7 +8,7 @@ const FisherfolkGearRecord = () => {
       <Grid item xs={12}>
         <Paper
           sx={{
-            p: .5,
+            p: 0.5,
             display: 'flex',
             flexDirection: 'column',
             boxShadow: 2,

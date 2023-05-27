@@ -5,12 +5,7 @@ import App from './App';
 import Dashboard from './Components/Dashboard/Dashboard';
 import FisherfolkRecord from './Components/FisherfolkRecord/FisherfolkRecord';
 import PageNotFound from './Components/PageNotFound/PageNotFound';
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  createHttpLink,
-} from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 import { setContext } from 'apollo-link-context';
 import Login from './Components/Forms/LoginForm';
 import FisherfolkViewProfile from './Components/FisherfolkRecord/FisherfolkViewProfile';
@@ -48,26 +43,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             <Route path="/" element={<App />}>
               <Route path="dashboard" index element={<Dashboard />} />
               <Route path="fisherfolk-record" element={<FisherfolkRecord />} />
-              <Route
-                path="fisherfolk-profile/:id"
-                element={<FisherfolkViewProfile />}
-              />
-              <Route
-                path="fisherfolk-boats"
-                element={<FisherfolkBoatRecord />}
-              />
-              <Route
-                path="fisherfolk-gears"
-                element={<FisherfolkGearRecord />}
-              />
-              <Route
-                path="fisherfolk-archive"
-                element={<FisherfolkArchiveRecord />}
-              />
-              <Route
-                path="fisherfolk-programs"
-                element={<FisherfolkProgram />}
-              />
+              <Route path="fisherfolk-profile/:id" element={<FisherfolkViewProfile />} />
+              <Route path="fisherfolk-boats" element={<FisherfolkBoatRecord />} />
+              <Route path="fisherfolk-gears" element={<FisherfolkGearRecord />} />
+              <Route path="fisherfolk-archive" element={<FisherfolkArchiveRecord />} />
+              <Route path="fisherfolk-programs" element={<FisherfolkProgram />} />
             </Route>
           </Route>
           <Route path="login" element={<Login />} />

@@ -32,9 +32,8 @@ export default function FisherfolkProgramCard({
   const handleViewProgramOpen = () => setViewProgramBtn(true);
   const handleViewProgramClose = () => setViewProgramBtn(false);
   const [updateBtn, SetUpdateBtn] = useState(false);
- const handleUpdateOpen = () => SetUpdateBtn(true);
- const handleUpdateClose  = () => SetUpdateBtn(false);
-
+  const handleUpdateOpen = () => SetUpdateBtn(true);
+  const handleUpdateClose = () => SetUpdateBtn(false);
 
   const { loading, data } = useQuery(GovernmentAidDocument, {
     variables: {
@@ -109,21 +108,13 @@ export default function FisherfolkProgramCard({
           Edit
         </Button>
         {updateBtn && (
-              <UpdateProgram
-                handleClose={handleUpdateClose}
-                open={updateBtn}
-                id={id}
-              />
-            )}
+          <UpdateProgram
+            handleClose={handleUpdateClose}
+            open={updateBtn}
+            id={id}
+          />
+        )}
       </CardActions>
     </Card>
   );
 }
-
-
-
-
-
-
-
-

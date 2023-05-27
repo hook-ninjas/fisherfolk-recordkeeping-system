@@ -4,7 +4,7 @@ import { VesselQueryDocument } from '../../graphql/generated';
 export const VesselsQueryMock: MockedResponse[] = [
   {
     request: {
-      query: VesselQueryDocument
+      query: VesselQueryDocument,
     },
     result: {
       data: {
@@ -33,8 +33,8 @@ export const VesselsQueryMock: MockedResponse[] = [
             mfvrNumber: '2021-0015',
             name: 'Sky',
           },
-        ]
-      }
-    }
-  }
+        ],
+      },
+    },
+  },
 ];

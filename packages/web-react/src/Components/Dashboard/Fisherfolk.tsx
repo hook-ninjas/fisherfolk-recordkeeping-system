@@ -85,7 +85,7 @@ export default function FisherfolkInfo() {
   const fisherfolkInfo: Record<string, any[]> = {
     'Total Vessels': [Vessel, fisherfolkQuery.data?.totalVessels],
     'Total Gears': [Gear, fisherfolkQuery.data?.totalGears],
-    'Total Programs' : [Program, fisherfolkQuery.data?.totalPrograms],
+    'Total Programs': [Program, fisherfolkQuery.data?.totalPrograms],
     'Total Barangays': [Barangay, fisherfolkQuery.data?.barangayCount],
   };
 
@@ -111,7 +111,7 @@ export default function FisherfolkInfo() {
                 <Box
                   component="img"
                   src={gender[item][0]}
-                  sx={{ width: 45}}
+                  sx={{ width: 45 }}
                   mt={2}
                 ></Box>
               </Grid>

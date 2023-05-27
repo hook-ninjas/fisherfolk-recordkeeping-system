@@ -30,25 +30,17 @@ interface UpdateProgramProps {
   id: number;
 }
 
-
-
-function UpdateProgram({ open, handleClose,id }: UpdateProgramProps) {
+function UpdateProgram({ open, handleClose, id }: UpdateProgramProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [complete, setComplete] = useState(false);
 
-
-
-
   const { loading, data } = useQuery(GovernmentAidDocument, {
     variables: {
-      govtAidId:id
+      govtAidId: id,
     },
   });
   const handleSubmitting = () => setIsSubmitting(true);
   const handleComplete = () => setComplete(true);
-
-
-
 
   const buttonSx = {
     ...(complete && {
@@ -62,9 +54,7 @@ function UpdateProgram({ open, handleClose,id }: UpdateProgramProps) {
     marginLeft: 'auto',
   };
 
-
-
-  const [updateProgram] = useMutation(UpdateProgramDocument,{
+  const [updateProgram] = useMutation(UpdateProgramDocument, {
     onCompleted: () => {
       handleClose();
       handleComplete();
@@ -76,8 +66,6 @@ function UpdateProgram({ open, handleClose,id }: UpdateProgramProps) {
       showFailAlert();
     },
   });
-
-
 
   const {
     register,
@@ -98,17 +86,17 @@ function UpdateProgram({ open, handleClose,id }: UpdateProgramProps) {
         description: input.description ?? '',
         slot: parseInt(input.slot),
       },
-      governmentAidId: id
+      governmentAidId: id,
     };
     const program = await updateProgram({
       variables: {
         data: updateProgramInput.data,
-        governmentAidId:id
+        governmentAidId: id,
       },
       refetchQueries: [
         {
           query: GovernmentAidsDocument,
-        }
+        },
       ],
     });
   });
@@ -170,7 +158,6 @@ function UpdateProgram({ open, handleClose,id }: UpdateProgramProps) {
               label="Date"
               register={register}
               errors={errors}
-              
             />
           </Grid>
         </Grid>

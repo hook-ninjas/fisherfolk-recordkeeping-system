@@ -25,9 +25,13 @@ export const createUser = async (args: CreateUserInput, ctx: Context) => {
     }
 
     // generate token
-    const token = jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: '1hr',
-    });
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.ACCESS_TOKEN_SECRET,
+      {
+        expiresIn: '1hr',
+      }
+    );
 
     return {
       token,
@@ -68,7 +72,11 @@ export const loginUser = async (args: CreateUserInput, ctx: Context) => {
     }
 
     // generate new token
-    const token = jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: '1d' }
+    );
 
     return {
       token,

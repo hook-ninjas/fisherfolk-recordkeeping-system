@@ -218,10 +218,10 @@ export default function UpdateFisherfolkForm({
         organizations: [
           input.orgMemberSince || input.orgName || input.orgPosition
             ? {
-              name: input.orgName,
-              position: input.orgPosition,
-              yearJoined: parseInt(input.orgMemberSince),
-            }
+                name: input.orgName,
+                position: input.orgPosition,
+                yearJoined: parseInt(input.orgMemberSince),
+              }
             : null,
         ],
       },
@@ -272,7 +272,7 @@ export default function UpdateFisherfolkForm({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    onSubmit();
+    // onSubmit();
   };
 
   return (

@@ -2,15 +2,17 @@ import { arg, list, nonNull, queryField } from 'nexus';
 
 const Vessels = queryField('vessels', {
   type: nonNull(list(nonNull('Vessel'))),
-  resolve: (_parent, _args, ctx) => ctx.prisma.vessel.findMany({
-    orderBy: [
-      {
-        id: 'desc'
-      }
-    ], where: {
-      isArchive: false
-    }
-  })
+  resolve: (_parent, _args, ctx) =>
+    ctx.prisma.vessel.findMany({
+      orderBy: [
+        {
+          id: 'desc',
+        },
+      ],
+      where: {
+        isArchive: false,
+      },
+    }),
 });
 
 const QueryFisherfolkVessels = queryField('fisherfolkVessels', {
@@ -22,12 +24,13 @@ const QueryFisherfolkVessels = queryField('fisherfolkVessels', {
       })
     ),
   },
-  resolve: (_parent, args, ctx) => ctx.prisma.vessel.findMany({
-    where: {
-      fisherfolkId: args.fisherfolkId,
-      isArchive: false
-    }
-  }) 
+  resolve: (_parent, args, ctx) =>
+    ctx.prisma.vessel.findMany({
+      where: {
+        fisherfolkId: args.fisherfolkId,
+        isArchive: false,
+      },
+    }),
 });
 
 const QueryAllFisherfolkVessels = queryField('totalFisherfolkVessels', {
@@ -39,12 +42,13 @@ const QueryAllFisherfolkVessels = queryField('totalFisherfolkVessels', {
       })
     ),
   },
-  resolve: (_, args, ctx) => ctx.prisma.vessel.count({
-    where: {
-      fisherfolkId: args.fisherfolkId,
-      isArchive: false
-    }
-  })
+  resolve: (_, args, ctx) =>
+    ctx.prisma.vessel.count({
+      where: {
+        fisherfolkId: args.fisherfolkId,
+        isArchive: false,
+      },
+    }),
 });
 
 const QueryAllVessels = queryField('totalVessels', {
@@ -55,9 +59,11 @@ const QueryAllVessels = queryField('totalVessels', {
 const QueryVessel = queryField('vessel', {
   type: 'Vessel',
   args: {
-    id: nonNull(arg({
-      type: 'BigInt'
-    }))
+    id: nonNull(
+      arg({
+        type: 'BigInt',
+      })
+    ),
   },
   resolve: (_, args, ctx) =>
     ctx.prisma.vessel.findFirstOrThrow({
@@ -69,11 +75,12 @@ const QueryVessel = queryField('vessel', {
 
 const QueryArchiveVessel = queryField('ArchiveVessel', {
   type: nonNull(list(nonNull('Vessel'))),
-  resolve: (_parent, _args, ctx) => ctx.prisma.vessel.findMany({
-    where: {
-      isArchive: true
-    }
-  })
+  resolve: (_parent, _args, ctx) =>
+    ctx.prisma.vessel.findMany({
+      where: {
+        isArchive: true,
+      },
+    }),
 });
 
 export default [
@@ -82,5 +89,5 @@ export default [
   QueryAllFisherfolkVessels,
   QueryAllVessels,
   QueryVessel,
-  QueryArchiveVessel
+  QueryArchiveVessel,
 ];

@@ -29,7 +29,11 @@ export async function createGears(gears: CreateGearInput[], ctx: Context) {
   });
 }
 
-export async function createVesselWithGear(vessel: CreateVesselInput, gears: CreateGearInput[], ctx: Context) {
+export async function createVesselWithGear(
+  vessel: CreateVesselInput,
+  gears: CreateGearInput[],
+  ctx: Context
+) {
   await createGears(gears, ctx);
 
   return createVessel(vessel, ctx);
@@ -52,11 +56,10 @@ export async function archiveGear(id: number, ctx: Context) {
       id: id,
     },
     data: {
-      isArchive: true
-    }
+      isArchive: true,
+    },
   });
 }
-
 
 export async function archiveVessel(id: number, ctx: Context) {
   return ctx.prisma.vessel.update({
@@ -64,12 +67,16 @@ export async function archiveVessel(id: number, ctx: Context) {
       id: id,
     },
     data: {
-      isArchive: true
-    }
+      isArchive: true,
+    },
   });
 }
 
-export async function updateVessel(id: number, vessel: UpdateVesselInput, ctx: Context) {
+export async function updateVessel(
+  id: number,
+  vessel: UpdateVesselInput,
+  ctx: Context
+) {
   return ctx.prisma.vessel.update({
     where: {
       id: id,
@@ -80,30 +87,24 @@ export async function updateVessel(id: number, vessel: UpdateVesselInput, ctx: C
   });
 }
 
-export const restoreGear= async (
-  id: number,
-  ctx: Context
-) => {
+export const restoreGear = async (id: number, ctx: Context) => {
   return ctx.prisma.gear.update({
     where: {
-      id: id
+      id: id,
     },
     data: {
-      isArchive: false
-    }
+      isArchive: false,
+    },
   });
 };
 
-export const restoreVessel= async (
-  id: number,
-  ctx: Context
-) => {
+export const restoreVessel = async (id: number, ctx: Context) => {
   return ctx.prisma.vessel.update({
     where: {
-      id: id
+      id: id,
     },
     data: {
-      isArchive: false
-    }
+      isArchive: false,
+    },
   });
 };

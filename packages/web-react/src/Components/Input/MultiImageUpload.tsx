@@ -63,7 +63,7 @@ function MultiImageUpload({
   errors,
   onChange = undefined,
   sx,
-  onImageChange
+  onImageChange,
 }: MultiImageUploadProps) {
   const [preview, setPreview] = useState<string[] | undefined>([]);
 
@@ -94,24 +94,24 @@ function MultiImageUpload({
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
       ) => void
     ) =>
-      (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const uploadedFiles: File[] = [];
-        if (event.target instanceof HTMLInputElement) {
-          const { files } = event.target;
-          if (files) {
-            for (let i = 0; i < files.length; i++) {
-              const file = files[i];
-              uploadedFiles.push(file);
-            }
-            createSrcs(uploadedFiles);
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const uploadedFiles: File[] = [];
+      if (event.target instanceof HTMLInputElement) {
+        const { files } = event.target;
+        if (files) {
+          for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            uploadedFiles.push(file);
           }
-          if (onChange !== undefined) {
-            onChange(event);
-          }
-        } else {
-          throw 'Not Valid Input';
+          createSrcs(uploadedFiles);
         }
-      };
+        if (onChange !== undefined) {
+          onChange(event);
+        }
+      } else {
+        throw 'Not Valid Input';
+      }
+    };
 
   return (
     <>

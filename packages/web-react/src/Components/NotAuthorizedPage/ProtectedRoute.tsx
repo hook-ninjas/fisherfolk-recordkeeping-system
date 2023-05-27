@@ -31,7 +31,11 @@ const ProtectedRoute = () => {
     }
   }
 
-  return data && !data.user ? <Navigate to="/login" replace={true} /> : <Outlet />;
+  return data && !data.user ? (
+    <Navigate to="/login" replace={true} />
+  ) : (
+    <Outlet />
+  );
 };
 
 export default ProtectedRoute;

@@ -1,8 +1,11 @@
 import { Button, Menu, MenuItem, Alert, Backdrop } from '@mui/material';
 import React, { useState } from 'react';
 import {
-  ArchiveVesselDocument, FisherfolkVesselsDocument, UpdateToArchiveVesselDocument,
-  VesselQueryDocument } from '../../graphql/generated';
+  ArchiveVesselDocument,
+  FisherfolkVesselsDocument,
+  UpdateToArchiveVesselDocument,
+  VesselQueryDocument,
+} from '../../graphql/generated';
 import { useMutation, useQuery } from '@apollo/client';
 import Loading from '../Loading/Loading';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -11,8 +14,10 @@ import ArchiveIcon from '@mui/icons-material/Archive';
 import moment from 'moment';
 import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
 import { useParams } from 'react-router-dom';
-import { showArchiveError, showArchiveSuccess } from '../ConfirmationDialog/Alerts';
-
+import {
+  showArchiveError,
+  showArchiveSuccess,
+} from '../ConfirmationDialog/Alerts';
 
 import UpdateVesselForm from '../Forms/UpdateVesselForm';
 
@@ -39,7 +44,7 @@ const renderMoreActions = (id: number) => {
         },
         {
           query: VesselQueryDocument,
-        }
+        },
       ],
     }
   );
@@ -59,7 +64,6 @@ const renderMoreActions = (id: number) => {
     });
   };
 
-
   const archiveHandler = () => {
     const { loading } = archiveResult;
     if (loading) {
@@ -71,12 +75,19 @@ const renderMoreActions = (id: number) => {
       );
     }
   };
-  
-
 
   return (
     <div>
-      <Button id="vessel-action-btn" aria-controls={open ? 'vessel-action-btn' : undefined} aria-haspopup="true" aria-expanded={open ? 'true' : undefined} aria-label="vessel-action-btn" disableElevation onClick={handleClick} style={{ color: '#808080' }}>
+      <Button
+        id="vessel-action-btn"
+        aria-controls={open ? 'vessel-action-btn' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        aria-label="vessel-action-btn"
+        disableElevation
+        onClick={handleClick}
+        style={{ color: '#808080' }}
+      >
         <MoreVertIcon />
       </Button>
       <Menu
@@ -91,11 +102,20 @@ const renderMoreActions = (id: number) => {
         <MenuItem onClick={handleUpdateFormOpen} disableRipple>
           <EditIcon sx={{ width: 20, marginRight: 1.5 }} /> Edit
         </MenuItem>
-      {updateVessel && <UpdateVesselForm id={id} handleClose={handleUpdateFormClose} open={updateVessel} />}
-        <MenuItem onClick={() => {
-          ArchiveAVessel();
-          archiveHandler();
-        }} disableRipple>
+        {updateVessel && (
+          <UpdateVesselForm
+            id={id}
+            handleClose={handleUpdateFormClose}
+            open={updateVessel}
+          />
+        )}
+        <MenuItem
+          onClick={() => {
+            ArchiveAVessel();
+            archiveHandler();
+          }}
+          disableRipple
+        >
           <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
         </MenuItem>
       </Menu>
@@ -113,7 +133,6 @@ export default function VesselTable() {
       fisherfolkId: id,
     },
   });
-
 
   let rows: GridRowsProp = [];
 
@@ -155,7 +174,12 @@ export default function VesselTable() {
 
   return (
     <div style={{ height: '85vh', width: '100%' }}>
-      <DataGrid rows={rows} columns={columns} aria-label="fisherfolk-vessel-table" disableVirtualization={true} />
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        aria-label="fisherfolk-vessel-table"
+        disableVirtualization={true}
+      />
     </div>
   );
 }

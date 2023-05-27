@@ -60,7 +60,7 @@ export default function AddVesselWithGearForm({
   handleClose,
 }: AddVesselWithGearFormProps) {
   const { id } = useParams();
-  
+
   if (id == undefined) {
     throw 'Fisherfolk does not exist';
   }
@@ -221,7 +221,7 @@ export default function AddVesselWithGearForm({
       { query: FisherfolkGearsDocument, variables: { fisherfolkId: id } },
       { query: VesselQueryDocument },
       { query: GearsQueryDocument },
-      { query: FisherfolkCountDocument }
+      { query: FisherfolkCountDocument },
     ],
   });
 

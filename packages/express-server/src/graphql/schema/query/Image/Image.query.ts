@@ -1,5 +1,8 @@
 import { intArg, list, nonNull, queryField } from 'nexus';
-import { queryFisherfolkPhoto, queryGovermentAidPhotos } from './Image.resolver';
+import {
+  queryFisherfolkPhoto,
+  queryGovermentAidPhotos,
+} from './Image.resolver';
 
 const QueryFisherfolkProfilePhoto = queryField('fisherfolkPhoto', {
   type: list('Image'),

@@ -9,4 +9,4 @@ const User = objectType({
   },
 });
 
-export default  User;
+export default User;

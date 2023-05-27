@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react';
+import React, { HTMLAttributes, useState } from 'react';
 import {
   UseFormRegister,
   Control,
@@ -15,10 +15,14 @@ import {
   FormControlLabel,
   RadioGroup,
   Radio,
+  FormGroup,
   Checkbox,
+  Grid,
+  Typography,
   Autocomplete,
   SxProps,
   Theme,
+  InputBaseComponentProps,
 } from '@mui/material';
 import CreatableSelect from 'react-select/creatable';
 import { splitUpperCase } from '../../utils/utils';
@@ -74,11 +78,15 @@ interface FormInputTextProps {
   options?: Option[];
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  errorMessage?: string;
+  errorState?: boolean;
   shouldUnregister?: boolean;
   multiline?: boolean;
   rows?: number;
   maxRows?: number;
   fullWidth?: boolean;
+  disabled?: boolean;
+  inputProps?: InputBaseComponentProps;
 }
 interface FormInputNumberProps {
   name: string;
@@ -96,6 +104,8 @@ interface FormInputNumberProps {
   shouldUnregister?: boolean;
   fullWidth?: boolean;
   sx?: SxProps<Theme> | undefined;
+  errorMessage?: string;
+  errorState?: boolean;
 }
 
 interface FormInputDateProps {
@@ -110,6 +120,8 @@ interface FormInputDateProps {
   control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  errorMessage?: string;
+  errorState?: boolean;
 }
 
 interface FormInputAutoProps {
@@ -128,6 +140,8 @@ interface FormInputAutoProps {
   options?: Option[] | string[];
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  errorMessage?: string;
+  errorState?: boolean;
   sx?: SxProps<Theme> | undefined;
   shouldUnregister?: boolean;
 }
@@ -135,13 +149,19 @@ interface FormInputAutoProps {
 interface FormInputSelectProps {
   name: string;
   label: string;
-  onSavedValue?: CivilStatus | SourceOfIncome | EducationalBackground | Material;
+  onSavedValue?:
+    | CivilStatus
+    | SourceOfIncome
+    | EducationalBackground
+    | Material;
   defaultValue?: string;
   handleChange?: (value: string) => void;
   data: Option[] | string[];
   control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  errorMessage?: string;
+  errorState?: boolean;
   shouldUnregister?: boolean;
 }
 
@@ -154,6 +174,8 @@ interface FormInputRadioProps {
   radioOptions: Option[];
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  errorMessage?: string;
+  errorState?: boolean;
   shouldUnregister?: boolean;
 }
 
@@ -180,11 +202,12 @@ interface FormCreatableSelectProps {
   control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  errorMessage?: string;
+  errorState?: boolean;
 }
 
 export const FormInputText = ({
   name,
-  id,
   label,
   placeholder,
   control,
@@ -192,11 +215,15 @@ export const FormInputText = ({
   defaultValue,
   handleChange,
   errors,
-  shouldUnregister,
-  multiline,
+  errorMessage,
   rows,
+  multiline,
   maxRows,
+  errorState,
+  shouldUnregister,
   fullWidth,
+  disabled,
+  inputProps,
 }: FormInputTextProps) => (
   <Controller
     name={name}
@@ -210,6 +237,7 @@ export const FormInputText = ({
         fullWidth={fullWidth}
         sx={{ marginTop: -0.3, width: fullWidth ? null || undefined : 250 }}
         label={label}
+        disabled={disabled}
         multiline={multiline}
         rows={rows}
         maxRows={maxRows}
@@ -221,12 +249,13 @@ export const FormInputText = ({
             onChange(e.target.value);
           }
         }}
-        helperText={errors[name]?.message}
-        error={!!errors[name]}
+        helperText={errorMessage ?? errors[name]?.message}
+        error={errorState ?? !!errors[name]}
         placeholder={placeholder}
         InputProps={{
           style: { fontSize: 14, margin: 10 },
           inputMode: inputMode ? inputMode : 'text',
+          inputProps: inputProps,
         }}
       />
     )}
@@ -242,9 +271,11 @@ export const FormInputNumber = ({
   max,
   min,
   defaultValue,
-  shouldUnregister,
   errors,
+  errorMessage,
+  errorState,
   sx,
+  shouldUnregister,
 }: FormInputNumberProps) => (
   <Controller
     name={name}
@@ -260,13 +291,13 @@ export const FormInputNumber = ({
         label={label}
         fullWidth
         onChange={onChange}
-        helperText={errors[name]?.message}
-        error={!!errors[name]}
+        helperText={errorMessage ?? errors[name]?.message}
+        error={errorState ?? !!errors[name]}
         placeholder={placeholder}
         InputProps={{
           style: { fontSize: 14, margin: 5 },
           inputMode: numericOnly ? 'numeric' : undefined,
-          inputProps: { max: max, min: min },
+          inputProps: { max: max, min: min, pattern: '[0-9]*' },
         }}
       />
     )}
@@ -284,6 +315,8 @@ export const FormInputDate = ({
   min,
   control,
   errors,
+  errorMessage,
+  errorState,
 }: FormInputDateProps) => (
   <>
     <Controller
@@ -307,9 +340,9 @@ export const FormInputDate = ({
                 id={name}
                 label={label}
                 {...params}
-                helperText={errors[name]?.message}
-                error={!!errors[name]}
                 fullWidth
+                helperText={errorMessage ?? errors[name]?.message}
+                error={errorState ?? !!errors[name]}
               />
             )}
           />
@@ -332,6 +365,8 @@ export const FormInputAutoText = ({
   sx,
   options,
   errors,
+  errorMessage,
+  errorState,
   shouldUnregister,
 }: FormInputAutoProps) => (
   <Controller
@@ -367,8 +402,8 @@ export const FormInputAutoText = ({
             {...params}
             label={label}
             sx={sx}
-            helperText={errors[name]?.message}
-            error={!!errors[name]}
+            helperText={errorMessage ?? errors[name]?.message}
+            error={errorState ?? !!errors[name]}
             InputProps={{
               ...params.InputProps,
               style: { fontSize: 14, margin: 10, textTransform: 'none' },
@@ -391,9 +426,15 @@ export const FormInputSelect = ({
   control,
   register,
   errors,
+  errorMessage,
+  errorState,
   shouldUnregister,
 }: FormInputSelectProps) => (
-  <FormControl error={!!errors[name]} aria-label={label} role="combobox">
+  <FormControl
+    error={errorState ?? !!errors[name]}
+    aria-label={label}
+    role="combobox"
+  >
     <InputLabel id={label} htmlFor={label}>
       {label}
     </InputLabel>
@@ -407,6 +448,7 @@ export const FormInputSelect = ({
           <Select
             label={label}
             value={value || onSavedValue}
+            defaultValue={value}
             onChange={(e) => {
               if (handleChange) {
                 handleChange(e.target.value);
@@ -442,7 +484,7 @@ export const FormInputSelect = ({
             })}
           </Select>
           <FormHelperText sx={{ color: '#d32f2f' }}>
-            {errors[name]?.message}
+            {errorMessage ?? errors[name]?.message}
           </FormHelperText>
         </>
       )}
@@ -458,10 +500,16 @@ export const FormInputRadio = ({
   onSavedValue,
   radioOptions,
   errors,
+  errorMessage,
+  errorState,
   shouldUnregister,
 }: FormInputRadioProps) => {
   return (
-    <FormControl error={!!errors[name]} aria-label={label} role="radiogroup">
+    <FormControl
+      error={errorState ?? !!errors[name]}
+      aria-label={label}
+      role="radiogroup"
+    >
       <Controller
         control={control}
         name={name}
@@ -480,7 +528,7 @@ export const FormInputRadio = ({
               ))}
             </RadioGroup>
             <FormHelperText sx={{ color: '#d32f2f' }}>
-              {errors[name]?.message}
+              {errorMessage ?? errors[name]?.message}
             </FormHelperText>
           </>
         )}
@@ -507,6 +555,7 @@ export const FormInputCheckbox = ({
     label={label}
     disabled={disabled}
     defaultValue={defaultValue}
+    value={value}
     control={
       <Checkbox
         key={`${keyId}-checkbox`}
@@ -514,7 +563,6 @@ export const FormInputCheckbox = ({
           shouldUnregister: shouldUnregister,
         })}
         checked={checked}
-        value={value}
       />
     }
   />
@@ -529,9 +577,11 @@ export const FormCreatableSelect = ({
   placeholder,
   control,
   errors,
+  errorMessage,
+  errorState,
   register,
 }: FormCreatableSelectProps) => (
-  <FormControl error={!!errors[name]}>
+  <FormControl error={errorState ?? !!errors[name]}>
     <Controller
       name={name}
       defaultValue=""
@@ -552,7 +602,7 @@ export const FormCreatableSelect = ({
       control={control}
     />
     <FormHelperText sx={{ color: '#d32f2f' }}>
-      {errors[name]?.message}
+      {errorMessage ?? errors[name]?.message}
     </FormHelperText>
   </FormControl>
 );

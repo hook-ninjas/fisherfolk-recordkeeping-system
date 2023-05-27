@@ -65,7 +65,7 @@ export default function Livelihood() {
       >
         {Object.values(SourceOfIncome).map((item) => (
           <LivelihoodPaper key={item} elevation={2}>
-            <Stack direction="row" spacing={2} alignItems='center'>
+            <Stack direction="row" spacing={2} alignItems="center">
               <Grid item sm={3} mt={1}>
                 <Box
                   component="img"
@@ -79,7 +79,7 @@ export default function Livelihood() {
                 </Typography>
                 <Typography
                   variant="h4"
-                  component='h4'
+                  component="h4"
                   color="#71797E"
                   aria-label={`${item.toLocaleLowerCase()}-${getCount(item)}`}
                 >
