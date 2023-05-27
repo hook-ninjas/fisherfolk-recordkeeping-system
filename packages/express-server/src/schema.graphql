@@ -19,9 +19,29 @@ enum CivilStatus {
   Widowed
 }
 
+input CreateFfolkGearInput {
+  fisherfolkId: BigInt!
+  types: [String!]!
+}
+
+input CreateFfolkLivelihoodInput {
+  fisherfolkId: BigInt!
+  mainFishingActivity: SourceOfIncome!
+  otherFishingActivity: [SourceOfIncome!]!
+  otherSourceOfIncome: String!
+}
+
+input CreateFfolkOrganizationInput {
+  fisherfolkId: BigInt!
+  name: String!
+  position: String!
+  yearJoined: Int!
+}
+
 input CreateFfolkVesselInput {
   engineMake: String!
   files: [UploadImageInput!]!
+  fisherfolkId: BigInt
   grossTonnage: Float
   homeport: String!
   horsepower: Float
@@ -90,6 +110,13 @@ input CreateImageInput {
   type: String
   url: String!
   vessel_id: BigInt
+}
+
+input CreateLivelihoodInput {
+  description: String!
+  fisherfolkId: BigInt
+  isMain: Boolean!
+  type: SourceOfIncome!
 }
 
 input CreateUserInput {
@@ -261,7 +288,6 @@ type Mutation {
   createVessel(vessel: CreateVesselInput!): Vessel!
   createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
   loginUser(data: CreateUserInput!): AuthPayload!
-  updateFisherfolk(data: CreateFisherfolkInput!, id: Int!): Fisherfolk!
   updateMfvr(id: Int!, mfvrNum: String!): Vessel!
 }
 
@@ -337,11 +363,14 @@ enum SourceOfIncome {
 }
 
 input UploadImageInput {
-  isProfileImage: Boolean!
+  fisherfolkId: BigInt
+  gearId: BigInt
+  isProfileImage: Boolean
   name: String!
-  size: Int!
-  type: String!
+  size: Int
+  type: String
   uri: String!
+  vesselId: BigInt
 }
 
 type User {

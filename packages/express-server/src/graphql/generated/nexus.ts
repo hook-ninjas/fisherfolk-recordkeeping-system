@@ -38,9 +38,26 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  CreateFfolkGearInput: { // input type
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    types: string[]; // [String!]!
+  }
+  CreateFfolkLivelihoodInput: { // input type
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    mainFishingActivity: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
+    otherFishingActivity: NexusGenEnums['SourceOfIncome'][]; // [SourceOfIncome!]!
+    otherSourceOfIncome: string; // String!
+  }
+  CreateFfolkOrganizationInput: { // input type
+    fisherfolkId: NexusGenScalars['BigInt']; // BigInt!
+    name: string; // String!
+    position: string; // String!
+    yearJoined: number; // Int!
+  }
   CreateFfolkVesselInput: { // input type
     engineMake: string; // String!
     files: NexusGenInputs['UploadImageInput'][]; // [UploadImageInput!]!
+    fisherfolkId?: NexusGenScalars['BigInt'] | null; // BigInt
     grossTonnage?: number | null; // Float
     homeport: string; // String!
     horsepower?: number | null; // Float
@@ -107,6 +124,12 @@ export interface NexusGenInputs {
     url: string; // String!
     vessel_id?: NexusGenScalars['BigInt'] | null; // BigInt
   }
+  CreateLivelihoodInput: { // input type
+    description: string; // String!
+    fisherfolkId?: NexusGenScalars['BigInt'] | null; // BigInt
+    isMain: boolean; // Boolean!
+    type: NexusGenEnums['SourceOfIncome']; // SourceOfIncome!
+  }
   CreateUserInput: { // input type
     password: string; // String!
     username: string; // String!
@@ -138,11 +161,14 @@ export interface NexusGenInputs {
     yearJoined: number; // Int!
   }
   UploadImageInput: { // input type
-    isProfileImage: boolean; // Boolean!
+    fisherfolkId?: NexusGenScalars['BigInt'] | null; // BigInt
+    gearId?: NexusGenScalars['BigInt'] | null; // BigInt
+    isProfileImage?: boolean | null; // Boolean
     name: string; // String!
-    size: number; // Int!
-    type: string; // String!
+    size?: number | null; // Int
+    type?: string | null; // String
     uri: string; // String!
+    vesselId?: NexusGenScalars['BigInt'] | null; // BigInt
   }
 }
 
@@ -409,7 +435,6 @@ export interface NexusGenFieldTypes {
     createVessel: NexusGenRootTypes['Vessel']; // Vessel!
     createVesselWithGear: NexusGenRootTypes['Vessel']; // Vessel!
     loginUser: NexusGenRootTypes['AuthPayload']; // AuthPayload!
-    updateFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     updateMfvr: NexusGenRootTypes['Vessel']; // Vessel!
   }
   Organization: { // field return type
@@ -589,7 +614,6 @@ export interface NexusGenFieldTypeNames {
     createVessel: 'Vessel'
     createVesselWithGear: 'Vessel'
     loginUser: 'AuthPayload'
-    updateFisherfolk: 'Fisherfolk'
     updateMfvr: 'Vessel'
   }
   Organization: { // field return type name
@@ -693,10 +717,6 @@ export interface NexusGenArgTypes {
     }
     loginUser: { // args
       data: NexusGenInputs['CreateUserInput']; // CreateUserInput!
-    }
-    updateFisherfolk: { // args
-      data: NexusGenInputs['CreateFisherfolkInput']; // CreateFisherfolkInput!
-      id: number; // Int!
     }
     updateMfvr: { // args
       id: number; // Int!
