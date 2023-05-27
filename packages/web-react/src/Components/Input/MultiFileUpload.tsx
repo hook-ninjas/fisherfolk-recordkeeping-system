@@ -1,31 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import {
-  UseFormRegister,
-  Control,
-  FieldValues,
-  Controller,
-} from 'react-hook-form';
-import {
-  Paper,
-  Theme,
-  Button,
-  FormHelperText,
-  SxProps,
-  Grid,
-  Box,
-} from '@mui/material';
+import { UseFormRegister, Control, FieldValues, Controller } from 'react-hook-form';
+import { Paper, Theme, Button, FormHelperText, SxProps, Grid, Box } from '@mui/material';
 
 interface MultiFileUploadProps {
   id?: string;
   name: string;
   label: string;
   dataCy?: string;
-  onChange?: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void | undefined;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void | undefined;
   control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  errorState?: boolean;
+  errorMessage?: string;
+  hideError?: boolean;
   sx?: SxProps<Theme> | undefined;
 }
 
@@ -57,17 +45,7 @@ const thumbnails = (srcs: string[]) => {
   });
 };
 
-function MultiFileUpload({
-  id = '',
-  name,
-  label = '',
-  dataCy = '',
-  control,
-  register,
-  errors,
-  onChange = undefined,
-  sx,
-}: MultiFileUploadProps) {
+function MultiFileUpload({ id = '', name, label = '', dataCy = '', control, register, errors, errorState, errorMessage, hideError, onChange = undefined, sx }: MultiFileUploadProps) {
   const [preview, setPreview] = useState<JSX.Element[] | undefined>([]);
   const [datas, setDatas] = useState<Data[]>([]);
 
@@ -96,39 +74,29 @@ function MultiFileUpload({
     });
   };
 
-  const handleUpload =
-    (onChange: (value: any) => void) =>
-    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const uploadedFiles: File[] = [];
-      if (event.target instanceof HTMLInputElement) {
-        const { files } = event.target;
-        if (files) {
-          for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            uploadedFiles.push(file);
-          }
-          createData(uploadedFiles, onChange);
+  const handleUpload = (onChange: (value: any) => void) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const uploadedFiles: File[] = [];
+    if (event.target instanceof HTMLInputElement) {
+      const { files } = event.target;
+      if (files) {
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          uploadedFiles.push(file);
         }
-      } else {
-        throw 'Not Valid Input';
+        createData(uploadedFiles, onChange);
       }
-    };
+    } else {
+      throw 'Not Valid Input';
+    }
+  };
 
   return (
     <>
       <Box id={id} sx={sx} data-cy={dataCy}>
-        <FormHelperText
-          error={!!errors[name]}
-          hidden={!errors[name]}
-          sx={{ ml: 2, mt: 2 }}
-        >
-          {errors[name]?.message}
+        <FormHelperText error={errorState ?? !!errors[name]} hidden={hideError ?? !errors[name]} sx={{ ml: 2, mt: 2 }}>
+          {errorMessage ?? errors[name]?.message}
         </FormHelperText>
-        <Grid
-          id="file-thumbnail-container"
-          container
-          sx={{ p: 1, width: '100%' }}
-        >
+        <Grid id="file-thumbnail-container" container sx={{ p: 1, width: '100%' }}>
           {preview}
         </Grid>
         <Controller
@@ -136,21 +104,8 @@ function MultiFileUpload({
           control={control}
           defaultValue=""
           render={({ field: { value, onChange } }) => (
-            <Button
-              fullWidth
-              id={label}
-              variant="contained"
-              component="label"
-              htmlFor="multi-upload-btn"
-            >
-              <input
-                accept="image/*"
-                id="multi-upload-btn"
-                multiple
-                type="file"
-                hidden
-                onChange={handleUpload(onChange)}
-              />
+            <Button fullWidth id={label} variant="contained" component="label" htmlFor="multi-upload-btn">
+              <input accept="image/*" id="multi-upload-btn" multiple type="file" hidden onChange={handleUpload(onChange)} />
               Upload
             </Button>
           )}

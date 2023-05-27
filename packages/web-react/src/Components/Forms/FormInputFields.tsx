@@ -1,43 +1,11 @@
 import React, { HTMLAttributes, useState } from 'react';
-import {
-  UseFormRegister,
-  Control,
-  FieldValues,
-  Controller,
-} from 'react-hook-form';
-import {
-  FormControl,
-  Select,
-  InputLabel,
-  FormHelperText,
-  MenuItem,
-  TextField,
-  FormControlLabel,
-  RadioGroup,
-  Radio,
-  FormGroup,
-  Checkbox,
-  Grid,
-  Typography,
-  Autocomplete,
-  SxProps,
-  Theme,
-} from '@mui/material';
+import { UseFormRegister, Control, FieldValues, Controller } from 'react-hook-form';
+import { FormControl, Select, InputLabel, FormHelperText, MenuItem, TextField, FormControlLabel, RadioGroup, Radio, FormGroup, Checkbox, Grid, Typography, Autocomplete, SxProps, Theme, InputBaseComponentProps } from '@mui/material';
 import CreatableSelect from 'react-select/creatable';
 import { splitUpperCase } from '../../utils/utils';
-import {
-  DatePicker,
-  LocalizationProvider,
-  CalendarPickerView,
-} from '@mui/x-date-pickers';
+import { DatePicker, LocalizationProvider, CalendarPickerView } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import {
-  CivilStatus,
-  EducationalBackground,
-  Gender,
-  Salutation,
-  SourceOfIncome,
-} from '../../graphql/generated';
+import { CivilStatus, EducationalBackground, Gender, Salutation, SourceOfIncome } from '../../graphql/generated';
 export interface Option {
   label: string;
   value: string;
@@ -75,7 +43,11 @@ interface FormInputTextProps {
   options?: Option[];
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  errorMessage?: string;
+  errorState?: boolean;
   shouldUnregister?: boolean;
+  disabled?: boolean;
+  inputProps?: InputBaseComponentProps;
 }
 interface FormInputNumberProps {
   name: string;
@@ -89,6 +61,8 @@ interface FormInputNumberProps {
   options?: Option[];
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  errorMessage?: string;
+  errorState?: boolean;
 }
 
 interface FormInputDateProps {
@@ -103,6 +77,8 @@ interface FormInputDateProps {
   control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  errorMessage?: string;
+  errorState?: boolean;
 }
 
 interface FormInputAutoProps {
@@ -121,6 +97,8 @@ interface FormInputAutoProps {
   options?: Option[] | string[];
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  errorMessage?: string;
+  errorState?: boolean;
   sx?: SxProps<Theme> | undefined;
   shouldUnregister?: boolean;
 }
@@ -135,6 +113,8 @@ interface FormInputSelectProps {
   control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  errorMessage?: string;
+  errorState?: boolean;
   shouldUnregister?: boolean;
 }
 
@@ -147,6 +127,8 @@ interface FormInputRadioProps {
   radioOptions: Option[];
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  errorMessage?: string;
+  errorState?: boolean;
   shouldUnregister?: boolean;
 }
 
@@ -173,19 +155,11 @@ interface FormCreatableSelectProps {
   control: Control<FieldValues, unknown>;
   register: UseFormRegister<FieldValues>;
   errors: FieldValues;
+  errorMessage?: string;
+  errorState?: boolean;
 }
 
-export const FormInputText = ({
-  name,
-  label,
-  placeholder,
-  control,
-  inputMode,
-  defaultValue,
-  handleChange,
-  errors,
-  shouldUnregister,
-}: FormInputTextProps) => (
+export const FormInputText = ({ name, label, placeholder, control, inputMode, defaultValue, handleChange, errors, errorMessage, errorState, shouldUnregister, disabled, inputProps }: FormInputTextProps) => (
   <Controller
     name={name}
     control={control}
@@ -196,6 +170,7 @@ export const FormInputText = ({
         value={value}
         sx={{ marginTop: -0.3, width: 250 }}
         label={label}
+        disabled={disabled}
         onChange={(e) => {
           if (handleChange) {
             const newValue = handleChange(e.target.value);
@@ -204,29 +179,20 @@ export const FormInputText = ({
             onChange(e.target.value);
           }
         }}
-        helperText={errors[name]?.message}
-        error={!!errors[name]}
+        helperText={errorMessage ?? errors[name]?.message}
+        error={errorState ?? !!errors[name]}
         placeholder={placeholder}
         InputProps={{
           style: { fontSize: 14, margin: 10 },
           inputMode: inputMode ? inputMode : 'text',
+          inputProps: inputProps,
         }}
       />
     )}
   />
 );
 
-export const FormInputNumber = ({
-  name,
-  label,
-  placeholder,
-  control,
-  numericOnly,
-  max,
-  min,
-  defaultValue,
-  errors,
-}: FormInputNumberProps) => (
+export const FormInputNumber = ({ name, label, placeholder, control, numericOnly, max, min, defaultValue, errors, errorMessage, errorState }: FormInputNumberProps) => (
   <Controller
     name={name}
     control={control}
@@ -238,31 +204,20 @@ export const FormInputNumber = ({
         sx={{ marginTop: -0.3, width: 250 }}
         label={label}
         onChange={onChange}
-        helperText={errors[name]?.message}
-        error={!!errors[name]}
+        helperText={errorMessage ?? errors[name]?.message}
+        error={errorState ?? !!errors[name]}
         placeholder={placeholder}
         InputProps={{
           style: { fontSize: 14, margin: 10 },
           inputMode: numericOnly ? 'numeric' : undefined,
-          inputProps: { max: max, min: min },
+          inputProps: { max: max, min: min, pattern: '[0-9]*' },
         }}
       />
     )}
   />
 );
 
-export const FormInputDate = ({
-  name,
-  label,
-  sx,
-  defaultValue,
-  onSavedValue,
-  openTo,
-  max,
-  min,
-  control,
-  errors,
-}: FormInputDateProps) => (
+export const FormInputDate = ({ name, label, sx, defaultValue, onSavedValue, openTo, max, min, control, errors, errorMessage, errorState }: FormInputDateProps) => (
   <>
     <Controller
       name={name}
@@ -279,14 +234,7 @@ export const FormInputDate = ({
             onChange={(e) => {
               onChange(e);
             }}
-            renderInput={(params) => (
-              <TextField
-                sx={sx}
-                {...params}
-                helperText={errors[name]?.message}
-                error={!!errors[name]}
-              />
-            )}
+            renderInput={(params) => <TextField sx={sx} {...params} helperText={errorMessage ?? errors[name]?.message} error={errorState ?? !!errors[name]} />}
           />
         </LocalizationProvider>
       )}
@@ -294,21 +242,7 @@ export const FormInputDate = ({
   </>
 );
 
-export const FormInputAutoText = ({
-  name,
-  label,
-  placeholder,
-  control,
-  freeSolo,
-  autoComplete,
-  defaultValue,
-  handleTextChange,
-  handleInputChange,
-  sx,
-  options,
-  errors,
-  shouldUnregister,
-}: FormInputAutoProps) => (
+export const FormInputAutoText = ({ name, label, placeholder, control, freeSolo, autoComplete, defaultValue, handleTextChange, handleInputChange, sx, options, errors, errorMessage, errorState, shouldUnregister }: FormInputAutoProps) => (
   <Controller
     name={name}
     defaultValue={defaultValue}
@@ -334,16 +268,14 @@ export const FormInputAutoText = ({
           }
           onChange(value);
         }}
-        options={options!.map((option) =>
-          typeof option === 'string' ? option : option.label
-        )}
+        options={options!.map((option) => (typeof option === 'string' ? option : option.label))}
         renderInput={(params) => (
           <TextField
             {...params}
             label={label}
             sx={sx}
-            helperText={errors[name]?.message}
-            error={!!errors[name]}
+            helperText={errorMessage ?? errors[name]?.message}
+            error={errorState ?? !!errors[name]}
             InputProps={{
               ...params.InputProps,
               style: { fontSize: 14, margin: 10, textTransform: 'none' },
@@ -356,19 +288,8 @@ export const FormInputAutoText = ({
   />
 );
 
-export const FormInputSelect = ({
-  name,
-  label,
-  onSavedValue,
-  data,
-  defaultValue,
-  handleChange,
-  control,
-  register,
-  errors,
-  shouldUnregister,
-}: FormInputSelectProps) => (
-  <FormControl error={!!errors[name]} aria-label={label} role="combobox">
+export const FormInputSelect = ({ name, label, onSavedValue, data, defaultValue, handleChange, control, register, errors, errorMessage, errorState, shouldUnregister }: FormInputSelectProps) => (
+  <FormControl error={errorState ?? !!errors[name]} aria-label={label} role="combobox">
     <InputLabel id={label} htmlFor={label}>
       {label}
     </InputLabel>
@@ -382,6 +303,7 @@ export const FormInputSelect = ({
           <Select
             label={label}
             value={value || onSavedValue}
+            defaultValue={value}
             onChange={(e) => {
               if (handleChange) {
                 handleChange(e.target.value);
@@ -395,48 +317,29 @@ export const FormInputSelect = ({
             {data?.map((item, index) => {
               if (typeof item === 'string') {
                 return (
-                  <MenuItem
-                    value={item}
-                    key={`${item}-${index}`}
-                    {...register(name)}
-                  >
+                  <MenuItem value={item} key={`${item}-${index}`} {...register(name)}>
                     {splitUpperCase(item)}
                   </MenuItem>
                 );
               }
 
               return (
-                <MenuItem
-                  value={item.value}
-                  key={`${item.label}-${index}`}
-                  {...register(name)}
-                >
+                <MenuItem value={item.value} key={`${item.label}-${index}`} {...register(name)}>
                   {item.label}
                 </MenuItem>
               );
             })}
           </Select>
-          <FormHelperText sx={{ color: '#d32f2f' }}>
-            {errors[name]?.message}
-          </FormHelperText>
+          <FormHelperText sx={{ color: '#d32f2f' }}>{errorMessage ?? errors[name]?.message}</FormHelperText>
         </>
       )}
     />
   </FormControl>
 );
 
-export const FormInputRadio = ({
-  name,
-  label,
-  control,
-  defaultValue,
-  onSavedValue,
-  radioOptions,
-  errors,
-  shouldUnregister,
-}: FormInputRadioProps) => {
+export const FormInputRadio = ({ name, label, control, defaultValue, onSavedValue, radioOptions, errors, errorMessage, errorState, shouldUnregister }: FormInputRadioProps) => {
   return (
-    <FormControl error={!!errors[name]} aria-label={label} role="radiogroup">
+    <FormControl error={errorState ?? !!errors[name]} aria-label={label} role="radiogroup">
       <Controller
         control={control}
         name={name}
@@ -446,17 +349,10 @@ export const FormInputRadio = ({
           <>
             <RadioGroup row onChange={onChange} value={value || onSavedValue}>
               {radioOptions.map((item) => (
-                <FormControlLabel
-                  key={item.value}
-                  value={item.value}
-                  label={splitUpperCase(item.label)}
-                  control={<Radio />}
-                />
+                <FormControlLabel key={item.value} value={item.value} label={splitUpperCase(item.label)} control={<Radio />} />
               ))}
             </RadioGroup>
-            <FormHelperText sx={{ color: '#d32f2f' }}>
-              {errors[name]?.message}
-            </FormHelperText>
+            <FormHelperText sx={{ color: '#d32f2f' }}>{errorMessage ?? errors[name]?.message}</FormHelperText>
           </>
         )}
       />
@@ -464,18 +360,7 @@ export const FormInputRadio = ({
   );
 };
 
-export const FormInputCheckbox = ({
-  name,
-  label,
-  keyId,
-  defaultValue,
-  value,
-  checked,
-  disabled,
-  register,
-  shouldUnregister,
-  sx,
-}: FormInputCheckboxProps) => (
+export const FormInputCheckbox = ({ name, label, keyId, defaultValue, value, checked, disabled, register, shouldUnregister, sx }: FormInputCheckboxProps) => (
   <FormControlLabel
     key={`${keyId}-label`}
     sx={sx}
@@ -495,39 +380,9 @@ export const FormInputCheckbox = ({
   />
 );
 
-export const FormCreatableSelect = ({
-  name,
-  options,
-  isLoading,
-  isDisabled,
-  onCreateOption,
-  placeholder,
-  control,
-  errors,
-  register,
-}: FormCreatableSelectProps) => (
-  <FormControl error={!!errors[name]}>
-    <Controller
-      name={name}
-      defaultValue=""
-      render={({ field: { onChange, value } }) => (
-        <CreatableSelect
-          isClearable
-          options={options}
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          onChange={(input) => onChange(input?.value)}
-          onCreateOption={onCreateOption}
-          value={options.find((c) => c.value === value)}
-          placeholder={placeholder}
-          {...register}
-          styles={style}
-        />
-      )}
-      control={control}
-    />
-    <FormHelperText sx={{ color: '#d32f2f' }}>
-      {errors[name]?.message}
-    </FormHelperText>
+export const FormCreatableSelect = ({ name, options, isLoading, isDisabled, onCreateOption, placeholder, control, errors, errorMessage, errorState, register }: FormCreatableSelectProps) => (
+  <FormControl error={errorState ?? !!errors[name]}>
+    <Controller name={name} defaultValue="" render={({ field: { onChange, value } }) => <CreatableSelect isClearable options={options} isDisabled={isDisabled} isLoading={isLoading} onChange={(input) => onChange(input?.value)} onCreateOption={onCreateOption} value={options.find((c) => c.value === value)} placeholder={placeholder} {...register} styles={style} />} control={control} />
+    <FormHelperText sx={{ color: '#d32f2f' }}>{errorMessage ?? errors[name]?.message}</FormHelperText>
   </FormControl>
 );
