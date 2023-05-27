@@ -3,7 +3,7 @@ import { createFisherfolk } from './Fisherfolk.resolver';
 import CreateFisherfolkInput from '../../input/Fisherfolk.input';
 import { nonNullArg } from '../../../../utils/utils';
 import Fisherfolk from '../../model/objecTypes/Fisherfolk';
-import { EducationalBackground, Gender, Salutation, SourceOfIncome } from '@prisma/client';
+import { EducationalBackground, Gender, Material, Salutation, SourceOfIncome } from '@prisma/client';
 import { sub } from 'date-fns/fp';
 
 const CreateFisherfolk = mutationField('createFisherfolk', {
@@ -18,6 +18,7 @@ const CreateFisherfolk = mutationField('createFisherfolk', {
     const gender = Object.values(Gender);
     const educationalBackground = Object.values(EducationalBackground);
     const sourceOfIncome = Object.values(SourceOfIncome);
+    const material = Object.values(Material);
 
     return {
       lastName: string().matches(/^[a-zA-Z]+$/),
@@ -44,9 +45,13 @@ const CreateFisherfolk = mutationField('createFisherfolk', {
       mainFishingActivity: string().oneOf(sourceOfIncome),
       otherFishingActivity: array().of(string().oneOf(sourceOfIncome)).max(3),
       otherSourceOfIncome: string().matches(/^[a-zA-Z]+$/),
-      orgName: string().matches(/^[a-zA-Z]+$/),
-      orgMemberSince: number().moreThan(1500),
-      orgPosition: string().matches(/(^[\sA-Za-z0-9]+$)/i),
+      organization: object()
+        .nullable()
+        .shape({
+          name: string().matches(/^[a-zA-Z]+$/),
+          yearJoined: number().moreThan(1500),
+          position: string().matches(/(^[\sA-Za-z0-9]+$)/i),
+        }),
       profilePhoto: object().shape({
         uri: string(),
         name: string(),
@@ -64,27 +69,37 @@ const CreateFisherfolk = mutationField('createFisherfolk', {
         })
       ),
       gears: array().of(string().matches(/^[a-zA-Z0-9]+$/)),
-      vessel: object().shape({
-        registrationType: string(),
-        mfvrNumber: string(),
-        homeport: string(),
-        name: string(),
-        material: string(),
-        type: string(),
-        placeBuilt: string(),
-        yearBuilt: string().matches(/^$|\d{4}$/),
-        registeredLength: string().matches(/^[0-9]\d*(\.\d+)?$/),
-        registeredDepth: string().matches(/^[0-9]\d*(\.\d+)?$/),
-        registeredBreadth: string().matches(/^[0-9]\d*(\.\d+)?$/),
-        tonnageLength: string().matches(/^[0-9]\d*(\.\d+)?$/),
-        tonnageDepth: string().matches(/^[0-9]\d*(\.\d+)?$/),
-        tonnageBreadth: string().matches(/^[0-9]\d*(\.\d+)?$/),
-        grossTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/),
-        netTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/),
-        engineMake: string(),
-        serialNumber: string(),
-        horsepower: string(),
-      }),
+      vessel: object()
+        .nullable()
+        .shape({
+          mfvrNumber: string(),
+          homeport: string(),
+          name: string(),
+          material: string().oneOf(material),
+          type: string(),
+          placeBuilt: string(),
+          yearBuilt: number().nullable(),
+          registeredLength: number().nullable(),
+          registeredDepth: number().nullable(),
+          registeredBreadth: number().nullable(),
+          tonnageLength: number().nullable(),
+          tonnageDepth: number().nullable(),
+          tonnageBreadth: number().nullable(),
+          grossTonnage: number().nullable(),
+          netTonnage: number().nullable(),
+          engineMake: string(),
+          serialNumber: string(),
+          horsepower: number().nullable(),
+          files: array().of(
+            object().shape({
+              uri: string(),
+              name: string(),
+              size: number().max(uploadLimit),
+              type: string().matches(/^.*(image\/jpeg|jpg|png)$/gm),
+              isProfileImage: boolean(),
+            })
+          ),
+        }),
     };
   },
   resolve: async (_, { data }, context) => {
