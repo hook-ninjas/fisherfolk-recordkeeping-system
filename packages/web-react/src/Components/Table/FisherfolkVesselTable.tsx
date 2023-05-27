@@ -27,6 +27,7 @@ import {
   Menu,
   MenuItem,
   Snackbar,
+  Stack,
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
@@ -147,8 +148,6 @@ const renderMoreActions = (id: number) => {
     </div>
   );
 };
-
-// const  renderCell = () => <RenderMoreActions />;
 
 const computeMutation = (newRow: GridRowModel, oldRow: GridRowModel) => {
   if (newRow.mfvrNum !== oldRow.mfvrNum) {
@@ -284,6 +283,13 @@ export default function FisherfolkVesselTable({ error, loading, data }: Props) {
         disableVirtualization={true}
         processRowUpdate={processRowUpdate}
         aria-label="vessel-table"
+        components={{
+          NoRowsOverlay: () => (
+            <Stack height="100%" alignItems="center" justifyContent="center">
+              No results found.
+            </Stack>
+          ),
+        }}
       />
       {!!snackbar && (
         <Snackbar open onClose={handleCloseSnackbar} autoHideDuration={6000}>

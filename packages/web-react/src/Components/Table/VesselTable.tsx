@@ -1,11 +1,6 @@
-import { Button, Menu, MenuItem, Alert, Backdrop } from '@mui/material';
+import { Button, Menu, MenuItem, Alert, Backdrop, Stack } from '@mui/material';
 import React, { useState } from 'react';
-import {
-  ArchiveVesselDocument,
-  FisherfolkVesselsDocument,
-  UpdateToArchiveVesselDocument,
-  VesselQueryDocument,
-} from '../../graphql/generated';
+import { ArchiveVesselDocument, FisherfolkVesselsDocument, UpdateToArchiveVesselDocument, VesselQueryDocument } from '../../graphql/generated';
 import { useMutation, useQuery } from '@apollo/client';
 import Loading from '../Loading/Loading';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -14,10 +9,7 @@ import ArchiveIcon from '@mui/icons-material/Archive';
 import moment from 'moment';
 import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
 import { useParams } from 'react-router-dom';
-import {
-  showArchiveError,
-  showArchiveSuccess,
-} from '../ConfirmationDialog/Alerts';
+import { showArchiveError, showArchiveSuccess } from '../ConfirmationDialog/Alerts';
 
 import UpdateVesselForm from '../Forms/UpdateVesselForm';
 
@@ -35,19 +27,16 @@ const renderMoreActions = (id: number) => {
     handleClose();
   };
 
-  const [archiveVessel, archiveResult] = useMutation(
-    UpdateToArchiveVesselDocument,
-    {
-      refetchQueries: [
-        {
-          query: ArchiveVesselDocument,
-        },
-        {
-          query: VesselQueryDocument,
-        },
-      ],
-    }
-  );
+  const [archiveVessel, archiveResult] = useMutation(UpdateToArchiveVesselDocument, {
+    refetchQueries: [
+      {
+        query: ArchiveVesselDocument,
+      },
+      {
+        query: VesselQueryDocument,
+      },
+    ],
+  });
 
   const ArchiveAVessel = () => {
     archiveVessel({
@@ -67,27 +56,13 @@ const renderMoreActions = (id: number) => {
   const archiveHandler = () => {
     const { loading } = archiveResult;
     if (loading) {
-      return (
-        <Backdrop
-          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={true}
-        ></Backdrop>
-      );
+      return <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}></Backdrop>;
     }
   };
 
   return (
     <div>
-      <Button
-        id="vessel-action-btn"
-        aria-controls={open ? 'vessel-action-btn' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        aria-label="vessel-action-btn"
-        disableElevation
-        onClick={handleClick}
-        style={{ color: '#808080' }}
-      >
+      <Button id="vessel-action-btn" aria-controls={open ? 'vessel-action-btn' : undefined} aria-haspopup="true" aria-expanded={open ? 'true' : undefined} aria-label="vessel-action-btn" disableElevation onClick={handleClick} style={{ color: '#808080' }}>
         <MoreVertIcon />
       </Button>
       <Menu
@@ -102,13 +77,7 @@ const renderMoreActions = (id: number) => {
         <MenuItem onClick={handleUpdateFormOpen} disableRipple>
           <EditIcon sx={{ width: 20, marginRight: 1.5 }} /> Edit
         </MenuItem>
-        {updateVessel && (
-          <UpdateVesselForm
-            id={id}
-            handleClose={handleUpdateFormClose}
-            open={updateVessel}
-          />
-        )}
+        {updateVessel && <UpdateVesselForm id={id} handleClose={handleUpdateFormClose} open={updateVessel} />}
         <MenuItem
           onClick={() => {
             ArchiveAVessel();
@@ -179,6 +148,13 @@ export default function VesselTable() {
         columns={columns}
         aria-label="fisherfolk-vessel-table"
         disableVirtualization={true}
+        components={{
+          NoRowsOverlay: () => (
+            <Stack height="100%" alignItems="center" justifyContent="center">
+              No results found.
+            </Stack>
+          ),
+        }}
       />
     </div>
   );
