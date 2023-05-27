@@ -87,11 +87,12 @@ model Member {
 }
 
 model GovernmentAid {
-  id          Int      @id
+  id          Int      @id @default(autoincrement())
   title       String
+  description String
   slot        Int
-  startDate   DateTime @map("start_date")
-  endDate     DateTime @map("end_date")
+  date        DateTime
+  images      Image[]
   fisherfolks Queue[]
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -189,6 +190,7 @@ model Vessel {
   serialNumber      String     @map("serial_number")
   horsepower        Float?
   images            Image[]
+  isArchive         Boolean    @default(false) @map("is_archive")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -214,19 +216,21 @@ model Fishpond {
 }
 
 model Image {
-  id           String      @id @default(cuid())
-  fisherfolk   Fisherfolk? @relation(fields: [fisherfolkId], references: [id])
-  fisherfolkId BigInt?     @map("fisherfolk_id")
-  gear         Gear?       @relation(fields: [gearId], references: [id])
-  gearId       BigInt?     @map("gear_id")
-  vessel       Vessel?     @relation(fields: [vesselId], references: [id])
-  vesselId     BigInt?     @map("vessel_id")
-  name         String
-  type         String?
-  size         Int?
-  url          String
-  isProfileImage Boolean?  @default(false) @map("is_profile_image")   
-  isArchive    Boolean     @default(false) @map("is_archive")
+  id              String         @id @default(cuid())
+  fisherfolk      Fisherfolk?    @relation(fields: [fisherfolkId], references: [id])
+  fisherfolkId    BigInt?        @map("fisherfolk_id")
+  gear            Gear?          @relation(fields: [gearId], references: [id])
+  gearId          BigInt?        @map("gear_id")
+  vessel          Vessel?        @relation(fields: [vesselId], references: [id])
+  vesselId        BigInt?        @map("vessel_id")
+  governmentAid   GovernmentAid? @relation(fields: [governmentAidId], references: [id])
+  governmentAidId Int?           @map("government_aid_id")
+  name            String
+  type            String?
+  size            Int?
+  url             String
+  isProfileImage  Boolean?       @default(false) @map("is_profile_image")
+  isArchive       Boolean        @default(false) @map("is_archive")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

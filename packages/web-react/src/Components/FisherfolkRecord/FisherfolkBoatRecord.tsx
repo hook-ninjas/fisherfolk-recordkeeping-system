@@ -1,14 +1,18 @@
 import React from 'react';
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import FisherfolkVesselTable from '../Table/FisherfolkVesselTable';
+import { useQuery } from '@apollo/client';
+import { VesselQueryDocument } from '../../graphql/generated';
 
 const FisherfolkBoatRecord = () => {
+  const { loading, error, data } = useQuery(VesselQueryDocument);
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Paper
           sx={{
-            p: .5,
+            p: 0.5,
             display: 'flex',
             flexDirection: 'column',
             boxShadow: 2,
@@ -19,7 +23,11 @@ const FisherfolkBoatRecord = () => {
           </Box>
           <Grid item>
             <Box m={1}>
-              <FisherfolkVesselTable />
+              <FisherfolkVesselTable
+                loading={loading}
+                error={error}
+                data={data}
+              />
             </Box>
           </Grid>
         </Paper>

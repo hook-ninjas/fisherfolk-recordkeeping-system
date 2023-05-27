@@ -1,9 +1,25 @@
 import React, { MouseEvent, SyntheticEvent, useState } from 'react';
 import { Box, Button, DialogContent, Grid, Tabs, Tab } from '@mui/material';
-import { FormContainer, FormContainerTitle } from '../Containers/FormContainers';
-import { useForm, UseFormRegister, UseFormWatch, UseFormResetField, Control, FieldValues } from 'react-hook-form';
+import {
+  FormContainer,
+  FormContainerTitle,
+} from '../Containers/FormContainers';
+import {
+  useForm,
+  UseFormRegister,
+  UseFormWatch,
+  UseFormResetField,
+  Control,
+  FieldValues,
+} from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CreateFisherfolkDocument, GearsQueryDocument, MutationCreateFisherfolkArgs, QueryFisherfolksDocument, VesselQueryDocument } from '../../graphql/generated';
+import {
+  CreateFisherfolkDocument,
+  GearsQueryDocument,
+  MutationCreateFisherfolkArgs,
+  QueryFisherfolksDocument,
+  VesselQueryDocument,
+} from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
 import { FfolkValidation } from './validation/schema';
@@ -17,7 +33,10 @@ interface AddFisherfolkFormProps {
   handleClose: () => void;
 }
 
-export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFormProps) {
+export default function AddFisherfolkForm({
+  open,
+  handleClose,
+}: AddFisherfolkFormProps) {
   const [complete, setComplete] = useState(false);
   const [tab, setTab] = useState('');
   const [step, setStep] = useState('ffolkInfo');
@@ -56,41 +75,76 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
 
   const watchOtherFishAct = watch('otherFishingActivities');
 
-  const captureFishingRegistrant = watchMainFishAct == 'CaptureFishing' || (watchOtherFishAct instanceof Array && watchOtherFishAct.includes('CaptureFishing'));
+  const captureFishingRegistrant =
+    watchMainFishAct == 'CaptureFishing' ||
+    (watchOtherFishAct instanceof Array &&
+      watchOtherFishAct.includes('CaptureFishing'));
 
-  const [createFisherfolk, { loading }] = useMutation(CreateFisherfolkDocument, {
-    onCompleted: () => {
-      handleClose();
-      handleComplete();
-      showSuccessAlert();
-    },
-    onError: (err) => {
-      handleClose();
-      handleComplete();
-      showFailAlert();
-      console.log(err);
-    },
-    refetchQueries: [{ query: QueryFisherfolksDocument }, { query: VesselQueryDocument }, { query: GearsQueryDocument }],
-  });
+  const [createFisherfolk, { loading }] = useMutation(
+    CreateFisherfolkDocument,
+    {
+      onCompleted: () => {
+        handleClose();
+        handleComplete();
+        showSuccessAlert();
+      },
+      onError: (err) => {
+        handleClose();
+        handleComplete();
+        showFailAlert();
+        console.log(err);
+      },
+      refetchQueries: [
+        { query: QueryFisherfolksDocument },
+        { query: VesselQueryDocument },
+        { query: GearsQueryDocument },
+      ],
+    }
+  );
 
-  const handleTabChange = (event: SyntheticEvent, newValue: string) => setTab(newValue);
+  const handleTabChange = (event: SyntheticEvent, newValue: string) =>
+    setTab(newValue);
 
   const onSubmit = handleSubmit(async (input) => {
-    const org = input.withOrg ? { name: input.org.name, yearJoined: parseInt(input.org.memberSince), position: input.org.position } : null;
+    const org = input.withOrg
+      ? {
+          name: input.org.name,
+          yearJoined: parseInt(input.org.memberSince),
+          position: input.org.position,
+        }
+      : null;
     let gears = null;
     let vessel = null;
 
     if (step == 'gearVessel') {
       if (tab == 'gear' || tab == 'gear&vessel') {
-        const hookAndLine = input.gears.hookAndLine == 'false' ? [] : input.gears.hookAndLine;
-        const gillNets = input.gears.gillNets == 'false' ? [] : input.gears.gillNets;
-        const liftNets = input.gears.liftNets == 'false' ? [] : input.gears.liftNets;
-        const potsAndTraps = input.gears.potsAndTraps == 'false' ? [] : input.gears.potsAndTraps;
-        const seineNets = input.gears.seineNets == 'false' ? [] : input.gears.seineNets;
-        const scoopNets = input.gears.scoopNets == 'false' ? [] : input.gears.scoopNets;
-        const fallingGear = input.gears.fallingGear == 'false' ? [] : input.gears.fallingGear;
-        const miscellaneous = input.gears.miscellaneous == 'false' ? [] : input.gears.miscellaneous;
-        gears = [...hookAndLine, ...gillNets, ...liftNets, ...potsAndTraps, ...seineNets, ...scoopNets, ...fallingGear, ...miscellaneous, input.gears.others];
+        const hookAndLine =
+          input.gears.hookAndLine == 'false' ? [] : input.gears.hookAndLine;
+        const gillNets =
+          input.gears.gillNets == 'false' ? [] : input.gears.gillNets;
+        const liftNets =
+          input.gears.liftNets == 'false' ? [] : input.gears.liftNets;
+        const potsAndTraps =
+          input.gears.potsAndTraps == 'false' ? [] : input.gears.potsAndTraps;
+        const seineNets =
+          input.gears.seineNets == 'false' ? [] : input.gears.seineNets;
+        const scoopNets =
+          input.gears.scoopNets == 'false' ? [] : input.gears.scoopNets;
+        const fallingGear =
+          input.gears.fallingGear == 'false' ? [] : input.gears.fallingGear;
+        const miscellaneous =
+          input.gears.miscellaneous == 'false' ? [] : input.gears.miscellaneous;
+        gears = [
+          ...hookAndLine,
+          ...gillNets,
+          ...liftNets,
+          ...potsAndTraps,
+          ...seineNets,
+          ...scoopNets,
+          ...fallingGear,
+          ...miscellaneous,
+          input.gears.others,
+        ];
       }
 
       if (tab == 'vessel' || tab == 'gear&vessel') {
@@ -101,18 +155,38 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
           material: input.vessel.material,
           type: input.vessel.type,
           placeBuilt: input.vessel.placeBuilt,
-          yearBuilt: input.vessel.yearBuilt ? parseInt(input.vessel.yearBuilt) : 0,
-          registeredLength: input.vessel.registeredLength ? parseFloat(input.vessel.registeredLength) : 0,
-          registeredDepth: input.vessel.registeredDepth ? parseFloat(input.vessel.registeredDepth) : 0,
-          registeredBreadth: input.vessel.registeredBreadth ? parseFloat(input.vessel.registeredBreadth) : 0,
-          tonnageLength: input.vessel.tonnageLength ? parseFloat(input.vessel.tonnageLength) : 0,
-          tonnageDepth: input.vessel.tonnageDepth ? parseFloat(input.vessel.tonnageDepth) : 0,
-          tonnageBreadth: input.vessel.tonnageBreadth ? parseFloat(input.vessel.tonnageBreadth) : 0,
-          grossTonnage: input.vessel.grossTonnage ? parseFloat(input.vessel.grossTonnage) : 0,
-          netTonnage: input.vessel.netTonnage ? parseFloat(input.vessel.netTonnage) : 0,
+          yearBuilt: input.vessel.yearBuilt
+            ? parseInt(input.vessel.yearBuilt)
+            : 0,
+          registeredLength: input.vessel.registeredLength
+            ? parseFloat(input.vessel.registeredLength)
+            : 0,
+          registeredDepth: input.vessel.registeredDepth
+            ? parseFloat(input.vessel.registeredDepth)
+            : 0,
+          registeredBreadth: input.vessel.registeredBreadth
+            ? parseFloat(input.vessel.registeredBreadth)
+            : 0,
+          tonnageLength: input.vessel.tonnageLength
+            ? parseFloat(input.vessel.tonnageLength)
+            : 0,
+          tonnageDepth: input.vessel.tonnageDepth
+            ? parseFloat(input.vessel.tonnageDepth)
+            : 0,
+          tonnageBreadth: input.vessel.tonnageBreadth
+            ? parseFloat(input.vessel.tonnageBreadth)
+            : 0,
+          grossTonnage: input.vessel.grossTonnage
+            ? parseFloat(input.vessel.grossTonnage)
+            : 0,
+          netTonnage: input.vessel.netTonnage
+            ? parseFloat(input.vessel.netTonnage)
+            : 0,
           engineMake: input.vessel.engineMake,
           serialNumber: input.vessel.serialNumber,
-          horsepower: input.vessel.horsepower ? parseFloat(input.vessel.horsepower) : 0,
+          horsepower: input.vessel.horsepower
+            ? parseFloat(input.vessel.horsepower)
+            : 0,
           files: input.vessel.files,
         };
       }
@@ -145,7 +219,9 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
         ptnAddress: input.ptnAddress,
         ptnContactNum: input.ptnContactNum,
         mainFishingActivity: input.mainFishingActivity,
-        otherFishingActivity: !input.otherFishingActivities ? [] : input.otherFishingActivities,
+        otherFishingActivity: !input.otherFishingActivities
+          ? []
+          : input.otherFishingActivities,
         otherSourceOfIncome: input.otherSourceOfIncome,
         organization: org,
         profilePhoto: input.profilePhoto,
@@ -192,20 +268,46 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
     switch (step) {
       case 'ffolkInfo':
         return (
-          <Button type={captureFishingRegistrant ? 'button' : 'submit'} variant="contained" fullWidth onClick={captureFishingRegistrant ? handleNextButton : handleSubmitForm} disabled={isSubmitting} sx={buttonSx}>
+          <Button
+            type={captureFishingRegistrant ? 'button' : 'submit'}
+            variant="contained"
+            fullWidth
+            onClick={
+              captureFishingRegistrant ? handleNextButton : handleSubmitForm
+            }
+            disabled={isSubmitting}
+            sx={buttonSx}
+          >
             {captureFishingRegistrant ? 'Next' : 'Save'}
           </Button>
         );
       case 'gearVessel':
         return (
-          <Grid container spacing={-2} sx={{ justifyContent: 'space-between', ml: 1, mt: 2 }}>
+          <Grid
+            container
+            spacing={-2}
+            sx={{ justifyContent: 'space-between', ml: 1, mt: 2 }}
+          >
             <Grid item>
-              <Button variant="contained" fullWidth onClick={handleBackButton} disabled={isSubmitting} sx={buttonSx}>
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={handleBackButton}
+                disabled={isSubmitting}
+                sx={buttonSx}
+              >
                 Back
               </Button>
             </Grid>
             <Grid item>
-              <Button type="submit" variant="contained" fullWidth onClick={handleSubmitForm} disabled={isSubmitting} sx={buttonSx}>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                onClick={handleSubmitForm}
+                disabled={isSubmitting}
+                sx={buttonSx}
+              >
                 Save
               </Button>
             </Grid>
@@ -217,12 +319,20 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
     }
   };
 
-  const formTab = (control: Control<FieldValues, unknown>, register: UseFormRegister<FieldValues>, errors: FieldValues) => {
+  const formTab = (
+    control: Control<FieldValues, unknown>,
+    register: UseFormRegister<FieldValues>,
+    errors: FieldValues
+  ) => {
     switch (tab) {
       case 'gear':
-        return <GearForm control={control} register={register} errors={errors} />;
+        return (
+          <GearForm control={control} register={register} errors={errors} />
+        );
       case 'vessel':
-        return <VesselForm control={control} register={register} errors={errors} />;
+        return (
+          <VesselForm control={control} register={register} errors={errors} />
+        );
       case 'gear&vessel':
         return (
           <>
@@ -234,7 +344,13 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
     return <></>;
   };
 
-  const formStep = (control: Control<FieldValues, unknown>, register: UseFormRegister<FieldValues>, errors: FieldValues, watch: UseFormWatch<FieldValues>, resetField: UseFormResetField<FieldValues>) => {
+  const formStep = (
+    control: Control<FieldValues, unknown>,
+    register: UseFormRegister<FieldValues>,
+    errors: FieldValues,
+    watch: UseFormWatch<FieldValues>,
+    resetField: UseFormResetField<FieldValues>
+  ) => {
     switch (step) {
       case 'ffolkInfo':
         return FfolkInfoForm({ control, register, errors, watch, resetField });
@@ -242,7 +358,11 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
       case 'gearVessel':
         return (
           <Box id="ffolk-form-gear">
-            <Tabs value={tab} onChange={handleTabChange} aria-label="Fisherfolk form tab selection">
+            <Tabs
+              value={tab}
+              onChange={handleTabChange}
+              aria-label="Fisherfolk form tab selection"
+            >
               <Tab label="Gear" value={'gear'} />
               <Tab label="Vessel" value={'vessel'} />
               <Tab label="Gear & Vessel" value={'gear&vessel'} />
@@ -266,13 +386,22 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
 
   return (
     <>
-      <FormContainer onClose={close} aria-labelledby="form-container" open={open}>
-        <FormContainerTitle aria-labelledby="form-container-title" onClose={handleClose}>
+      <FormContainer
+        onClose={close}
+        aria-labelledby="form-container"
+        open={open}
+      >
+        <FormContainerTitle
+          aria-labelledby="form-container-title"
+          onClose={handleClose}
+        >
           Fisherfolk Registration
         </FormContainerTitle>
         <DialogContent dividers>
           {formStep(control, register, errors, watch, resetField)}
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>{bottomRowButtons()}</Box>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
+            {bottomRowButtons()}
+          </Box>
         </DialogContent>
       </FormContainer>
     </>

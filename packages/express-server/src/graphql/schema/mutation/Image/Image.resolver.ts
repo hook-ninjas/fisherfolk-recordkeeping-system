@@ -2,14 +2,30 @@ import { Context } from '../../../context';
 import { NexusGenInputs } from '../../../generated/nexus';
 import cloudinary from 'cloudinary';
 
-export const uploadToCloud = async (imageURI: string, options: cloudinary.UploadApiOptions) => {
+export const uploadToCloud = async (
+  imageURI: string,
+  options: cloudinary.UploadApiOptions
+) => {
   const result = await cloudinary.v2.uploader.upload(imageURI, options);
 
   return result.url;
 };
+type CreateImageInput = NexusGenInputs['CreateImageInput'];
 
-export const createImage = async (input: NexusGenInputs['UploadImageInput'], context: Context) => {
-  const { fisherfolkId, gearId, vesselId, name, size, type, uri, isProfileImage } = input;
+export const createImage = async (
+  input: NexusGenInputs['UploadImageInput'],
+  context: Context
+) => {
+  const {
+    fisherfolkId,
+    gearId,
+    vesselId,
+    name,
+    size,
+    type,
+    uri,
+    isProfileImage,
+  } = input;
   const url = await uploadToCloud(uri, {
     folder: 'fisherfolk-recordkeeping-system',
     use_filename: true,
@@ -61,7 +77,10 @@ export const createImage = async (input: NexusGenInputs['UploadImageInput'], con
   }
 };
 
-export async function uploadImage(image: NexusGenInputs['CreateImageInput'], ctx: Context) {
+export async function uploadImage(
+  image: NexusGenInputs['CreateImageInput'],
+  ctx: Context
+) {
   const result = await cloudinary.v2.uploader.upload(image.url, {
     folder: 'fisherfolk-recordkeeping-system',
   });
@@ -72,6 +91,37 @@ export async function uploadImage(image: NexusGenInputs['CreateImageInput'], ctx
       fisherfolkId: image.fisherfolkId,
       gearId: image.gear_id,
       vesselId: image.vessel_id,
+      governmentAidId: image.government_aid_id,
+      name: result.signature,
+      url: result.url,
+      updatedAt: result.created_at,
+    },
+  });
+}
+
+export async function updateFisherfolkImage(
+  image: CreateImageInput,
+  id: string,
+  url: string,
+  ctx: Context
+) {
+  cloudinary.v2.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+
+  // remove existing image
+  await cloudinary.v2.uploader.destroy(url, { invalidate: true });
+
+  // upload image
+  const result = await cloudinary.v2.uploader.upload(image.url);
+
+  return await ctx.prisma.image.update({
+    where: {
+      id: id,
+    },
+    data: {
       name: result.signature,
       url: result.url,
       updatedAt: result.created_at,

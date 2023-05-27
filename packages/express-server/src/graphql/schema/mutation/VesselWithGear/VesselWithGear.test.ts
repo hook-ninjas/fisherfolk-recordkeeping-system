@@ -1,5 +1,9 @@
 import { Context, createMockContext } from '../../../context';
-import { createVesselWithGear, createVessel, createGears } from './VesselWithGear.resolver';
+import {
+  createVesselWithGear,
+  createVessel,
+  createGears,
+} from './VesselWithGear.resolver';
 import { MockContext } from '../../../../types/types';
 import { Gear, GearClassification, Material } from '@prisma/client';
 
@@ -36,6 +40,7 @@ test('should create vessel with gear record', async () => {
     type: 'Motorized',
     updatedAt: new Date('2022-08-18'),
     yearBuilt: 2019,
+    isArchive: false,
   };
 
   const gears: Gear[] = [
@@ -55,13 +60,13 @@ test('should create vessel with gear record', async () => {
   mockCtx.prisma.gear.create.mockResolvedValue(gears[0]);
 
   await expect(createVesselWithGear(vessel, gears, ctx)).resolves.toEqual({
-    ...vessel
+    ...vessel,
   });
 
   expect(mockCtx.prisma.vessel.create).toBeCalledWith({
     data: {
-      ...vessel
-    }
+      ...vessel,
+    },
   });
 
   expect(mockCtx.prisma.gear.create).toBeCalledWith({
@@ -98,18 +103,19 @@ test('should create vessel only', async () => {
     type: 'Motorized',
     updatedAt: new Date('2022-08-18'),
     yearBuilt: 2019,
+    isArchive: false,
   };
 
   mockCtx.prisma.vessel.create.mockResolvedValue(vessel);
 
   await expect(createVessel(vessel, ctx)).resolves.toEqual({
-    ...vessel
+    ...vessel,
   });
 
   expect(mockCtx.prisma.vessel.create).toBeCalledWith({
     data: {
-      ...vessel
-    }
+      ...vessel,
+    },
   });
 });
 
@@ -134,16 +140,16 @@ test('should create gear/s only', async () => {
       permitId: '2022-ASJAKD-00028',
       type: 'Simple-hand line',
       updatedAt: new Date('2022-08-18'),
-    }
+    },
   ];
 
   mockCtx.prisma.gear.create.mockResolvedValue(gears[0]);
   mockCtx.prisma.gear.create.mockResolvedValue(gears[1]);
-  
+
   expect(createGears(gears, ctx)).resolves;
 
   expect(mockCtx.prisma.gear.create).toBeCalledTimes(2);
-  
+
   expect(mockCtx.prisma.gear.create).toBeCalledWith({
     data: {
       classification: 'GillNets',
@@ -157,7 +163,6 @@ test('should create gear/s only', async () => {
       classification: 'HookAndLine',
       fisherfolkId: BigInt(1),
       type: 'Simple-hand line',
-    }
+    },
   });
-  
 });

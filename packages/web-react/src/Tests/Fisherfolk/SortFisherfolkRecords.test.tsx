@@ -128,8 +128,16 @@ describe('Sort Fisherfolk Records', () => {
     const firstRecord = within(records[1]).getAllByRole('cell');
     const secondRecord = within(records[2]).getAllByRole('cell');
 
-    expect(within(firstRecord[1]).getByText(moment('03/17/2021').format('MM/DD/YYYY'))).toBeTruthy();
-    expect(within(secondRecord[1]).getByText(moment('04/15/2021').format('MM/DD/YYYY'))).toBeTruthy();
+    expect(
+      within(firstRecord[1]).getByText(
+        moment('03/17/2021').format('MM/DD/YYYY')
+      )
+    ).toBeTruthy();
+    expect(
+      within(secondRecord[1]).getByText(
+        moment('04/15/2021').format('MM/DD/YYYY')
+      )
+    ).toBeTruthy();
   });
 
   it('sort fisherfolk records by dates in descending order', async () => {
@@ -163,8 +171,16 @@ describe('Sort Fisherfolk Records', () => {
     const firstRecord = within(records[1]).getAllByRole('cell');
     const secondRecord = within(records[2]).getAllByRole('cell');
 
-    expect(within(firstRecord[1]).getByText(moment('04/15/2021').format('MM/DD/YYYY'))).toBeTruthy();
-    expect(within(secondRecord[1]).getByText(moment('03/17/2021').format('MM/DD/YYYY'))).toBeTruthy();
+    expect(
+      within(firstRecord[1]).getByText(
+        moment('04/15/2021').format('MM/DD/YYYY')
+      )
+    ).toBeTruthy();
+    expect(
+      within(secondRecord[1]).getByText(
+        moment('03/17/2021').format('MM/DD/YYYY')
+      )
+    ).toBeTruthy();
   });
 
   it('sort fisherfolk records by names in ascending order', async () => {
@@ -198,8 +214,12 @@ describe('Sort Fisherfolk Records', () => {
     const firstRecord = within(records[1]).getAllByRole('cell');
     const secondRecord = within(records[2]).getAllByRole('cell');
 
-    expect(within(firstRecord[2]).getByText(/bonifacio, mark cornejo/i)).toBeTruthy();
-    expect(within(secondRecord[2]).getByText(/flores, may sevilla/i)).toBeTruthy();
+    expect(
+      within(firstRecord[2]).getByText(/bonifacio, mark cornejo/i)
+    ).toBeTruthy();
+    expect(
+      within(secondRecord[2]).getByText(/flores, may sevilla/i)
+    ).toBeTruthy();
   });
 
   it('sort fisherfolk records by names in descending order', async () => {
@@ -233,8 +253,12 @@ describe('Sort Fisherfolk Records', () => {
     const firstRecord = within(records[1]).getAllByRole('cell');
     const secondRecord = within(records[2]).getAllByRole('cell');
 
-    expect(within(firstRecord[2]).getByText(/flores, may sevilla/i)).toBeTruthy();
-    expect(within(secondRecord[2]).getByText(/bonifacio, mark cornejo/i)).toBeTruthy();
+    expect(
+      within(firstRecord[2]).getByText(/flores, may sevilla/i)
+    ).toBeTruthy();
+    expect(
+      within(secondRecord[2]).getByText(/bonifacio, mark cornejo/i)
+    ).toBeTruthy();
   });
 
   it('sort fisherfolk records by livelihood in ascending order', async () => {
@@ -339,7 +363,9 @@ describe('Sort Fisherfolk Records', () => {
     const secondRecord = within(records[2]).getAllByRole('cell');
 
     expect(within(firstRecord[5]).getByText(/brgy. bito-on/i)).toBeTruthy();
-    expect(within(secondRecord[5]).getByText(/brgy. simon ledesma/i)).toBeTruthy();
+    expect(
+      within(secondRecord[5]).getByText(/brgy. simon ledesma/i)
+    ).toBeTruthy();
   });
 
   it('sort fisherfolk records by barangay in descending order', async () => {
@@ -373,7 +399,9 @@ describe('Sort Fisherfolk Records', () => {
     const firstRecord = within(records[1]).getAllByRole('cell');
     const secondRecord = within(records[2]).getAllByRole('cell');
 
-    expect(within(firstRecord[5]).getByText(/brgy. simon ledesma/i)).toBeTruthy();
+    expect(
+      within(firstRecord[5]).getByText(/brgy. simon ledesma/i)
+    ).toBeTruthy();
     expect(within(secondRecord[5]).getByText(/brgy. bito-on/i)).toBeTruthy();
   });
 

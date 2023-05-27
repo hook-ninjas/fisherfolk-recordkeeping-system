@@ -14,7 +14,7 @@ describe('Dashboard Page', () => {
         </MockedProvider>
       );
     });
-  
+
   it('checks fisherfolk count display', async () => {
     renderDashboardPage();
 
@@ -62,7 +62,7 @@ describe('Dashboard Page', () => {
     expect(male).toBeInTheDocument();
   });
 
-  it('checks livelihood count display', async  () => {
+  it('checks livelihood count display', async () => {
     renderDashboardPage();
 
     const aquaculture = await screen.findByRole('heading', {

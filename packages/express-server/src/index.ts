@@ -1,7 +1,10 @@
 /* eslint-disable no-fallthrough */
 import 'dotenv/config';
 import { ApolloServer } from 'apollo-server-express';
-import { ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
+import {
+  ApolloServerPluginDrainHttpServer,
+  ApolloServerPluginLandingPageLocalDefault,
+} from 'apollo-server-core';
 import http from 'http';
 import express, { Express, json, Request, Response } from 'express';
 import cors from 'cors';
@@ -56,18 +59,27 @@ const onError = (error: any) => {
   }
 };
 
-const startServer = async (context: Context, schema: NexusGraphQLSchema, port: number | false, app: Express) => {
+const startServer = async (
+  context: Context,
+  schema: NexusGraphQLSchema,
+  port: number | false,
+  app: Express
+) => {
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
     schema,
     context: createContext,
     csrfPrevention: true,
     cache: 'bounded',
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer }), ApolloServerPluginLandingPageLocalDefault({ embed: true })],
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      ApolloServerPluginLandingPageLocalDefault({ embed: true }),
+    ],
   });
   const onListening = () => {
     const addr = httpServer.address();
-    const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`;
+    const bind =
+      typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`;
     console.log(`Listening on ${bind}`);
   };
 
@@ -76,7 +88,9 @@ const startServer = async (context: Context, schema: NexusGraphQLSchema, port: n
 
   httpServer
     .listen(port, () => {
-      console.log(`Fisherfolk Record App listening at http://localhost:${port}${server.graphqlPath}`);
+      console.log(
+        `Fisherfolk Record App listening at http://localhost:${port}${server.graphqlPath}`
+      );
     })
     .on('error', onError)
     .on('listening', onListening);

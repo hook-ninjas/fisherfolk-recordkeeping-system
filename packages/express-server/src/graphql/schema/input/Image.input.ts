@@ -20,10 +20,13 @@ const ImageInput = inputObjectType({
     t.nullable.field('fisherfolkId', { type: 'BigInt' });
     t.nullable.field('gear_id', { type: 'BigInt' });
     t.nullable.field('vessel_id', { type: 'BigInt' });
+    t.string('text');
+    t.nullable.field('government_aid_id', { type: 'Int' });
     t.string('url');
     t.string('name');
     t.nullable.int('size');
     t.nullable.string('type');
+    t.field('updated_at', { type: 'DateTime' });
   },
 });
 

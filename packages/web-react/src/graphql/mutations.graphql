@@ -67,8 +67,76 @@ mutation UpdateMFVR($id: Int!, $mfvrNum: String!) {
   }
 }
 
-# mutation UpdateFisherfolk($updateFisherfolkId: Int!, $data: CreateFisherfolkInput!) {
-#   updateFisherfolk(id: $updateFisherfolkId, data: $data) {
-#     id
-#   }
-# }
+mutation UpdateFisherfolk($fisherfolkId: Int!, $data: UpdateFisherfolkInput!) {
+  updateFisherfolk(fisherfolkId: $fisherfolkId, data: $data) {
+    id
+  }
+}
+
+mutation UpdateFisherfolkImage($data: CreateImageInput!, $updateFisherfolkImageId: String!, $url: String!) {
+  updateFisherfolkImage(data: $data, id: $updateFisherfolkImageId, url: $url) {
+    id
+    url
+  }
+}
+
+mutation UpdateToArchiveFisherfolk($archiveFisherfolkId: Int!) {
+  archiveFisherfolk(id: $archiveFisherfolkId) {
+    id
+  }
+}
+
+mutation CreateProgram($data: CreateProgramInput!) {
+  createProgram(data: $data) {
+    id
+    title
+  }
+}
+
+mutation CreateMultipleProgramImage($images: [CreateImageInput!]!) {
+  createMultipleImage(images: $images) {
+    id
+    url
+  }
+}
+
+mutation UpdateProgram($governmentAidId: Int!, $data: UpdateProgramInput!) {
+  updateProgram(governmentAidId: $governmentAidId, data: $data) {
+    id
+  }
+}
+
+mutation UpdateVessel($updateVesselId: Int!, $vessel: UpdateVesselInput!) {
+  updateVessel(id: $updateVesselId, vessel: $vessel) {
+    id
+  }
+}
+mutation UpdateRestreFisherfolk($restreFisherfolkId: Int!) {
+  restreFisherfolk(id: $restreFisherfolkId) {
+    id
+  }
+}
+
+mutation UpdateToArchiveGear($archiveGearId: Int!) {
+  archiveGear(id: $archiveGearId) {
+    id
+  }
+}
+
+mutation UpdateToArchiveVessel($archiveVesselId: Int!) {
+  archiveVessel(id: $archiveVesselId) {
+    id
+  }
+}
+
+mutation RestoreGear($restoreGearId: Int!) {
+  restoreGear(id: $restoreGearId) {
+    id
+  }
+}
+
+mutation RestoreVessel($restoreVesselId: Int!) {
+  restoreVessel(id: $restoreVesselId) {
+    id
+  }
+}

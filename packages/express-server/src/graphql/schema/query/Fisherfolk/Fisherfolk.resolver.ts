@@ -1,10 +1,12 @@
 import { Context } from '../../../context';
 import { FisherfolkStatus, Gender } from '@prisma/client';
 
-
-
 export const queryTotalFisherfolk = (ctx: Context) => {
-  return ctx.prisma.fisherfolk.count();
+  return ctx.prisma.fisherfolk.count({
+    where: {
+      isArchive: false,
+    },
+  });
 };
 
 export const queryByRange = (start: number, count: number, ctx: Context) => {
@@ -12,7 +14,7 @@ export const queryByRange = (start: number, count: number, ctx: Context) => {
     skip: start,
     take: count,
     orderBy: {
-      registrationDate: 'desc'
+      registrationDate: 'desc',
     },
   });
 };
@@ -20,37 +22,58 @@ export const queryByRange = (start: number, count: number, ctx: Context) => {
 export const queryById = (id: bigint, ctx: Context) => {
   return ctx.prisma.fisherfolk.findUniqueOrThrow({
     where: {
-      id: id
-    }
+      id: id,
+    },
   });
 };
 
 export const queryUniqueBarangayCount = async (ctx: Context) => {
   const results = await ctx.prisma.fisherfolk.findMany({
     select: {
-      barangay: true
+      barangay: true,
     },
 
-    distinct: ['barangay']
+    distinct: ['barangay'],
+    where: {
+      isArchive: false,
+    },
   });
 
   // returns the number of unique barangay
   return results.length;
-};  
+};
 
-export const querytActiveFisherFolk = (ctx:Context)=>{
+export const querytActiveFisherFolk = (ctx: Context) => {
   return ctx.prisma.fisherfolk.count({
-    where:{
-      status: FisherfolkStatus.Active
-    }
+    where: {
+      status: FisherfolkStatus.Active,
+      isArchive: false,
+    },
   });
 };
 
-export const queryFisherFolkByGender = (gender:Gender,ctx:Context)=>{
+export const queryFisherFolkByGender = (gender: Gender, ctx: Context) => {
   return ctx.prisma.fisherfolk.count({
-    where:{
-      gender:gender
-    }
+    where: {
+      gender: gender,
+      isArchive: false,
+    },
   });
 };
 
+export const queryFisherfolksWithUniqueBarangay = (ctx: Context) => {
+  return ctx.prisma.fisherfolk.findMany({
+    distinct: 'barangay',
+    where: {
+      isArchive: false,
+    },
+  });
+};
+
+export const queryArchivedFisherfolk = (ctx: Context) => {
+  return ctx.prisma.fisherfolk.findMany({
+    where: {
+      isArchive: true,
+    },
+  });
+};

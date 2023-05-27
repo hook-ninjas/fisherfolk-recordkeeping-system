@@ -105,9 +105,12 @@ input CreateGearInput {
 input CreateImageInput {
   fisherfolkId: BigInt
   gear_id: BigInt
+  government_aid_id: Int
   name: String!
   size: Int
+  text: String!
   type: String
+  updated_at: DateTime!
   url: String!
   vessel_id: BigInt
 }
@@ -117,6 +120,13 @@ input CreateLivelihoodInput {
   fisherfolkId: BigInt
   isMain: Boolean!
   type: SourceOfIncome!
+}
+
+input CreateProgramInput {
+  date: DateTime!
+  description: String!
+  slot: Int!
+  title: String!
 }
 
 input CreateUserInput {
@@ -170,18 +180,18 @@ type Fisherfolk {
   dateOfBirth: DateTime!
   educationalBackground: EducationalBackground!
   firstName: String!
-  gears: [Gear]
+  gears: [Gear!]!
   gender: Gender!
-  governmentAid: [Queue]
+  governmentAid: [Queue!]!
   id: BigInt!
-  images: [Image]
+  images: [Image!]!
   isArchive: Boolean!
   lastName: String!
-  livelihoods: [Livelihood]
+  livelihoods: [Livelihood!]!
   middleName: String!
   nationality: String!
   numOfChildren: Int!
-  organizations: [Member]
+  organizations: [Member!]!
   permit: Permit
   personToNotify: String!
   placeOfBirth: String!
@@ -195,7 +205,7 @@ type Fisherfolk {
   salutation: Salutation!
   status: FisherfolkStatus!
   updatedAt: DateTime!
-  vessels: [Vessel]
+  vessels: [Vessel!]!
 }
 
 enum FisherfolkStatus {
@@ -209,6 +219,7 @@ type Gear {
   createdAt: DateTime!
   fisherfolk: Fisherfolk!
   id: BigInt!
+  isArchive: Boolean!
   type: String!
   updatedAt: DateTime!
 }
@@ -232,10 +243,10 @@ enum Gender {
 
 type GovernmentAid {
   createdAt: DateTime!
-  endDate: DateTime!
+  date: DateTime!
+  description: String!
   id: Int!
   slot: Int!
-  startDate: DateTime!
   title: String!
   updatedAt: DateTime!
 }
@@ -281,14 +292,26 @@ type Member {
 }
 
 type Mutation {
+  archiveFisherfolk(id: Int!): Fisherfolk!
+  archiveGear(id: Int!): Gear!
+  archiveVessel(id: Int!): Vessel!
   createFisherfolk(data: CreateFisherfolkInput!): Fisherfolk!
   createGears(gears: [CreateGearInput!]!): [Gear!]!
   createImage(data: CreateImageInput!): Image!
+  createMultipleImage(images: [CreateImageInput!]!): [Image!]!
+  createProgram(data: CreateProgramInput!): GovernmentAid!
   createUser(data: CreateUserInput!): AuthPayload!
   createVessel(vessel: CreateVesselInput!): Vessel!
   createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
   loginUser(data: CreateUserInput!): AuthPayload!
+  restoreGear(id: Int!): Gear!
+  restoreVessel(id: Int!): Vessel!
+  restreFisherfolk(id: Int!): Fisherfolk!
+  updateFisherfolk(data: UpdateFisherfolkInput!, fisherfolkId: Int!): Fisherfolk!
+  updateFisherfolkImage(data: CreateImageInput!, id: String!, url: String!): Image!
   updateMfvr(id: Int!, mfvrNum: String!): Vessel!
+  updateProgram(data: UpdateProgramInput!, governmentAidId: Int!): GovernmentAid!
+  updateVessel(id: Int!, vessel: UpdateVesselInput!): Vessel!
 }
 
 type Organization {
@@ -318,22 +341,32 @@ type Permit {
 }
 
 type Query {
+  ArchiveFisherfolk: [Fisherfolk!]!
+  ArchiveGear: [Gear!]!
+  ArchiveVessel: [Vessel!]!
   activeFisherFolk: Int!
   barangayCount: Int!
   fisherfolk(id: BigInt!): Fisherfolk!
   fisherfolkByRange(count: Int!, start: Int!): [Fisherfolk!]!
-  fisherfolkGears(count: Int!, fisherfolkId: BigInt!, start: Int!): [Gear!]!
+  fisherfolkGears(fisherfolkId: BigInt!): [Gear!]!
   fisherfolkGender(gender: Gender!): Int!
-  fisherfolkVessels(count: Int!, fisherfolkId: BigInt!, start: Int!): [Vessel!]!
+  fisherfolkPhoto(fisherfolkId: BigInt!): [Image!]!
+  fisherfolkVessels(fisherfolkId: BigInt!): [Vessel!]!
   fisherfolks: [Fisherfolk!]!
+  fisherfolksWithUniqueBarangay: [Fisherfolk!]!
   gears: [Gear!]!
+  governmentAid(govtAidId: Int!): GovernmentAid!
+  governmentAidPhotos(govtAidId: Int!): [Image!]!
+  governmentAids: [GovernmentAid!]!
   livelihoodCount(activity: SourceOfIncome!): Int!
   totalFisherfolk: Int!
   totalFisherfolkGears(fisherfolkId: BigInt!): Int!
   totalFisherfolkVessels(fisherfolkId: BigInt!): Int!
   totalGears: Int!
+  totalPrograms: Int!
   totalVessels: Int!
   user: User
+  vessel(id: BigInt!): Vessel!
   vessels: [Vessel!]!
 }
 
@@ -362,6 +395,63 @@ enum SourceOfIncome {
   Others
 }
 
+input UpdateFisherfolkInput {
+  age: Int!
+  appellation: String!
+  barangay: String!
+  cityMunicipality: String!
+  civilStatus: CivilStatus!
+  contactNum: String!
+  dateOfBirth: DateTime!
+  educationalBackground: EducationalBackground!
+  firstName: String!
+  gender: Gender!
+  lastName: String!
+  livelihoods: [CreateLivelihoodInput!]!
+  middleName: String!
+  nationality: String!
+  numOfChildren: Int!
+  organizations: [OrganizationInput]!
+  personToNotify: String!
+  placeOfBirth: String!
+  province: String!
+  ptnAddress: String!
+  ptnContactNum: String!
+  ptnRelationship: String!
+  religion: String!
+  residentYear: Int!
+  salutation: Salutation!
+}
+
+input UpdateProgramInput {
+  date: DateTime!
+  description: String!
+  slot: Int!
+  title: String!
+}
+
+input UpdateVesselInput {
+  engineMake: String!
+  fisherfolkId: BigInt!
+  grossTonnage: Float
+  homeport: String!
+  horsepower: Float
+  material: Material
+  mfvrNumber: String!
+  name: String!
+  netTonnage: Float
+  placeBuilt: String!
+  registeredBreadth: Float
+  registeredDepth: Float
+  registeredLength: Float
+  serialNumber: String!
+  tonnageBreadth: Float
+  tonnageDepth: Float
+  tonnageLength: Float
+  type: String!
+  yearBuilt: Int
+}
+
 input UploadImageInput {
   fisherfolkId: BigInt
   gearId: BigInt
@@ -387,6 +477,7 @@ type Vessel {
   homeport: String!
   horsepower: Float
   id: BigInt!
+  isArchive: Boolean!
   material: Material
   mfvrNumber: String!
   name: String!

@@ -6,6 +6,7 @@ import {
   DialogContent,
   FormControlLabel,
   FormGroup,
+  FormHelperText,
   Grid,
   Typography,
 } from '@mui/material';
@@ -16,11 +17,11 @@ import {
 import {
   FormInputRadio,
   FormInputText,
-  FormCreatableSelect,
   FormInputSelect,
+  FormInputNumber,
+  FormInputAutoText,
 } from './FormInputFields';
-import { useForm } from 'react-hook-form';
-import { object, string } from 'yup';
+import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   CreateGearsDocument,
@@ -28,21 +29,26 @@ import {
   CreateVessselWithGearDocument,
   GearClassification,
   MutationCreateVesselWithGearArgs,
-  MutationCreateImageArgs,
   CreateImageDocument,
+  FisherfolkVesselsDocument,
   FisherfolkGearsDocument,
+  VesselQueryDocument,
   GearsQueryDocument,
+  FisherfolkCountDocument,
+  GovernmentAidDocument,
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
 import {
-  createOption,
   registrationTypeForBoatsAndGears,
   gears,
   vesselTypeOptions,
   materialOptions,
 } from './Enums';
 import { useParams } from 'react-router-dom';
+import { AddVesselWithGearSchema } from './validation/schema';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SaveIcon from '@mui/icons-material/Save';
 
 interface AddVesselWithGearFormProps {
   open: boolean;
@@ -54,6 +60,10 @@ export default function AddVesselWithGearForm({
   handleClose,
 }: AddVesselWithGearFormProps) {
   const { id } = useParams();
+
+  if (id == undefined) {
+    throw 'Fisherfolk does not exist';
+  }
 
   const [complete, setComplete] = useState(false);
   const [image, setImage] = React.useState<
@@ -86,8 +96,6 @@ export default function AddVesselWithGearForm({
   };
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [vesselTypes, setVesselTypes] = useState(vesselTypeOptions);
 
   const [gearTypes, setGearTypes] = useState({
     SimpleHandLine: false,
@@ -170,47 +178,6 @@ export default function AddVesselWithGearForm({
     });
   };
 
-  const handleCreateTypeVessel = (inputValue: string) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      const newValue = createOption(inputValue);
-      setIsLoading(false);
-      setVesselTypes((prev) => [...prev, newValue]);
-    }, 1500);
-  };
-
-  const addVesselWithGearSchema = object().shape({
-    vessel: object().shape({
-      engineMake: string(),
-      grossTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-      homeport: string(),
-      horsepower: string(),
-      mfvrNumber: string(),
-      material: string().nullable().oneOf(materialOptions),
-      name: string(),
-      netTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-      placeBuilt: string(),
-      registeredBreadth: string().matches(
-        /^[0-9]\d*(\.\d+)?$/,
-        'Enter a number.'
-      ),
-      registeredDepth: string().matches(
-        /^[0-9]\d*(\.\d+)?$/,
-        'Enter a number.'
-      ),
-      registeredLength: string().matches(
-        /^[0-9]\d*(\.\d+)?$/,
-        'Enter a number.'
-      ),
-      serialNumber: string(),
-      tonnageBreadth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-      tonnageDepth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-      tonnageLength: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-      type: string(),
-      yearBuilt: string().matches(/^$|\d{4}$/, 'Enter year.'),
-    }),
-  });
-
   const keys = Object.keys(gears) as GearClassification[];
 
   const getClassification = (value: string) => {
@@ -234,7 +201,8 @@ export default function AddVesselWithGearForm({
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(addVesselWithGearSchema),
+    mode: 'onChange',
+    resolver: yupResolver(AddVesselWithGearSchema),
   });
 
   const [createVesselWithGear] = useMutation(CreateVessselWithGearDocument, {
@@ -248,6 +216,13 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showFailAlert();
     },
+    refetchQueries: [
+      { query: FisherfolkVesselsDocument, variables: { fisherfolkId: id } },
+      { query: FisherfolkGearsDocument, variables: { fisherfolkId: id } },
+      { query: VesselQueryDocument },
+      { query: GearsQueryDocument },
+      { query: FisherfolkCountDocument },
+    ],
   });
 
   const [createVessel] = useMutation(CreateVesselDocument, {
@@ -261,6 +236,10 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showFailAlert();
     },
+    refetchQueries: [
+      { query: FisherfolkVesselsDocument, variables: { fisherfolkId: id } },
+      { query: VesselQueryDocument },
+    ],
   });
 
   const [createGears] = useMutation(CreateGearsDocument, {
@@ -274,6 +253,10 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showFailAlert();
     },
+    refetchQueries: [
+      { query: FisherfolkGearsDocument, variables: { fisherfolkId: id } },
+      { query: GearsQueryDocument },
+    ],
   });
 
   const [createImage] = useMutation(CreateImageDocument, {
@@ -314,51 +297,52 @@ export default function AddVesselWithGearForm({
       gears: generateGears(gearTypes),
     };
 
-    const createImageInput: MutationCreateImageArgs = {
-      data: {
-        fisherfolkId: parseInt(id!),
-        url: image!.toString(),
-        gear_id: null,
-        vessel_id: null,
-        name: '',
-        updated_at: new Date(),
-      },
-    };
-
     // create vessel only
     if (createVesselWithGearInput.gears.length == 0) {
-      await createVessel({
+      const vessel = await createVessel({
         variables: {
           vessel: createVesselWithGearInput.vessel,
         },
       });
 
-      await createImage({
-        variables: {
-          data: createImageInput.data,
-        },
-      });
+      if (image) {
+        await createImage({
+          variables: {
+            data: {
+              fisherfolkId: parseInt(id),
+              url: image.toString(),
+              vessel_id: vessel.data?.createVessel.id,
+              text: 'none',
+              name: `vessel-gear-image-${id}`,
+              updated_at: new Date(),
+            },
+          },
+        });
+      }
     }
 
     // create gears only
     if (createVesselWithGearInput.vessel.mfvrNumber == '') {
-      await createGears({
+      const gears = await createGears({
         variables: {
           gears: createVesselWithGearInput.gears,
         },
-        awaitRefetchQueries: true,
-        refetchQueries: [
-          {
-            query: GearsQueryDocument,
-          },
-        ],
       });
 
-      await createImage({
-        variables: {
-          data: createImageInput.data,
-        },
-      });
+      if (image) {
+        await createImage({
+          variables: {
+            data: {
+              fisherfolkId: parseInt(id),
+              url: image.toString(),
+              gear_id: gears.data?.createGears[0].id,
+              text: 'none',
+              name: `vessel-gear-image-${id}`,
+              updated_at: new Date(),
+            },
+          },
+        });
+      }
     }
 
     // create both boat and gears
@@ -366,27 +350,28 @@ export default function AddVesselWithGearForm({
       createVesselWithGearInput.gears.length != 0 &&
       createVesselWithGearInput.vessel.mfvrNumber != ''
     ) {
-      await createVesselWithGear({
+      const vessel = await createVesselWithGear({
         variables: {
           gears: createVesselWithGearInput.gears,
           vessel: createVesselWithGearInput.vessel,
         },
-        awaitRefetchQueries: true,
-        refetchQueries: [
-          {
-            query: GearsQueryDocument,
+      });
+
+      if (image) {
+        await createImage({
+          variables: {
+            data: {
+              fisherfolkId: parseInt(id),
+              url: image.toString(),
+              vessel_id: vessel.data?.createVesselWithGear.id,
+              text: 'none',
+              name: `vessel-gear-image-${id}`,
+              updated_at: new Date(),
+            },
           },
-        ],
-      });
-
-      await createImage({
-        variables: {
-          data: createImageInput.data,
-        },
-      });
+        });
+      }
     }
-
-    console.log(image);
   });
 
   const handleSubmitForm = (
@@ -429,7 +414,6 @@ export default function AddVesselWithGearForm({
               radioOptions={registrationTypeForBoatsAndGears}
             />
           </Box>
-
           <Grid container spacing={-2} sx={{ ml: 1, mr: 1, mt: 1 }}>
             <Grid item sm={6}>
               <FormInputText
@@ -476,16 +460,16 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
             <Grid item sm={6} sx={{ mt: 2 }}>
-              <FormCreatableSelect
-                control={control}
-                errors={errors}
-                isLoading={isLoading}
-                isDisabled={isLoading}
+              <FormInputAutoText
+                sx={{ marginTop: -1.5, marginLeft: -1, width: 230 }}
+                freeSolo
                 name="type"
-                placeholder="Select Type"
-                onCreateOption={handleCreateTypeVessel}
-                options={vesselTypes}
+                control={control}
+                label="Type"
+                options={vesselTypeOptions}
                 register={register}
+                errors={errors}
+                shouldUnregister
               />
             </Grid>
           </Grid>
@@ -501,7 +485,7 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
             <Grid item sm={6} sx={{ mt: 1, ml: 0 }}>
-              <FormInputText
+              <FormInputNumber
                 name="yearBuilt"
                 control={control}
                 label="Year Built"
@@ -516,7 +500,7 @@ export default function AddVesselWithGearForm({
           </Typography>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputNumber
                 name="registeredLength"
                 control={control}
                 label="Registered Length"
@@ -526,7 +510,7 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputNumber
                 name="registeredDepth"
                 control={control}
                 label="Registered Depth"
@@ -538,7 +522,7 @@ export default function AddVesselWithGearForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputNumber
                 name="registeredBreadth"
                 control={control}
                 label="Registered Breadth"
@@ -548,7 +532,7 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputNumber
                 name="tonnageLength"
                 control={control}
                 label="Tonnage Length"
@@ -560,7 +544,7 @@ export default function AddVesselWithGearForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputNumber
                 name="tonnageDepth"
                 control={control}
                 label="Tonnage Depth"
@@ -570,7 +554,7 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputNumber
                 name="tonnageBreadth"
                 control={control}
                 label="Tonnage Breadth"
@@ -582,7 +566,7 @@ export default function AddVesselWithGearForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputNumber
                 name="grossTonnage"
                 control={control}
                 label="Gross Tonnage"
@@ -592,7 +576,7 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
             <Grid item sm={6}>
-              <FormInputText
+              <FormInputNumber
                 name="netTonnage"
                 control={control}
                 label="Net Tonnage"
@@ -629,7 +613,7 @@ export default function AddVesselWithGearForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6} sx={{ mt: -1 }}>
-              <FormInputText
+              <FormInputNumber
                 name="horsepower"
                 control={control}
                 label="Horsepower"
@@ -1129,7 +1113,6 @@ export default function AddVesselWithGearForm({
                   </FormGroup>
                 </Box>
               </Grid>
-
               <Grid item sm={6}>
                 <Typography variant="subtitle1" color="GrayText" mt={-2} mb={3}>
                   Falling Gear
@@ -1162,34 +1145,72 @@ export default function AddVesselWithGearForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <Button variant="contained" component="label" sx={{ width: 210 }}>
-                <input
-                  type="file"
-                  onChange={(e) => {
-                    previewImage(e);
-                  }}
-                />
-              </Button>
+              <Controller
+                name="vesselGearPhoto"
+                control={control}
+                defaultValue=""
+                render={() => (
+                  <Button
+                    sx={{ width: 150 }}
+                    id="upload-btn-label"
+                    variant="contained"
+                    component="label"
+                    htmlFor="upload-btn"
+                  >
+                    Upload
+                    <input
+                      id="upload-btn"
+                      data-cy="vessel-gear-input"
+                      type="file"
+                      hidden
+                      aria-label="vessel-gear-img-upload"
+                      accept="image/*"
+                      {...register('vesselGearPhoto', {
+                        onChange: (e) => previewImage(e),
+                      })}
+                    />
+                  </Button>
+                )}
+              />
               <Box sx={{ width: 150, height: 150 }} mt={2}>
                 <img src={image?.toString()} width={150} height={150} />
               </Box>
+              <FormHelperText sx={{ color: '#d32f2f' }}>
+                {errors['vesselGearPhoto']?.message?.toString()}
+              </FormHelperText>
             </Grid>
           </Grid>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button
-              type="submit"
-              variant="contained"
+          {isSubmitting ? (
+            <LoadingButton
+              loading
               fullWidth
-              onClick={(e) => {
-                handleSubmitForm(e);
+              loadingPosition="start"
+              sx={{
+                mt: 3,
+                mb: 2,
               }}
-              disabled={isSubmitting}
-              sx={buttonSx}
+              startIcon={<SaveIcon />}
+              variant="outlined"
             >
-              Save
-            </Button>
-            {isSubmitting}
-          </Box>
+              Loading
+            </LoadingButton>
+          ) : (
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                onClick={(e) => {
+                  handleSubmitForm(e);
+                }}
+                disabled={isSubmitting}
+                sx={buttonSx}
+              >
+                Save
+              </Button>
+              {isSubmitting}
+            </Box>
+          )}
         </DialogContent>
       </FormContainer>
     </>

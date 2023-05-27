@@ -1,9 +1,23 @@
 import { intArg, mutationField } from 'nexus';
-import { createFisherfolk } from './Fisherfolk.resolver';
-import CreateFisherfolkInput from '../../input/Fisherfolk.input';
+import {
+  createFisherfolk,
+  updateFisherfolk,
+  archiveFisherfolk,
+  restoreFisherfolk,
+} from './Fisherfolk.resolver';
+import {
+  CreateFisherfolkInput,
+  UpdateFisherfolkInput,
+} from '../../input/Fisherfolk.input';
 import { nonNullArg } from '../../../../utils/utils';
 import Fisherfolk from '../../model/objecTypes/Fisherfolk';
-import { EducationalBackground, Gender, Material, Salutation, SourceOfIncome } from '@prisma/client';
+import {
+  EducationalBackground,
+  Gender,
+  Material,
+  Salutation,
+  SourceOfIncome,
+} from '@prisma/client';
 import { sub } from 'date-fns/fp';
 
 const CreateFisherfolk = mutationField('createFisherfolk', {
@@ -11,7 +25,11 @@ const CreateFisherfolk = mutationField('createFisherfolk', {
   args: {
     data: CreateFisherfolkInput,
   },
-  validate: ({ string, date, number, array, object, boolean }, { data }, context) => {
+  validate: (
+    { string, date, number, array, object, boolean },
+    { data },
+    context
+  ) => {
     const maxBirthDate = sub({ years: 19 })(new Date());
     const uploadLimit = 10000000;
     const salutations = Object.values(Salutation);
@@ -107,13 +125,35 @@ const CreateFisherfolk = mutationField('createFisherfolk', {
   },
 });
 
-// const UpdateFisherfolk = mutationField('updateFisherfolk', {
-//   type: Fisherfolk,
-//   args: {
-//     id: intArg(),
-//     data: nonNullArg(CreateFisherfolkInput),
-//   },
-//   resolve: (_, args, ctx) => updateFisherfolk(args.id, args.data, ctx),
-// });
+const UpdateFisherfolk = mutationField('updateFisherfolk', {
+  type: Fisherfolk,
+  args: {
+    fisherfolkId: intArg(),
+    data: nonNullArg(UpdateFisherfolkInput),
+  },
+  resolve: (_, args, ctx) =>
+    updateFisherfolk(args.fisherfolkId, args.data, ctx),
+});
 
-export { CreateFisherfolk };
+const ArchiveFisherfolk = mutationField('archiveFisherfolk', {
+  type: Fisherfolk,
+  args: {
+    id: intArg(),
+  },
+  resolve: (_, args, ctx) => archiveFisherfolk(args.id, ctx),
+});
+
+const RestoreFisherfolk = mutationField('restreFisherfolk', {
+  type: Fisherfolk,
+  args: {
+    id: intArg(),
+  },
+  resolve: (_, args, ctx) => restoreFisherfolk(args.id, ctx),
+});
+
+export {
+  CreateFisherfolk,
+  UpdateFisherfolk,
+  ArchiveFisherfolk,
+  RestoreFisherfolk,
+};

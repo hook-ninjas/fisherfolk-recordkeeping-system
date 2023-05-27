@@ -3,7 +3,10 @@ import { NexusGenInputs } from '../../../generated/nexus';
 
 type CreateOrganizationInput = NexusGenInputs['CreateFfolkOrganizationInput'];
 
-export const createFisherfolkOrganization = async (input: CreateOrganizationInput, context: Context) => {
+export const createFisherfolkOrganization = async (
+  input: CreateOrganizationInput,
+  context: Context
+) => {
   const { fisherfolkId, name, yearJoined, position } = input;
 
   return await context.prisma.fisherfolk.update({

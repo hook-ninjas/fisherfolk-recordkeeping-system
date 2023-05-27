@@ -7,13 +7,18 @@ import {
 } from '@mui/x-data-grid';
 import {
   UpdateMfvrDocument,
+  UpdateToArchiveVesselDocument,
   VesselQueryDocument,
+  ArchiveVesselDocument,
+  UpdateToArchiveGearDocument,
+  ArchiveGearDocument,
 } from '../../graphql/generated';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery, ApolloError } from '@apollo/client';
 import Loading from '../Loading/Loading';
 import {
   Alert,
   AlertProps,
+  Backdrop,
   Button,
   Dialog,
   DialogActions,
@@ -27,14 +32,74 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import moment from 'moment';
+import {
+  showArchiveError,
+  showArchiveSuccess,
+} from '../ConfirmationDialog/Alerts';
+import UpdateVesselForm from '../Forms/UpdateVesselForm';
+import { VesselQueryQuery } from '../../graphql/generated';
 
-const renderMoreActions = () => {
+interface Props {
+  error: ApolloError | undefined;
+  loading: boolean;
+  data: VesselQueryQuery | undefined;
+}
+
+const renderMoreActions = (id: number) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [updateVessel, setUpdateVessel] = useState(false);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => setAnchorEl(null);
+
+  const handleUpdateFormOpen = () => setUpdateVessel(true);
+
+  const handleUpdateFormClose = () => {
+    setUpdateVessel(false);
+    handleClose();
+  };
+
+  const [archiveVessel, archiveResult] = useMutation(
+    UpdateToArchiveVesselDocument,
+    {
+      refetchQueries: [
+        {
+          query: VesselQueryDocument,
+        },
+        {
+          query: ArchiveGearDocument,
+        },
+      ],
+    }
+  );
+
+  const ArchiveAVessel = () => {
+    archiveVessel({
+      variables: {
+        archiveVesselId: id,
+      },
+      onCompleted: () => {
+        showArchiveSuccess();
+      },
+      onError: () => {
+        showArchiveError();
+      },
+    });
+  };
+
+  const archiveHandler = () => {
+    const { loading } = archiveResult;
+    if (loading) {
+      return (
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+        ></Backdrop>
+      );
+    }
+  };
 
   return (
     <div>
@@ -59,10 +124,23 @@ const renderMoreActions = () => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem disableRipple>
+        <MenuItem onClick={handleUpdateFormOpen} disableRipple>
           <EditIcon sx={{ width: 20, marginRight: 1.5 }} /> Edit
         </MenuItem>
-        <MenuItem disableRipple>
+        {updateVessel && (
+          <UpdateVesselForm
+            id={id}
+            handleClose={handleUpdateFormClose}
+            open={updateVessel}
+          />
+        )}
+        <MenuItem
+          onClick={() => {
+            ArchiveAVessel();
+            archiveHandler();
+          }}
+          disableRipple
+        >
           <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
         </MenuItem>
       </Menu>
@@ -70,49 +148,7 @@ const renderMoreActions = () => {
   );
 };
 
-const columns: GridColumns = [
-  { field: 'id', headerName: 'ID', disableColumnMenu: true },
-  {
-    field: 'dateRegistered',
-    headerName: 'Date Registered',
-    type: 'date',
-    minWidth: 150,
-    disableColumnMenu: true,
-    valueFormatter: (params) => moment(params?.value).format('MM/DD/YYYY'),
-  },
-  {
-    field: 'mfvrNum',
-    headerName: 'MFVR Number',
-    editable: true,
-    disableColumnMenu: true,
-    minWidth: 170,
-  },
-  {
-    field: 'name',
-    headerName: 'Name',
-    disableColumnMenu: true,
-    minWidth: 170,
-  },
-  {
-    field: 'operator',
-    headerName: 'Operator',
-    disableColumnMenu: true,
-    minWidth: 250,
-  },
-  {
-    field: 'status',
-    headerName: 'Status',
-    disableColumnMenu: true,
-    minWidth: 130,
-  },
-  {
-    field: 'actions',
-    headerName: '',
-    disableColumnMenu: true,
-    sortable: false,
-    renderCell: renderMoreActions,
-  },
-];
+// const  renderCell = () => <RenderMoreActions />;
 
 const computeMutation = (newRow: GridRowModel, oldRow: GridRowModel) => {
   if (newRow.mfvrNum !== oldRow.mfvrNum) {
@@ -121,7 +157,7 @@ const computeMutation = (newRow: GridRowModel, oldRow: GridRowModel) => {
   return null;
 };
 
-export default function FisherfolkVesselTable() {
+export default function FisherfolkVesselTable({ error, loading, data }: Props) {
   const [updateMfvr] = useMutation(UpdateMfvrDocument, {
     refetchQueries: [
       {
@@ -202,9 +238,9 @@ export default function FisherfolkVesselTable() {
         open={!!promiseArguments}
       >
         <DialogTitle>Are you sure?</DialogTitle>
-        <DialogContent dividers>
-          {`Pressing YES will change ${mutation}.`}
-        </DialogContent>
+        <DialogContent
+          dividers
+        >{`Pressing YES will change ${mutation}.`}</DialogContent>
         <DialogActions>
           <Button ref={noButtonRef} onClick={handleNo}>
             No
@@ -215,18 +251,12 @@ export default function FisherfolkVesselTable() {
     );
   };
 
-  const { loading, error, data } = useQuery(VesselQueryDocument);
-  
   let rows: GridRowsProp = [];
 
   if (error) {
-    return (
-      <Alert severity="error">
-        {`Something went wrong. ${error.message} `}
-      </Alert>
-    );
+    return <Alert severity="error">Something went wrong.</Alert>;
   }
-  
+
   if (loading) {
     return <Loading />;
   }
@@ -263,3 +293,52 @@ export default function FisherfolkVesselTable() {
     </div>
   );
 }
+
+const columns: GridColumns = [
+  { field: 'id', headerName: 'ID', disableColumnMenu: true },
+  {
+    field: 'dateRegistered',
+    headerName: 'Date Registered',
+    type: 'date',
+    minWidth: 150,
+    disableColumnMenu: true,
+    valueFormatter: (params) => moment(params?.value).format('MM/DD/YYYY'),
+  },
+  {
+    field: 'mfvrNum',
+    headerName: 'MFVR Number',
+    editable: true,
+    disableColumnMenu: true,
+    minWidth: 170,
+  },
+  {
+    field: 'name',
+    headerName: 'Name',
+    disableColumnMenu: true,
+    minWidth: 170,
+  },
+  {
+    field: 'operator',
+    headerName: 'Operator',
+    disableColumnMenu: true,
+    minWidth: 250,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    disableColumnMenu: true,
+    minWidth: 130,
+  },
+  {
+    field: 'actions',
+    headerName: '',
+    disableColumnMenu: true,
+    sortable: false,
+    valueGetter(params) {
+      return params.row.id;
+    },
+    renderCell(params) {
+      return renderMoreActions(params.row.id);
+    },
+  },
+];

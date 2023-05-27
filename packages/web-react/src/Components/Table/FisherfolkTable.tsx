@@ -3,25 +3,40 @@ import { useNavigate } from 'react-router-dom';
 import Loading from '../Loading/Loading';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { splitUpperCase } from '../../utils/utils';
-import {
-  DataGrid,
-  GridColumns,
-  GridRowsProp,
-} from '@mui/x-data-grid';
+import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
 import { Alert, Button, Menu, MenuItem } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import moment from 'moment';
-import { ApolloError } from '@apollo/client';
-import { QueryFisherfolksQuery } from '../../graphql/generated';
+import { ApolloError, useMutation } from '@apollo/client';
+import {
+  ArchiveFisherfolkDocument,
+  QueryFisherfolksDocument,
+  QueryFisherfolksQuery,
+  UpdateToArchiveFisherfolkDocument,
+} from '../../graphql/generated';
 import UpdateFisherfolkForm from '../Forms/UpdateMemberForm';
+import Backdrop from '@mui/material/Backdrop';
+import {
+  showArchiveSuccess,
+  showArchiveError,
+} from '../ConfirmationDialog/Alerts';
+import { GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
 
 interface Props {
   error: ApolloError | undefined;
   loading: boolean;
   data: QueryFisherfolksQuery | undefined;
+}
+
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer style={{ justifyContent: 'flex-end' }}>
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
 }
 
 const renderMoreActions = (id: number) => {
@@ -34,6 +49,47 @@ const renderMoreActions = (id: number) => {
   };
   const handleClose = () => setAnchorEl(null);
 
+  const [archiveFisherfolk, archiveResult] = useMutation(
+    UpdateToArchiveFisherfolkDocument,
+    {
+      refetchQueries: [
+        {
+          query: QueryFisherfolksDocument,
+        },
+        {
+          query: ArchiveFisherfolkDocument,
+        },
+      ],
+    }
+  );
+
+  const ArchiveAFisherfolk = () => {
+    archiveFisherfolk({
+      variables: {
+        archiveFisherfolkId: id,
+      },
+      onCompleted: () => {
+        showArchiveSuccess();
+        handleClose();
+      },
+      onError: () => {
+        showArchiveError();
+      },
+    });
+  };
+
+  const archiveHandler = () => {
+    const { loading } = archiveResult;
+    if (loading) {
+      return (
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+        ></Backdrop>
+      );
+    }
+  };
+
   const handleProfileView = () => {
     navigate(`/fisherfolk-profile/${id}`);
   };
@@ -42,7 +98,10 @@ const renderMoreActions = (id: number) => {
     setUpdateFisherfolk(true);
   };
 
-  const handleUpdateFormClose = () => setUpdateFisherfolk(false);
+  const handleUpdateFormClose = () => {
+    setUpdateFisherfolk(false);
+    handleClose();
+  };
 
   return (
     <div>
@@ -80,13 +139,61 @@ const renderMoreActions = (id: number) => {
             open={updateFisherfolk}
           />
         )}
-        <MenuItem disableRipple>
+        <MenuItem
+          onClick={() => {
+            ArchiveAFisherfolk();
+            archiveHandler();
+          }}
+          disableRipple
+        >
           <ArchiveIcon sx={{ width: 20, marginRight: 1.5 }} /> Archive
         </MenuItem>
       </Menu>
     </div>
   );
 };
+
+export default function FisherfolkTable({ error, loading, data }: Props) {
+  let rows: GridRowsProp = [];
+
+  if (error) {
+    return <Alert severity="error">Something went wrong.</Alert>;
+  }
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (!loading && data !== undefined) {
+    rows =
+      data &&
+      data.fisherfolks.map((fisherfolk) => ({
+        id: fisherfolk.id,
+        dateRegistered: new Date(fisherfolk.registrationDate),
+        name: `${fisherfolk.lastName}, ${fisherfolk.firstName} ${fisherfolk.appellation} ${fisherfolk.middleName}`,
+        contactNumber: fisherfolk.contactNum,
+        livelihood:
+          fisherfolk.livelihoods == null
+            ? ''
+            : splitUpperCase(fisherfolk.livelihoods[0]?.type),
+        barangay: fisherfolk.barangay,
+        status: fisherfolk.status,
+      }));
+  }
+  return (
+    <div style={{ height: '85vh', width: '100%' }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        disableVirtualization={true}
+        aria-label="fisherfolk-table"
+        components={{
+          Toolbar: CustomToolbar,
+        }}
+      />
+    </div>
+  );
+}
 
 const columns: GridColumns = [
   { field: 'id', headerName: 'ID', disableColumnMenu: true },
@@ -148,42 +255,3 @@ const columns: GridColumns = [
     },
   },
 ];
-
-export default function FisherfolkTable({ error, loading, data }: Props) {
-  let rows: GridRowsProp = [];
-
-  if (error) {
-    return <Alert severity="error">Something went wrong.</Alert>;
-  }
-
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (!loading && data !== undefined) {
-    rows =
-      data &&
-      data.fisherfolks.map((fisherfolk) => ({
-        id: fisherfolk.id,
-        dateRegistered: new Date(fisherfolk.registrationDate),
-        name: `${fisherfolk.lastName}, ${fisherfolk.firstName} ${fisherfolk.appellation} ${fisherfolk.middleName}`,
-        contactNumber: fisherfolk.contactNum,
-        livelihood:
-          fisherfolk.livelihoods == null
-            ? ''
-            : splitUpperCase(fisherfolk.livelihoods[0]?.type),
-        barangay: fisherfolk.barangay,
-        status: fisherfolk.status,
-      }));
-  }
-  return (
-    <div style={{ height: '85vh', width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        disableVirtualization={true}
-        aria-label="fisherfolk-table"
-      />
-    </div>
-  );
-}

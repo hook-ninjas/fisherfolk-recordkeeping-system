@@ -1,28 +1,24 @@
-import React, { useState } from 'react';
-import { styled } from '@mui/material/styles';
-import { Box, Grid, Paper, Stack, Typography, Tab, Tabs } from '@mui/material';
+import React from 'react';
+import { useState } from 'react';
+import { Box, Grid, Stack, Typography, Alert } from '@mui/material';
 import VesselTable from '../Table/VesselTable';
 import GearTable from '../Table/GearTable';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
 import AddVesselWithGearForm from '../Forms/AddVesselWithGearForms';
-import { FisherfolkByIdDocument } from '../../graphql/generated';
+import {
+  FisherfolkByIdDocument,
+  SourceOfIncome,
+} from '../../graphql/generated';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { splitUpperCase } from '../../utils/utils';
 import { CustomAddButton, CustomBtnText } from '../Buttons/CustomAddButton';
 import AddIcon from '@mui/icons-material/Add';
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'start',
-  color: theme.palette.text.secondary,
-}));
+import BasicTabs, { Item } from '../Tab/BasicTab';
 
 interface InfoProps {
   title: string;
-  description: string | number | undefined;
+  description: string | number | undefined | (string | undefined)[];
 }
 
 interface InfoTitleProps {
@@ -52,109 +48,42 @@ function InfoTitle(input: InfoTitleProps) {
   );
 }
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
-function BasicTabs() {
-  const [addVesselGearBtn, setAddGearsBtn] = useState(false);
-  const handleAddMemberOpen = () => setAddGearsBtn(true);
-  const handleAddVesselGearClose = () => setAddGearsBtn(false);
-  const [value, setValue] = useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) =>
-    setValue(newValue);
-
-  return (
-    <Box sx={{ width: '100%' }}>
-      <Grid
-        container
-        justifyContent="space-between"
-        sx={{ borderBottom: 1, borderColor: 'divider' }}
-      >
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
-          <Tab label="Boats" {...a11yProps(0)} />
-          <Tab label="Gears" {...a11yProps(1)} />
-        </Tabs>
-        <Box m={1}>
-          <CustomAddButton
-            variant="contained"
-            endIcon={<AddIcon />}
-            onClick={handleAddMemberOpen}
-          >
-            <CustomBtnText> Add Boat/Gear</CustomBtnText>
-          </CustomAddButton>
-          {addVesselGearBtn && (
-            <AddVesselWithGearForm
-              handleClose={handleAddVesselGearClose}
-              open={addVesselGearBtn}
-            />
-          )}
-        </Box>
-      </Grid>
-      <TabPanel value={value} index={0}>
-        <VesselTable />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <GearTable />
-      </TabPanel>
-    </Box>
-  );
-}
-
 const FisherfolkViewProfile = () => {
   const { id } = useParams();
 
   if (id == undefined) {
     throw 'Ffolk does not exist';
   }
+  const [addVesselGearBtn, setAddGearsBtn] = useState(false);
+  const handleAddMemberOpen = () => setAddGearsBtn(true);
+  const handleAddVesselGearClose = () => setAddGearsBtn(false);
 
-  const {
-    loading,
-    error,
-    data: { fisherfolk } = {},
-  } = useQuery(FisherfolkByIdDocument, {
+  const AddBoatGearBtn = () => (
+    <Box m={1}>
+      <CustomAddButton
+        variant="contained"
+        endIcon={<AddIcon />}
+        onClick={handleAddMemberOpen}
+      >
+        <CustomBtnText> Add Boat/Gear</CustomBtnText>
+      </CustomAddButton>
+      {addVesselGearBtn && (
+        <AddVesselWithGearForm
+          handleClose={handleAddVesselGearClose}
+          open={addVesselGearBtn}
+        />
+      )}
+    </Box>
+  );
+
+  const { loading, error, data } = useQuery(FisherfolkByIdDocument, {
     variables: {
       fisherfolkId: parseInt(id),
     },
   });
 
   if (error) {
-    console.log(error);
-    return <h1>Error Failed to Fetch!!!</h1>;
+    return <Alert severity="error">Something went wrong.</Alert>;
   }
 
   if (loading) {
@@ -201,7 +130,13 @@ const FisherfolkViewProfile = () => {
         <Grid item xs={12} sm={7} md={9.2}>
           <Item sx={{ p: 0 }}>
             <Grid container>
-              <BasicTabs />
+              <BasicTabs
+                tab1Label="Boats"
+                tab2Label="Gears"
+                tabelPanel1={<VesselTable />}
+                tabelPanel2={<GearTable />}
+                button={<AddBoatGearBtn />}
+              />
             </Grid>
           </Item>
         </Grid>
@@ -209,99 +144,104 @@ const FisherfolkViewProfile = () => {
     );
   }
 
-  const name = `${fisherfolk?.lastName}, ${fisherfolk?.firstName} ${fisherfolk?.middleName} ${fisherfolk?.appellation}`;
+  const {
+    age,
+    appellation,
+    barangay,
+    cityMunicipality,
+    civilStatus,
+    contactNum,
+    dateOfBirth,
+    educationalBackground,
+    firstName,
+    gender,
+    lastName,
+    livelihoods,
+    middleName,
+    nationality,
+    numOfChildren,
+    organizations,
+    personToNotify,
+    placeOfBirth,
+    province,
+    ptnAddress,
+    ptnContactNum,
+    ptnRelationship,
+    religion,
+    residentYear,
+    status,
+  } = data!.fisherfolk;
 
-  const address = `${fisherfolk?.barangay} ${fisherfolk?.cityMunicipality}, ${fisherfolk?.province}`;
+  const image = data?.fisherfolkPhoto?.[0]?.url;
+  const name = `${lastName}, ${firstName} ${middleName} ${appellation}`;
+  const address = `${barangay} ${cityMunicipality}, ${province}`;
+  const organization = organizations[0];
 
-  const mainFishingActivity =
-    fisherfolk?.livelihoods == null
-      ? ''
-      : splitUpperCase(
-        fisherfolk?.livelihoods.filter((a) => a?.isMain)[0]?.type
-      );
+  const fishingActMain = (isMain: boolean) =>
+    livelihoods.filter((a) => a.isMain == isMain);
 
-  const otherFishingActivity =
-    fisherfolk?.livelihoods == null
-      ? ''
-      : splitUpperCase(
-        fisherfolk?.livelihoods.filter(
-          (a) => a?.isMain === false && a.type !== 'Others'
-        )[0]?.type
-      );
+  const fishingActOther = (isMain: boolean, type: SourceOfIncome) =>
+    livelihoods.find((a) => a.isMain == isMain && a.type == type);
 
-  const otherSourceOfIncome =
-    fisherfolk?.livelihoods == null
-      ? ''
-      : splitUpperCase(
-        fisherfolk?.livelihoods.filter(
-          (a) => a?.isMain === false && a.type === 'Others'
-        )[0]?.description
-      );
+  const mainFishingActivity = splitUpperCase(fishingActMain(true)[0].type);
 
-  const orgName =
-    fisherfolk?.organizations == null
-      ? ''
-      : fisherfolk?.organizations[0]?.organization.name;
+  const otherFishingActivities = fishingActMain(false).map((a) =>
+    splitUpperCase(a.type)
+  );
 
-  const yearJoined =
-    fisherfolk?.organizations == null
-      ? ''
-      : fisherfolk?.organizations[0]?.yearJoined.toString();
+  const otherSourceOfIncome = splitUpperCase(
+    fishingActOther(false, SourceOfIncome.Others)?.description
+  );
 
-  const position =
-    fisherfolk?.organizations == null
-      ? ''
-      : fisherfolk?.organizations[0]?.position;
+  const orgName = organization?.organization.name;
+
+  const yearJoined = organization?.yearJoined.toString();
+
+  const position = organization?.position;
 
   return (
     <Grid container spacing={0.8}>
       <Grid item xs={12} sm={5} md={2.8}>
         <Item>
-          <Stack direction="row" spacing={1} mb={0.5}>
+          <Stack direction="row" spacing={2} mb={1} alignItems={'center'}>
+            <Box sx={{ width: 80, height: 80 }} mt={2}>
+              <img src={image} width={80} height={80} />
+            </Box>
             <Typography variant="body1">{name}</Typography>
           </Stack>
-          <Stack direction="row" spacing={3} mb={1.5}>
+          <Stack direction="row" spacing={3} mb={1.5} padding={1}>
             <Typography variant="body2" width={200}>
               ID: {id}
             </Typography>
-            <FisherfolkStatusButton label={fisherfolk?.status} />
+            <FisherfolkStatusButton label={status} />
           </Stack>
           <InfoTitle description="Personal Information" />
-          <Info title="Contact Number" description={fisherfolk?.contactNum} />
+          <Info title="Contact Number" description={contactNum} />
           <Info title="Address" description={address} />
-          <Info title="Gender" description={fisherfolk?.gender} />
-          <Info title="Age" description={fisherfolk?.age} />
+          <Info title="Gender" description={gender} />
+          <Info title="Age" description={age} />
           <Info
             title="Date of Birth"
-            description={new Date(fisherfolk?.dateOfBirth).toLocaleDateString()}
+            description={new Date(dateOfBirth).toLocaleDateString()}
           />
-          <Info title="Place of Birth" description={fisherfolk?.placeOfBirth} />
-          <Info title="Nationality" description={fisherfolk?.nationality} />
+          <Info title="Place of Birth" description={placeOfBirth} />
+          <Info title="Nationality" description={nationality} />
           <Info
             title="Civil Status"
-            description={splitUpperCase(fisherfolk?.civilStatus)}
+            description={splitUpperCase(civilStatus)}
           />
-          <Info title="Religion" description={fisherfolk?.religion} />
+          <Info title="Religion" description={religion} />
           <Info
             title="Educational Background"
-            description={splitUpperCase(fisherfolk?.educationalBackground)}
+            description={splitUpperCase(educationalBackground)}
           />
-          <Info
-            title="Number of Children"
-            description={fisherfolk?.numOfChildren}
-          />
-          <Info title="Resident Year" description={fisherfolk?.residentYear} />
+          <Info title="Number of Children" description={numOfChildren} />
+          <Info title="Resident Year" description={residentYear} />
           <InfoTitle description="Person to Notify incase of Emergency" />
-          <Info title="Name" description={fisherfolk?.personToNotify} />
-          <Info
-            title="Relationship"
-            description={fisherfolk?.ptnRelationship}
-          />
-          <Info
-            title="Contact Number"
-            description={fisherfolk?.ptnContactNum}
-          />
-          <Info title="Address" description={fisherfolk?.ptnAddress} />
+          <Info title="Name" description={personToNotify} />
+          <Info title="Relationship" description={ptnRelationship} />
+          <Info title="Contact Number" description={ptnContactNum} />
+          <Info title="Address" description={ptnAddress} />
           <InfoTitle description="Livelihood" />
           <Info
             title="Main Fishing Activity"
@@ -309,7 +249,7 @@ const FisherfolkViewProfile = () => {
           />
           <Info
             title="Other Fishing Activity"
-            description={otherFishingActivity}
+            description={otherFishingActivities}
           />
           <Info
             title="Other Source of Income"
@@ -324,7 +264,13 @@ const FisherfolkViewProfile = () => {
       <Grid item xs={12} sm={7} md={9.2}>
         <Item sx={{ p: 0 }}>
           <Grid container>
-            <BasicTabs />
+            <BasicTabs
+              tab1Label="Boats"
+              tab2Label="Gears"
+              tabelPanel1={<VesselTable />}
+              tabelPanel2={<GearTable />}
+              button={<AddBoatGearBtn />}
+            />
           </Grid>
         </Item>
       </Grid>

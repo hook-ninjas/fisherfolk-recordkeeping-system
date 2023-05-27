@@ -11,22 +11,24 @@ let context: Context;
 jest.mock('cloudinary');
 
 // Mock of the cloudinary upload api //
-const mockUpload = jest.fn(async (imageURI: string, options?: cloudinary.UploadApiOptions) => {
-  const { word } = faker;
+const mockUpload = jest.fn(
+  async (imageURI: string, options?: cloudinary.UploadApiOptions) => {
+    const { word } = faker;
 
-  let value = {
-    url: `http://res.cloudinary.com/<cloudName>/image/upload/<version>/${word.noun()}.svg`,
-  };
-
-  if (options != undefined) {
-    const { folder } = options;
-    value = {
-      url: `http://res.cloudinary.com/<cloudName>/image/upload/<version>/${folder}/test.svg`,
+    let value = {
+      url: `http://res.cloudinary.com/<cloudName>/image/upload/<version>/${word.noun()}.svg`,
     };
-  }
 
-  return Promise.resolve(value);
-});
+    if (options != undefined) {
+      const { folder } = options;
+      value = {
+        url: `http://res.cloudinary.com/<cloudName>/image/upload/<version>/${folder}/test.svg`,
+      };
+    }
+
+    return Promise.resolve(value);
+  }
+);
 
 beforeEach(() => {
   mockContext = createMockContext();
@@ -53,7 +55,10 @@ describe('uploadToCloud', () => {
 
     expect(cloudinary.v2.uploader.upload).toHaveReturned();
 
-    expect(cloudinary.v2.uploader.upload).toHaveBeenCalledWith(dataURI, cloudinaryOptions);
+    expect(cloudinary.v2.uploader.upload).toHaveBeenCalledWith(
+      dataURI,
+      cloudinaryOptions
+    );
   });
 });
 
@@ -92,7 +97,10 @@ describe('createImage', () => {
 
     expect(cloudinary.v2.uploader.upload).toHaveReturned();
 
-    expect(cloudinary.v2.uploader.upload).toHaveBeenCalledWith(input.uri, cloudinaryOptions);
+    expect(cloudinary.v2.uploader.upload).toHaveBeenCalledWith(
+      input.uri,
+      cloudinaryOptions
+    );
 
     expect(context.prisma.image.create).toHaveReturned();
 

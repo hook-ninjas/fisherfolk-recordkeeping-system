@@ -81,7 +81,15 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
 }
 
 export default function CustomizedDialogs(props: ConfirmationDiaglogProps) {
-  const { title, message, leftBtnMsg, rightBtnMsg, open, handleClose, handleLogout } = props;
+  const {
+    title,
+    message,
+    leftBtnMsg,
+    rightBtnMsg,
+    open,
+    handleClose,
+    handleLogout,
+  } = props;
 
   return (
     <BootstrapDialog

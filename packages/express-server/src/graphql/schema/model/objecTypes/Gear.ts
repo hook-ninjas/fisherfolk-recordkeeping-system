@@ -18,8 +18,9 @@ const Gear = objectType({
           .fisherfolk();
       },
     });
-    t.field('createdAt', {type: 'DateTime'});
-    t.field('updatedAt', {type: 'DateTime'});
+    t.field('createdAt', { type: 'DateTime' });
+    t.field('updatedAt', { type: 'DateTime' });
+    t.boolean('isArchive');
   },
 });
 

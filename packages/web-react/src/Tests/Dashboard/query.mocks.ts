@@ -26,12 +26,12 @@ export const DashboardQueryMock: MockedResponse[] = [
     request: {
       query: FisherfolkGenderCountDocument,
       variables: {
-        gender: Gender.Female
+        gender: Gender.Female,
       },
     },
     result: {
       data: {
-        fisherfolkGender: 340
+        fisherfolkGender: 340,
       },
     },
   },
@@ -39,12 +39,12 @@ export const DashboardQueryMock: MockedResponse[] = [
     request: {
       query: FisherfolkGenderCountDocument,
       variables: {
-        gender: Gender.Male
+        gender: Gender.Male,
       },
     },
     result: {
       data: {
-        fisherfolkGender: 790
+        fisherfolkGender: 790,
       },
     },
   },

@@ -17,6 +17,9 @@ query QueryFisherfolks {
     status
   }
   totalFisherfolk
+  fisherfolksWithUniqueBarangay {
+    barangay
+  }
 }
 query FisherfolkById($fisherfolkId: BigInt!) {
   fisherfolk(id: $fisherfolkId) {
@@ -59,10 +62,14 @@ query FisherfolkById($fisherfolkId: BigInt!) {
       position
     }
   }
+  fisherfolkPhoto(fisherfolkId: $fisherfolkId) {
+    id
+    url
+  }
 }
 
-query FisherfolkVessels($fisherfolkId: BigInt!, $start: Int!, $count: Int!) {
-  fisherfolkVessels(fisherfolkId: $fisherfolkId, start: $start, count: $count) {
+query FisherfolkVessels($fisherfolkId: BigInt!) {
+  fisherfolkVessels(fisherfolkId: $fisherfolkId) {
     createdAt
     engineMake
     grossTonnage
@@ -84,17 +91,15 @@ query FisherfolkVessels($fisherfolkId: BigInt!, $start: Int!, $count: Int!) {
     type
     yearBuilt
   }
-  totalFisherfolkVessels(fisherfolkId: $fisherfolkId)
 }
 
-query FisherfolkGears($fisherfolkId: BigInt!, $start: Int!, $count: Int!) {
-  fisherfolkGears(fisherfolkId: $fisherfolkId, start: $start, count: $count) {
+query FisherfolkGears($fisherfolkId: BigInt!) {
+  fisherfolkGears(fisherfolkId: $fisherfolkId) {
     classification
     createdAt
     id
     type
   }
-  totalFisherfolkGears(fisherfolkId: $fisherfolkId)
 }
 
 query VesselQuery {
@@ -142,9 +147,122 @@ query FisherfolkCount {
   activeFisherFolk
   totalGears
   totalVessels
+  totalPrograms
   barangayCount
 }
 
 query FisherfolkGenderCount($gender: Gender!) {
   fisherfolkGender(gender: $gender)
+}
+
+query GovernmentAids {
+  governmentAids {
+    id
+    title
+    slot
+    date
+    description
+  }
+}
+
+query GovernmentAid($govtAidId: Int!) {
+  governmentAid(govtAidId: $govtAidId) {
+    id
+    title
+    description
+    date
+    slot
+  }
+  governmentAidPhotos(govtAidId: $govtAidId) {
+    id
+    url
+  }
+}
+
+query ArchiveFisherfolk {
+  ArchiveFisherfolk {
+    id
+    registrationDate
+    firstName
+    lastName
+    middleName
+    appellation
+    contactNum
+    livelihoods {
+      isMain
+      type
+    }
+    barangay
+    status
+  }
+  totalFisherfolk
+  fisherfolksWithUniqueBarangay {
+    barangay
+  }
+}
+
+query Vessel($vesselId: BigInt!) {
+  vessel(id: $vesselId) {
+    createdAt
+    engineMake
+    grossTonnage
+    homeport
+    horsepower
+    id
+    fisherfolk {
+      id
+    }
+    material
+    mfvrNumber
+    name
+    netTonnage
+    placeBuilt
+    registeredBreadth
+    registeredDepth
+    registeredLength
+    serialNumber
+    tonnageBreadth
+    tonnageDepth
+    tonnageLength
+    type
+    yearBuilt
+  }
+}
+
+query ArchiveGear {
+  ArchiveGear {
+    id
+    classification
+    type
+    createdAt
+    updatedAt
+    isArchive
+  }
+}
+
+query ArchiveVessel {
+  ArchiveVessel {
+    id
+    mfvrNumber
+    homeport
+    name
+    type
+    placeBuilt
+    yearBuilt
+    material
+    registeredLength
+    registeredBreadth
+    registeredDepth
+    tonnageLength
+    tonnageBreadth
+    tonnageDepth
+    grossTonnage
+    netTonnage
+    engineMake
+    serialNumber
+    horsepower
+    createdAt
+    updatedAt
+    isArchive
+  }
 }

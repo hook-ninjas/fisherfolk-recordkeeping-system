@@ -1,5 +1,15 @@
-import { CreateFisherfolk, UpdateFisherfolk } from './Fisherfolk.mutation';
+import {
+  CreateFisherfolk,
+  UpdateFisherfolk,
+  ArchiveFisherfolk,
+  RestoreFisherfolk,
+} from './Fisherfolk.mutation';
 
-const Mutations = [CreateFisherfolk, UpdateFisherfolk];
+const Mutations = [
+  CreateFisherfolk,
+  UpdateFisherfolk,
+  ArchiveFisherfolk,
+  RestoreFisherfolk,
+];
 
 export default Mutations;

@@ -2,7 +2,9 @@ import { Context } from '../../../context';
 import { NexusGenInputs } from '../../../generated/nexus';
 import { createImage } from '../Image/Image.resolver';
 
-export const getVesselInfo = (vessel: NexusGenInputs['CreateFfolkVesselInput']) => {
+export const getVesselInfo = (
+  vessel: NexusGenInputs['CreateFfolkVesselInput']
+) => {
   return {
     fisherfolkId: vessel.fisherfolkId,
     mfvrNumber: vessel.mfvrNumber,
@@ -26,7 +28,10 @@ export const getVesselInfo = (vessel: NexusGenInputs['CreateFfolkVesselInput']) 
   };
 };
 
-export const createFfolkVessel = async (input: NexusGenInputs['CreateFfolkVesselInput'], context: Context) => {
+export const createFfolkVessel = async (
+  input: NexusGenInputs['CreateFfolkVesselInput'],
+  context: Context
+) => {
   const { files } = input;
   const vesselInfo = getVesselInfo(input);
 

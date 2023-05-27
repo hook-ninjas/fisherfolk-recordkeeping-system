@@ -24,7 +24,11 @@ const convertOtherSrcOfIncome = (src: string) => ({
   isMain: false,
 });
 
-export const convertActivities = (mainFishingAct: SourceOfIncome, otherFishingActs: SourceOfIncome[], otherSrcOfIncome: string) => {
+export const convertActivities = (
+  mainFishingAct: SourceOfIncome,
+  otherFishingActs: SourceOfIncome[],
+  otherSrcOfIncome: string
+) => {
   const livelihoods = [];
 
   if (otherFishingActs.length != 0) {
@@ -46,7 +50,10 @@ export const convertActivities = (mainFishingAct: SourceOfIncome, otherFishingAc
   return result;
 };
 
-export const createLivelihood = async (input: CreateLivelihoodInput, context: Context) => {
+export const createLivelihood = async (
+  input: CreateLivelihoodInput,
+  context: Context
+) => {
   const { fisherfolkId, type, description, isMain } = input;
 
   return await context.prisma.livelihood.create({
@@ -61,13 +68,28 @@ export const createLivelihood = async (input: CreateLivelihoodInput, context: Co
   });
 };
 
-export const createFisherfolkLivelihood = async (input: CreateFFolkLivelihoodInput, context: Context) => {
+export const createFisherfolkLivelihood = async (
+  input: CreateFFolkLivelihoodInput,
+  context: Context
+) => {
   const fisherfolkLivelihoods: Livelihood[] = [];
-  const { fisherfolkId, mainFishingActivity, otherFishingActivity, otherSourceOfIncome } = input;
-  const livelihoods = convertActivities(mainFishingActivity, otherFishingActivity, otherSourceOfIncome);
+  const {
+    fisherfolkId,
+    mainFishingActivity,
+    otherFishingActivity,
+    otherSourceOfIncome,
+  } = input;
+  const livelihoods = convertActivities(
+    mainFishingActivity,
+    otherFishingActivity,
+    otherSourceOfIncome
+  );
 
   for (const livelihood in livelihoods) {
-    const result = await createLivelihood({ ...livelihoods[livelihood], fisherfolkId: fisherfolkId }, context);
+    const result = await createLivelihood(
+      { ...livelihoods[livelihood], fisherfolkId: fisherfolkId },
+      context
+    );
     fisherfolkLivelihoods.push(result);
   }
 

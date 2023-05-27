@@ -1,7 +1,12 @@
 import React from 'react';
 import { UseFormRegister, Control, FieldValues } from 'react-hook-form';
 import { Box, Grid, Typography, FormHelperText } from '@mui/material';
-import { FormInputRadio, FormInputText, FormInputSelect, FormInputAutoText } from './FormInputFields';
+import {
+  FormInputRadio,
+  FormInputText,
+  FormInputSelect,
+  FormInputAutoText,
+} from './FormInputFields';
 import { registrationTypeForBoatsAndGears, materialOptions } from './Enums';
 import MultiFileUpload from '../Input/MultiFileUpload';
 
@@ -18,28 +23,93 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
     <>
       <Grid container spacing={-2} sx={{ ml: 1, mr: 1, mt: 1 }}>
         <Grid item sm={6}>
-          <FormInputText name="vessel.mfvrNumber" control={control} label="MFVR Number" placeholder="" register={register} errors={errors} errorMessage={errors.vessel?.mfvrNumber?.message} errorState={!!errors.vessel?.mfvrNumber} shouldUnregister />
+          <FormInputText
+            name="vessel.mfvrNumber"
+            control={control}
+            label="MFVR Number"
+            placeholder=""
+            register={register}
+            errors={errors}
+            errorMessage={errors.vessel?.mfvrNumber?.message}
+            errorState={!!errors.vessel?.mfvrNumber}
+            shouldUnregister
+          />
         </Grid>
       </Grid>
       <Grid container spacing={-2} sx={{ ml: 1, mr: 1, mt: 1 }}>
         <Grid item sm={6}>
-          <FormInputText name="vessel.homeport" control={control} label="Homeport" placeholder="" register={register} errors={errors} errorMessage={errors.vessel?.homeport?.message} errorState={!!errors.vessel?.homeport} shouldUnregister />
+          <FormInputText
+            name="vessel.homeport"
+            control={control}
+            label="Homeport"
+            placeholder=""
+            register={register}
+            errors={errors}
+            errorMessage={errors.vessel?.homeport?.message}
+            errorState={!!errors.vessel?.homeport}
+            shouldUnregister
+          />
         </Grid>
         <Grid item sm={6}>
-          <FormInputText name="vessel.name" control={control} label="Name of Fishing Vessel" placeholder="" register={register} errors={errors} errorMessage={errors.vessel?.name?.message} errorState={!!errors.vesssel?.name} shouldUnregister />
+          <FormInputText
+            name="vessel.name"
+            control={control}
+            label="Name of Fishing Vessel"
+            placeholder=""
+            register={register}
+            errors={errors}
+            errorMessage={errors.vessel?.name?.message}
+            errorState={!!errors.vesssel?.name}
+            shouldUnregister
+          />
         </Grid>
       </Grid>
       <Grid container spacing={-2} sx={{ ml: 2 }}>
         <Grid item sm={6} sx={{ mt: 2 }}>
-          <FormInputSelect name="vessel.material" label="Select Material Used" data={materialOptions} control={control} register={register} errors={errors} errorMessage={errors.vessel?.material?.message} errorState={!!errors.vessel?.material} defaultValue="" shouldUnregister />
+          <FormInputSelect
+            name="vessel.material"
+            label="Select Material Used"
+            data={materialOptions}
+            control={control}
+            register={register}
+            errors={errors}
+            errorMessage={errors.vessel?.material?.message}
+            errorState={!!errors.vessel?.material}
+            defaultValue=""
+            shouldUnregister
+          />
         </Grid>
         <Grid item sm={6} sx={{ mt: 2 }}>
-          <FormInputAutoText sx={{ marginTop: -1.5, width: 220 }} freeSolo name="vessel.type" control={control} defaultValue="" label="type" placeholder="Motorized" options={vesselType} register={register} errors={errors} errorMessage={errors.vessel?.type?.message} errorState={!!errors.vessel?.type} shouldUnregister />
+          <FormInputAutoText
+            sx={{ marginTop: -1.5, width: 220 }}
+            freeSolo
+            name="vessel.type"
+            control={control}
+            defaultValue=""
+            label="type"
+            placeholder="Motorized"
+            options={vesselType}
+            register={register}
+            errors={errors}
+            errorMessage={errors.vessel?.type?.message}
+            errorState={!!errors.vessel?.type}
+            shouldUnregister
+          />
         </Grid>
       </Grid>
       <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
         <Grid item sm={6} sx={{ mt: 1 }}>
-          <FormInputText name="vessel.placeBuilt" control={control} label="Place Built" placeholder="" register={register} errors={errors} errorMessage={errors.vessel?.placeBuilt?.message} errorState={!!errors.vessel?.placeBuilt} shouldUnregister />
+          <FormInputText
+            name="vessel.placeBuilt"
+            control={control}
+            label="Place Built"
+            placeholder=""
+            register={register}
+            errors={errors}
+            errorMessage={errors.vessel?.placeBuilt?.message}
+            errorState={!!errors.vessel?.placeBuilt}
+            shouldUnregister
+          />
         </Grid>
         <Grid item sm={6} sx={{ mt: 1, ml: 0 }}>
           <FormInputText
@@ -211,10 +281,30 @@ function VesselForm({ control, register, errors }: VesselFormProps) {
       </Typography>
       <Grid container spacing={-2} sx={{ ml: 1 }}>
         <Grid item sm={6}>
-          <FormInputText name="vessel.engineMake" control={control} label="Engine Make" placeholder="" register={register} errors={errors} errorMessage={errors.vessel?.engineMake?.message} errorState={!!errors.vessel?.engineMake} shouldUnregister />
+          <FormInputText
+            name="vessel.engineMake"
+            control={control}
+            label="Engine Make"
+            placeholder=""
+            register={register}
+            errors={errors}
+            errorMessage={errors.vessel?.engineMake?.message}
+            errorState={!!errors.vessel?.engineMake}
+            shouldUnregister
+          />
         </Grid>
         <Grid item sm={6}>
-          <FormInputText name="vessel.serialNumber" control={control} label="Serial Number" placeholder="" register={register} errors={errors} errorMessage={errors.vessel?.serialNumber?.message} errorState={!!errors.vessel?.serialNumber?.name} shouldUnregister />
+          <FormInputText
+            name="vessel.serialNumber"
+            control={control}
+            label="Serial Number"
+            placeholder=""
+            register={register}
+            errors={errors}
+            errorMessage={errors.vessel?.serialNumber?.message}
+            errorState={!!errors.vessel?.serialNumber?.name}
+            shouldUnregister
+          />
         </Grid>
       </Grid>
       <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>

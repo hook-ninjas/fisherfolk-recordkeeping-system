@@ -2,6 +2,7 @@ import { Context } from '../../../context';
 import { NexusGenInputs } from '../../../generated/nexus';
 
 type CreateVesselInput = NexusGenInputs['CreateVesselInput'];
+type UpdateVesselInput = NexusGenInputs['UpdateVesselInput'];
 type CreateGearInput = NexusGenInputs['CreateGearInput'];
 
 export function createVessel(vessel: CreateVesselInput, ctx: Context) {
@@ -48,3 +49,62 @@ export async function updateMfvr(id: number, mfvr: string, ctx: Context) {
     },
   });
 }
+
+export async function archiveGear(id: number, ctx: Context) {
+  return ctx.prisma.gear.update({
+    where: {
+      id: id,
+    },
+    data: {
+      isArchive: true,
+    },
+  });
+}
+
+export async function archiveVessel(id: number, ctx: Context) {
+  return ctx.prisma.vessel.update({
+    where: {
+      id: id,
+    },
+    data: {
+      isArchive: true,
+    },
+  });
+}
+
+export async function updateVessel(
+  id: number,
+  vessel: UpdateVesselInput,
+  ctx: Context
+) {
+  return ctx.prisma.vessel.update({
+    where: {
+      id: id,
+    },
+    data: {
+      ...vessel,
+    },
+  });
+}
+
+export const restoreGear = async (id: number, ctx: Context) => {
+  return ctx.prisma.gear.update({
+    where: {
+      id: id,
+    },
+    data: {
+      isArchive: false,
+    },
+  });
+};
+
+export const restoreVessel = async (id: number, ctx: Context) => {
+  return ctx.prisma.vessel.update({
+    where: {
+      id: id,
+    },
+    data: {
+      isArchive: false,
+    },
+  });
+};
