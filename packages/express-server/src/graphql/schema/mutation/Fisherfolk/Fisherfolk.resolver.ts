@@ -49,19 +49,19 @@ const createFisherfolk = async (input: NexusGenInputs['CreateFisherfolkInput'], 
   const images = [profilePhoto, ...files];
 
   for (const image in images) {
-    createImage({ fisherfolkId: id, ...images[image] }, context);
+    await createImage({ fisherfolkId: id, ...images[image] }, context);
   }
 
-  if (organization != null || organization != undefined) {
-    createFisherfolkOrganization({ fisherfolkId: id, ...organization }, context);
+  if (organization) {
+    await createFisherfolkOrganization({ fisherfolkId: id, ...organization }, context);
   }
 
-  if (gears != null && gears.length != 0) {
-    createFfolkGears({ fisherfolkId: id, types: gears }, context);
+  if (gears) {
+    await createFfolkGears({ fisherfolkId: id, types: gears }, context);
   }
 
-  if (vessel != null) {
-    createFfolkVessel(vessel, context);
+  if (vessel) {
+    await createFfolkVessel({ fisherfolkId: id, ...vessel }, context);
   }
 
   return fisherfolk;
