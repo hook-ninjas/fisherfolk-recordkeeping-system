@@ -12,7 +12,7 @@ export const getVesselInfo = (vessel: NexusGenInputs['CreateFfolkVesselInput']) 
     placeBuilt: vessel.placeBuilt,
     yearBuilt: vessel.yearBuilt,
     material: vessel.material,
-    registerdLength: vessel.registeredLength,
+    registeredLength: vessel.registeredLength,
     registeredBreadth: vessel.registeredBreadth,
     registeredDepth: vessel.registeredDepth,
     tonnageLength: vessel.tonnageLength,
@@ -39,7 +39,7 @@ export const createFfolkVessel = async (input: NexusGenInputs['CreateFfolkVessel
   const { id } = vessel;
 
   for (const file in files) {
-    createImage({ vesselId: id, ...files[file] }, context);
+    await createImage({ vesselId: id, ...files[file] }, context);
   }
 
   return vessel;
