@@ -147,7 +147,9 @@ const FfolkValidation = (state: string) => {
         material: string().required('Select material.'),
         type: string().required('Please indicate type'),
         placeBuilt: string().required('Please indicate place built'),
-        yearBuilt: string().required('Enter year').matches(/^(19|20)\d{2}$/, 'Invalid year'),
+        yearBuilt: string()
+          .required('Enter year')
+          .matches(/^(19|20)\d{2}$/, 'Invalid year'),
         registeredLength: createMinMaxValidation('minLength', 'maxLength', 'Length', 0, 100),
         registeredDepth: createMinMaxValidation('minDepth', 'maxDepth', 'Depth', 0, 100),
         registeredBreadth: createMinMaxValidation('minBreadth', 'maxBreadth', 'Breadth', 0, 100),
@@ -238,7 +240,9 @@ const UpdateFisherfolkSchema = object().shape({
 });
 
 const AddVesselWithGearSchema = object().shape({
-  yearBuilt: string().required('Enter year').matches(/^(19|20)\d{2}$/, 'Invalid year'),
+  yearBuilt: string()
+    .required('Enter year')
+    .matches(/^(19|20)\d{2}$/, 'Invalid year'),
   registeredLength: createMinMaxValidation('minLength', 'maxLength', 'Length', 0, 100),
   registeredDepth: createMinMaxValidation('minDepth', 'maxDepth', 'Depth', 0, 100),
   registeredBreadth: createMinMaxValidation('minBreadth', 'maxBreadth', 'Breadth', 0, 100),
@@ -263,7 +267,10 @@ const FilterSchema = object().shape({
 
 const CreateProgramSchema = object().shape({
   title: string().required('Enter program title.').max(60, 'Title cannot exceed 60 characters'),
-  slot: string().required('Enter program slot.'),
+  slot: string()
+    .required('Enter program slot.')
+    .test('minSlot', 'Slot cannot be negative', (value) => !value || parseInt(value, 10) >= 0)
+    .test('maxSlot', 'Slot cannot exceed 1000.', (value) => !value || parseInt(value, 10) <= 1000),
   date: date().typeError('Select date').required('Enter date.'),
   programImages: mixed()
     .test('fileCount', 'Please select up to 3 images only.', (value) => {
@@ -298,7 +305,10 @@ const CreateProgramSchema = object().shape({
 
 const UpdateProgramSchema = object().shape({
   title: string().required('Enter program title.').max(60, 'Title cannot exceed 60 characters'),
-  slot: string().required('Enter program slot.'),
+  slot: string()
+    .required('Enter program slot.')
+    .test('minSlot', 'Slot cannot be negative', (value) => !value || parseInt(value, 10) >= 0)
+    .test('maxSlot', 'Slot cannot exceed 1000.', (value) => !value || parseInt(value, 10) <= 1000),
   date: date().typeError('Select date').required('Enter date.'),
 });
 
@@ -308,7 +318,9 @@ const UpdateVesselSchema = object().shape({
   name: string().required('Vessel must have name'),
   type: string().required('Please indicate type'),
   placeBuilt: string().required('Please indicate place built'),
-  yearBuilt: string().required('Enter year').matches(/^(19|20)\d{2}$/, 'Invalid year'),
+  yearBuilt: string()
+    .required('Enter year')
+    .matches(/^(19|20)\d{2}$/, 'Invalid year'),
   registeredLength: createMinMaxValidation('minLength', 'maxLength', 'Length', 0, 100),
   registeredDepth: createMinMaxValidation('minDepth', 'maxDepth', 'Depth', 0, 100),
   registeredBreadth: createMinMaxValidation('minBreadth', 'maxBreadth', 'Breadth', 0, 100),
