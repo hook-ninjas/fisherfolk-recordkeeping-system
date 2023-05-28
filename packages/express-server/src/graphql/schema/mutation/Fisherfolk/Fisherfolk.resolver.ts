@@ -7,24 +7,14 @@ import { createFfolkGears } from '../Gears/Gears.resolver';
 import { createFfolkVessel } from '../Vessel/Vessel.resolver';
 import 'dotenv/config';
 import Fisherfolk from '../../model/objecTypes/Fisherfolk';
+import { number } from 'yup';
+import { FisherfolkStatus } from '@prisma/client';
 
 type CreateFisherfolkInput = NexusGenInputs['CreateFisherfolkInput'];
 type UpdateFisherfolkInput = NexusGenInputs['UpdateFisherfolkInput'];
 
-const createFisherfolk = async (
-  input: NexusGenInputs['CreateFisherfolkInput'],
-  context: Context
-) => {
-  const {
-    organization,
-    mainFishingActivity,
-    otherFishingActivity,
-    otherSourceOfIncome,
-    gears,
-    vessel,
-    profilePhoto,
-    files,
-  } = input;
+const createFisherfolk = async (input: NexusGenInputs['CreateFisherfolkInput'], context: Context) => {
+  const { organization, mainFishingActivity, otherFishingActivity, otherSourceOfIncome, gears, vessel, profilePhoto, files } = input;
 
   const ffolkInfo = {
     lastName: input.lastName,
@@ -76,10 +66,7 @@ const createFisherfolk = async (
   }
 
   if (organization) {
-    await createFisherfolkOrganization(
-      { fisherfolkId: id, ...organization },
-      context
-    );
+    await createFisherfolkOrganization({ fisherfolkId: id, ...organization }, context);
   }
 
   if (gears) {
@@ -93,11 +80,7 @@ const createFisherfolk = async (
   return fisherfolk;
 };
 
-const updateFisherfolk = async (
-  fisherfolkId: number,
-  input: UpdateFisherfolkInput,
-  ctx: Context
-) => {
+const updateFisherfolk = async (fisherfolkId: number, input: UpdateFisherfolkInput, ctx: Context) => {
   const orgInput = input.organizations[0];
 
   const fisherfolkOrganization = await ctx.prisma.member.findFirst({
@@ -231,9 +214,15 @@ const restoreFisherfolk = async (id: number, ctx: Context) => {
   });
 };
 
-export {
-  createFisherfolk,
-  updateFisherfolk,
-  archiveFisherfolk,
-  restoreFisherfolk,
+const updateStatus = async (id: number, status: FisherfolkStatus, ctx: Context) => {
+  return ctx.prisma.fisherfolk.update({
+    where: {
+      id: id,
+    },
+    data: {
+      status: status,
+    },
+  });
 };
+
+export { createFisherfolk, updateFisherfolk, archiveFisherfolk, restoreFisherfolk, updateStatus };
