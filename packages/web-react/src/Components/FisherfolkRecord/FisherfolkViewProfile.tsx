@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { Box, Grid, Stack, Typography, Alert } from '@mui/material';
+import { Box, Grid, Stack, Typography, Alert, Button } from '@mui/material';
 import VesselTable from '../Table/VesselTable';
 import GearTable from '../Table/GearTable';
 import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
@@ -15,6 +15,8 @@ import { splitUpperCase } from '../../utils/utils';
 import { CustomAddButton, CustomBtnText } from '../Buttons/CustomAddButton';
 import AddIcon from '@mui/icons-material/Add';
 import BasicTabs, { Item } from '../Tab/BasicTab';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from 'react-router-dom';
 
 interface InfoProps {
   title: string;
@@ -57,6 +59,11 @@ const FisherfolkViewProfile = () => {
   const [addVesselGearBtn, setAddGearsBtn] = useState(false);
   const handleAddMemberOpen = () => setAddGearsBtn(true);
   const handleAddVesselGearClose = () => setAddGearsBtn(false);
+  const navigate = useNavigate();
+
+  const goBacktoRecord = () => {
+    navigate(`/fisherfolk-record`);
+  };
 
   const AddBoatGearBtn = () => (
     <Box m={1}>
@@ -98,6 +105,7 @@ const FisherfolkViewProfile = () => {
               <Typography variant="body2" width={200}>
                 ID:
               </Typography>
+              
             </Stack>
             <InfoTitle description="Personal Information" />
             <Info title="Contact Number" description="" />
@@ -202,7 +210,15 @@ const FisherfolkViewProfile = () => {
   return (
     <Grid container spacing={0.8}>
       <Grid item xs={12} sm={5} md={2.8}>
+
         <Item>
+          <Grid item xs={12} sm={5} md={2.8}>
+            <Button onClick={() => {
+              goBacktoRecord();
+            }}>
+              <ArrowBackIcon style={{ fill: 'grey' }} />
+            </Button>
+          </Grid>
           <Stack direction="row" spacing={2} mb={1} alignItems={'center'}>
             <Box sx={{ width: 80, height: 80 }} mt={2}>
               <img src={image} width={80} height={80} />
