@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Box, Grid, Stack, Typography, Alert, Button } from '@mui/material';
 import VesselTable from '../Table/VesselTable';
 import GearTable from '../Table/GearTable';
-import { FisherfolkStatusButton } from '../Buttons/CustomStatusButton';
+import { FisherfolkStatusButton, StatusButton } from '../Buttons/CustomStatusButton';
 import AddVesselWithGearForm from '../Forms/AddVesselWithGearForms';
 import {
   FisherfolkByIdDocument,
@@ -229,7 +229,7 @@ const FisherfolkViewProfile = () => {
             <Typography variant="body2" width={200}>
               ID: {id}
             </Typography>
-            <FisherfolkStatusButton label={status} />
+            <StatusButton label={status} />
           </Stack>
           <InfoTitle description="Personal Information" />
           <Info title="Contact Number" description={contactNum} />
