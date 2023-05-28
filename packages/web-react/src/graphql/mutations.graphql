@@ -140,3 +140,9 @@ mutation RestoreVessel($restoreVesselId: Int!) {
     id
   }
 }
+
+mutation RemoveFisherfolkGear($gearId: Int!) {
+  removeFisherfolkGear(id: $gearId) {
+    id
+  }
+}

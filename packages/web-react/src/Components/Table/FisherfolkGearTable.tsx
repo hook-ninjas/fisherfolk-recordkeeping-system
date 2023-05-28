@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import {
-  GearsQueryDocument,
-  UpdateToArchiveGearDocument,
-  ArchiveGearDocument,
-} from '../../graphql/generated';
+import { GearsQueryDocument, UpdateToArchiveGearDocument, ArchiveGearDocument } from '../../graphql/generated';
 import Loading from '../Loading/Loading';
 import { splitUpperCase } from '../../utils/utils';
 import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
@@ -13,10 +9,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import moment from 'moment';
-import {
-  showArchiveError,
-  showArchiveSuccess,
-} from '../ConfirmationDialog/Alerts';
+import { showArchiveError, showArchiveSuccess } from '../ConfirmationDialog/Alerts';
 
 const RenderMoreActions = (id: number) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -26,19 +19,16 @@ const RenderMoreActions = (id: number) => {
   };
   const handleClose = () => setAnchorEl(null);
 
-  const [archiveGear, archiveResult] = useMutation(
-    UpdateToArchiveGearDocument,
-    {
-      refetchQueries: [
-        {
-          query: GearsQueryDocument,
-        },
-        {
-          query: ArchiveGearDocument,
-        },
-      ],
-    }
-  );
+  const [archiveGear, archiveResult] = useMutation(UpdateToArchiveGearDocument, {
+    refetchQueries: [
+      {
+        query: GearsQueryDocument,
+      },
+      {
+        query: ArchiveGearDocument,
+      },
+    ],
+  });
 
   const ArchiveAGear = () => {
     archiveGear({
@@ -58,27 +48,13 @@ const RenderMoreActions = (id: number) => {
   const archiveHandler = () => {
     const { loading } = archiveResult;
     if (loading) {
-      return (
-        <Backdrop
-          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={true}
-        ></Backdrop>
-      );
+      return <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}></Backdrop>;
     }
   };
 
   return (
     <div>
-      <Button
-        id="action-btn"
-        aria-controls={open ? 'gear-action-btn' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        aria-label="gear-action-btn"
-        disableElevation
-        onClick={handleClick}
-        style={{ color: '#808080' }}
-      >
+      <Button id="action-btn" aria-controls={open ? 'gear-action-btn' : undefined} aria-haspopup="true" aria-expanded={open ? 'true' : undefined} aria-label="gear-action-btn" disableElevation onClick={handleClick} style={{ color: '#808080' }}>
         <MoreVertIcon />
       </Button>
       <Menu
