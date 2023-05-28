@@ -4,7 +4,7 @@ import Loading from '../Loading/Loading';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { splitUpperCase } from '../../utils/utils';
 import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
-import { Alert, Button, Menu, MenuItem } from '@mui/material';
+import { Alert, Button, Menu, MenuItem, Stack } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
@@ -189,6 +189,11 @@ export default function FisherfolkTable({ error, loading, data }: Props) {
         aria-label="fisherfolk-table"
         components={{
           Toolbar: CustomToolbar,
+          NoRowsOverlay: () => (
+            <Stack height="100%" alignItems="center" justifyContent="center">
+              No results found.
+            </Stack>
+          ),
         }}
       />
     </div>

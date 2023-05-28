@@ -8,7 +8,7 @@ import {
 import Loading from '../Loading/Loading';
 import { splitUpperCase } from '../../utils/utils';
 import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
-import { Alert, Backdrop, Button, Menu, MenuItem } from '@mui/material';
+import { Alert, Backdrop, Button, Menu, MenuItem, Stack } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
@@ -107,8 +107,6 @@ const RenderMoreActions = (id: number) => {
   );
 };
 
-// const renderCell = () => <RenderMoreActions  />;
-
 export default function FisherfolkGearTable() {
   const { loading, error, data } = useQuery(GearsQueryDocument);
   let rows: GridRowsProp = [];
@@ -141,6 +139,13 @@ export default function FisherfolkGearTable() {
         columns={columns}
         disableVirtualization={true}
         aria-label="gear-table"
+        components={{
+          NoRowsOverlay: () => (
+            <Stack height="100%" alignItems="center" justifyContent="center">
+              No results found.
+            </Stack>
+          ),
+        }}
       />
     </div>
   );

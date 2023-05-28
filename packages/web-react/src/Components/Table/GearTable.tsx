@@ -1,4 +1,4 @@
-import { Button, Menu, MenuItem, Alert, Backdrop } from '@mui/material';
+import { Button, Menu, MenuItem, Alert, Backdrop, Stack } from '@mui/material';
 import React, { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import {
@@ -148,6 +148,13 @@ export default function GearTable() {
         columns={columns}
         aria-label="fisherfolk-gear-table"
         disableVirtualization={true}
+        components={{
+          NoRowsOverlay: () => (
+            <Stack height="100%" alignItems="center" justifyContent="center">
+              No results found.
+            </Stack>
+          ),
+        }}
       />
     </div>
   );
