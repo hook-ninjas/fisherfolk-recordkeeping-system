@@ -32,6 +32,22 @@ export const showArchiveError = () =>
     timer: 4000,
   });
 
+export const showRemoveSuccess = () =>
+  Swal.fire({
+    icon: 'success',
+    title: 'Gear has been removed',
+    showConfirmButton: false,
+    timer: 4000,
+  });
+
+export const showRemoveError = () =>
+  Swal.fire({
+    icon: 'error',
+    title: 'Gear has not been removed',
+    showConfirmButton: false,
+    timer: 4000,
+  });
+
 export const showRestoreError = () =>
   Swal.fire({
     icon: 'error',

@@ -141,6 +141,11 @@ mutation RestoreVessel($restoreVesselId: Int!) {
   }
 }
 
+mutation RemoveFisherfolkGear($gearId: Int!) {
+  removeFisherfolkGear(id: $gearId) {
+    id
+  }
+}
 mutation UpdateFisherfolkStatus($updateFisherfolkStatusId: Int!, $status: FisherfolkStatus!) {
   updateFisherfolkStatus(id: $updateFisherfolkStatusId, status: $status) {
     status
