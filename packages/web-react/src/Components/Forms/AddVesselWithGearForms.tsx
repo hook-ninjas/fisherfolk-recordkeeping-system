@@ -35,7 +35,6 @@ import {
   VesselQueryDocument,
   GearsQueryDocument,
   FisherfolkCountDocument,
-  GovernmentAidDocument,
 } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';

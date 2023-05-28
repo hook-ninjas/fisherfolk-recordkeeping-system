@@ -88,7 +88,7 @@ function UpdateProgram({ open, handleClose, id }: UpdateProgramProps) {
       },
       governmentAidId: id,
     };
-    const program = await updateProgram({
+    await updateProgram({
       variables: {
         data: updateProgramInput.data,
         governmentAidId: id,

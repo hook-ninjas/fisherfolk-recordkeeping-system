@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   UseFormRegister,
   Control,
@@ -66,12 +66,10 @@ function MultiFileUpload({
   label = '',
   dataCy = '',
   control,
-  register,
   errors,
   errorState,
   errorMessage,
   hideError,
-  onChange = undefined,
   sx,
 }: MultiFileUploadProps) {
   const [preview, setPreview] = useState<JSX.Element[] | undefined>([]);
@@ -141,7 +139,7 @@ function MultiFileUpload({
           name={name}
           control={control}
           defaultValue=""
-          render={({ field: { value, onChange } }) => (
+          render={({ field: { onChange } }) => (
             <Button
               fullWidth
               id={label}
