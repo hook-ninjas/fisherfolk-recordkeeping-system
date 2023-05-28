@@ -238,10 +238,21 @@ const UpdateFisherfolkSchema = object().shape({
 });
 
 const AddVesselWithGearSchema = object().shape({
+  yearBuilt: string().required('Enter year').matches(/^(19|20)\d{2}$/, 'Invalid year'),
+  registeredLength: createMinMaxValidation('minLength', 'maxLength', 'Length', 0, 100),
+  registeredDepth: createMinMaxValidation('minDepth', 'maxDepth', 'Depth', 0, 100),
+  registeredBreadth: createMinMaxValidation('minBreadth', 'maxBreadth', 'Breadth', 0, 100),
+  tonnageLength: createMinMaxValidation('minTonLength', 'maxTonLength', 'Ton length', 0, 100),
+  tonnageDepth: createMinMaxValidation('minTonDepth', 'maxTonDepth', 'Ton depth', 0, 100),
+  tonnageBreadth: createMinMaxValidation('minTonBreadth', 'maxTonBreadth', 'Ton breadth', 0, 100),
+  grossTonnage: createMinMaxValidation('minGrossTonnage', 'maxGrossTonnage', 'Gross tonnage', 0, 10_000),
+  netTonnage: createMinMaxValidation('minNetTonnage', 'maxNetTonnage', 'Net tonnage', 0, 1_000),
+  engineMake: string().required('Please indicate engine make'),
+  serialNumber: string().required('Please enter engine serial number'),
+  horsepower: createMinMaxValidation('minHorsePower', 'maxHorsePower', 'Horse power', 0, 1_000),
   vesselGearPhoto: mixed()
     .test('fileSize', 'File too large', (value) => !value || (value instanceof FileList && value[0].size <= uploadLimit))
     .test('fileFormat', 'Unsupported Format, Format must be in .jpeg, .jpg, .png', (value) => !value || (value && value[0].type.match(/^.*(image\/jpeg|jpg|png)$/gm))),
-  yearBuilt: string().matches(/^$|\d{4}$/, 'Enter year.'),
 });
 
 const FilterSchema = object().shape({
@@ -291,4 +302,23 @@ const UpdateProgramSchema = object().shape({
   date: date().typeError('Select date').required('Enter date.'),
 });
 
-export { FfolkValidation, CreateAccountSchema, LoginSchema, UpdateFisherfolkSchema, AddVesselWithGearSchema, FilterSchema, CreateProgramSchema, UpdateProgramSchema };
+const UpdateVesselSchema = object().shape({
+  mfvrNumber: string().required('Please fill up mfvr no.'),
+  homeport: string().required('Please indicate home port'),
+  name: string().required('Vessel must have name'),
+  type: string().required('Please indicate type'),
+  placeBuilt: string().required('Please indicate place built'),
+  yearBuilt: string().required('Enter year').matches(/^(19|20)\d{2}$/, 'Invalid year'),
+  registeredLength: createMinMaxValidation('minLength', 'maxLength', 'Length', 0, 100),
+  registeredDepth: createMinMaxValidation('minDepth', 'maxDepth', 'Depth', 0, 100),
+  registeredBreadth: createMinMaxValidation('minBreadth', 'maxBreadth', 'Breadth', 0, 100),
+  tonnageLength: createMinMaxValidation('minTonLength', 'maxTonLength', 'Ton length', 0, 100),
+  tonnageDepth: createMinMaxValidation('minTonDepth', 'maxTonDepth', 'Ton depth', 0, 100),
+  tonnageBreadth: createMinMaxValidation('minTonBreadth', 'maxTonBreadth', 'Ton breadth', 0, 100),
+  grossTonnage: createMinMaxValidation('minGrossTonnage', 'maxGrossTonnage', 'Gross tonnage', 0, 10_000),
+  netTonnage: createMinMaxValidation('minNetTonnage', 'maxNetTonnage', 'Net tonnage', 0, 1_000),
+  serialNumber: string().required('Please enter engine serial number'),
+  horsepower: createMinMaxValidation('minHorsePower', 'maxHorsePower', 'Horse power', 0, 1_000),
+});
+
+export { FfolkValidation, CreateAccountSchema, LoginSchema, UpdateFisherfolkSchema, AddVesselWithGearSchema, FilterSchema, CreateProgramSchema, UpdateProgramSchema, UpdateVesselSchema };

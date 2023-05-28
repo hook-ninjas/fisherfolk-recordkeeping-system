@@ -23,6 +23,8 @@ import {
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import { showFailAlert, showSuccessAlert } from '../ConfirmationDialog/Alerts';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { UpdateVesselSchema } from './validation/schema';
 
 interface VesselFormProps {
   id: number;
@@ -64,6 +66,7 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
     formState: { errors },
   } = useForm({
     mode: 'onChange',
+    resolver: yupResolver(UpdateVesselSchema),
   });
 
   const [updateVessel] = useMutation(UpdateVesselDocument, {
