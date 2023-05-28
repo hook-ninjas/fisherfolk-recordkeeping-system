@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, useState } from 'react';
+import React, { HTMLAttributes } from 'react';
 import {
   UseFormRegister,
   Control,
@@ -15,10 +15,7 @@ import {
   FormControlLabel,
   RadioGroup,
   Radio,
-  FormGroup,
   Checkbox,
-  Grid,
-  Typography,
   Autocomplete,
   SxProps,
   Theme,

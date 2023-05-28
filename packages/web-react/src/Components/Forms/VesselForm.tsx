@@ -1,13 +1,12 @@
 import React from 'react';
 import { UseFormRegister, Control, FieldValues } from 'react-hook-form';
-import { Box, Grid, Typography, FormHelperText } from '@mui/material';
+import { Grid, Typography, FormHelperText } from '@mui/material';
 import {
-  FormInputRadio,
   FormInputText,
   FormInputSelect,
   FormInputAutoText,
 } from './FormInputFields';
-import { registrationTypeForBoatsAndGears, materialOptions } from './Enums';
+import { materialOptions } from './Enums';
 import MultiFileUpload from '../Input/MultiFileUpload';
 
 interface VesselFormProps {

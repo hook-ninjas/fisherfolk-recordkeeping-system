@@ -9,11 +9,9 @@ import {
   UpdateMfvrDocument,
   UpdateToArchiveVesselDocument,
   VesselQueryDocument,
-  ArchiveVesselDocument,
-  UpdateToArchiveGearDocument,
   ArchiveGearDocument,
 } from '../../graphql/generated';
-import { useMutation, useQuery, ApolloError } from '@apollo/client';
+import { useMutation, ApolloError } from '@apollo/client';
 import Loading from '../Loading/Loading';
 import {
   Alert,

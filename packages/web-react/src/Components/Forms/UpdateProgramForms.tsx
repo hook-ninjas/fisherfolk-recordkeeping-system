@@ -34,7 +34,7 @@ function UpdateProgram({ open, handleClose, id }: UpdateProgramProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [complete, setComplete] = useState(false);
 
-  const { loading, data } = useQuery(GovernmentAidDocument, {
+  const { data } = useQuery(GovernmentAidDocument, {
     variables: {
       govtAidId: id,
     },
@@ -88,7 +88,7 @@ function UpdateProgram({ open, handleClose, id }: UpdateProgramProps) {
       },
       governmentAidId: id,
     };
-    const program = await updateProgram({
+    await updateProgram({
       variables: {
         data: updateProgramInput.data,
         governmentAidId: id,

@@ -222,6 +222,8 @@ const educationalBackgroundOptions = [
 ];
 
 const maxDate = sub({ years: 19 })(new Date());
+const minDate = sub({ years: 100 })(new Date());
+
 
 function FfolkInfoForm({
   control,
@@ -450,6 +452,7 @@ function FfolkInfoForm({
             control={control}
             openTo="year"
             max={maxDate}
+            min={minDate}
             defaultValue={null}
             label="Date of Birth"
             register={register}

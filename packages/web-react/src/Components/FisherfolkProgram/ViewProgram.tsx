@@ -1,17 +1,9 @@
-import React from 'react';
-import {
-  Alert,
-  DialogContent,
-  ImageList,
-  ImageListItem,
-  Typography,
-} from '@mui/material';
-import {
-  FormContainer,
-  FormContainerTitle,
-} from '../Containers/FormContainers';
+import React, { forwardRef } from 'react';
+import { Alert, Dialog, DialogContent, IconButton, ImageList, ImageListItem, Slide, Stack } from '@mui/material';
 import { useQuery } from '@apollo/client';
 import { GovernmentAidDocument } from '../../graphql/generated';
+import { TransitionProps } from '@mui/material/transitions';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface ViewFisherfolkProgramProps {
   govtAidId: number;
@@ -19,11 +11,16 @@ interface ViewFisherfolkProgramProps {
   handleClose: () => void;
 }
 
-export default function ViewFisherfolkProgram({
-  govtAidId,
-  open,
-  handleClose,
-}: ViewFisherfolkProgramProps) {
+const Transition = forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>;
+  },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+export default function ViewFisherfolkProgram({ govtAidId, open, handleClose }: ViewFisherfolkProgramProps) {
   const { loading, error, data } = useQuery(GovernmentAidDocument, {
     variables: {
       govtAidId: govtAidId,
@@ -67,21 +64,33 @@ export default function ViewFisherfolkProgram({
   }
 
   return (
-    <FormContainer
-      onClose={close}
-      aria-labelledby="view-program-container"
-      open={open}
-    >
-      <FormContainerTitle
-        aria-labelledby="view-program-title"
-        onClose={handleClose}
-      >
-        {title}
-      </FormContainerTitle>
-      <DialogContent dividers>
-        <StandardImageList />
-        <Typography>{description}</Typography>
-      </DialogContent>
-    </FormContainer>
+    <div>
+      <Dialog open={open} TransitionComponent={Transition} keepMounted onClose={handleClose}>
+        <DialogContent
+          style={{
+            width: '600px',
+            maxWidth: '100%',
+            height: '700px',
+          }}
+        >
+          <Stack direction={'row'} justifyContent={'space-between'}>
+            {title}
+            <IconButton
+              aria-label="close"
+              onClick={handleClose}
+              sx={{
+                top: -8,
+                color: (theme) => theme.palette.grey[500],
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Stack>
+
+          <StandardImageList />
+          {!description ? 'No description provided.' : description}
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

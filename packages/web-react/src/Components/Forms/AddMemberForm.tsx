@@ -43,10 +43,9 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
     handleSubmit,
     resetField,
     trigger,
-    getValues,
     reset,
     formState: { errors, isValid },
-  } = useForm({ resolver: yupResolver(FfolkValidation(tab)) });
+  } = useForm({ mode: 'onChange', resolver: yupResolver(FfolkValidation(tab)) });
 
   const handleSubmitting = () => setIsSubmitting(true);
 
