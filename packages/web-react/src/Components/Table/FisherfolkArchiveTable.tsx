@@ -206,8 +206,8 @@ const columns: GridColumns = [
       return params.row.status;
     },
     renderCell(params) {
-      return <FisherfolkStatusButton label={params.row.status} />;
-    },
+      return <FisherfolkStatusButton label={params.row.status} id={params.row.id} />;
+    }, 
   },
   {
     field: 'actions',
