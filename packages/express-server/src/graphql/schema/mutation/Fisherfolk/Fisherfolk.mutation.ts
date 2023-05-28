@@ -1,23 +1,9 @@
 import { intArg, mutationField } from 'nexus';
-import {
-  createFisherfolk,
-  updateFisherfolk,
-  archiveFisherfolk,
-  restoreFisherfolk,
-} from './Fisherfolk.resolver';
-import {
-  CreateFisherfolkInput,
-  UpdateFisherfolkInput,
-} from '../../input/Fisherfolk.input';
+import { createFisherfolk, updateFisherfolk, archiveFisherfolk, restoreFisherfolk, updateStatus } from './Fisherfolk.resolver';
+import { CreateFisherfolkInput, UpdateFisherfolkInput } from '../../input/Fisherfolk.input';
 import { nonNullArg } from '../../../../utils/utils';
 import Fisherfolk from '../../model/objecTypes/Fisherfolk';
-import {
-  EducationalBackground,
-  Gender,
-  Material,
-  Salutation,
-  SourceOfIncome,
-} from '@prisma/client';
+import { EducationalBackground, Gender, Material, Salutation, SourceOfIncome } from '@prisma/client';
 import { sub } from 'date-fns/fp';
 
 const CreateFisherfolk = mutationField('createFisherfolk', {
@@ -25,11 +11,7 @@ const CreateFisherfolk = mutationField('createFisherfolk', {
   args: {
     data: CreateFisherfolkInput,
   },
-  validate: (
-    { string, date, number, array, object, boolean },
-    { data },
-    context
-  ) => {
+  validate: ({ string, date, number, array, object, boolean }, { data }, context) => {
     const maxBirthDate = sub({ years: 19 })(new Date());
     const uploadLimit = 10000000;
     const salutations = Object.values(Salutation);
@@ -131,8 +113,7 @@ const UpdateFisherfolk = mutationField('updateFisherfolk', {
     fisherfolkId: intArg(),
     data: nonNullArg(UpdateFisherfolkInput),
   },
-  resolve: (_, args, ctx) =>
-    updateFisherfolk(args.fisherfolkId, args.data, ctx),
+  resolve: (_, args, ctx) => updateFisherfolk(args.fisherfolkId, args.data, ctx),
 });
 
 const ArchiveFisherfolk = mutationField('archiveFisherfolk', {
@@ -151,9 +132,13 @@ const RestoreFisherfolk = mutationField('restreFisherfolk', {
   resolve: (_, args, ctx) => restoreFisherfolk(args.id, ctx),
 });
 
-export {
-  CreateFisherfolk,
-  UpdateFisherfolk,
-  ArchiveFisherfolk,
-  RestoreFisherfolk,
-};
+const UpdateFisherfolkStatus = mutationField('updateFisherfolkStatus', {
+  type: Fisherfolk,
+  args: {
+    id: intArg(),
+    status: 'FisherfolkStatus',
+  },
+  resolve: (_, args, ctx) => updateStatus(args.id, args.status, ctx),
+});
+
+export { CreateFisherfolk, UpdateFisherfolk, ArchiveFisherfolk, RestoreFisherfolk, UpdateFisherfolkStatus };

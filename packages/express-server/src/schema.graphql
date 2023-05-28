@@ -310,6 +310,7 @@ type Mutation {
   restreFisherfolk(id: Int!): Fisherfolk!
   updateFisherfolk(data: UpdateFisherfolkInput!, fisherfolkId: Int!): Fisherfolk!
   updateFisherfolkImage(data: CreateImageInput!, id: String!, url: String!): Image!
+  updateFisherfolkStatus(id: Int!, status: FisherfolkStatus!): Fisherfolk!
   updateMfvr(id: Int!, mfvrNum: String!): Vessel!
   updateProgram(data: UpdateProgramInput!, governmentAidId: Int!): GovernmentAid!
   updateVessel(id: Int!, vessel: UpdateVesselInput!): Vessel!

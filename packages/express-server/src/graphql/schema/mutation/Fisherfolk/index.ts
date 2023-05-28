@@ -3,6 +3,7 @@ import {
   UpdateFisherfolk,
   ArchiveFisherfolk,
   RestoreFisherfolk,
+  UpdateFisherfolkStatus,
 } from './Fisherfolk.mutation';
 
 const Mutations = [
@@ -10,6 +11,7 @@ const Mutations = [
   UpdateFisherfolk,
   ArchiveFisherfolk,
   RestoreFisherfolk,
+  UpdateFisherfolkStatus
 ];
 
 export default Mutations;

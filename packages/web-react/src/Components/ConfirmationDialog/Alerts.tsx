@@ -63,3 +63,19 @@ export const showRestoreSuccess = () =>
     showConfirmButton: false,
     timer: 4000,
   });
+
+export const showUpdateStatusError = () =>
+  Swal.fire({
+    icon: 'error',
+    title: 'Status has not been updated',
+    showConfirmButton: false,
+    timer: 4000,
+  });
+
+export const showUpdateStatusSuccess = () =>
+  Swal.fire({
+    icon: 'success',
+    title: 'Status has been updated',
+    showConfirmButton: false,
+    timer: 4000,
+  });
