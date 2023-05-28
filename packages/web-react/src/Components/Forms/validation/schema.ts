@@ -218,28 +218,40 @@ const LoginSchema = object().shape({
 });
 
 const UpdateFisherfolkSchema = object().shape({
+  lastName: string().required('Enter last name.'),
+  firstName: string().required('Enter first name.'),
+  middleName: string().required('Enter middle name.'),
+  contactNumber: string()
+    .required('Enter contact number.')
+    .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
+  barangay: string().required('Enter or select barangay.'),
+  cityMunicipality: string().required('Enter city/municipality.'),
+  province: string().required('Enter province.'),
+  residentYear: string()
+    .required('Enter year of residency.')
+    .matches(/^(19|20)\d{2}$/, 'Invalid year'),
+  age: string()
+    .required('Enter age.')
+    .test('minAge', 'Minimum age must be 18 or above.', (value) => !value || parseInt(value, 10) >= 18)
+    .test('maxAge', 'Maximum age must be 100 or below.', (value) => !value || parseInt(value, 10) <= 100),
+  dateOfBirth: date().max(maxBirthDate, 'Enter Valid Date').typeError('Enter Valid Date').required('Enter date of birth.'),
+  placeOfBirth: string().required('Enter place of birth.'),
+  numOfChildren: string()
+    .test('minnumOfChildren', 'Number of children must be 0 or above.', (value) => !value || parseInt(value, 10) >= 0)
+    .test('maxnumOfChildren', 'Number of children must be 20 or below.', (value) => !value || parseInt(value, 10) <= 20),
+  nationality: string().required('Enter nationality.'),
+  personToNotify: string().required('Enter person to notify.'),
+  ptnRelationship: string().required('Enter relationship with person to notify.'),
+  ptnContactNum: string()
+    .required('Enter contact number of person to notify.')
+    .matches(/^(09|\+639)\d{9}$/, 'Please enter a valid contact number.'),
+  ptnAddress: string().required('Enter address of person to notify.'),
   profilePhoto: mixed()
-    .test(
-      'fileSize',
-      'File too large',
-      (value) =>
-        !value || (value instanceof FileList && value[0].size <= uploadLimit)
-    )
-    .test(
-      'fileFormat',
-      'Unsupported Format, Format must be in .jpeg, .jpg, .png',
-      (value) =>
-        !value || (value && value[0].type.match(/^.*(image\/jpeg|jpg|png)$/gm))
-    ),
-  contactNumber: string().matches(
-    /^$|^(09|\+639)\d{9}$/,
-    'Please enter a valid contact number.'
-  ),
-  age: string().matches(/^$|^(1[89]|[2-9]\d)$/gm, 'Must be 18 or Above'),
-  ptnContactNum: string().matches(
-    /^$|^(09|\+639)\d{9}$/,
-    'Please enter a valid contact number.'
-  ),
+    .test('fileSize', 'File too large', (value) => !value || (value instanceof FileList && value[0].size <= uploadLimit))
+    .test('fileFormat', 'Unsupported Format, Format must be in .jpeg, .jpg, .png', (value) => !value || (value && value[0].type.match(/^.*(image\/jpeg|jpg|png)$/gm))),
+  orgMemberSince: string()
+    .transform((value) => (value === '' ? undefined : value))
+    .matches(/^(19|20)\d{2}$/, 'Invalid year'),
 });
 
 const AddVesselWithGearSchema = object().shape({
