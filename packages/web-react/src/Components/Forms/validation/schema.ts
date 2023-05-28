@@ -10,6 +10,12 @@ const minBirthDate = sub({ years: 100 })(new Date());
 const uploadLimit = 1_000_000;
 const barangays = data.barangays.sort();
 
+const createMinMaxValidation = (minErrCode: string, maxErrCode: string, title: string, min: number, max: number) => {
+  return string()
+    .test(minErrCode, `${title} cannot be negative.`, (value) => !value || parseInt(value, 10) >= min)
+    .test(maxErrCode, `${title} cannot be exceed ${max}.`, (value) => !value || parseInt(value, 10) <= max);
+};
+
 const FfolkValidation = (state: string) => {
   const gearState = (main: string, other: string | string[]) => (main == 'CaptureFishing' && state == 'gear') || (other.includes('CaptureFishing') && state == 'gear') || (main == 'CaptureFishing' && state == 'gear&vessel') || (other.includes('CaptureFishing') && state == 'gear&vessel');
   const vesselState = (main: string, other: string | string[]) => (main == 'CaptureFishing' && state == 'vessel') || (other.includes('CaptureFishing') && state == 'vessel') || (main == 'CaptureFishing' && state == 'gear&vessel') || (other.includes('CaptureFishing') && state == 'gear&vessel');
@@ -141,18 +147,18 @@ const FfolkValidation = (state: string) => {
         material: string().required('Select material.'),
         type: string().required('Please indicate type'),
         placeBuilt: string().required('Please indicate place built'),
-        yearBuilt: string().matches(/^$|\d{4}$/, 'Enter year.'),
-        registeredLength: string().matches(/^$|[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-        registeredDepth: string().matches(/^$|[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-        registeredBreadth: string().matches(/^$|[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-        tonnageLength: string().matches(/^$|[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-        tonnageDepth: string().matches(/^$|[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-        tonnageBreadth: string().matches(/^$|[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-        grossTonnage: string().matches(/^$|[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-        netTonnage: string().matches(/^$|[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
+        yearBuilt: string().required('Enter year').matches(/^(19|20)\d{2}$/, 'Invalid year'),
+        registeredLength: createMinMaxValidation('minLength', 'maxLength', 'Length', 0, 100),
+        registeredDepth: createMinMaxValidation('minDepth', 'maxDepth', 'Depth', 0, 100),
+        registeredBreadth: createMinMaxValidation('minBreadth', 'maxBreadth', 'Breadth', 0, 100),
+        tonnageLength: createMinMaxValidation('minTonLength', 'maxTonLength', 'Ton length', 0, 100),
+        tonnageDepth: createMinMaxValidation('minTonDepth', 'maxTonDepth', 'Ton depth', 0, 100),
+        tonnageBreadth: createMinMaxValidation('minTonBreadth', 'maxTonBreadth', 'Ton breadth', 0, 100),
+        grossTonnage: createMinMaxValidation('minGrossTonnage', 'maxGrossTonnage', 'Gross tonnage', 0, 10_000),
+        netTonnage: createMinMaxValidation('minNetTonnage', 'maxNetTonnage', 'Net tonnage', 0, 1_000),
         engineMake: string().required('Please indicate engine make'),
         serialNumber: string().required('Please enter engine serial number'),
-        horsepower: string(),
+        horsepower: createMinMaxValidation('minHorsePower', 'maxHorsePower', 'Horse power', 0, 1_000),
         files: mixed()
           .required('Please Upload Vessel Images')
           .test('fileSize', 'File too large', (value) => {
@@ -181,29 +187,6 @@ const FfolkValidation = (state: string) => {
     }),
   });
 };
-
-const VesselWithGearSchema = object().shape({
-  vessel: object().shape({
-    engineMake: string(),
-    grossTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-    homeport: string(),
-    horsepower: string(),
-    mfvrNumber: string(),
-    material: string().required('Select material.'),
-    name: string(),
-    netTonnage: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-    placeBuilt: string(),
-    registeredBreadth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-    registeredDepth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-    registeredLength: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-    serialNumber: string(),
-    tonnageBreadth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-    tonnageDepth: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-    tonnageLength: string().matches(/^[0-9]\d*(\.\d+)?$/, 'Enter a number.'),
-    type: string(),
-    yearBuilt: string().matches(/^$|\d{4}$/, 'Enter year.'),
-  }),
-});
 
 const CreateAccountSchema = object().shape({
   username: string().required('Enter username.').min(6, 'Username must be atleast 6 characters.'),
