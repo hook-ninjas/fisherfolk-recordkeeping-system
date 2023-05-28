@@ -241,7 +241,6 @@ const UpdateFisherfolkSchema = object().shape({
 
 const AddVesselWithGearSchema = object().shape({
   yearBuilt: string()
-    .required('Enter year')
     .matches(/^(19|20)\d{2}$/, 'Invalid year'),
   registeredLength: createMinMaxValidation('minLength', 'maxLength', 'Length', 0, 100),
   registeredDepth: createMinMaxValidation('minDepth', 'maxDepth', 'Depth', 0, 100),
@@ -251,8 +250,6 @@ const AddVesselWithGearSchema = object().shape({
   tonnageBreadth: createMinMaxValidation('minTonBreadth', 'maxTonBreadth', 'Ton breadth', 0, 100),
   grossTonnage: createMinMaxValidation('minGrossTonnage', 'maxGrossTonnage', 'Gross tonnage', 0, 10_000),
   netTonnage: createMinMaxValidation('minNetTonnage', 'maxNetTonnage', 'Net tonnage', 0, 1_000),
-  engineMake: string().required('Please indicate engine make'),
-  serialNumber: string().required('Please enter engine serial number'),
   horsepower: createMinMaxValidation('minHorsePower', 'maxHorsePower', 'Horse power', 0, 1_000),
   vesselGearPhoto: mixed()
     .test('fileSize', 'File too large', (value) => !value || (value instanceof FileList && value[0].size <= uploadLimit))
