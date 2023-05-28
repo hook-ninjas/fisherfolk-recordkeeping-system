@@ -74,12 +74,7 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
   const AddFisherfolkHandler = () => {
     const { loading } = createResult;
     if (loading) {
-      return (
-        <Backdrop
-          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={true}
-        ></Backdrop>
-      );
+      return <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}></Backdrop>;
     }
   };
 
@@ -177,7 +172,6 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
     });
   });
 
-
   const handleSubmitForm = (e: MouseEvent) => {
     e.preventDefault();
     trigger(undefined, { shouldFocus: true });
@@ -194,7 +188,6 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
   };
 
   const handleBackButton = (e: MouseEvent) => {
-    reset();
     setStep('ffolkInfo');
     setTab('Gear');
   };
@@ -216,10 +209,17 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
               </Button>
             </Grid>
             <Grid item>
-              <Button type="submit" variant="contained" fullWidth onClick={(e) => {
-                AddFisherfolkHandler();
-                handleSubmitForm(e);
-              }} disabled={isSubmitting} sx={buttonSx}>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                onClick={(e) => {
+                  AddFisherfolkHandler();
+                  handleSubmitForm(e);
+                }}
+                disabled={isSubmitting}
+                sx={buttonSx}
+              >
                 Save
               </Button>
             </Grid>
@@ -278,8 +278,6 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
   //   );
   // }
 
-
-
   return (
     <>
       <FormContainer onClose={close} aria-labelledby="form-container" open={open}>
@@ -287,9 +285,7 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
           Fisherfolk Registration
         </FormContainerTitle>
         <DialogContent dividers>
-          {createResult.loading && (
-            <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}></Backdrop>
-          )}
+          {createResult.loading && <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}></Backdrop>}
           {formStep(control, register, errors, watch, resetField)}
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>{bottomRowButtons()}</Box>
         </DialogContent>
