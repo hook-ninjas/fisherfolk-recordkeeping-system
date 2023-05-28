@@ -1,5 +1,5 @@
 import React, { MouseEvent, SyntheticEvent, useState } from 'react';
-import { Box, Button, DialogContent, Grid, Tabs, Tab } from '@mui/material';
+import { Box, Button, DialogContent, Grid, Tabs, Tab, Backdrop } from '@mui/material';
 import { FormContainer, FormContainerTitle } from '../Containers/FormContainers';
 import { useForm, UseFormRegister, UseFormWatch, UseFormResetField, Control, FieldValues } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -57,7 +57,7 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
 
   const captureFishingRegistrant = watchMainFishAct == 'CaptureFishing' || (watchOtherFishAct instanceof Array && watchOtherFishAct.includes('CaptureFishing'));
 
-  const [createFisherfolk, { loading }] = useMutation(CreateFisherfolkDocument, {
+  const [createFisherfolk, createResult] = useMutation(CreateFisherfolkDocument, {
     onCompleted: () => {
       handleClose();
       handleComplete();
@@ -70,6 +70,18 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
     },
     refetchQueries: [{ query: QueryFisherfolksDocument }, { query: VesselQueryDocument }, { query: GearsQueryDocument }],
   });
+
+  const AddFisherfolkHandler = () => {
+    const { loading } = createResult;
+    if (loading) {
+      return (
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+        ></Backdrop>
+      );
+    }
+  };
 
   const handleTabChange = (event: SyntheticEvent, newValue: string) => setTab(newValue);
 
@@ -165,10 +177,10 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
     });
   });
 
+
   const handleSubmitForm = (e: MouseEvent) => {
     e.preventDefault();
     trigger(undefined, { shouldFocus: true });
-
     onSubmit();
   };
 
@@ -204,7 +216,10 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
               </Button>
             </Grid>
             <Grid item>
-              <Button type="submit" variant="contained" fullWidth onClick={handleSubmitForm} disabled={isSubmitting} sx={buttonSx}>
+              <Button type="submit" variant="contained" fullWidth onClick={(e) => {
+                AddFisherfolkHandler();
+                handleSubmitForm(e);
+              }} disabled={isSubmitting} sx={buttonSx}>
                 Save
               </Button>
             </Grid>
@@ -263,6 +278,8 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
   //   );
   // }
 
+
+
   return (
     <>
       <FormContainer onClose={close} aria-labelledby="form-container" open={open}>
@@ -270,6 +287,9 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
           Fisherfolk Registration
         </FormContainerTitle>
         <DialogContent dividers>
+          {createResult.loading && (
+            <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}></Backdrop>
+          )}
           {formStep(control, register, errors, watch, resetField)}
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>{bottomRowButtons()}</Box>
         </DialogContent>
