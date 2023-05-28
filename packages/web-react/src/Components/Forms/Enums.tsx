@@ -15,9 +15,11 @@ export const createOption = (label: string) => ({
   value: label,
 });
 
-export const fisherfolkStatus = Object.values(FisherfolkStatus).map((a) =>
+export const fisherfolkStatusOptions = Object.values(FisherfolkStatus).map((a) =>
   createOption(a)
 );
+
+export const fisherfolkStatus = Object.values(FisherfolkStatus);
 
 export const livelihoods = Object.values(SourceOfIncome)
   .map((a) => createOption(a))

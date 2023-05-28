@@ -511,6 +511,7 @@ export interface NexusGenFieldTypes {
     restreFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     updateFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     updateFisherfolkImage: NexusGenRootTypes['Image']; // Image!
+    updateFisherfolkStatus: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     updateMfvr: NexusGenRootTypes['Vessel']; // Vessel!
     updateProgram: NexusGenRootTypes['GovernmentAid']; // GovernmentAid!
     updateVessel: NexusGenRootTypes['Vessel']; // Vessel!
@@ -714,6 +715,7 @@ export interface NexusGenFieldTypeNames {
     restreFisherfolk: 'Fisherfolk'
     updateFisherfolk: 'Fisherfolk'
     updateFisherfolkImage: 'Image'
+    updateFisherfolkStatus: 'Fisherfolk'
     updateMfvr: 'Vessel'
     updateProgram: 'GovernmentAid'
     updateVessel: 'Vessel'
@@ -863,6 +865,10 @@ export interface NexusGenArgTypes {
       data: NexusGenInputs['CreateImageInput']; // CreateImageInput!
       id: string; // String!
       url: string; // String!
+    }
+    updateFisherfolkStatus: { // args
+      id: number; // Int!
+      status: NexusGenEnums['FisherfolkStatus']; // FisherfolkStatus!
     }
     updateMfvr: { // args
       id: number; // Int!

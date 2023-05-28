@@ -24,7 +24,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { Controller, useForm } from 'react-hook-form';
 import { splitUpperCase } from '../../utils/utils';
-import { livelihoods, fisherfolkStatus } from '../Forms/Enums';
+import { livelihoods, fisherfolkStatusOptions } from '../Forms/Enums';
 import { useQuery } from '@apollo/client';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextField from '@mui/material/TextField';
@@ -264,7 +264,7 @@ const FisherfolkRecord = () => {
                       name="status"
                       render={({ field: { value, onChange } }) => (
                         <RadioGroup row onChange={onChange} value={value}>
-                          {fisherfolkStatus.map((item) => (
+                          {fisherfolkStatusOptions.map((item) => (
                             <FormControlLabel
                               key={item.value}
                               name={item.value}

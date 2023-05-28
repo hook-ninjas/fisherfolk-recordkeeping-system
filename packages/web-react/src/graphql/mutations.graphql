@@ -140,3 +140,9 @@ mutation RestoreVessel($restoreVesselId: Int!) {
     id
   }
 }
+
+mutation UpdateFisherfolkStatus($updateFisherfolkStatusId: Int!, $status: FisherfolkStatus!) {
+  updateFisherfolkStatus(id: $updateFisherfolkStatusId, status: $status) {
+    status
+  }
+}
