@@ -39,6 +39,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <ApolloProvider client={client}>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Login />} />
           <Route path="/" element={<ProtectedRoute />}>
             <Route path="/" element={<App />}>
               <Route path="dashboard" index element={<Dashboard />} />
