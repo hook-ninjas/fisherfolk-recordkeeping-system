@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button, DialogContent, Grid, Typography } from '@mui/material';
-import { FormInputText, FormInputSelect, FormInputAutoText, FormInputNumber } from './FormInputFields';
+import { FormInputText, FormInputSelect, FormInputAutoText } from './FormInputFields';
 import { materialOptions } from './Enums';
 import { useMutation, useQuery } from '@apollo/client';
 import { FisherfolkVesselsDocument, MutationUpdateVesselArgs, UpdateVesselDocument, VesselDocument, VesselQueryDocument } from '../../graphql/generated';
