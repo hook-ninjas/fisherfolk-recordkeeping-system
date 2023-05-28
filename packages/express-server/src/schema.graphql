@@ -304,6 +304,7 @@ type Mutation {
   createVessel(vessel: CreateVesselInput!): Vessel!
   createVesselWithGear(gears: [CreateGearInput!]!, vessel: CreateVesselInput!): Vessel!
   loginUser(data: CreateUserInput!): AuthPayload!
+  removeFisherfolkGear(id: Int!): Gear!
   restoreGear(id: Int!): Gear!
   restoreVessel(id: Int!): Vessel!
   restreFisherfolk(id: Int!): Fisherfolk!
