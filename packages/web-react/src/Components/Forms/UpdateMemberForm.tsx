@@ -152,10 +152,10 @@ export default function UpdateFisherfolkForm({ id, open, handleClose }: UpdateFi
         organizations: [
           input.orgMemberSince || input.orgName || input.orgPosition
             ? {
-              name: input.orgName,
-              position: input.orgPosition,
-              yearJoined: parseInt(input.orgMemberSince),
-            }
+                name: input.orgName,
+                position: input.orgPosition,
+                yearJoined: parseInt(input.orgMemberSince),
+              }
             : null,
         ],
       },
@@ -262,7 +262,7 @@ export default function UpdateFisherfolkForm({ id, open, handleClose }: UpdateFi
           >
             <FormInputRadio name="salutation" label="salutation" control={control} register={register} errors={errors} radioOptions={salutationOptions} onSavedValue={fisherfolk && salutation} />
           </Box>
-          <Grid container spacing={-2} sx={{ ml: 1, mr: 1 }}>
+          <Grid container spacing={-2} sx={{ m: 1 }}>
             <Grid item sm={6}>
               <FormInputText name="lastName" id="lastName" control={control} label="Last Name" defaultValue={fisherfolk && lastName} register={register} errors={errors} />
             </Grid>
@@ -270,7 +270,7 @@ export default function UpdateFisherfolkForm({ id, open, handleClose }: UpdateFi
               <FormInputText name="firstName" id="firstName" control={control} label="First Name" defaultValue={fisherfolk && firstName} register={register} errors={errors} />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+          <Grid container spacing={-2} sx={{ m: 1 }}>
             <Grid item sm={6}>
               <FormInputText name="middleName" id="middleName" control={control} label="Middle Name" defaultValue={fisherfolk && middleName} register={register} errors={errors} />
             </Grid>
@@ -278,31 +278,70 @@ export default function UpdateFisherfolkForm({ id, open, handleClose }: UpdateFi
               <FormInputText name="appellation" id="appellation" control={control} label="Apellation" defaultValue={fisherfolk && appellation} register={register} errors={errors} />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1 }}>
-            <Grid item sm={6} sx={{ mt: 1 }}>
-              <FormInputAutoText sx={{ marginTop: -0.3, width: 230 }} freeSolo name="barangay" id="barangay" control={control} label="Barangay" defaultValue={fisherfolk && barangay} options={barangayOptions} register={register} errors={errors} />
+          <Grid container spacing={-2} sx={{ m: 1 }}>
+            <Grid item sm={6}>
+              <FormInputAutoText sx={{ width: 230 }} freeSolo name="barangay" id="barangay" control={control} label="Barangay" defaultValue={fisherfolk && barangay} options={barangayOptions} register={register} errors={errors} />
             </Grid>
-            <Grid item sm={6} sx={{ mt: 1 }}>
-              <FormInputAutoText sx={{ marginTop: -0.3, width: 230 }} freeSolo name="cityMunicipality" id="cityMunicipality" control={control} label="City/Municipality" defaultValue={fisherfolk && cityMunicipality} options={cityMunicipalityOptions} register={register} errors={errors} />
+            <Grid item sm={6}>
+              <FormInputAutoText sx={{ width: 230 }} freeSolo name="cityMunicipality" id="cityMunicipality" control={control} label="City/Municipality" defaultValue={fisherfolk && cityMunicipality} options={cityMunicipalityOptions} register={register} errors={errors} />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+          <Grid container spacing={-1} sx={{ m: 1 }}>
             <Grid item sm={6}>
-              <FormInputAutoText freeSolo sx={{ marginTop: -0.3, width: 230 }} name="province" id="province" control={control} label="Province" defaultValue={fisherfolk && province} options={provinceOptions} register={register} errors={errors} />
+              <FormInputAutoText freeSolo sx={{ width: 230 }} name="province" id="province" control={control} label="Province" defaultValue={fisherfolk && province} options={provinceOptions} register={register} errors={errors} />
             </Grid>
-            <Grid item sm={6}>
-              <FormInputNumber name="residentYear" id="residentYear" control={control} label="Resident of Municipality since" defaultValue={fisherfolk && residentYear.toString()} register={register} errors={errors} />
+            <Grid item sm={6} sx={{ mt: 0.7, ml: 0 }}>
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
+                name="residentYear"
+                id="residentYear"
+                control={control}
+                label="Resident of Municipality since"
+                defaultValue={fisherfolk && residentYear.toString()}
+                register={register}
+                errors={errors}
+              />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+          <Grid container spacing={-2} sx={{ m: 1 }}>
             <Grid item sm={6}>
-              <FormInputNumber name="age" id="age" control={control} label="Age" defaultValue={fisherfolk && age.toString()} register={register} errors={errors} />
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
+                name="age"
+                id="age"
+                control={control}
+                label="Age"
+                defaultValue={fisherfolk && age.toString()}
+                register={register}
+                errors={errors}
+              />
             </Grid>
             <Grid item sm={6}>
-              <FormInputText name="contactNumber" id="contactNumber" control={control} label="Contact Number" defaultValue={fisherfolk && contactNum} register={register} errors={errors} />
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
+                name="contactNumber"
+                id="contactNumber"
+                control={control}
+                label="Contact Number"
+                defaultValue={fisherfolk && contactNum}
+                register={register}
+                errors={errors}
+              />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+          <Grid container spacing={-2} sx={{ m: 1 }}>
             <Grid item sm={6}>
               <FormInputDate sx={{ pl: 1, width: 240, height: 52, ml: 0.1, mt: 0.9 }} name="dateOfBirth" control={control} openTo="year" max={MAXDATE} defaultValue={fisherfolk && dateOfBirth} label="Date of Birth" register={register} errors={errors} />
             </Grid>
@@ -310,7 +349,7 @@ export default function UpdateFisherfolkForm({ id, open, handleClose }: UpdateFi
               <FormInputText name="placeOfBirth" id="placeOfBirth" control={control} label="Place of Birth" defaultValue={fisherfolk && placeOfBirth} register={register} errors={errors} />
             </Grid>
           </Grid>
-          <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
+          <Grid container spacing={-2} sx={{ m: 1 }}>
             <Grid item sm={6}>
               <FormInputText name="religion" id="religion" control={control} label="Religion" defaultValue={fisherfolk && religion} register={register} errors={errors} />
             </Grid>
@@ -341,7 +380,20 @@ export default function UpdateFisherfolkForm({ id, open, handleClose }: UpdateFi
               <FormInputSelect name="educationalBackground" label="Select Educational Background" data={educationalBackgroundOptions} control={control} register={register} errors={errors} onSavedValue={fisherfolk && educationalBackground} />
             </Grid>
             <Grid item sm={6} sx={{ mt: 1, ml: -1 }}>
-              <FormInputNumber name="numOfChildren" id="numOfChildren" control={control} label="Number of Children" defaultValue={fisherfolk && numOfChildren.toString()} register={register} errors={errors} />
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
+                name="numOfChildren"
+                id="numOfChildren"
+                control={control}
+                label="Number of Children"
+                defaultValue={fisherfolk && numOfChildren.toString()}
+                register={register}
+                errors={errors}
+              />
             </Grid>
           </Grid>
           <Typography variant="h6" color="GrayText" mt={3} mb={-1} ml={2}>
@@ -357,7 +409,20 @@ export default function UpdateFisherfolkForm({ id, open, handleClose }: UpdateFi
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputText name="ptnContactNum" id="ptnContactNum" control={control} label="Contact Number" defaultValue={fisherfolk && ptnContactNum.toString()} register={register} errors={errors} />
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
+                name="ptnContactNum"
+                id="ptnContactNum"
+                control={control}
+                label="Contact Number"
+                defaultValue={fisherfolk && ptnContactNum.toString()}
+                register={register}
+                errors={errors}
+              />
             </Grid>
             <Grid item sm={6}>
               <FormInputText name="ptnAddress" id="ptnAddress" control={control} label="Address" defaultValue={fisherfolk && ptnAddress} register={register} errors={errors} />

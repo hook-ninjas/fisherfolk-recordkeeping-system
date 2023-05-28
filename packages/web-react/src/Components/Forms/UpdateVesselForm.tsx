@@ -1,25 +1,11 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button, DialogContent, Grid, Typography } from '@mui/material';
-import {
-  FormInputText,
-  FormInputSelect,
-  FormInputAutoText,
-  FormInputNumber,
-} from './FormInputFields';
+import { FormInputText, FormInputSelect, FormInputAutoText, FormInputNumber } from './FormInputFields';
 import { materialOptions } from './Enums';
 import { useMutation, useQuery } from '@apollo/client';
-import {
-  FisherfolkVesselsDocument,
-  MutationUpdateVesselArgs,
-  UpdateVesselDocument,
-  VesselDocument,
-  VesselQueryDocument,
-} from '../../graphql/generated';
-import {
-  FormContainer,
-  FormContainerTitle,
-} from '../Containers/FormContainers';
+import { FisherfolkVesselsDocument, MutationUpdateVesselArgs, UpdateVesselDocument, VesselDocument, VesselQueryDocument } from '../../graphql/generated';
+import { FormContainer, FormContainerTitle } from '../Containers/FormContainers';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import { showFailAlert, showSuccessAlert } from '../ConfirmationDialog/Alerts';
@@ -80,37 +66,14 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
       handleComplete();
       showFailAlert();
     },
-    refetchQueries: [
-      { query: VesselQueryDocument },
-      { query: FisherfolkVesselsDocument, variables: { fisherfolkId: id } },
-    ],
+    refetchQueries: [{ query: VesselQueryDocument }, { query: FisherfolkVesselsDocument, variables: { fisherfolkId: id } }],
   });
 
   if (loading && !vessel) {
     return null;
   }
 
-  const {
-    engineMake,
-    grossTonnage,
-    homeport,
-    horsepower,
-    material,
-    mfvrNumber,
-    name,
-    netTonnage,
-    placeBuilt,
-    registeredBreadth,
-    registeredDepth,
-    registeredLength,
-    serialNumber,
-    tonnageBreadth,
-    tonnageDepth,
-    tonnageLength,
-    type,
-    yearBuilt,
-    fisherfolk,
-  } = vessel ?? {};
+  const { engineMake, grossTonnage, homeport, horsepower, material, mfvrNumber, name, netTonnage, placeBuilt, registeredBreadth, registeredDepth, registeredLength, serialNumber, tonnageBreadth, tonnageDepth, tonnageLength, type, yearBuilt, fisherfolk } = vessel ?? {};
   const fisherfolkId = fisherfolk?.id;
 
   const onSubmit = handleSubmit(async (data) => {
@@ -149,107 +112,50 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
     });
   });
 
-  const handleSubmitForm = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const handleSubmitForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     onSubmit();
   };
 
   return (
     <>
-      <FormContainer
-        onClose={close}
-        aria-labelledby="form-container"
-        open={open}
-      >
-        <FormContainerTitle
-          aria-labelledby="form-container-title"
-          onClose={handleClose}
-        >
+      <FormContainer onClose={close} aria-labelledby="form-container" open={open}>
+        <FormContainerTitle aria-labelledby="form-container-title" onClose={handleClose}>
           Update Boat
         </FormContainerTitle>
         <DialogContent dividers>
           <Grid container spacing={-2} sx={{ ml: 1, mr: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
-                name="mfvrNumber"
-                control={control}
-                label="MFVR Number"
-                defaultValue={vessel && mfvrNumber}
-                register={register}
-                errors={errors}
-                shouldUnregister
-              />
+              <FormInputText name="mfvrNumber" control={control} label="MFVR Number" defaultValue={vessel && mfvrNumber} register={register} errors={errors} shouldUnregister />
             </Grid>
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mr: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
-                name="homeport"
-                control={control}
-                label="Homeport"
-                defaultValue={vessel && homeport}
-                register={register}
-                errors={errors}
-                shouldUnregister
-              />
+              <FormInputText name="homeport" control={control} label="Homeport" defaultValue={vessel && homeport} register={register} errors={errors} shouldUnregister />
             </Grid>
             <Grid item sm={6}>
-              <FormInputText
-                name="name"
-                control={control}
-                label="Name of Fishing Vessel"
-                defaultValue={vessel && name}
-                register={register}
-                errors={errors}
-                shouldUnregister
-              />
+              <FormInputText name="name" control={control} label="Name of Fishing Vessel" defaultValue={vessel && name} register={register} errors={errors} shouldUnregister />
             </Grid>
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 2 }}>
             <Grid item sm={6} sx={{ mt: 2 }}>
-              <FormInputSelect
-                name="material"
-                label="Select Material Used"
-                data={materialOptions}
-                control={control}
-                register={register}
-                errors={errors}
-                onSavedValue={vessel && material!}
-                shouldUnregister
-              />
+              <FormInputSelect name="material" label="Select Material Used" data={materialOptions} control={control} register={register} errors={errors} onSavedValue={vessel && material!} shouldUnregister />
             </Grid>
             <Grid item sm={6} sx={{ mt: 2.3 }}>
-              <FormInputAutoText
-                sx={{ marginTop: -1.5, width: 228, marginLeft: -0.8 }}
-                freeSolo
-                name="type"
-                control={control}
-                defaultValue={vessel && type}
-                label="Type"
-                placeholder="Motorized"
-                options={vesselType}
-                register={register}
-                errors={errors}
-                shouldUnregister
-              />
+              <FormInputAutoText sx={{ marginTop: -1.5, width: 228, marginLeft: -0.8 }} freeSolo name="type" control={control} defaultValue={vessel && type} label="Type" placeholder="Motorized" options={vesselType} register={register} errors={errors} shouldUnregister />
             </Grid>
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6} sx={{ mt: 1 }}>
-              <FormInputText
-                name="placeBuilt"
-                control={control}
-                label="Place Built"
-                defaultValue={vessel && placeBuilt}
-                register={register}
-                errors={errors}
-                shouldUnregister
-              />
+              <FormInputText name="placeBuilt" control={control} label="Place Built" defaultValue={vessel && placeBuilt} register={register} errors={errors} shouldUnregister />
             </Grid>
             <Grid item sm={6} sx={{ mt: 1, ml: 0 }}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="yearBuilt"
                 control={control}
                 label="Year Built"
@@ -257,7 +163,6 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
                 register={register}
                 errors={errors}
                 shouldUnregister
-                sx={{ width: 228, marginLeft: 1, marginTop: 0.2 }}
               />
             </Grid>
           </Grid>
@@ -266,7 +171,12 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
           </Typography>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="registeredLength"
                 control={control}
                 label="Registered Length"
@@ -274,11 +184,15 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
                 register={register}
                 errors={errors}
                 shouldUnregister
-                sx={{ width: 230, marginLeft: 0.4 }}
               />
             </Grid>
             <Grid item sm={6}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="registeredDepth"
                 control={control}
                 label="Registered Depth"
@@ -286,13 +200,17 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
                 register={register}
                 errors={errors}
                 shouldUnregister
-                sx={{ width: 230, marginLeft: 0.4 }}
               />
             </Grid>
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="registeredBreadth"
                 control={control}
                 label="Registered Breadth"
@@ -300,11 +218,15 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
                 register={register}
                 errors={errors}
                 shouldUnregister
-                sx={{ width: 230, marginLeft: 0.4 }}
               />
             </Grid>
             <Grid item sm={6}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="tonnageLength"
                 control={control}
                 label="Tonnage Length"
@@ -312,13 +234,17 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
                 register={register}
                 errors={errors}
                 shouldUnregister
-                sx={{ width: 230, marginLeft: 0.4 }}
               />
             </Grid>
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="tonnageDepth"
                 control={control}
                 label="Tonnage Depth"
@@ -326,11 +252,15 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
                 register={register}
                 errors={errors}
                 shouldUnregister
-                sx={{ width: 230, marginLeft: 0.4 }}
               />
             </Grid>
             <Grid item sm={6}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="tonnageBreadth"
                 control={control}
                 label="Tonnage Breadth"
@@ -338,13 +268,17 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
                 register={register}
                 errors={errors}
                 shouldUnregister
-                sx={{ width: 230, marginLeft: 0.4 }}
               />
             </Grid>
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="grossTonnage"
                 control={control}
                 label="Gross Tonnage"
@@ -352,11 +286,15 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
                 register={register}
                 errors={errors}
                 shouldUnregister
-                sx={{ width: 230, marginLeft: 0.4 }}
               />
             </Grid>
             <Grid item sm={6}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="netTonnage"
                 control={control}
                 label="Net Tonnage"
@@ -364,7 +302,6 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
                 register={register}
                 errors={errors}
                 shouldUnregister
-                sx={{ width: 230, marginLeft: 0.4 }}
               />
             </Grid>
           </Grid>
@@ -373,31 +310,20 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
           </Typography>
           <Grid container spacing={-2} sx={{ ml: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
-                name="engineMake"
-                control={control}
-                label="Engine Make"
-                defaultValue={vessel && engineMake?.toString()}
-                register={register}
-                errors={errors}
-                shouldUnregister
-              />
+              <FormInputText name="engineMake" control={control} label="Engine Make" defaultValue={vessel && engineMake?.toString()} register={register} errors={errors} shouldUnregister />
             </Grid>
             <Grid item sm={6}>
-              <FormInputText
-                name="serialNumber"
-                control={control}
-                label="Serial Number"
-                defaultValue={vessel && serialNumber?.toString()}
-                register={register}
-                errors={errors}
-                shouldUnregister
-              />
+              <FormInputText name="serialNumber" control={control} label="Serial Number" defaultValue={vessel && serialNumber?.toString()} register={register} errors={errors} shouldUnregister />
             </Grid>
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6} sx={{ mt: -1 }}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="horsepower"
                 control={control}
                 label="Horsepower"
@@ -405,7 +331,6 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
                 register={register}
                 errors={errors}
                 shouldUnregister
-                sx={{ width: 230, marginLeft: 0.4 }}
               />
             </Grid>
           </Grid>

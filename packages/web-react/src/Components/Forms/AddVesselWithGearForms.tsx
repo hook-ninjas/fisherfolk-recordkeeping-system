@@ -1,49 +1,13 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Checkbox,
-  DialogContent,
-  FormControlLabel,
-  FormGroup,
-  FormHelperText,
-  Grid,
-  Typography,
-} from '@mui/material';
-import {
-  FormContainer,
-  FormContainerTitle,
-} from '../Containers/FormContainers';
-import {
-  FormInputRadio,
-  FormInputText,
-  FormInputSelect,
-  FormInputNumber,
-  FormInputAutoText,
-} from './FormInputFields';
+import { Box, Button, Checkbox, DialogContent, FormControlLabel, FormGroup, FormHelperText, Grid, Typography } from '@mui/material';
+import { FormContainer, FormContainerTitle } from '../Containers/FormContainers';
+import { FormInputRadio, FormInputText, FormInputSelect, FormInputNumber, FormInputAutoText } from './FormInputFields';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  CreateGearsDocument,
-  CreateVesselDocument,
-  CreateVessselWithGearDocument,
-  GearClassification,
-  MutationCreateVesselWithGearArgs,
-  CreateImageDocument,
-  FisherfolkVesselsDocument,
-  FisherfolkGearsDocument,
-  VesselQueryDocument,
-  GearsQueryDocument,
-  FisherfolkCountDocument,
-} from '../../graphql/generated';
+import { CreateGearsDocument, CreateVesselDocument, CreateVessselWithGearDocument, GearClassification, MutationCreateVesselWithGearArgs, CreateImageDocument, FisherfolkVesselsDocument, FisherfolkGearsDocument, VesselQueryDocument, GearsQueryDocument, FisherfolkCountDocument } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
-import {
-  registrationTypeForBoatsAndGears,
-  gears,
-  vesselTypeOptions,
-  materialOptions,
-} from './Enums';
+import { registrationTypeForBoatsAndGears, gears, vesselTypeOptions, materialOptions } from './Enums';
 import { useParams } from 'react-router-dom';
 import { AddVesselWithGearSchema } from './validation/schema';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -54,10 +18,7 @@ interface AddVesselWithGearFormProps {
   handleClose: () => void;
 }
 
-export default function AddVesselWithGearForm({
-  open,
-  handleClose,
-}: AddVesselWithGearFormProps) {
+export default function AddVesselWithGearForm({ open, handleClose }: AddVesselWithGearFormProps) {
   const { id } = useParams();
 
   if (id == undefined) {
@@ -65,9 +26,7 @@ export default function AddVesselWithGearForm({
   }
 
   const [complete, setComplete] = useState(false);
-  const [image, setImage] = React.useState<
-    string | undefined | ArrayBuffer | null
-  >();
+  const [image, setImage] = React.useState<string | undefined | ArrayBuffer | null>();
 
   const previewImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
@@ -130,47 +89,13 @@ export default function AddVesselWithGearForm({
     CastNet: false,
   });
 
-  const {
-    SimpleHandLine,
-    MultipleHandLine,
-    BottomSetLongLine,
-    DriftLongLine,
-    TrollLine,
-    Jig,
-    SurfaceSetGillNet,
-    DriftGillNet,
-    BottomSetGillNet,
-    TrammelNet,
-    EncirclingGillNet,
-    CrabLiftNetsOrBintol,
-    FishLiftNetsOrBagnet,
-    NewLookOrZapara,
-    ShrimpLiftNets,
-    LeverNet,
-    CrabPots,
-    SquidPots,
-    FykeNetsOrFilterNets,
-    FishCorralsOrBaklad,
-    SetNetOrLambaklad,
-    BarrierNetOrLikus,
-    FishPots,
-    BeachSeine,
-    FryDozerOrGatherer,
-    ManPushNets,
-    ScoopNets,
-    Spear,
-    OctopusOrSquidLuringDevice,
-    GaffHook,
-    CastNet,
-  } = gearTypes;
+  const { SimpleHandLine, MultipleHandLine, BottomSetLongLine, DriftLongLine, TrollLine, Jig, SurfaceSetGillNet, DriftGillNet, BottomSetGillNet, TrammelNet, EncirclingGillNet, CrabLiftNetsOrBintol, FishLiftNetsOrBagnet, NewLookOrZapara, ShrimpLiftNets, LeverNet, CrabPots, SquidPots, FykeNetsOrFilterNets, FishCorralsOrBaklad, SetNetOrLambaklad, BarrierNetOrLikus, FishPots, BeachSeine, FryDozerOrGatherer, ManPushNets, ScoopNets, Spear, OctopusOrSquidLuringDevice, GaffHook, CastNet } = gearTypes;
 
   const handleSubmitting = () => setIsSubmitting(true);
 
   const handleComplete = () => setComplete(true);
 
-  const handleOtherFishingActivityChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleOtherFishingActivityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setGearTypes({
       ...gearTypes,
       [event.target.name]: event.target.checked,
@@ -215,13 +140,7 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showFailAlert();
     },
-    refetchQueries: [
-      { query: FisherfolkVesselsDocument, variables: { fisherfolkId: id } },
-      { query: FisherfolkGearsDocument, variables: { fisherfolkId: id } },
-      { query: VesselQueryDocument },
-      { query: GearsQueryDocument },
-      { query: FisherfolkCountDocument },
-    ],
+    refetchQueries: [{ query: FisherfolkVesselsDocument, variables: { fisherfolkId: id } }, { query: FisherfolkGearsDocument, variables: { fisherfolkId: id } }, { query: VesselQueryDocument }, { query: GearsQueryDocument }, { query: FisherfolkCountDocument }],
   });
 
   const [createVessel] = useMutation(CreateVesselDocument, {
@@ -235,10 +154,7 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showFailAlert();
     },
-    refetchQueries: [
-      { query: FisherfolkVesselsDocument, variables: { fisherfolkId: id } },
-      { query: VesselQueryDocument },
-    ],
+    refetchQueries: [{ query: FisherfolkVesselsDocument, variables: { fisherfolkId: id } }, { query: VesselQueryDocument }],
   });
 
   const [createGears] = useMutation(CreateGearsDocument, {
@@ -252,10 +168,7 @@ export default function AddVesselWithGearForm({
       handleComplete();
       showFailAlert();
     },
-    refetchQueries: [
-      { query: FisherfolkGearsDocument, variables: { fisherfolkId: id } },
-      { query: GearsQueryDocument },
-    ],
+    refetchQueries: [{ query: FisherfolkGearsDocument, variables: { fisherfolkId: id } }, { query: GearsQueryDocument }],
   });
 
   const [createImage] = useMutation(CreateImageDocument, {
@@ -345,10 +258,7 @@ export default function AddVesselWithGearForm({
     }
 
     // create both boat and gears
-    if (
-      createVesselWithGearInput.gears.length != 0 &&
-      createVesselWithGearInput.vessel.mfvrNumber != ''
-    ) {
+    if (createVesselWithGearInput.gears.length != 0 && createVesselWithGearInput.vessel.mfvrNumber != '') {
       const vessel = await createVesselWithGear({
         variables: {
           gears: createVesselWithGearInput.gears,
@@ -373,24 +283,15 @@ export default function AddVesselWithGearForm({
     }
   });
 
-  const handleSubmitForm = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const handleSubmitForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     onSubmit();
   };
 
   return (
     <>
-      <FormContainer
-        onClose={close}
-        aria-labelledby="form-container"
-        open={open}
-      >
-        <FormContainerTitle
-          aria-labelledby="form-container-title"
-          onClose={handleClose}
-        >
+      <FormContainer onClose={close} aria-labelledby="form-container" open={open}>
+        <FormContainerTitle aria-labelledby="form-container-title" onClose={handleClose}>
           Boat/Gear Registration
         </FormContainerTitle>
         <DialogContent dividers>
@@ -404,87 +305,40 @@ export default function AddVesselWithGearForm({
               mt: -2,
             }}
           >
-            <FormInputRadio
-              name="registrationType"
-              label="registrationType"
-              control={control}
-              register={register}
-              errors={errors}
-              radioOptions={registrationTypeForBoatsAndGears}
-            />
+            <FormInputRadio name="registrationType" label="registrationType" control={control} register={register} errors={errors} radioOptions={registrationTypeForBoatsAndGears} />
           </Box>
           <Grid container spacing={-2} sx={{ ml: 1, mr: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
-                name="mfvrNumber"
-                control={control}
-                label="MFVR Number"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
+              <FormInputText name="mfvrNumber" control={control} label="MFVR Number" placeholder="" register={register} errors={errors} />
             </Grid>
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mr: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
-                name="homeport"
-                control={control}
-                label="Homeport"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
+              <FormInputText name="homeport" control={control} label="Homeport" placeholder="" register={register} errors={errors} />
             </Grid>
             <Grid item sm={6}>
-              <FormInputText
-                name="name"
-                control={control}
-                label="Name of Fishing Vessel"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
+              <FormInputText name="name" control={control} label="Name of Fishing Vessel" placeholder="" register={register} errors={errors} />
             </Grid>
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 2 }}>
             <Grid item sm={6} sx={{ mt: 2 }}>
-              <FormInputSelect
-                name="material"
-                label="Select Material Used"
-                data={materialOptions}
-                control={control}
-                register={register}
-                errors={errors}
-              />
+              <FormInputSelect name="material" label="Select Material Used" data={materialOptions} control={control} register={register} errors={errors} />
             </Grid>
             <Grid item sm={6} sx={{ mt: 2 }}>
-              <FormInputAutoText
-                sx={{ marginTop: -1.5, marginLeft: -1, width: 230 }}
-                freeSolo
-                name="type"
-                control={control}
-                label="Type"
-                options={vesselTypeOptions}
-                register={register}
-                errors={errors}
-                shouldUnregister
-              />
+              <FormInputAutoText sx={{ marginTop: -1.5, marginLeft: -1, width: 230 }} freeSolo name="type" control={control} label="Type" options={vesselTypeOptions} register={register} errors={errors} shouldUnregister />
             </Grid>
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6} sx={{ mt: 1 }}>
-              <FormInputText
-                name="placeBuilt"
-                control={control}
-                label="Place Built"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
+              <FormInputText name="placeBuilt" control={control} label="Place Built" placeholder="" register={register} errors={errors} />
             </Grid>
             <Grid item sm={6} sx={{ mt: 1, ml: 0 }}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="yearBuilt"
                 control={control}
                 label="Year Built"
@@ -499,7 +353,12 @@ export default function AddVesselWithGearForm({
           </Typography>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="registeredLength"
                 control={control}
                 label="Registered Length"
@@ -509,7 +368,12 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
             <Grid item sm={6}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="registeredDepth"
                 control={control}
                 label="Registered Depth"
@@ -521,7 +385,12 @@ export default function AddVesselWithGearForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="registeredBreadth"
                 control={control}
                 label="Registered Breadth"
@@ -531,7 +400,12 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
             <Grid item sm={6}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="tonnageLength"
                 control={control}
                 label="Tonnage Length"
@@ -543,7 +417,12 @@ export default function AddVesselWithGearForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="tonnageDepth"
                 control={control}
                 label="Tonnage Depth"
@@ -553,7 +432,12 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
             <Grid item sm={6}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="tonnageBreadth"
                 control={control}
                 label="Tonnage Breadth"
@@ -565,7 +449,12 @@ export default function AddVesselWithGearForm({
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="grossTonnage"
                 control={control}
                 label="Gross Tonnage"
@@ -575,7 +464,12 @@ export default function AddVesselWithGearForm({
               />
             </Grid>
             <Grid item sm={6}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="netTonnage"
                 control={control}
                 label="Net Tonnage"
@@ -590,29 +484,20 @@ export default function AddVesselWithGearForm({
           </Typography>
           <Grid container spacing={-2} sx={{ ml: 1 }}>
             <Grid item sm={6}>
-              <FormInputText
-                name="engineMake"
-                control={control}
-                label="Engine Make"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
+              <FormInputText name="engineMake" control={control} label="Engine Make" placeholder="" register={register} errors={errors} />
             </Grid>
             <Grid item sm={6}>
-              <FormInputText
-                name="serialNumber"
-                control={control}
-                label="Serial Number"
-                placeholder=""
-                register={register}
-                errors={errors}
-              />
+              <FormInputText name="serialNumber" control={control} label="Serial Number" placeholder="" register={register} errors={errors} />
             </Grid>
           </Grid>
           <Grid container spacing={-2} sx={{ ml: 1, mt: 1 }}>
             <Grid item sm={6} sx={{ mt: -1 }}>
-              <FormInputNumber
+              <FormInputText
+                inputMode="numeric"
+                inputProps={{
+                  type: 'number',
+                  pattern: 'd*',
+                }}
                 name="horsepower"
                 control={control}
                 label="Horsepower"
@@ -640,78 +525,12 @@ export default function AddVesselWithGearForm({
                   }}
                 >
                   <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={SimpleHandLine}
-                          onChange={handleOtherFishingActivityChange}
-                          name="SimpleHandLine"
-                          value="SimpleHandLine"
-                        />
-                      }
-                      label="Simple-Hand Line"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={MultipleHandLine}
-                          onChange={handleOtherFishingActivityChange}
-                          name="MultipleHandLine"
-                          value="MultipleHandLine"
-                        />
-                      }
-                      label="Multiple-Hand Line"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={BottomSetLongLine}
-                          onChange={handleOtherFishingActivityChange}
-                          name="BottomSetLongLine"
-                          value="BottomSetLongLine"
-                        />
-                      }
-                      label="Bottom Set Long Line"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={DriftLongLine}
-                          onChange={handleOtherFishingActivityChange}
-                          name="DriftLongLine"
-                          value="DriftLongLine"
-                        />
-                      }
-                      label="Drift Long Line"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={TrollLine}
-                          onChange={handleOtherFishingActivityChange}
-                          name="TrollLine"
-                          value="TrollLine"
-                        />
-                      }
-                      label="Troll line"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={Jig}
-                          onChange={handleOtherFishingActivityChange}
-                          name="Jig"
-                          value="Jig"
-                        />
-                      }
-                      label="Jig"
-                    />
+                    <FormControlLabel control={<Checkbox size="small" checked={SimpleHandLine} onChange={handleOtherFishingActivityChange} name="SimpleHandLine" value="SimpleHandLine" />} label="Simple-Hand Line" />
+                    <FormControlLabel control={<Checkbox size="small" checked={MultipleHandLine} onChange={handleOtherFishingActivityChange} name="MultipleHandLine" value="MultipleHandLine" />} label="Multiple-Hand Line" />
+                    <FormControlLabel control={<Checkbox size="small" checked={BottomSetLongLine} onChange={handleOtherFishingActivityChange} name="BottomSetLongLine" value="BottomSetLongLine" />} label="Bottom Set Long Line" />
+                    <FormControlLabel control={<Checkbox size="small" checked={DriftLongLine} onChange={handleOtherFishingActivityChange} name="DriftLongLine" value="DriftLongLine" />} label="Drift Long Line" />
+                    <FormControlLabel control={<Checkbox size="small" checked={TrollLine} onChange={handleOtherFishingActivityChange} name="TrollLine" value="TrollLine" />} label="Troll line" />
+                    <FormControlLabel control={<Checkbox size="small" checked={Jig} onChange={handleOtherFishingActivityChange} name="Jig" value="Jig" />} label="Jig" />
                   </FormGroup>
                 </Box>
               </Grid>
@@ -728,66 +547,11 @@ export default function AddVesselWithGearForm({
                   }}
                 >
                   <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={SurfaceSetGillNet}
-                          onChange={handleOtherFishingActivityChange}
-                          name="SurfaceSetGillNet"
-                          value="SurfaceSetGillNet"
-                        />
-                      }
-                      label="Surface Set Gill Net"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={DriftGillNet}
-                          onChange={handleOtherFishingActivityChange}
-                          name="DriftGillNet"
-                          value="DriftGillNet"
-                        />
-                      }
-                      label="Drift Gill Net"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={BottomSetGillNet}
-                          onChange={handleOtherFishingActivityChange}
-                          name="BottomSetGillNet"
-                          value="BottomSetGillNet"
-                        />
-                      }
-                      label="Bottom Set Gill Net"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={TrammelNet}
-                          onChange={handleOtherFishingActivityChange}
-                          name="TrammelNet"
-                          value="TrammelNet"
-                        />
-                      }
-                      label="Trammel Net"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={EncirclingGillNet}
-                          onChange={handleOtherFishingActivityChange}
-                          name="EncirclingGillNet"
-                          value="EncirclingGillNet"
-                        />
-                      }
-                      label="Encircling Gill Net"
-                    />
+                    <FormControlLabel control={<Checkbox size="small" checked={SurfaceSetGillNet} onChange={handleOtherFishingActivityChange} name="SurfaceSetGillNet" value="SurfaceSetGillNet" />} label="Surface Set Gill Net" />
+                    <FormControlLabel control={<Checkbox size="small" checked={DriftGillNet} onChange={handleOtherFishingActivityChange} name="DriftGillNet" value="DriftGillNet" />} label="Drift Gill Net" />
+                    <FormControlLabel control={<Checkbox size="small" checked={BottomSetGillNet} onChange={handleOtherFishingActivityChange} name="BottomSetGillNet" value="BottomSetGillNet" />} label="Bottom Set Gill Net" />
+                    <FormControlLabel control={<Checkbox size="small" checked={TrammelNet} onChange={handleOtherFishingActivityChange} name="TrammelNet" value="TrammelNet" />} label="Trammel Net" />
+                    <FormControlLabel control={<Checkbox size="small" checked={EncirclingGillNet} onChange={handleOtherFishingActivityChange} name="EncirclingGillNet" value="EncirclingGillNet" />} label="Encircling Gill Net" />
                   </FormGroup>
                 </Box>
               </Grid>
@@ -808,66 +572,11 @@ export default function AddVesselWithGearForm({
                   }}
                 >
                   <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={CrabLiftNetsOrBintol}
-                          onChange={handleOtherFishingActivityChange}
-                          name="CrabLiftNetsOrBintol"
-                          value="CrabLiftNetsOrBintol"
-                        />
-                      }
-                      label="Crab Lift Nets (Bintol)"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={FishLiftNetsOrBagnet}
-                          onChange={handleOtherFishingActivityChange}
-                          name="FishLiftNetsOrBagnet"
-                          value="FishLiftNetsOrBagnet"
-                        />
-                      }
-                      label="Fish Lift Nets (Basnig) / Bagnet"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={NewLookOrZapara}
-                          onChange={handleOtherFishingActivityChange}
-                          name="NewLookOrZapara"
-                          value="NewLookOrZapara"
-                        />
-                      }
-                      label="“New Look” or “Zapra”"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={ShrimpLiftNets}
-                          onChange={handleOtherFishingActivityChange}
-                          name="ShrimpLiftNets"
-                          value="ShrimpLiftNets"
-                        />
-                      }
-                      label="Shrimp Lift Nets"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={LeverNet}
-                          onChange={handleOtherFishingActivityChange}
-                          name="LeverNet"
-                          value="LeverNet"
-                        />
-                      }
-                      label="Lever Net"
-                    />
+                    <FormControlLabel control={<Checkbox size="small" checked={CrabLiftNetsOrBintol} onChange={handleOtherFishingActivityChange} name="CrabLiftNetsOrBintol" value="CrabLiftNetsOrBintol" />} label="Crab Lift Nets (Bintol)" />
+                    <FormControlLabel control={<Checkbox size="small" checked={FishLiftNetsOrBagnet} onChange={handleOtherFishingActivityChange} name="FishLiftNetsOrBagnet" value="FishLiftNetsOrBagnet" />} label="Fish Lift Nets (Basnig) / Bagnet" />
+                    <FormControlLabel control={<Checkbox size="small" checked={NewLookOrZapara} onChange={handleOtherFishingActivityChange} name="NewLookOrZapara" value="NewLookOrZapara" />} label="“New Look” or “Zapra”" />
+                    <FormControlLabel control={<Checkbox size="small" checked={ShrimpLiftNets} onChange={handleOtherFishingActivityChange} name="ShrimpLiftNets" value="ShrimpLiftNets" />} label="Shrimp Lift Nets" />
+                    <FormControlLabel control={<Checkbox size="small" checked={LeverNet} onChange={handleOtherFishingActivityChange} name="LeverNet" value="LeverNet" />} label="Lever Net" />
                   </FormGroup>
                 </Box>
               </Grid>
@@ -884,90 +593,13 @@ export default function AddVesselWithGearForm({
                   }}
                 >
                   <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={CrabPots}
-                          onChange={handleOtherFishingActivityChange}
-                          name="CrabPots"
-                          value="CrabPots"
-                        />
-                      }
-                      label="Crab Pots"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={SquidPots}
-                          onChange={handleOtherFishingActivityChange}
-                          name="SquidPots"
-                          value="SquidPots"
-                        />
-                      }
-                      label="Squid Pots"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={FykeNetsOrFilterNets}
-                          onChange={handleOtherFishingActivityChange}
-                          name="FykeNetsOrFilterNets"
-                          value="FykeNetsOrFilterNets"
-                        />
-                      }
-                      label="Fyke Nets/Filter Nets"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={FishCorralsOrBaklad}
-                          onChange={handleOtherFishingActivityChange}
-                          name="FishCorralsOrBaklad"
-                          value="FishCorralsOrBaklad"
-                        />
-                      }
-                      label="Fish Corrals (Baklad)"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={SetNetOrLambaklad}
-                          onChange={handleOtherFishingActivityChange}
-                          name="SetNetOrLambaklad"
-                          value="SetNetOrLambaklad"
-                        />
-                      }
-                      label="Set Net (Lambaklad)"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={BarrierNetOrLikus}
-                          onChange={handleOtherFishingActivityChange}
-                          name="BarrierNetOrLikus"
-                          value="BarrierNetOrLikus"
-                        />
-                      }
-                      label="Barrier Net (Likus)"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={FishPots}
-                          onChange={handleOtherFishingActivityChange}
-                          name="FishPots"
-                          value="FishPots"
-                        />
-                      }
-                      label="Fish Pots"
-                    />
+                    <FormControlLabel control={<Checkbox size="small" checked={CrabPots} onChange={handleOtherFishingActivityChange} name="CrabPots" value="CrabPots" />} label="Crab Pots" />
+                    <FormControlLabel control={<Checkbox size="small" checked={SquidPots} onChange={handleOtherFishingActivityChange} name="SquidPots" value="SquidPots" />} label="Squid Pots" />
+                    <FormControlLabel control={<Checkbox size="small" checked={FykeNetsOrFilterNets} onChange={handleOtherFishingActivityChange} name="FykeNetsOrFilterNets" value="FykeNetsOrFilterNets" />} label="Fyke Nets/Filter Nets" />
+                    <FormControlLabel control={<Checkbox size="small" checked={FishCorralsOrBaklad} onChange={handleOtherFishingActivityChange} name="FishCorralsOrBaklad" value="FishCorralsOrBaklad" />} label="Fish Corrals (Baklad)" />
+                    <FormControlLabel control={<Checkbox size="small" checked={SetNetOrLambaklad} onChange={handleOtherFishingActivityChange} name="SetNetOrLambaklad" value="SetNetOrLambaklad" />} label="Set Net (Lambaklad)" />
+                    <FormControlLabel control={<Checkbox size="small" checked={BarrierNetOrLikus} onChange={handleOtherFishingActivityChange} name="BarrierNetOrLikus" value="BarrierNetOrLikus" />} label="Barrier Net (Likus)" />
+                    <FormControlLabel control={<Checkbox size="small" checked={FishPots} onChange={handleOtherFishingActivityChange} name="FishPots" value="FishPots" />} label="Fish Pots" />
                   </FormGroup>
                 </Box>
               </Grid>
@@ -988,30 +620,8 @@ export default function AddVesselWithGearForm({
                   }}
                 >
                   <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={BeachSeine}
-                          onChange={handleOtherFishingActivityChange}
-                          name="BeachSeine"
-                          value="BeachSeine"
-                        />
-                      }
-                      label="Beach Seine"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={FryDozerOrGatherer}
-                          onChange={handleOtherFishingActivityChange}
-                          name="FryDozerOrGatherer"
-                          value="FryDozerOrGatherer"
-                        />
-                      }
-                      label="Fry Dozer or Gatherer"
-                    />
+                    <FormControlLabel control={<Checkbox size="small" checked={BeachSeine} onChange={handleOtherFishingActivityChange} name="BeachSeine" value="BeachSeine" />} label="Beach Seine" />
+                    <FormControlLabel control={<Checkbox size="small" checked={FryDozerOrGatherer} onChange={handleOtherFishingActivityChange} name="FryDozerOrGatherer" value="FryDozerOrGatherer" />} label="Fry Dozer or Gatherer" />
                   </FormGroup>
                 </Box>
               </Grid>
@@ -1029,30 +639,8 @@ export default function AddVesselWithGearForm({
                   }}
                 >
                   <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={ManPushNets}
-                          onChange={handleOtherFishingActivityChange}
-                          name="ManPushNets"
-                          value="ManPushNets"
-                        />
-                      }
-                      label="Man Push Nets"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={ScoopNets}
-                          onChange={handleOtherFishingActivityChange}
-                          name="ScoopNets"
-                          value="ScoopNets"
-                        />
-                      }
-                      label="Scoop Nets"
-                    />
+                    <FormControlLabel control={<Checkbox size="small" checked={ManPushNets} onChange={handleOtherFishingActivityChange} name="ManPushNets" value="ManPushNets" />} label="Man Push Nets" />
+                    <FormControlLabel control={<Checkbox size="small" checked={ScoopNets} onChange={handleOtherFishingActivityChange} name="ScoopNets" value="ScoopNets" />} label="Scoop Nets" />
                   </FormGroup>
                 </Box>
               </Grid>
@@ -1073,42 +661,9 @@ export default function AddVesselWithGearForm({
                   }}
                 >
                   <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={Spear}
-                          onChange={handleOtherFishingActivityChange}
-                          name="Spear"
-                          value="Spear"
-                        />
-                      }
-                      label="Spear"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={OctopusOrSquidLuringDevice}
-                          onChange={handleOtherFishingActivityChange}
-                          name="OctopusOrSquidLuringDevice"
-                          value="OctopusOrSquidLuringDevice"
-                        />
-                      }
-                      label="Octopus/Squid Luring Device"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={GaffHook}
-                          onChange={handleOtherFishingActivityChange}
-                          name="GaffHook"
-                          value="GaffHook"
-                        />
-                      }
-                      label="Gaff Hook"
-                    />
+                    <FormControlLabel control={<Checkbox size="small" checked={Spear} onChange={handleOtherFishingActivityChange} name="Spear" value="Spear" />} label="Spear" />
+                    <FormControlLabel control={<Checkbox size="small" checked={OctopusOrSquidLuringDevice} onChange={handleOtherFishingActivityChange} name="OctopusOrSquidLuringDevice" value="OctopusOrSquidLuringDevice" />} label="Octopus/Squid Luring Device" />
+                    <FormControlLabel control={<Checkbox size="small" checked={GaffHook} onChange={handleOtherFishingActivityChange} name="GaffHook" value="GaffHook" />} label="Gaff Hook" />
                   </FormGroup>
                 </Box>
               </Grid>
@@ -1125,18 +680,7 @@ export default function AddVesselWithGearForm({
                   }}
                 >
                   <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={CastNet}
-                          onChange={handleOtherFishingActivityChange}
-                          name="CastNet"
-                          value="CastNet"
-                        />
-                      }
-                      label="Cast Net"
-                    />
+                    <FormControlLabel control={<Checkbox size="small" checked={CastNet} onChange={handleOtherFishingActivityChange} name="CastNet" value="CastNet" />} label="Cast Net" />
                   </FormGroup>
                 </Box>
               </Grid>
@@ -1149,13 +693,7 @@ export default function AddVesselWithGearForm({
                 control={control}
                 defaultValue=""
                 render={() => (
-                  <Button
-                    sx={{ width: 150 }}
-                    id="upload-btn-label"
-                    variant="contained"
-                    component="label"
-                    htmlFor="upload-btn"
-                  >
+                  <Button sx={{ width: 150 }} id="upload-btn-label" variant="contained" component="label" htmlFor="upload-btn">
                     Upload
                     <input
                       id="upload-btn"
@@ -1174,9 +712,7 @@ export default function AddVesselWithGearForm({
               <Box sx={{ width: 150, height: 150 }} mt={2}>
                 <img src={image?.toString()} width={150} height={150} />
               </Box>
-              <FormHelperText sx={{ color: '#d32f2f' }}>
-                {errors['vesselGearPhoto']?.message?.toString()}
-              </FormHelperText>
+              <FormHelperText sx={{ color: '#d32f2f' }}>{errors['vesselGearPhoto']?.message?.toString()}</FormHelperText>
             </Grid>
           </Grid>
           {isSubmitting ? (
