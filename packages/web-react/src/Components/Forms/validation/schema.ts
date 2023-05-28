@@ -13,7 +13,7 @@ const barangays = data.barangays.sort();
 const createMinMaxValidation = (minErrCode: string, maxErrCode: string, title: string, min: number, max: number) => {
   return string()
     .test(minErrCode, `${title} cannot be negative.`, (value) => !value || parseInt(value, 10) >= min)
-    .test(maxErrCode, `${title} cannot be exceed ${max}.`, (value) => !value || parseInt(value, 10) <= max);
+    .test(maxErrCode, `${title} cannot exceed ${max}.`, (value) => !value || parseInt(value, 10) <= max);
 };
 
 const FfolkValidation = (state: string) => {
