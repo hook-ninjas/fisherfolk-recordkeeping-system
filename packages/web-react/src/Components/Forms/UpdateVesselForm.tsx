@@ -345,7 +345,7 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
                   mb: 2,
                 }}
                 startIcon={<SaveIcon />}
-                variant="outlined"
+                variant="contained"
               >
                 Loading
               </LoadingButton>
