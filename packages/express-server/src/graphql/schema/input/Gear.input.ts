@@ -21,9 +21,10 @@ const CreateFfolkGearInput = inputObjectType({
 
 const UpdateFfolkGearInput = inputObjectType({
   name: 'UpdateFfolkGearInput',
-  definition(t){
+  definition(t) {
+    t.field('id', { type: 'BigInt' });
     t.field('fisherfolkId', { type: 'BigInt' });
-    t.field('classification', {type: 'GearClassification' });
+    t.field('classification', { type: 'GearClassification' });
     t.string('type');
   },
 });
