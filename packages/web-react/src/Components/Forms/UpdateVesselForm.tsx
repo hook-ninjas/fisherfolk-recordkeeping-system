@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Box, Button, DialogContent, Grid, Typography } from '@mui/material';
+import { Backdrop, Box, Button, DialogContent, Grid, Typography } from '@mui/material';
 import { FormInputText, FormInputSelect, FormInputAutoText } from './FormInputFields';
 import { materialOptions } from './Enums';
 import { useMutation, useQuery } from '@apollo/client';
@@ -70,7 +70,7 @@ function UpdateVesselForm({ id, open, handleClose }: VesselFormProps) {
   });
 
   if (loading && !vessel) {
-    return null;
+    return <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}></Backdrop>;
   }
 
   const { engineMake, grossTonnage, homeport, horsepower, material, mfvrNumber, name, netTonnage, placeBuilt, registeredBreadth, registeredDepth, registeredLength, serialNumber, tonnageBreadth, tonnageDepth, tonnageLength, type, yearBuilt, fisherfolk } = vessel ?? {};

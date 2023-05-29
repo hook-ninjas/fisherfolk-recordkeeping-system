@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, DialogContent, FormHelperText, Grid, Typography } from '@mui/material';
+import { Backdrop, Box, Button, DialogContent, FormHelperText, Grid, Typography } from '@mui/material';
 import { FormInputRadio, FormInputSelect, FormInputText, FormInputAutoText, FormInputDate, FormInputNumber } from './FormInputFields';
 import { Controller, useForm } from 'react-hook-form';
 import { FisherfolkByIdDocument, MutationUpdateFisherfolkArgs, MutationUpdateFisherfolkImageArgs, QueryFisherfolksDocument, UpdateFisherfolkDocument, UpdateFisherfolkImageDocument } from '../../graphql/generated';
@@ -96,7 +96,7 @@ export default function UpdateFisherfolkForm({ id, open, handleClose }: UpdateFi
   });
 
   if (loading || !fisherfolk) {
-    return null;
+    return <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}></Backdrop>;
   }
 
   if (!loading && !fisherfolk) {
