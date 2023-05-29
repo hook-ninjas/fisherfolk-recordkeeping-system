@@ -399,6 +399,7 @@ enum SourceOfIncome {
 
 input UpdateFfolkGearInput {
   classification: GearClassification!
+  description: String!
   id: BigInt!
   type: String!
 }

@@ -25,6 +25,7 @@ const UpdateFfolkGearInput = inputObjectType({
     t.field('id', { type: 'BigInt' });
     t.field('classification', { type: 'GearClassification' });
     t.string('type');
+    t.string('description');
   },
 });
 

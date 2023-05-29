@@ -171,6 +171,7 @@ export interface NexusGenInputs {
   }
   UpdateFfolkGearInput: { // input type
     classification: NexusGenEnums['GearClassification']; // GearClassification!
+    description: string; // String!
     id: NexusGenScalars['BigInt']; // BigInt!
     type: string; // String!
   }
