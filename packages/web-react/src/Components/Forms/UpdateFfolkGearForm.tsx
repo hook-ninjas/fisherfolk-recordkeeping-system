@@ -184,7 +184,7 @@ export default function UpdateFfolkGearForm({ open, handleClose, fisherfolkId, g
             </Typography>
             <Grid container spacing={-2} sx={{ ml: 2 }}>
               <Grid item sm={6} sx={{ mt: 1 }}>
-                {isOthers ? <FormInputText name="description" control={control} label="Description" placeholder="If not in the ff: please Specify:" register={register} errors={errors} /> : <FormInputSelect name="type" label="Select type" defaultValue="" data={typeSelection} disabled={lockGearType} control={control} register={register} errors={errors} />}
+                {isOthers ? <FormInputText name="type" control={control} label="Description" placeholder="If not in the ff: please Specify:" register={register} errors={errors} /> : <FormInputSelect name="type" label="Select type" defaultValue="" data={typeSelection} disabled={lockGearType} control={control} register={register} errors={errors} />}
               </Grid>
             </Grid>
           </Box>
