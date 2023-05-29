@@ -308,6 +308,7 @@ type Mutation {
   restoreVessel(id: Int!): Vessel!
   restreFisherfolk(id: Int!): Fisherfolk!
   updateFisherfolk(data: UpdateFisherfolkInput!, fisherfolkId: Int!): Fisherfolk!
+  updateFisherfolkGear(data: UpdateFfolkGearInput!): Gear!
   updateFisherfolkImage(data: CreateImageInput!, id: String!, url: String!): Image!
   updateFisherfolkStatus(id: Int!, status: FisherfolkStatus!): Fisherfolk!
   updateMfvr(id: Int!, mfvrNum: String!): Vessel!
@@ -394,6 +395,12 @@ enum SourceOfIncome {
   FishProcessing
   FishVending
   Others
+}
+
+input UpdateFfolkGearInput {
+  classification: GearClassification!
+  id: BigInt!
+  type: String!
 }
 
 input UpdateFisherfolkInput {

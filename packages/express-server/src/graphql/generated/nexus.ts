@@ -169,6 +169,11 @@ export interface NexusGenInputs {
     position: string; // String!
     yearJoined: number; // Int!
   }
+  UpdateFfolkGearInput: { // input type
+    classification: NexusGenEnums['GearClassification']; // GearClassification!
+    id: NexusGenScalars['BigInt']; // BigInt!
+    type: string; // String!
+  }
   UpdateFisherfolkInput: { // input type
     age: number; // Int!
     appellation: string; // String!
@@ -510,6 +515,7 @@ export interface NexusGenFieldTypes {
     restoreVessel: NexusGenRootTypes['Vessel']; // Vessel!
     restreFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     updateFisherfolk: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
+    updateFisherfolkGear: NexusGenRootTypes['Gear']; // Gear!
     updateFisherfolkImage: NexusGenRootTypes['Image']; // Image!
     updateFisherfolkStatus: NexusGenRootTypes['Fisherfolk']; // Fisherfolk!
     updateMfvr: NexusGenRootTypes['Vessel']; // Vessel!
@@ -714,6 +720,7 @@ export interface NexusGenFieldTypeNames {
     restoreVessel: 'Vessel'
     restreFisherfolk: 'Fisherfolk'
     updateFisherfolk: 'Fisherfolk'
+    updateFisherfolkGear: 'Gear'
     updateFisherfolkImage: 'Image'
     updateFisherfolkStatus: 'Fisherfolk'
     updateMfvr: 'Vessel'
@@ -860,6 +867,9 @@ export interface NexusGenArgTypes {
     updateFisherfolk: { // args
       data: NexusGenInputs['UpdateFisherfolkInput']; // UpdateFisherfolkInput!
       fisherfolkId: number; // Int!
+    }
+    updateFisherfolkGear: { // args
+      data: NexusGenInputs['UpdateFfolkGearInput']; // UpdateFfolkGearInput!
     }
     updateFisherfolkImage: { // args
       data: NexusGenInputs['CreateImageInput']; // CreateImageInput!
