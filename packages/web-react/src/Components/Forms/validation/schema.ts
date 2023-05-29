@@ -2,7 +2,7 @@ import { object, string, mixed, array, date } from 'yup';
 import { getValues } from '../../../utils/utils';
 import { salutationOptions, genderOptions } from '../Enums';
 import { sub } from 'date-fns/fp';
-import { FisherfolkStatus, SourceOfIncome } from '../../../graphql/generated';
+import { FisherfolkStatus, GearClassification, SourceOfIncome } from '../../../graphql/generated';
 import data from '../../Forms/iloilo-city-brgys.json';
 
 const maxBirthDate = sub({ years: 19 })(new Date());
@@ -240,8 +240,7 @@ const UpdateFisherfolkSchema = object().shape({
 });
 
 const AddVesselWithGearSchema = object().shape({
-  yearBuilt: string()
-    .matches(/^(19|20)\d{2}$/, 'Invalid year'),
+  yearBuilt: string().matches(/^(19|20)\d{2}$/, 'Invalid year'),
   registeredLength: createMinMaxValidation('minLength', 'maxLength', 'Length', 0, 100),
   registeredDepth: createMinMaxValidation('minDepth', 'maxDepth', 'Depth', 0, 100),
   registeredBreadth: createMinMaxValidation('minBreadth', 'maxBreadth', 'Breadth', 0, 100),
@@ -330,4 +329,15 @@ const UpdateVesselSchema = object().shape({
   horsepower: createMinMaxValidation('minHorsePower', 'maxHorsePower', 'Horse power', 0, 1_000),
 });
 
-export { FfolkValidation, CreateAccountSchema, LoginSchema, UpdateFisherfolkSchema, AddVesselWithGearSchema, FilterSchema, CreateProgramSchema, UpdateProgramSchema, UpdateVesselSchema };
+const UpdateFfolkGearSchema = object().shape({
+  classification: string().required('Please Select Gear classification').oneOf(Object.values(GearClassification)),
+  type: string().when('classification', {
+    is: (value: string) => value == GearClassification['Others'],
+    then: string()
+      .required()
+      .matches(/^[a-zA-Z0-9\s]+$/),
+    otherwise: string().required('Please Select Gear type'),
+  }),
+});
+
+export { UpdateFfolkGearSchema, FfolkValidation, CreateAccountSchema, LoginSchema, UpdateFisherfolkSchema, AddVesselWithGearSchema, FilterSchema, CreateProgramSchema, UpdateProgramSchema, UpdateVesselSchema };

@@ -76,7 +76,8 @@ export const updateFfolkGear = async (input: NexusGenInputs['UpdateFfolkGearInpu
   return await context.prisma.gear.update({
     where: { id: id },
     data: {
-      ...input,
+      classification: input.classification,
+      type: input.type,
     },
   });
 };

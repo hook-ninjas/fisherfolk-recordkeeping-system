@@ -1,12 +1,7 @@
 import { Button, Menu, MenuItem, Alert, Backdrop, Stack } from '@mui/material';
 import React, { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import {
-  ArchiveGearDocument,
-  FisherfolkGearsDocument,
-  UpdateToArchiveGearDocument,
-  GearsQueryDocument,
-} from '../../graphql/generated';
+import { ArchiveGearDocument, FisherfolkGearsDocument, UpdateToArchiveGearDocument, GearsQueryDocument } from '../../graphql/generated';
 import { useParams } from 'react-router-dom';
 import Loading from '../Loading/Loading';
 import { splitUpperCase } from '../../utils/utils';
@@ -15,32 +10,35 @@ import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import moment from 'moment';
 import { DataGrid, GridColumns, GridRowsProp } from '@mui/x-data-grid';
-import {
-  showArchiveError,
-  showArchiveSuccess,
-} from '../ConfirmationDialog/Alerts';
+import { showArchiveError, showArchiveSuccess } from '../ConfirmationDialog/Alerts';
+import UpdateFfolkGearForm from '../Forms/UpdateFfolkGearForm';
 
-const RenderMoreActions = (id: number) => {
+const RenderMoreActions = (id: number, fisherfolkId: number) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [openEditGear, setopenEditGear] = useState(false);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => setAnchorEl(null);
 
-  const [archiveGear, archiveResult] = useMutation(
-    UpdateToArchiveGearDocument,
-    {
-      refetchQueries: [
-        {
-          query: ArchiveGearDocument,
-        },
-        {
-          query: GearsQueryDocument,
-        },
-      ],
-    }
-  );
+  const handleGearOpen = () => setopenEditGear(true);
+
+  const handleGearClose = () => {
+    setAnchorEl(null);
+    setopenEditGear(false);
+  };
+
+  const [archiveGear, archiveResult] = useMutation(UpdateToArchiveGearDocument, {
+    refetchQueries: [
+      {
+        query: ArchiveGearDocument,
+      },
+      {
+        query: GearsQueryDocument,
+      },
+    ],
+  });
 
   const ArchiveAGear = () => {
     archiveGear({
@@ -60,27 +58,13 @@ const RenderMoreActions = (id: number) => {
   const archiveHandler = () => {
     const { loading } = archiveResult;
     if (loading) {
-      return (
-        <Backdrop
-          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={true}
-        ></Backdrop>
-      );
+      return <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}></Backdrop>;
     }
   };
 
   return (
     <div>
-      <Button
-        id="action-btn"
-        aria-controls={open ? 'gear-action-btn' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        aria-label="gear-action-btn"
-        disableElevation
-        onClick={handleClick}
-        style={{ color: '#808080' }}
-      >
+      <Button id="action-btn" aria-controls={open ? 'gear-action-btn' : undefined} aria-haspopup="true" aria-expanded={open ? 'true' : undefined} aria-label="gear-action-btn" disableElevation onClick={handleClick} style={{ color: '#808080' }}>
         <MoreVertIcon />
       </Button>
       <Menu
@@ -92,8 +76,9 @@ const RenderMoreActions = (id: number) => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem disableRipple>
+        <MenuItem disableRipple onClick={() => handleGearOpen()}>
           <EditIcon sx={{ width: 20, marginRight: 1.5 }} /> Edit
+          <UpdateFfolkGearForm open={openEditGear} handleClose={() => handleGearClose()} gearId={id} fisherfolkId={fisherfolkId} />
         </MenuItem>
         <MenuItem
           onClick={() => {
@@ -135,6 +120,7 @@ export default function GearTable() {
       data &&
       data.fisherfolkGears.map((gear) => ({
         id: gear.id,
+        fisherfolkId: id,
         dateRegistered: new Date(gear.createdAt),
         classification: splitUpperCase(gear.classification),
         type: splitUpperCase(gear.type),
@@ -194,7 +180,7 @@ const columns: GridColumns = [
     disableColumnMenu: true,
     sortable: false,
     renderCell(params) {
-      return RenderMoreActions(params.row.id);
+      return RenderMoreActions(params.row.id, params.row.fisherfolkId);
     },
   },
 ];

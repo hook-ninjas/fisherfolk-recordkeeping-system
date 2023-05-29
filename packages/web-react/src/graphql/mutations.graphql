@@ -146,3 +146,9 @@ mutation UpdateFisherfolkStatus($updateFisherfolkStatusId: Int!, $status: Fisher
     status
   }
 }
+
+mutation UpdateFisherfolkGear($data: UpdateFfolkGearInput!) {
+  updateFisherfolkGear(data: $data) {
+    id
+  }
+}
