@@ -4,37 +4,10 @@ import { Context } from '../../../context';
 
 export const determineGearClass = (type: string) => {
   const gearOptions = {
-    hookAndLine: [
-      'Simple Hand Line',
-      'Multiple Hand Line',
-      'Bottom Set Long Line',
-      'Drift Long Line',
-      'Troll Line',
-      'Jig',
-    ],
-    gillNets: [
-      'Surface Set Gill Net',
-      'Drift Gill Net',
-      'Bottom Set Gill Net',
-      'Trammel Net',
-      'Encircling Gill Net',
-    ],
-    liftNets: [
-      'Crab Lift Nets/Bintol',
-      'Fish Lift Nets/Bagnet',
-      'New Look/Zapara',
-      'Shrimp Lift Nets',
-      'Lever Net',
-    ],
-    potsAndTraps: [
-      'CrabPots',
-      'SquidPots',
-      'FykeNetsOrFilterNets',
-      'FishCorralsOrBaklad',
-      'SetNetOrLambaklad',
-      'BarrierNetOrLikus',
-      'FishPots',
-    ],
+    hookAndLine: ['Simple Hand Line', 'Multiple Hand Line', 'Bottom Set Long Line', 'Drift Long Line', 'Troll Line', 'Jig'],
+    gillNets: ['Surface Set Gill Net', 'Drift Gill Net', 'Bottom Set Gill Net', 'Trammel Net', 'Encircling Gill Net'],
+    liftNets: ['Crab Lift Nets/Bintol', 'Fish Lift Nets/Bagnet', 'New Look/Zapara', 'Shrimp Lift Nets', 'Lever Net'],
+    potsAndTraps: ['CrabPots', 'SquidPots', 'FykeNetsOrFilterNets', 'FishCorralsOrBaklad', 'SetNetOrLambaklad', 'BarrierNetOrLikus', 'FishPots'],
     seineNets: ['BeachSeine', 'FryDozerOrGatherer'],
     scoopNets: ['ManPushNets', 'ScoopNets'],
     fallingGear: ['CastNet'],
@@ -78,13 +51,9 @@ export const determineGearClass = (type: string) => {
   return { classification: GearClassification[classification], type: type };
 };
 
-export const determineGears = (gears: string[]) =>
-  gears.map(determineGearClass);
+export const determineGears = (gears: string[]) => gears.map(determineGearClass);
 
-export const createFfolkGears = async (
-  input: NexusGenInputs['CreateFfolkGearInput'],
-  context: Context
-) => {
+export const createFfolkGears = async (input: NexusGenInputs['CreateFfolkGearInput'], context: Context) => {
   const fisherfolkGears = [];
   const { fisherfolkId, types } = input;
   const gears = determineGears(types);
@@ -100,4 +69,15 @@ export const createFfolkGears = async (
   }
 
   return fisherfolkGears;
+};
+
+export const updateFfolkGear = async (input: NexusGenInputs['UpdateFfolkGearInput'], context: Context) => {
+  const { id } = input;
+  return await context.prisma.gear.update({
+    where: { id: id },
+    data: {
+      classification: input.classification,
+      type: input.type,
+    },
+  });
 };
