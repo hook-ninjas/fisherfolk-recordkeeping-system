@@ -236,7 +236,7 @@ export const FormInputNumber = ({ name, label, placeholder, control, numericOnly
   />
 );
 
-export const FormInputDate = ({ name, label, sx, defaultValue, onSavedValue, openTo, max, min, control, errors, errorMessage, errorState }: FormInputDateProps) => (
+export const FormInputDate = ({ name, label, sx, defaultValue, openTo, max, min, control, errors, errorMessage, errorState }: FormInputDateProps) => (
   <>
     <Controller
       name={name}
@@ -246,7 +246,7 @@ export const FormInputDate = ({ name, label, sx, defaultValue, onSavedValue, ope
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             label={label}
-            value={value || onSavedValue}
+            value={value || null}
             maxDate={max}
             minDate={min}
             openTo={openTo}
