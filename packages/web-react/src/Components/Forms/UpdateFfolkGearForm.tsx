@@ -1,17 +1,13 @@
-import React, { MouseEvent, SyntheticEvent, useState } from 'react';
-import { Box, Button, DialogContent, Grid, Tabs, Tab, Backdrop, Typography } from '@mui/material';
+import React, { MouseEvent,  useState } from 'react';
+import { Box, Button, DialogContent, Grid, Backdrop, Typography } from '@mui/material';
 import { FormContainer, FormContainerTitle } from '../Containers/FormContainers';
-import { useForm, UseFormRegister, UseFormWatch, UseFormResetField, Control, FieldValues } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ArchiveFisherfolkDocument, CreateFisherfolkDocument, FisherfolkGearsDocument, GearClassification, GearsQueryDocument, MutationCreateFisherfolkArgs, MutationUpdateFisherfolkGearArgs, QueryFisherfolksDocument, UpdateFisherfolkGearDocument, VesselQueryDocument } from '../../graphql/generated';
+import { ArchiveFisherfolkDocument, FisherfolkGearsDocument, GearClassification, GearsQueryDocument, MutationUpdateFisherfolkGearArgs, UpdateFisherfolkGearDocument } from '../../graphql/generated';
 import { useMutation } from '@apollo/client';
 import { showSuccessAlert, showFailAlert } from '../ConfirmationDialog/Alerts';
-import { FfolkValidation, UpdateFfolkGearSchema } from './validation/schema';
+import { UpdateFfolkGearSchema } from './validation/schema';
 import { FormInputSelect, FormInputText } from './FormInputFields';
-import GearForm from './GearForm';
-import VesselForm from './VesselForm';
-import FfolkInfoForm from './FfolkInfoForm';
-import Loading from '../Loading/Loading';
 
 interface UpdateFfolkGearFormProps {
   gearId: number;
@@ -19,17 +15,6 @@ interface UpdateFfolkGearFormProps {
   open: boolean;
   handleClose: () => void;
 }
-
-const gearOptions = {
-  HookAndLine: ['Simple Hand Line', 'Multiple Hand Line', 'Bottom Set Long Line', 'Drift Long Line', 'Troll Line', 'Jig'],
-  GillNets: ['Surface Set Gill Net', 'Drift Gill Net', 'Bottom Set Gill Net', 'Trammel Net', 'Encircling Gill Net'],
-  LiftNets: ['Crab Lift Nets/Bintol', 'Fish Lift Nets/Bagnet', 'New Look/Zapara', 'Shrimp Lift Nets', 'Lever Net'],
-  PotsAndTraps: ['CrabPots', 'SquidPots', 'FykeNetsOrFilterNets', 'FishCorralsOrBaklad', 'SetNetOrLambaklad', 'BarrierNetOrLikus', 'FishPots'],
-  SeineNets: ['BeachSeine', 'FryDozerOrGatherer'],
-  ScoopNets: ['ManPushNets', 'ScoopNets'],
-  FallingGear: ['CastNet'],
-  Miscellaneous: ['Spear', 'OctopusOrSquidLuringDevice', 'GaffHook'],
-};
 
 const GearClassificationOptions = [
   { label: 'Hook and Line', value: GearClassification['HookAndLine'] },
@@ -45,10 +30,7 @@ const GearClassificationOptions = [
 
 export default function UpdateFfolkGearForm({ open, handleClose, fisherfolkId, gearId }: UpdateFfolkGearFormProps) {
   const [complete, setComplete] = useState(false);
-  const [tab, setTab] = useState('');
-  const [step, setStep] = useState('ffolkInfo');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [lockGearType, setLockGearType] = useState(true);
   const [isOthers, setIsOthers] = useState(false);
   const [typeSelection, setTypeSelection] = useState<string[]>([]);
@@ -67,43 +49,24 @@ export default function UpdateFfolkGearForm({ open, handleClose, fisherfolkId, g
 
   const {
     register,
-    watch,
     control,
     handleSubmit,
-    resetField,
     getValues,
     trigger,
-    reset,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm({ mode: 'onChange', resolver: yupResolver(UpdateFfolkGearSchema) });
 
   const handleSubmitting = () => setIsSubmitting(true);
 
   const handleComplete = () => setComplete(true);
 
-  const watchClassification = watch('classification');
-
-  const [createFisherfolk, createResult] = useMutation(CreateFisherfolkDocument, {
+  const [updateGear, { loading }] = useMutation(UpdateFisherfolkGearDocument, {
     onCompleted: () => {
       handleClose();
       handleComplete();
       showSuccessAlert();
     },
-    onError: (err) => {
-      handleClose();
-      handleComplete();
-      showFailAlert();
-    },
-    refetchQueries: [{ query: QueryFisherfolksDocument }, { query: VesselQueryDocument }, { query: GearsQueryDocument }],
-  });
-
-  const [updateGear, { data, loading, error }] = useMutation(UpdateFisherfolkGearDocument, {
-    onCompleted: () => {
-      handleClose();
-      handleComplete();
-      showSuccessAlert();
-    },
-    onError: (err) => {
+    onError: () => {
       handleClose();
       handleComplete();
       showFailAlert();
@@ -153,17 +116,6 @@ export default function UpdateFfolkGearForm({ open, handleClose, fisherfolkId, g
     );
   };
 
-  //Temporarily Disabled Responsive issues
-  // if (loading) {
-  //   return (
-  //     <>
-  //       <FormContainer onClose={close} aria-labelledby="form-container" open={open}>
-  //         <Loading />
-  //       </FormContainer>
-  //     </>
-  //   );
-  // }
-
   return (
     <>
       <FormContainer onClose={close} aria-labelledby="form-container" open={open}>
@@ -171,7 +123,7 @@ export default function UpdateFfolkGearForm({ open, handleClose, fisherfolkId, g
           Update Gear
         </FormContainerTitle>
         <DialogContent dividers>
-          {createResult.loading && <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}></Backdrop>}
+          {loading && <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}></Backdrop>}
           <Box id="ffolk-form-info">
             <Typography variant="subtitle1" color="GrayText">
               Gear Classification
