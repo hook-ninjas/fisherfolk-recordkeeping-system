@@ -178,12 +178,13 @@ function CreateAccount({ open, handleClose }: CreateAccountFormProps) {
               loading
               fullWidth
               loadingPosition="start"
+              color='primary'
               sx={{
                 mt: 3,
                 mb: 2,
               }}
               startIcon={<SaveIcon />}
-              variant="outlined"
+              variant="contained"
             >
               Loading
             </LoadingButton>

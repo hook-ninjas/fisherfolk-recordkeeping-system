@@ -190,7 +190,7 @@ function UpdateProgram({ open, handleClose, id }: UpdateProgramProps) {
               mb: 2,
             }}
             startIcon={<SaveIcon />}
-            variant="outlined"
+            variant="contained"
           >
             Loading
           </LoadingButton>

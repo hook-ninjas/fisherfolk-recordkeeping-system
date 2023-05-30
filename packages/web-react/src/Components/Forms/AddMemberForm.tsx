@@ -10,7 +10,6 @@ import { FfolkValidation } from './validation/schema';
 import GearForm from './GearForm';
 import VesselForm from './VesselForm';
 import FfolkInfoForm from './FfolkInfoForm';
-import Loading from '../Loading/Loading';
 
 interface AddFisherfolkFormProps {
   open: boolean;
@@ -43,7 +42,6 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
     handleSubmit,
     resetField,
     trigger,
-    reset,
     formState: { errors, isValid },
   } = useForm({ mode: 'onChange', resolver: yupResolver(FfolkValidation(tab)) });
 
@@ -266,17 +264,6 @@ export default function AddFisherfolkForm({ open, handleClose }: AddFisherfolkFo
         );
     }
   };
-
-  //Temporarily Disabled Responsive issues
-  // if (loading) {
-  //   return (
-  //     <>
-  //       <FormContainer onClose={close} aria-labelledby="form-container" open={open}>
-  //         <Loading />
-  //       </FormContainer>
-  //     </>
-  //   );
-  // }
 
   return (
     <>

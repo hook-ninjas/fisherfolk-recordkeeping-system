@@ -240,7 +240,9 @@ const UpdateFisherfolkSchema = object().shape({
 });
 
 const AddVesselWithGearSchema = object().shape({
-  yearBuilt: string().matches(/^(19|20)\d{2}$/, 'Invalid year'),
+  yearBuilt: string()
+    .transform((value) => (value === '' ? undefined : value))
+    .matches(/^(19|20)\d{2}$/, 'Invalid year'),
   registeredLength: createMinMaxValidation('minLength', 'maxLength', 'Length', 0, 100),
   registeredDepth: createMinMaxValidation('minDepth', 'maxDepth', 'Depth', 0, 100),
   registeredBreadth: createMinMaxValidation('minBreadth', 'maxBreadth', 'Breadth', 0, 100),

@@ -17,14 +17,23 @@ import {
   showArchiveError,
   showArchiveSuccess,
 } from '../ConfirmationDialog/Alerts';
+import UpdateFfolkGearForm from '../Forms/UpdateFfolkGearForm';
 
 const RenderMoreActions = (id: number) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const [openEditGear, setopenEditGear] = useState(false);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => setAnchorEl(null);
+
+  const handleGearOpen = () => setopenEditGear(true);
+
+  const handleGearClose = () => {
+    setAnchorEl(null);
+    setopenEditGear(false);
+  };
 
   const [archiveGear, archiveResult] = useMutation(
     UpdateToArchiveGearDocument,
@@ -90,9 +99,10 @@ const RenderMoreActions = (id: number) => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem disableRipple>
+        <MenuItem disableRipple onClick={() => handleGearOpen()}>
           <EditIcon sx={{ width: 20, marginRight: 1.5 }} /> Edit
         </MenuItem>
+        <UpdateFfolkGearForm open={openEditGear} handleClose={() => handleGearClose()} gearId={id} fisherfolkId={id} />
         <MenuItem
           onClick={() => {
             ArchiveAGear();

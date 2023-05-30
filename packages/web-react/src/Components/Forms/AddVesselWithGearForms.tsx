@@ -725,7 +725,7 @@ export default function AddVesselWithGearForm({ open, handleClose }: AddVesselWi
                 mb: 2,
               }}
               startIcon={<SaveIcon />}
-              variant="outlined"
+              variant="contained"
             >
               Loading
             </LoadingButton>
